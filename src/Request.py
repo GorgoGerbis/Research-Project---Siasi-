@@ -3,7 +3,7 @@ from src.NodeObj import NodeObj
 class Request():
 # Purpose of this class is to take in requests and calculate the amount of resources required as well as time delay
 
-    staticTotalRequestList = []
+    StaticTotalRequestList = []
     staticApprovedRequestList = []
 
     REQUEST_NEEDS_CALCULATING = 0
@@ -18,43 +18,39 @@ class Request():
         self.requestedBW = requestedBW
         self.requestStatus = requestStatus
 
-        Request.staticTotalRequestList.append(self)
+        # Request.StaticTotalRequestList.append(self)
 
-    def pathFinderForReal(self, link):
-        LinkList = (NodeObj.StaticLinkList).copy()
-
-        begin = link.linkSrc
-        goal = link.linkDest
-
-        startNode = link.linkSrc
-        endNode = link.linkDest
-
-        pathCreated = False
-
-        left = []
-        right = []
-
-        # Searches the left end for the right starting point
-        while True:
-
-            if (pathCreated):
-                #break
-                pass
-            else:
-                for x in LinkList:
-                    if x.linkSrc == startNode:
-                        left.append(x)
-
-                for y in LinkList:
-                    if y.linkSrc == endNode:
-                        right.append(y)
-
-                for cn in left:
-                    startNode = cn.linkDest
-
-
-
-
+    # def pathFinderForReal(self, link):
+    #     LinkList = (NodeObj.StaticLinkList).copy()
+    #
+    #     begin = link.linkSrc
+    #     goal = link.linkDest
+    #
+    #     startNode = link.linkSrc
+    #     endNode = link.linkDest
+    #
+    #     pathCreated = False
+    #
+    #     left = []
+    #     right = []
+    #
+    #     # Searches the left end for the right starting point
+    #     while True:
+    #
+    #         if (pathCreated):
+    #             #break
+    #             pass
+    #         else:
+    #             for x in LinkList:
+    #                 if x.linkSrc == startNode:
+    #                     left.append(x)
+    #
+    #             for y in LinkList:
+    #                 if y.linkSrc == endNode:
+    #                     right.append(y)
+    #
+    #             for cn in left:
+    #                 startNode = cn.linkDest
 
     def calculateRequestPossibility(self):
         pointA = self.source

@@ -1,10 +1,10 @@
 import os
+
 from src.NodeObj import NodeObj
 from src.LinkObj import LinkObj
 from src.Request import Request
 from src.Function import Function
 
-from src.Pathfinder import Pathfinder
 
 # Resources
 baseFolder = r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-"
@@ -13,6 +13,11 @@ LinkOpt = os.path.join(resourcesFolder, "LinkOpt.csv")
 NodeOpt = os.path.join(resourcesFolder, "NodeOpt.csv")
 auto_requests_Opt = os.path.join(resourcesFolder, "auto_requests_Opt.txt")
 
+
+
+def processRequest(req):
+    string = "<----- Processing Request Number: {}\nSource: {}\nDestination: {}\n".format(req.requestID, req.source, req.destination)
+    return string
 
 def createFunctions():
     functionOne = Function("f1", 10, 10, 10)
@@ -34,12 +39,13 @@ def findNodeSiblings(nodeObj):
             if node.nodeID == current_link:
                 nodeObj.siblingNodes.append(node.nodeID)
 
+
 def processInputDataRequests(filePath):
     with open(filePath) as fp:
         fp.readline()   # <-- This is so that it skips the first line
         for cnt, line in enumerate(fp):
-            if (line == "\n") or (line != ""):
-                break
+            if (line == "\n") or (line == ""):
+                continue
             else:
                 line = line.strip('\n')
                 currentElements = line.split(';')
@@ -51,7 +57,8 @@ def processInputDataRequests(filePath):
                 destNode = currentElements[2]
                 requestedBW = currentElements[3]  # .strip('\n')
 
-                newRequest = Request(requestNum, srcNode, destNode, requestedFunctions, requestedBW, 0)
+                r = Request(requestNum, srcNode, destNode, requestedFunctions, requestedBW, 0)
+                Request.StaticTotalRequestList.append(r)
                 print("Request: {} has been created.".format(requestNum))
 
         print("All requests have been created.")
@@ -115,30 +122,33 @@ if __name__ == '__main__':
     processInputDataRequests(auto_requests_Opt)
     createFunctions()   # <---- Creates all functions
 
-
-
-
     if os.path.isfile(NodeOpt):
         print("NODE FILE PATH WORKS!")
         processInputDataNode(NodeOpt)
         print("NODE DATA FILE PROCESSED NODES CREATED!")
 
-        if os.path.isfile(LinkOpt):
-            print("LINK FILE PATH WORKS!")
-            processInputDataLink(LinkOpt)
-            print("LINK DATA FILE PROCESSED LINKS CREATED!")
+    if os.path.isfile(LinkOpt):
+        print("LINK FILE PATH WORKS!")
+        processInputDataLink(LinkOpt)
+        print("LINK DATA FILE PROCESSED LINKS CREATED!")
 
-        for obj in NodeObj.StaticLinkList:
-            print(obj)
-            print("-----------")
+    if os.path.isfile(auto_requests_Opt):
+        print("PROCESSING INPUT DATA REQUESTS!")
+        processInputDataRequests(auto_requests_Opt)
+        print("FINISHED PROCESSING ALL DATA REQUESTS!")
 
-        fillConnectedLinks()
+    for obj in NodeObj.StaticLinkList:
+        print(obj)
+        print("-----------")
 
-        for node in NodeObj.StaticNodeList:
-            findNodeSiblings(node)
-            print("Node: {} Siblings: {}".format(node.nodeID, node.siblingNodes))
+    fillConnectedLinks()
 
-        print("FINISHED!")
+    for node in NodeObj.StaticNodeList:
+        findNodeSiblings(node)
+        print("Node: {} Siblings: {}".format(node.nodeID, node.siblingNodes))
 
-    else:
-        print("THIS PATH DOES NOT WORK!")
+    for req in Request.StaticTotalRequestList:
+        string = processRequest(req)
+        print(string)
+
+    print("FINISHED!")
