@@ -52,15 +52,24 @@ def main():
     tempNodeList = [newNodeA, newNodeB, newNodeC, newNodeD, newNodeE]
     tempLinkList = [newLinkA, newLinkB, newLinkC, newLinkD]
 
+    for node in tempNodeList:
+        randoPosition = [random.randint(60, 740), random.randint(60, 940)]
+        node.nodePosition = randoPosition
+
     # The loop proper, things inside this loop will
     # be called over and over until you exit the window
+
+    nodesDrawn = True
+
     while True:
         checkEvents()
         _VARS['surf'].fill(GREY)
         #drawLine()
         #drawRect()
         drawGrid(1)
-        drawNodes(tempNodeList)
+        if nodesDrawn:
+            for nodes in tempNodeList:
+                drawNode(nodes)
 #        drawLinks(tempLinkList)
         pygame.display.update()
 
@@ -85,18 +94,17 @@ def main():
 
 
 
-def drawNodes(nodes): # Parameter will be nodeObj
-    for node in nodes:
+def drawNode(node): # Parameter will be nodeObj
         if node.status == "A":
             nodeColor = GREEN
         else:
             nodeColor = RED
 
         # position = node.nodePosition <-- default from the object
-        randoPosition = [random.randint(60, 740), random.randint(60, 940)]
-        position = randoPosition
+        # randoPosition = [random.randint(60, 740), random.randint(60, 940)]
+        # position = randoPosition
 
-        pygame.draw.circle(_VARS['surf'], nodeColor, position, 20)
+        pygame.draw.circle(_VARS['surf'], nodeColor, node.nodePosition, 20)
 
 
 

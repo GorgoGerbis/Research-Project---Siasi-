@@ -16,8 +16,8 @@ auto_requests_Opt = os.path.join(resourcesFolder, "auto_requests_Opt.txt")
 
 
 def processRequest(req):
-    string = "<----- Processing Request Number: {}\nSource: {}\nDestination: {}\n".format(req.requestID, req.source, req.destination)
-    return string
+    print("<----- Processing Request Number: {}\nSource: {}\nDestination: {}\n".format(req.requestID, req.source, req.destination))
+
 
 def createFunctions():
     functionOne = Function("f1", 10, 10, 10)
@@ -27,6 +27,7 @@ def createFunctions():
     functionFive = Function("f5", 1, 1, 1)
 
     print("Created functions: {}, {}, {}, {}, {}".format(functionOne.functionID, functionTwo.functionID, functionThree.functionID, functionFour.functionID, functionFive.functionID))
+
 
 def findNodeSiblings(nodeObj):
     for link in NodeObj.StaticLinkList:
@@ -148,7 +149,6 @@ if __name__ == '__main__':
         print("Node: {} Siblings: {}".format(node.nodeID, node.siblingNodes))
 
     for req in Request.StaticTotalRequestList:
-        string = processRequest(req)
-        print(string)
+        processRequest(req)
 
     print("FINISHED!")
