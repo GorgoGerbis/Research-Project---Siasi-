@@ -11,12 +11,16 @@ class NodeObj:
         self.processingDelay = processingDelay
         self.nodeCost = nodeCost
 
-        self.connectedLinks = []
+        self.connectedLinks = [] # List of all links that have this node as Source
         NodeObj.StaticNodeList.append(self)
         NodeObj.TotalNodeCount += 1  # Increases the total node count
 
         self.siblingLinks = []
         self.siblingNodes = []
+
+    def isIsolated(self):
+        if len(self.siblingLinks) == 0:
+            return True
 
     def findSiblings(self):
         for link in NodeObj.StaticLinkList:
@@ -41,6 +45,17 @@ class NodeObj:
         for obj in NodeObj.staticNodeList:
             if obj.nodeID == idNum:
                 return obj
+
+    def areSiblings(self, other):
+        looking = True
+        siblings = False
+
+        while looking:
+            for link in NodeObj.StaticLinkList:
+                if (link.linkSrc == self.nodeID) and (link.linkDest == other.nodeID):
+                    looking = False
+                    siblings = True
+        return siblings
 
     def __str__(self):
         # string = "Node ID: {} Node Position: {} Node Status: {} Node Resources: {} Processing Delay: {} Node cost: {}".format(self.nodeID, self.nodePosition, self.status, self.nodeResources, self.nodeCost)

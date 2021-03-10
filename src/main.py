@@ -13,6 +13,28 @@ LinkOpt = os.path.join(resourcesFolder, "LinkOpt.csv")
 NodeOpt = os.path.join(resourcesFolder, "NodeOpt.csv")
 auto_requests_Opt = os.path.join(resourcesFolder, "auto_requests_Opt.txt")
 
+TEMPNODE = []
+TEMPLINK = []
+
+# Should be able to generate a path between two nodes
+def pathFind(nodeA, nodeB, count):
+    for link in NodeObj.StaticLinkList:
+        # Check if either nodes are isloated
+        if nodeA.isIsolated or nodeB.isIsloated:
+            return []
+        else:
+            # Check if they are siblings
+            if nodeA.areSiblings(nodeB):
+                TEMPNODE.append(nodeA.nodeID)
+                TEMPNODE.append(nodeB.nodeID)
+                return TEMPNODE
+            else:
+                current_link = nodeA.connectedLinks[count]
+                for node in NodeObj.StaticNodeList:
+                    if node.nodeID == current_link.linkDest:
+                        count += 1
+                        pathFind(node, nodeB)
+    print(TEMPLINK)
 
 
 def processRequest(req):
@@ -150,5 +172,12 @@ if __name__ == '__main__':
 
     for req in Request.StaticTotalRequestList:
         processRequest(req)
+
+    nodeA = NodeObj.StaticNodeList[3]
+    nodeB = NodeObj.StaticNodeList[10]
+
+    current_path = []
+    current_path = pathFind(nodeA, nodeB, 0)
+    print(current_path)
 
     print("FINISHED!")

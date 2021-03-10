@@ -162,38 +162,6 @@ def drawGrid(divisions):
           (WIDTH - PADLEFTRIGHT, 0 + PADTOPBOTTOM + (vertical_cellsize*x)), 2)
 
 
-# def drawRect():
-#     # There's a native way to draw a rectangle in pygame,
-#     # this is just to explain how lines can be drawn.
-#     # TOP lEFT TO RIGHT
-#     pygame.draw.line(
-#       _VARS['surf'], BLACK,
-#       (0 + PADLEFTRIGHT, 0 + PADTOPBOTTOM),
-#       (WIDTH - PADLEFTRIGHT, 0 + PADTOPBOTTOM), 2)
-#     # BOTTOM lEFT TO RIGHT
-#     pygame.draw.line(
-#       _VARS['surf'], BLACK,
-#       (0 + PADLEFTRIGHT, HEIGHT - PADTOPBOTTOM),
-#       (WIDTH - PADLEFTRIGHT, HEIGHT - PADTOPBOTTOM), 2)
-#     # LEFT TOP TO BOTTOM
-#     pygame.draw.line(
-#       _VARS['surf'], BLACK,
-#       (0 + PADLEFTRIGHT, 0 + PADTOPBOTTOM),
-#       (0 + PADLEFTRIGHT, HEIGHT - PADTOPBOTTOM), 2)
-#     # RIGHT TOP TO BOTTOM
-#     pygame.draw.line(
-#       _VARS['surf'], BLACK,
-#       (WIDTH - PADLEFTRIGHT, 0 + PADTOPBOTTOM),
-#       (WIDTH - PADLEFTRIGHT, HEIGHT - PADTOPBOTTOM), 2)
-
-
-
-# def drawLine():
-#     # draw a diagonal line from top left coordinates 0,0
-#     # to bottom right with coordinates 600 (Width), 400 (Height)
-#     pygame.draw.line(_VARS['surf'], BLACK, (0, 0), (WIDTH, HEIGHT), 2)
-
-
 def checkEvents():
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
