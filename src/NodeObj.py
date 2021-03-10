@@ -15,6 +15,21 @@ class NodeObj:
         NodeObj.StaticNodeList.append(self)
         NodeObj.TotalNodeCount += 1  # Increases the total node count
 
+        self.siblingLinks = []
+        self.siblingNodes = []
+
+    def findSiblings(self):
+        for link in NodeObj.StaticLinkList:
+            if link.linkDest == self.nodeID:
+                self.siblingLinks.append(link)
+
+        for link in self.siblingLinks:
+            current_link = link.linkSrc
+            for node in NodeObj.StaticNodeList:
+                if node.ID == current_link:
+                    self.siblingNodes.append(node.ID)
+
+
     def addLinksToNetwork(self, linkObj):
         self.connectedLinks.append(linkObj)
 

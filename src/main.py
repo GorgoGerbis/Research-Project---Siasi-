@@ -23,6 +23,16 @@ def createFunctions():
 
     print("Created functions: {}, {}, {}, {}, {}".format(functionOne.functionID, functionTwo.functionID, functionThree.functionID, functionFour.functionID, functionFive.functionID))
 
+def findNodeSiblings(nodeObj):
+    for link in NodeObj.StaticLinkList:
+        if link.linkDest == nodeObj.nodeID:
+            nodeObj.siblingLinks.append(link)
+
+    for link in nodeObj.siblingLinks:
+        current_link = link.linkSrc
+        for node in NodeObj.StaticNodeList:
+            if node.nodeID == current_link:
+                nodeObj.siblingNodes.append(node.nodeID)
 
 def processInputDataRequests(filePath):
     with open(filePath) as fp:
@@ -105,6 +115,9 @@ if __name__ == '__main__':
     processInputDataRequests(auto_requests_Opt)
     createFunctions()   # <---- Creates all functions
 
+
+
+
     if os.path.isfile(NodeOpt):
         print("NODE FILE PATH WORKS!")
         processInputDataNode(NodeOpt)
@@ -120,6 +133,11 @@ if __name__ == '__main__':
             print("-----------")
 
         fillConnectedLinks()
+
+        for node in NodeObj.StaticNodeList:
+            findNodeSiblings(node)
+            print("Node: {} Siblings: {}".format(node.nodeID, node.siblingNodes))
+
         print("FINISHED!")
 
     else:

@@ -100,6 +100,7 @@ def drawNodes(nodes): # Parameter will be nodeObj
 
 
 
+
 def drawGrid(divisions):
     # DRAW Rectangle
     # TOP lEFT TO RIGHT
