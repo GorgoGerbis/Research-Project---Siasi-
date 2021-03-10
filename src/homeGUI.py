@@ -1,6 +1,7 @@
 import tkinter
 import sys
 import pygame
+import random
 from pygame.locals import KEYDOWN, K_q      # <--- was on the tutorial
 
 #MY OWN CLASSES
@@ -10,7 +11,13 @@ from src.LinkObj import LinkObj
 # CONSTANTS:
 WIDTH = 1000
 HEIGHT = 800
+
+WORKING_WIDTH = 940
+WORKING_HEIGHT = 740
+
 SCREENSIZE = (WIDTH, HEIGHT)
+WORKING_SCREENSIZE = (WORKING_WIDTH, WORKING_HEIGHT)
+
 PADTOPBOTTOM = 60
 PADLEFTRIGHT = 60
 PADDING = (PADTOPBOTTOM, PADLEFTRIGHT)
@@ -85,7 +92,10 @@ def drawNodes(nodes): # Parameter will be nodeObj
         else:
             nodeColor = RED
 
-        position = node.nodePosition
+        # position = node.nodePosition <-- default from the object
+        randoPosition = [random.randint(60, 740), random.randint(60, 940)]
+        position = randoPosition
+
         pygame.draw.circle(_VARS['surf'], nodeColor, position, 20)
 
 

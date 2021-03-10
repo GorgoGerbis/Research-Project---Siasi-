@@ -7,7 +7,7 @@ from src.Function import Function
 from src.Pathfinder import Pathfinder
 
 # Resources
-baseFolder = r"C:\Users\jacks\Desktop\Research Project"
+baseFolder = r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-"
 resourcesFolder = os.path.join(baseFolder, "resources")
 LinkOpt = os.path.join(resourcesFolder, "LinkOpt.csv")
 NodeOpt = os.path.join(resourcesFolder, "NodeOpt.csv")
