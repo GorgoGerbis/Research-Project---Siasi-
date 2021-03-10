@@ -22,16 +22,25 @@ PADTOPBOTTOM = 60
 PADLEFTRIGHT = 60
 PADDING = (PADTOPBOTTOM, PADLEFTRIGHT)
 
+
 #COLORS
 BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
 GREY = (160, 160, 160)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
+
+StaticCurrentDisplayedNodes = []
 
 #--------------------------------
 # GLOBAL VARS, Using a Dictionary. # No idea why I need this tbh
 _VARS = {'surf': False}
 #-------------------------------
+
+
+
+# RECT = pygame.rect()
+
 
 def main():
     pygame.init()  # Initial Setup
@@ -53,7 +62,7 @@ def main():
     tempLinkList = [newLinkA, newLinkB, newLinkC, newLinkD]
 
     for node in tempNodeList:
-        randoPosition = [random.randint(60, 740), random.randint(60, 940)]
+        randoPosition = [random.randint(60, 940), random.randint(60, 740)]
         node.nodePosition = randoPosition
 
     # The loop proper, things inside this loop will
@@ -100,11 +109,16 @@ def drawNode(node): # Parameter will be nodeObj
         else:
             nodeColor = RED
 
-        # position = node.nodePosition <-- default from the object
-        # randoPosition = [random.randint(60, 740), random.randint(60, 940)]
-        # position = randoPosition
-
         pygame.draw.circle(_VARS['surf'], nodeColor, node.nodePosition, 20)
+        # pygame.draw.rect(_VARS['surf'], WHITE, (node.nodePosition[0], node.nodePosition[1], 60, 10)) # <---WORKING
+
+        font = pygame.font.SysFont('Arial', 24)
+        txt_surface = font.render("Node: {}".format(node.nodeID), False, BLACK)
+        rect = pygame.draw.rect(_VARS['surf'], WHITE, (node.nodePosition[0], node.nodePosition[1], 60, 20))
+        _VARS['surf'].blit(txt_surface, (rect.x, rect.y))
+
+
+        StaticCurrentDisplayedNodes.append(node)
 
 
 
