@@ -29,6 +29,8 @@ WHITE = (255, 255, 255)
 GREY = (160, 160, 160)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
+BLUE = (0, 0, 255)
+YELLOW = (255, 255, 0)
 
 StaticCurrentDisplayedNodes = []
 
@@ -52,8 +54,6 @@ def startGUI():
     while True:
         checkEvents()
         _VARS['surf'].fill(GREY)
-        # drawLine()
-        # drawRect()
         drawGrid(1)
 
         if nodesDrawn:
@@ -84,13 +84,20 @@ def drawLink(link, tempNodeList):
 
 
 def drawNode(node):  # Parameter will be nodeObj
-    if node.status == "A":
-        nodeColor = GREEN
-    else:
+
+    if node.status == "I":
+        nodeColor = YELLOW
+
+    elif node.status == "R":
+        nodeColor = BLUE
+
+    elif node.status == "O":
         nodeColor = RED
 
+    elif node.status == "A":
+        nodeColor = GREEN
+
     pygame.draw.circle(_VARS['surf'], nodeColor, (int(node.nodePosition[0]), int(node.nodePosition[1])), 20)
-    # pygame.draw.rect(_VARS['surf'], WHITE, (node.nodePosition[0], node.nodePosition[1], 60, 10)) # <---WORKING
 
     font = pygame.font.SysFont('Arial', 24)
     txt_surface = font.render("Node: {}".format(node.nodeID), False, BLACK)
