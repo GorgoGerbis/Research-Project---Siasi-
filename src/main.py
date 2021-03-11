@@ -5,7 +5,6 @@ from src.LinkObj import LinkObj
 from src.Request import Request
 from src.Function import Function
 
-
 # Resources
 baseFolder = r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-"
 resourcesFolder = os.path.join(baseFolder, "resources")
@@ -13,8 +12,12 @@ LinkOpt = os.path.join(resourcesFolder, "LinkOpt.csv")
 NodeOpt = os.path.join(resourcesFolder, "NodeOpt.csv")
 auto_requests_Opt = os.path.join(resourcesFolder, "auto_requests_Opt.txt")
 
+# My new data I created
+NodeInputData = os.path.join(resourcesFolder, "NodeInputData.csv")
+
 TEMPNODE = []
 TEMPLINK = []
+
 
 # Should be able to generate a path between two nodes
 def pathFind(nodeA, nodeB, count):
@@ -38,7 +41,8 @@ def pathFind(nodeA, nodeB, count):
 
 
 def processRequest(req):
-    print("<----- Processing Request Number: {}\nSource: {}\nDestination: {}\n".format(req.requestID, req.source, req.destination))
+    print("<----- Processing Request Number: {}\nSource: {}\nDestination: {}\n".format(req.requestID, req.source,
+                                                                                       req.destination))
 
 
 def createFunctions():
@@ -48,7 +52,9 @@ def createFunctions():
     functionFour = Function("f4", 35, 35, 35)
     functionFive = Function("f5", 1, 1, 1)
 
-    print("Created functions: {}, {}, {}, {}, {}".format(functionOne.functionID, functionTwo.functionID, functionThree.functionID, functionFour.functionID, functionFive.functionID))
+    print("Created functions: {}, {}, {}, {}, {}".format(functionOne.functionID, functionTwo.functionID,
+                                                         functionThree.functionID, functionFour.functionID,
+                                                         functionFive.functionID))
 
 
 def findNodeSiblings(nodeObj):
@@ -65,7 +71,7 @@ def findNodeSiblings(nodeObj):
 
 def processInputDataRequests(filePath):
     with open(filePath) as fp:
-        fp.readline()   # <-- This is so that it skips the first line
+        fp.readline()  # <-- This is so that it skips the first line
         for cnt, line in enumerate(fp):
             if (line == "\n") or (line == ""):
                 continue
@@ -139,15 +145,55 @@ def processInputDataLink(filePath):
 
             LinkObj(source, destination, bandwidth, edgeDelay, edgeCost.strip('\n'))
 
+def processData():
+    processInputDataRequests(auto_requests_Opt)
+    createFunctions()  # <---- Creates all functions
+
+    if os.path.isfile(NodeInputData):
+        print("NODE FILE PATH WORKS!")
+        processInputDataNode(NodeInputData)
+        print("NODE DATA FILE PROCESSED NODES CREATED!")
+
+    if os.path.isfile(LinkOpt):
+        print("LINK FILE PATH WORKS!")
+        processInputDataLink(LinkOpt)
+        print("LINK DATA FILE PROCESSED LINKS CREATED!")
+
+    if os.path.isfile(auto_requests_Opt):
+        print("PROCESSING INPUT DATA REQUESTS!")
+        processInputDataRequests(auto_requests_Opt)
+        print("FINISHED PROCESSING ALL DATA REQUESTS!")
+
+    for obj in NodeObj.StaticLinkList:
+        print(obj)
+        print("-----------")
+
+    fillConnectedLinks()
+
+    for node in NodeObj.StaticNodeList:
+        findNodeSiblings(node)
+        print("Node: {} Siblings: {}".format(node.nodeID, node.siblingNodes))
+
+    for req in Request.StaticTotalRequestList:
+        processRequest(req)
+
+    nodeA = NodeObj.StaticNodeList[3]
+    nodeB = NodeObj.StaticNodeList[10]
+
+    current_path = []
+    current_path = pathFind(nodeA, nodeB, 0)
+    print(current_path)
+
+    print("FINISHED!")
 
 if __name__ == '__main__':
 
     processInputDataRequests(auto_requests_Opt)
-    createFunctions()   # <---- Creates all functions
+    createFunctions()  # <---- Creates all functions
 
-    if os.path.isfile(NodeOpt):
+    if os.path.isfile(NodeInputData):
         print("NODE FILE PATH WORKS!")
-        processInputDataNode(NodeOpt)
+        processInputDataNode(NodeInputData)
         print("NODE DATA FILE PROCESSED NODES CREATED!")
 
     if os.path.isfile(LinkOpt):
