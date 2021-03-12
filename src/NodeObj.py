@@ -1,7 +1,7 @@
 class NodeObj:
     StaticLinkList = []  # Static List of all links
     StaticNodeList = []  # Static List of all nodes
-    TotalNodeCount = 0   # Static variable keeping track of amount of nodes
+    TotalNodeCount = 0  # Static variable keeping track of amount of nodes
 
     def __init__(self, nodeID, nodePosition, status, nodeResources, processingDelay, nodeCost):
         self.nodeID = nodeID
@@ -11,40 +11,30 @@ class NodeObj:
         self.processingDelay = processingDelay
         self.nodeCost = nodeCost
 
-        self.connectedLinks = [] # List of all links that have this node as Source
-        NodeObj.StaticNodeList.append(self)
-        NodeObj.TotalNodeCount += 1  # Increases the total node count
+        NodeObj.StaticNodeList.append(self)  # <-- APPENDS CURRENT NODE TO STATIC LIST OF ALL NODES
 
-        self.siblingLinks = []
-        self.siblingNodes = []
+    # Should compile and return a list of all sibling node ids and node objects
+    def returnSiblingNodes(self):
+        directLinks = []
+        output = []
 
-    def isIsolated(self):
-        if len(self.siblingLinks) == 0:
-            return True
-
-    def findSiblings(self):
         for link in NodeObj.StaticLinkList:
-            if link.linkDest == self.nodeID:
-                self.siblingLinks.append(link)
+            linkSrc = link.linkSrc
+            linkDest = link.linkDest
+            if linkSrc == self.nodeID:
+                directLinks.append(link.linkDest)
+            elif linkDest == self.nodeID:
+                directLinks.append(link.linkSrc)
 
-        for link in self.siblingLinks:
-            current_link = link.linkSrc
-            for node in NodeObj.StaticNodeList:
-                if node.ID == current_link:
-                    self.siblingNodes.append(node.ID)
+        print("Added all direct sibling links to local list")
 
+        for node in NodeObj.StaticNodeList:
+            for id in directLinks:
+                if node.nodeID == id:
+                    output.append(node)
 
-    def addLinksToNetwork(self, linkObj):
-        self.connectedLinks.append(linkObj)
-
-    def printConnectedLinks(self):
-        for obj in self.connectedLinks:
-            print("Link: " + str(obj))
-
-    def giveRequestedNode(idNum):
-        for obj in NodeObj.staticNodeList:
-            if obj.nodeID == idNum:
-                return obj
+        print("Added all direct sibling node objects")
+        return output
 
     def areSiblings(self, other):
         looking = True
@@ -58,6 +48,5 @@ class NodeObj:
         return siblings
 
     def __str__(self):
-        # string = "Node ID: {} Node Position: {} Node Status: {} Node Resources: {} Processing Delay: {} Node cost: {}".format(self.nodeID, self.nodePosition, self.status, self.nodeResources, self.nodeCost)
-        string = "NODE ID: " + self.nodeID
+        string = "Node ID: {} Node Position: {} Node Status: {} Node Resources: {} Processing Delay: {} Node cost: {}".format(self.nodeID, (self.nodePosition[0], self.nodePosition[1]), self.status, self.nodeResources, self.processingDelay, self.nodeCost)
         return string

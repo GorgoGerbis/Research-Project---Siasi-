@@ -10,11 +10,11 @@ from src.NodeObj import NodeObj
 from src.LinkObj import LinkObj
 
 # CONSTANTS:
-WIDTH = 1000
-HEIGHT = 800
+WIDTH = 1200
+HEIGHT = 850
 
-WORKING_WIDTH = 940
-WORKING_HEIGHT = 740
+WORKING_WIDTH = 1000
+WORKING_HEIGHT = 800
 
 SCREENSIZE = (WIDTH, HEIGHT)
 WORKING_SCREENSIZE = (WORKING_WIDTH, WORKING_HEIGHT)
@@ -57,11 +57,11 @@ def startGUI():
         drawGrid(1)
 
         if nodesDrawn:
-            for nodes in NodeObj.StaticNodeList:
+            for nodes in NodeObj.StaticNodeList:    # Currently draws all available nodes
                 drawNode(nodes)
 
         if linksDrawn:
-            for link in NodeObj.StaticLinkList:
+            for link in NodeObj.StaticLinkList:     # Currently draws all available links
                 drawLink(link, NodeObj.StaticNodeList)
 
         pygame.display.update()

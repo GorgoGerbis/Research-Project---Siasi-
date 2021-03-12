@@ -17,8 +17,8 @@ def createNodeInputData(number_of_nodes):
 
         for cnt in range(number_of_nodes):
             nodeID = cnt + 1  # Ensures we have the correct number for the node
-            lat = random.randint(0, 1000)
-            long = random.randint(0, 800)
+            lat = random.randint(60, 940)
+            long = random.randint(60, 740)
             stat = status[random.randint(0, 3)]
 
             cpu = random.randint(0, 100)

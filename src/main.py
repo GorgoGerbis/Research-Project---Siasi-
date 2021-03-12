@@ -18,28 +18,6 @@ NodeInputData = os.path.join(resourcesFolder, "NodeInputData.csv")
 TEMPNODE = []
 TEMPLINK = []
 
-
-# Should be able to generate a path between two nodes
-def pathFind(nodeA, nodeB, count):
-    for link in NodeObj.StaticLinkList:
-        # Check if either nodes are isloated
-        if nodeA.isIsolated or nodeB.isIsloated:
-            return []
-        else:
-            # Check if they are siblings
-            if nodeA.areSiblings(nodeB):
-                TEMPNODE.append(nodeA.nodeID)
-                TEMPNODE.append(nodeB.nodeID)
-                return TEMPNODE
-            else:
-                current_link = nodeA.connectedLinks[count]
-                for node in NodeObj.StaticNodeList:
-                    if node.nodeID == current_link.linkDest:
-                        count += 1
-                        pathFind(node, nodeB)
-    print(TEMPLINK)
-
-
 def processRequest(req):
     print("<----- Processing Request Number: {}\nSource: {}\nDestination: {}\n".format(req.requestID, req.source,
                                                                                        req.destination))
@@ -55,18 +33,6 @@ def createFunctions():
     print("Created functions: {}, {}, {}, {}, {}".format(functionOne.functionID, functionTwo.functionID,
                                                          functionThree.functionID, functionFour.functionID,
                                                          functionFive.functionID))
-
-
-def findNodeSiblings(nodeObj):
-    for link in NodeObj.StaticLinkList:
-        if link.linkDest == nodeObj.nodeID:
-            nodeObj.siblingLinks.append(link)
-
-    for link in nodeObj.siblingLinks:
-        current_link = link.linkSrc
-        for node in NodeObj.StaticNodeList:
-            if node.nodeID == current_link:
-                nodeObj.siblingNodes.append(node.nodeID)
 
 
 def processInputDataRequests(filePath):
@@ -168,62 +134,46 @@ def processData():
         print(obj)
         print("-----------")
 
-    fillConnectedLinks()
-
-    for node in NodeObj.StaticNodeList:
-        findNodeSiblings(node)
-        print("Node: {} Siblings: {}".format(node.nodeID, node.siblingNodes))
 
     for req in Request.StaticTotalRequestList:
         processRequest(req)
 
-    nodeA = NodeObj.StaticNodeList[3]
-    nodeB = NodeObj.StaticNodeList[10]
-
-    current_path = []
-    current_path = pathFind(nodeA, nodeB, 0)
-    print(current_path)
-
-    print("FINISHED!")
-
-if __name__ == '__main__':
-
-    processInputDataRequests(auto_requests_Opt)
-    createFunctions()  # <---- Creates all functions
-
-    if os.path.isfile(NodeInputData):
-        print("NODE FILE PATH WORKS!")
-        processInputDataNode(NodeInputData)
-        print("NODE DATA FILE PROCESSED NODES CREATED!")
-
-    if os.path.isfile(LinkOpt):
-        print("LINK FILE PATH WORKS!")
-        processInputDataLink(LinkOpt)
-        print("LINK DATA FILE PROCESSED LINKS CREATED!")
-
-    if os.path.isfile(auto_requests_Opt):
-        print("PROCESSING INPUT DATA REQUESTS!")
-        processInputDataRequests(auto_requests_Opt)
-        print("FINISHED PROCESSING ALL DATA REQUESTS!")
-
-    for obj in NodeObj.StaticLinkList:
-        print(obj)
-        print("-----------")
-
-    fillConnectedLinks()
-
     for node in NodeObj.StaticNodeList:
-        findNodeSiblings(node)
-        print("Node: {} Siblings: {}".format(node.nodeID, node.siblingNodes))
-
-    for req in Request.StaticTotalRequestList:
-        processRequest(req)
-
-    nodeA = NodeObj.StaticNodeList[3]
-    nodeB = NodeObj.StaticNodeList[10]
-
-    current_path = []
-    current_path = pathFind(nodeA, nodeB, 0)
-    print(current_path)
+        out = node.returnSiblingNodes()
+        print("NODE ID: {}, {}".format(node.nodeID, out))
 
     print("FINISHED!")
+
+#
+# if __name__ == '__main__':
+#
+#     processInputDataRequests(auto_requests_Opt)
+#     createFunctions()  # <---- Creates all functions
+#
+#     if os.path.isfile(NodeInputData):
+#         print("NODE FILE PATH WORKS!")
+#         processInputDataNode(NodeInputData)
+#         print("NODE DATA FILE PROCESSED NODES CREATED!")
+#
+#     if os.path.isfile(LinkOpt):
+#         print("LINK FILE PATH WORKS!")
+#         processInputDataLink(LinkOpt)
+#         print("LINK DATA FILE PROCESSED LINKS CREATED!")
+#
+#     if os.path.isfile(auto_requests_Opt):
+#         print("PROCESSING INPUT DATA REQUESTS!")
+#         processInputDataRequests(auto_requests_Opt)
+#         print("FINISHED PROCESSING ALL DATA REQUESTS!")
+#
+#     for obj in NodeObj.StaticLinkList:
+#         print(obj)
+#         print("-----------")
+#
+#     for node in NodeObj.StaticNodeList:
+#         findNodeSiblings(node)
+#         print("Node: {} Siblings: {}".format(node.nodeID, node.siblingNodes))
+#
+#     for req in Request.StaticTotalRequestList:
+#         processRequest(req)
+#
+#     print("FINISHED!")
