@@ -1,4 +1,5 @@
 class NodeObj:
+    # BE CAREFUL WHEN CHANGING THINGS IN THIS CLASS ITS USED EVERYWHERE
     StaticLinkList = []  # Static List of all links
     StaticNodeList = []  # Static List of all nodes
     TotalNodeCount = 0  # Static variable keeping track of amount of nodes
@@ -37,6 +38,7 @@ class NodeObj:
         return output
 
     def areSiblings(self, other):
+    # Should probably rewrite this function
         looking = True
         siblings = False
 

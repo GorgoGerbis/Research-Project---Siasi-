@@ -4,6 +4,8 @@ import pygame
 import random
 from pygame.locals import KEYDOWN, K_q  # <--- was on the tutorial
 
+# ToDo need to fix the overall layout and cleanliness of this script bc its a mess...
+
 # MY OWN CLASSES
 import main as m
 from src.NodeObj import NodeObj
@@ -37,8 +39,6 @@ StaticCurrentDisplayedNodes = []
 # --------------------------------
 # GLOBAL VARS, Using a Dictionary. # No idea why I need this tbh
 _VARS = {'surf': False}
-
-
 # -------------------------------
 
 def startGUI():

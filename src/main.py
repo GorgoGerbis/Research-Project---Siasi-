@@ -144,36 +144,3 @@ def processData():
 
     print("FINISHED!")
 
-#
-# if __name__ == '__main__':
-#
-#     processInputDataRequests(auto_requests_Opt)
-#     createFunctions()  # <---- Creates all functions
-#
-#     if os.path.isfile(NodeInputData):
-#         print("NODE FILE PATH WORKS!")
-#         processInputDataNode(NodeInputData)
-#         print("NODE DATA FILE PROCESSED NODES CREATED!")
-#
-#     if os.path.isfile(LinkOpt):
-#         print("LINK FILE PATH WORKS!")
-#         processInputDataLink(LinkOpt)
-#         print("LINK DATA FILE PROCESSED LINKS CREATED!")
-#
-#     if os.path.isfile(auto_requests_Opt):
-#         print("PROCESSING INPUT DATA REQUESTS!")
-#         processInputDataRequests(auto_requests_Opt)
-#         print("FINISHED PROCESSING ALL DATA REQUESTS!")
-#
-#     for obj in NodeObj.StaticLinkList:
-#         print(obj)
-#         print("-----------")
-#
-#     for node in NodeObj.StaticNodeList:
-#         findNodeSiblings(node)
-#         print("Node: {} Siblings: {}".format(node.nodeID, node.siblingNodes))
-#
-#     for req in Request.StaticTotalRequestList:
-#         processRequest(req)
-#
-#     print("FINISHED!")

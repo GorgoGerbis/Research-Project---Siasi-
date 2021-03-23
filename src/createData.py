@@ -1,6 +1,8 @@
 import os
 import random
 
+#This script just makes data for me to play with
+
 baseFolder = r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-"
 resourcesFolder = os.path.join(baseFolder, "resources")
 NodeInputData = os.path.join(resourcesFolder, "NodeInputData.csv")
