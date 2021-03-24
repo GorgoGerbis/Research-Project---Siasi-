@@ -38,7 +38,7 @@ class NodeObj:
         return output
 
     def areSiblings(self, other):
-    # Should probably rewrite this function
+        # Should probably rewrite this function
         looking = True
         siblings = False
 

@@ -66,8 +66,14 @@ def startGUI():
 
         pygame.display.update()
 
+# def drawRequestBox():
+#     for request in StaticRequestList:
+#           requestBox.display(request)
+#   # Needs to then get retrieve the node object from the StaticNodes List.
+#      request.findPath()
+#
 
-# Draws a link between nodes
+#   Draws a link between nodes
 def drawLink(link, tempNodeList):
     for node in tempNodeList:
         if node.nodeID == link.linkSrc:
