@@ -13,12 +13,12 @@ from src.LinkObj import LinkObj
 
 # CONSTANTS:
 WIDTH = 1200
-HEIGHT = 800
+HEIGHT = 850
 
 WORKING_WIDTH = 1200
 WORKING_HEIGHT = 850
 
-SCREENSIZE = (WIDTH, HEIGHT)
+SCREEN = pygame.display.set_mode([1200, 850])
 WORKING_SCREENSIZE = (WORKING_WIDTH, WORKING_HEIGHT)
 
 PADTOPBOTTOM = 60
@@ -43,7 +43,6 @@ _VARS = {'surf': False}
 
 def startGUI():
     pygame.init()  # Initial Setup
-    _VARS['surf'] = pygame.display.set_mode(SCREENSIZE)
 
     # The loop proper, things inside this loop will
     # be called over and over until you exit the window
@@ -53,7 +52,7 @@ def startGUI():
 
     while True:
         checkEvents()
-        _VARS['surf'].fill(GREY)
+        SCREEN.fill(GREY)
         drawGrid(1)
 
         if nodesDrawn:
@@ -64,8 +63,8 @@ def startGUI():
             for link in NodeObj.StaticLinkList:     # Currently draws all available links
                 drawLink(link, NodeObj.StaticNodeList)
 
-        # pygame.draw.rect(_VARS, (15, 70), width=100)# < -- For some reason not working
-        # pygame.draw.rect(WHITE, (15, 70), width=100)
+        inputRect = pygame.Rect(15, 70, 200, 100)
+        pygame.draw.rect(SCREEN, WHITE, inputRect, width=2)     # < -- For some reason not working
 
         pygame.display.update()
 
@@ -89,7 +88,7 @@ def drawLink(link, tempNodeList):
     startingNodePosition = (int(startingNode.nodePosition[0]), int(startingNode.nodePosition[1]))
     endingNodePosition = (int(endingNode.nodePosition[0]), int(endingNode.nodePosition[1]))
 
-    pygame.draw.line(_VARS['surf'], BLACK, startingNodePosition, endingNodePosition)
+    pygame.draw.line(SCREEN, BLACK, startingNodePosition, endingNodePosition)
     # pygame.draw.line(screen, Color_line, (60, 80), (130, 100))
     # pygame.display.flip()
 
@@ -108,12 +107,12 @@ def drawNode(node):  # Parameter will be nodeObj
     elif node.status == "A":
         nodeColor = GREEN
 
-    pygame.draw.circle(_VARS['surf'], nodeColor, (int(node.nodePosition[0]), int(node.nodePosition[1])), 20)
+    pygame.draw.circle(SCREEN, nodeColor, (int(node.nodePosition[0]), int(node.nodePosition[1])), 20)
 
     font = pygame.font.SysFont('Arial', 24)
     txt_surface = font.render("Node: {}".format(node.nodeID), False, BLACK)
-    rect = pygame.draw.rect(_VARS['surf'], WHITE, (int(node.nodePosition[0]), int(node.nodePosition[1]), 80, 20))
-    _VARS['surf'].blit(txt_surface, (rect.x, rect.y))
+    rect = pygame.draw.rect(SCREEN, WHITE, (int(node.nodePosition[0]), int(node.nodePosition[1]), 80, 20))
+    SCREEN.blit(txt_surface, (rect.x, rect.y))
 
     StaticCurrentDisplayedNodes.append(node)
 
@@ -122,22 +121,22 @@ def drawGrid(divisions):
     # DRAW Rectangle
     # TOP lEFT TO RIGHT
     pygame.draw.line(
-        _VARS['surf'], BLACK,
+        SCREEN, BLACK,
         (0 + PADLEFTRIGHT, 0 + PADTOPBOTTOM),
         (WIDTH - PADLEFTRIGHT, 0 + PADTOPBOTTOM), 2)
     # BOTTOM lEFT TO RIGHT
     pygame.draw.line(
-        _VARS['surf'], BLACK,
+        SCREEN, BLACK,
         (0 + PADLEFTRIGHT, HEIGHT - PADTOPBOTTOM),
         (WIDTH - PADLEFTRIGHT, HEIGHT - PADTOPBOTTOM), 2)
     # LEFT TOP TO BOTTOM
     pygame.draw.line(
-        _VARS['surf'], BLACK,
+        SCREEN, BLACK,
         (0 + PADLEFTRIGHT, 0 + PADTOPBOTTOM),
         (0 + PADLEFTRIGHT, HEIGHT - PADTOPBOTTOM), 2)
     # RIGHT TOP TO BOTTOM
     pygame.draw.line(
-        _VARS['surf'], BLACK,
+        SCREEN, BLACK,
         (WIDTH - PADLEFTRIGHT, 0 + PADTOPBOTTOM),
         (WIDTH - PADLEFTRIGHT, HEIGHT - PADTOPBOTTOM), 2)
 
@@ -148,12 +147,12 @@ def drawGrid(divisions):
     # VERTICAL DIVISIONS: (0,1,2) for grid(3) for example
     for x in range(divisions):
         pygame.draw.line(
-            _VARS['surf'], BLACK,
+            SCREEN, BLACK,
             (0 + PADLEFTRIGHT + (horizontal_cellsize * x), 0 + PADTOPBOTTOM),
             (0 + PADLEFTRIGHT + horizontal_cellsize * x, HEIGHT - PADTOPBOTTOM), 2)
         # HORITZONTAL DIVISION
         pygame.draw.line(
-            _VARS['surf'], BLACK,
+            SCREEN, BLACK,
             (0 + PADLEFTRIGHT, 0 + PADTOPBOTTOM + (vertical_cellsize * x)),
             (WIDTH - PADLEFTRIGHT, 0 + PADTOPBOTTOM + (vertical_cellsize * x)), 2)
 
