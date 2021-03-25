@@ -13,10 +13,10 @@ from src.LinkObj import LinkObj
 
 # CONSTANTS:
 WIDTH = 1200
-HEIGHT = 850
+HEIGHT = 800
 
-WORKING_WIDTH = 1000
-WORKING_HEIGHT = 800
+WORKING_WIDTH = 1200
+WORKING_HEIGHT = 850
 
 SCREENSIZE = (WIDTH, HEIGHT)
 WORKING_SCREENSIZE = (WORKING_WIDTH, WORKING_HEIGHT)
@@ -64,14 +64,19 @@ def startGUI():
             for link in NodeObj.StaticLinkList:     # Currently draws all available links
                 drawLink(link, NodeObj.StaticNodeList)
 
+        # pygame.draw.rect(_VARS, (15, 70), width=100)# < -- For some reason not working
+        # pygame.draw.rect(WHITE, (15, 70), width=100)
+
         pygame.display.update()
 
-# def drawRequestBox():
-#     for request in StaticRequestList:
-#           requestBox.display(request)
-#   # Needs to then get retrieve the node object from the StaticNodes List.
-#      request.findPath()
-#
+#def drawRequestBox():
+    #for request in StaticRequestList:
+          #requestBox.display(request)
+  # Needs to then get retrieve the node object from the StaticNodes List.
+     #request.findPath()
+
+    #pygame.draw.rect(_VARS('surf'), WHITE, 15, 70, width=100)
+
 
 #   Draws a link between nodes
 def drawLink(link, tempNodeList):
@@ -107,7 +112,7 @@ def drawNode(node):  # Parameter will be nodeObj
 
     font = pygame.font.SysFont('Arial', 24)
     txt_surface = font.render("Node: {}".format(node.nodeID), False, BLACK)
-    rect = pygame.draw.rect(_VARS['surf'], WHITE, (int(node.nodePosition[0]), int(node.nodePosition[1]), 60, 20))
+    rect = pygame.draw.rect(_VARS['surf'], WHITE, (int(node.nodePosition[0]), int(node.nodePosition[1]), 80, 20))
     _VARS['surf'].blit(txt_surface, (rect.x, rect.y))
 
     StaticCurrentDisplayedNodes.append(node)
