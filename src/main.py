@@ -160,6 +160,8 @@ def processData():
 
     heyMan = processGraphData()
     print(heyMan)
+    cool = createAdjacencyMatrix(heyMan)
+    print(cool)
 
     print("FINISHED!")
 
@@ -187,3 +189,15 @@ def processGraphData():
         node_dict.setdefault(currentID, node_links)
 
     return node_dict
+
+#Snagged from Stack overflow: https://stackoverflow.com/questions/37353759/how-do-i-generate-an-adjacency-matrix-of-a-graph-from-a-dictionary-in-python
+def createAdjacencyMatrix(inputDict):
+    keys = sorted(inputDict.keys())
+    size = len(keys)
+
+    M = [[0] * size for i in range(size)]
+
+    for a, b in [(keys.index(a), keys.index(b)) for a, row in inputDict.items() for b in row]:
+        M[a][b] = 2 if (a == b) else 1
+
+    return M
