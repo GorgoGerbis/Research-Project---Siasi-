@@ -41,6 +41,7 @@ StaticCurrentDisplayedNodes = []
 _VARS = {'surf': False}
 # -------------------------------
 
+
 def startGUI():
     pygame.init()  # Initial Setup
 
@@ -63,21 +64,19 @@ def startGUI():
             for link in NodeObj.StaticLinkList:     # Currently draws all available links
                 drawLink(link, NodeObj.StaticNodeList)
 
-        inputRect = pygame.Rect(15, 70, 200, 100)
+        inputRect = pygame.Rect(15, 400, 200, 100)
         pygame.draw.rect(SCREEN, WHITE, inputRect, width=2)     # < -- For some reason not working
 
         pygame.display.update()
 
-#def drawRequestBox():
-    #for request in StaticRequestList:
-          #requestBox.display(request)
-  # Needs to then get retrieve the node object from the StaticNodes List.
-     #request.findPath()
+# def drawRequestBox():
+#     for request in StaticRequestList:
+#           requestBox.display(request)
+#   Needs to then get retrieve the node object from the StaticNodes List.
+#      request.findPath()
+#
+#     pygame.draw.rect(_VARS('surf'), WHITE, 15, 70, width=100)
 
-    #pygame.draw.rect(_VARS('surf'), WHITE, 15, 70, width=100)
-
-
-#   Draws a link between nodes
 def drawLink(link, tempNodeList):
     for node in tempNodeList:
         if node.nodeID == link.linkSrc:

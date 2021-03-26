@@ -5,6 +5,14 @@ from src.LinkObj import LinkObj
 from src.Request import Request
 from src.Function import Function
 
+# For path finding
+# Link for this function --> "https://networkx.org/documentation/networkx-1.10/_modules/networkx/algorithms/simple_paths.html#shortest_simple_paths"
+from itertools import islice
+import networkx as nx
+
+# Other option
+# https://www.geeksforgeeks.org/check-if-a-directed-graph-is-connected-or-not/
+
 # Resources
 baseFolder = r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-"
 resourcesFolder = os.path.join(baseFolder, "resources")
@@ -18,9 +26,24 @@ NodeInputData = os.path.join(resourcesFolder, "NodeInputData.csv")
 TEMPNODE = []
 TEMPLINK = []
 
+
 def processRequest(req):
-    print("<----- Processing Request Number: {}\nSource: {}\nDestination: {}\n".format(req.requestID, req.source,
-                                                                                       req.destination))
+    print("<----- Processing Request Number: {}\nSource: {}\nDestination: {}\n".format(req.requestID, req.source, req.destination))
+    SourceID = 0
+    DestID = 0
+
+    for node in NodeObj.StaticNodeList:
+        if node.nodeID == req.source:
+            SourceID = req.source
+            break
+
+    for node in NodeObj.StaticNodeList:
+        if node.nodeID == req.destination:
+            DestID = req.destination
+
+    # output = find_path(NodeObj.StaticLinkList, SourceID, DestID)
+    # print("Request number {} path {}".format(req.requestID, output))
+    # return output
 
 
 def createFunctions():
@@ -111,6 +134,7 @@ def processInputDataLink(filePath):
 
             LinkObj(source, destination, bandwidth, edgeDelay, edgeCost.strip('\n'))
 
+
 def processData():
     processInputDataRequests(auto_requests_Opt)
     createFunctions()  # <---- Creates all functions
@@ -134,13 +158,32 @@ def processData():
         print(obj)
         print("-----------")
 
-
-    for req in Request.StaticTotalRequestList:
-        processRequest(req)
-
-    for node in NodeObj.StaticNodeList:
-        out = node.returnSiblingNodes()
-        print("NODE ID: {}, {}".format(node.nodeID, out))
+    heyMan = processGraphData()
+    print(heyMan)
 
     print("FINISHED!")
 
+
+def processGraphData():
+# the purpose of this method is to create a graph of all links and their corresponding siblings
+    nodes = []
+    node_dict = {}
+
+    for link in NodeObj.StaticLinkList:
+        count = 0
+        node_links = []
+        currentID = link.linkSrc
+
+        # Checks if the node ID has already been accounted for
+        if link.linkSrc not in nodes:
+            nodes.append(link.linkSrc)
+
+        # Iterates through the list of links finding every single neighbor for currentID
+        for l in NodeObj.StaticLinkList:
+            if l.linkSrc == currentID:
+                count += 1
+                node_links.append(l.linkDest)
+
+        node_dict.setdefault(currentID, node_links)
+
+    return node_dict

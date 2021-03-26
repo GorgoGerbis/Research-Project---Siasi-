@@ -27,14 +27,14 @@ class NodeObj:
             elif linkDest == self.nodeID:
                 directLinks.append(link.linkSrc)
 
-        print("Added all direct sibling links to local list")
+        # print("Added all direct sibling links to local list")
 
         for node in NodeObj.StaticNodeList:
             for id in directLinks:
                 if node.nodeID == id:
                     output.append(node)
 
-        print("Added all direct sibling node objects")
+        # print("Added all direct sibling node objects")
         return output
 
     def areSiblings(self, other):
