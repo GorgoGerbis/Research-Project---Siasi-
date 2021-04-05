@@ -52,5 +52,5 @@ def createLinkInputData(number_of_links, number_of_nodes):
 
 if __name__ == '__main__':
 
-    createNodeInputData(50)
-    createLinkInputData(100, 50)
+    createNodeInputData(6)
+    createLinkInputData(10, 6)

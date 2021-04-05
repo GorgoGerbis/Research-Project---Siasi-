@@ -1,3 +1,4 @@
+
 class NodeObj:
     # BE CAREFUL WHEN CHANGING THINGS IN THIS CLASS ITS USED EVERYWHERE
     StaticLinkList = []  # Static List of all links
@@ -48,6 +49,11 @@ class NodeObj:
                     looking = False
                     siblings = True
         return siblings
+
+    def returnNode(id):
+        for node in NodeObj.StaticNodeList:
+            if node.nodeID == id:
+                return node
 
     def __str__(self):
         string = "Node ID: {} Node Position: {} Node Status: {} Node Resources: {} Processing Delay: {} Node cost: {}".format(self.nodeID, (self.nodePosition[0], self.nodePosition[1]), self.status, self.nodeResources, self.processingDelay, self.nodeCost)

@@ -41,6 +41,8 @@ StaticCurrentDisplayedNodes = []
 _VARS = {'surf': False}
 # -------------------------------
 
+CURRENT_STARTING_NODE = None
+CURRENT_ENDING_NODE = None
 
 def startGUI():
     pygame.init()  # Initial Setup
@@ -57,39 +59,37 @@ def startGUI():
         drawGrid(1)
 
         if nodesDrawn:
-            for nodes in NodeObj.StaticNodeList:    # Currently draws all available nodes
+            for nodes in NodeObj.StaticNodeList:  # Currently draws all available nodes
                 drawNode(nodes)
 
-        if linksDrawn:
-            for link in NodeObj.StaticLinkList:     # Currently draws all available links
-                drawLink(link, NodeObj.StaticNodeList)
+        # if linksDrawn:
+        #     for link in NodeObj.StaticLinkList:  # Currently draws all available links
+        #         drawLink(link)
 
         inputRect = pygame.Rect(15, 400, 200, 100)
-        pygame.draw.rect(SCREEN, WHITE, inputRect, width=2)     # < -- For some reason not working
+        pygame.draw.rect(SCREEN, WHITE, inputRect, width=2)  # < -- For some reason not working
 
         pygame.display.update()
 
-# def drawRequestBox():
-#     for request in StaticRequestList:
-#           requestBox.display(request)
-#   Needs to then get retrieve the node object from the StaticNodes List.
-#      request.findPath()
 #
-#     pygame.draw.rect(_VARS('surf'), WHITE, 15, 70, width=100)
-
-def drawLink(link, tempNodeList):
-    for node in tempNodeList:
-        if node.nodeID == link.linkSrc:
-            startingNode = node
-        if node.nodeID == link.linkDest:
-            endingNode = node
-
-    startingNodePosition = (int(startingNode.nodePosition[0]), int(startingNode.nodePosition[1]))
-    endingNodePosition = (int(endingNode.nodePosition[0]), int(endingNode.nodePosition[1]))
-
-    pygame.draw.line(SCREEN, BLACK, startingNodePosition, endingNodePosition)
-    # pygame.draw.line(screen, Color_line, (60, 80), (130, 100))
-    # pygame.display.flip()
+# def find_link_position(link):
+#     if link in NodeObj.StaticLinkList:
+#         for node in NodeObj.StaticNodeList:
+#             if node.nodeID == link.linkSrc:
+#                 CURRENT_STARTING_NODE = node
+#
+#         for node in NodeObj.StaticNodeList:
+#             if node.nodeID == link.linkDest:
+#                 CURRENT_ENDING_NODE = node
+#
+#     drawLink()
+#
+# def drawLink():
+#     startingNodePosition = (int(CURRENT_STARTING_NODE.nodePosition[0]), int(CURRENT_STARTING_NODE.nodePosition[1]))
+#     endingNodePosition = (int(CURRENT_ENDING_NODE.nodePosition[0]), int(CURRENT_ENDING_NODE.nodePosition[1]))
+#     pygame.draw.line(SCREEN, BLACK, startingNodePosition, endingNodePosition)
+#     CURRENT_STARTING_NODE = None
+#     CURRENT_ENDING_NODE = None
 
 
 def drawNode(node):  # Parameter will be nodeObj
@@ -149,7 +149,7 @@ def drawGrid(divisions):
             SCREEN, BLACK,
             (0 + PADLEFTRIGHT + (horizontal_cellsize * x), 0 + PADTOPBOTTOM),
             (0 + PADLEFTRIGHT + horizontal_cellsize * x, HEIGHT - PADTOPBOTTOM), 2)
-        # HORITZONTAL DIVISION
+        # HORIZONTAL DIVISION
         pygame.draw.line(
             SCREEN, BLACK,
             (0 + PADLEFTRIGHT, 0 + PADTOPBOTTOM + (vertical_cellsize * x)),

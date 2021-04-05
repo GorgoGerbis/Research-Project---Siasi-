@@ -4,46 +4,26 @@ from src.NodeObj import NodeObj
 from src.LinkObj import LinkObj
 from src.Request import Request
 from src.Function import Function
-
-# For path finding
-# Link for this function --> "https://networkx.org/documentation/networkx-1.10/_modules/networkx/algorithms/simple_paths.html#shortest_simple_paths"
-from itertools import islice
-import networkx as nx
-
-# Other option
-# https://www.geeksforgeeks.org/check-if-a-directed-graph-is-connected-or-not/
+from src.Graph_Class import Graph
 
 # Resources
 baseFolder = r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-"
 resourcesFolder = os.path.join(baseFolder, "resources")
-LinkOpt = os.path.join(resourcesFolder, "LinkOpt.csv")
-NodeOpt = os.path.join(resourcesFolder, "NodeOpt.csv")
+LinkOpt = os.path.join(resourcesFolder, "LinkInputData.csv")
+NodeOpt = os.path.join(resourcesFolder, "NodeInputData.csv")
 auto_requests_Opt = os.path.join(resourcesFolder, "auto_requests_Opt.txt")
 
 # My new data I created
 NodeInputData = os.path.join(resourcesFolder, "NodeInputData.csv")
 
-TEMPNODE = []
-TEMPLINK = []
+GRAPH = Graph()
+edges = []
 
 
 def processRequest(req):
-    print("<----- Processing Request Number: {}\nSource: {}\nDestination: {}\n".format(req.requestID, req.source, req.destination))
-    SourceID = 0
-    DestID = 0
-
-    for node in NodeObj.StaticNodeList:
-        if node.nodeID == req.source:
-            SourceID = req.source
-            break
-
-    for node in NodeObj.StaticNodeList:
-        if node.nodeID == req.destination:
-            DestID = req.destination
-
-    # output = find_path(NodeObj.StaticLinkList, SourceID, DestID)
-    # print("Request number {} path {}".format(req.requestID, output))
-    # return output
+    print("<----- Processing Request Number: {} Source: {} Destination: {}".format(req.requestID, req.source, req.destination))
+    output = dijsktra(GRAPH, req.source, req.destination)
+    print("{}\n".format(output))
 
 
 def createFunctions():
@@ -56,48 +36,6 @@ def createFunctions():
     print("Created functions: {}, {}, {}, {}, {}".format(functionOne.functionID, functionTwo.functionID,
                                                          functionThree.functionID, functionFour.functionID,
                                                          functionFive.functionID))
-
-
-def processInputDataRequests(filePath):
-    with open(filePath) as fp:
-        fp.readline()  # <-- This is so that it skips the first line
-        for cnt, line in enumerate(fp):
-            if (line == "\n") or (line == ""):
-                continue
-            else:
-                line = line.strip('\n')
-                currentElements = line.split(';')
-
-                requestedFunctions = ((currentElements.pop(3)).strip('['))
-                requestedFunctions = (requestedFunctions.strip(']')).split(',')
-                requestNum = currentElements[0]
-                srcNode = currentElements[1]
-                destNode = currentElements[2]
-                requestedBW = currentElements[3]  # .strip('\n')
-
-                r = Request(requestNum, srcNode, destNode, requestedFunctions, requestedBW, 0)
-                Request.StaticTotalRequestList.append(r)
-                print("Request: {} has been created.".format(requestNum))
-
-        print("All requests have been created.")
-
-
-def fillConnectedLinks():
-    for n in NodeObj.StaticNodeList:
-        for l in NodeObj.StaticLinkList:
-            if l.linkSrc == n.nodeID:
-                n.addLinksToNetwork(l)
-        n.printConnectedLinks()
-
-    print("CREATED LIST OF CONNECTED LINKS FOR EACH NODE!")
-
-    # Provides List of all links for this node
-    def createConnectedNodesList(self):
-        for obj in NodeObj.StaticLinkList:
-            if self.id == obj.showLinkSourceId():
-                self.connectedLinks.append(obj)
-
-        return self.connectedLinks
 
 
 def processInputDataNode(filePath):
@@ -132,11 +70,56 @@ def processInputDataLink(filePath):
             edgeDelay = currentElements[3]
             edgeCost = currentElements[4]
 
-            LinkObj(source, destination, bandwidth, edgeDelay, edgeCost.strip('\n'))
+            startingNode = NodeObj.returnNode(source)
+            endingNode = NodeObj.returnNode(destination)
+
+            length = calcDistance(startingNode, endingNode)
+
+            current_link = LinkObj(source, destination, bandwidth, edgeDelay, edgeCost.strip('\n'), length)
+            NodeObj.StaticLinkList.append(current_link)
 
 
-def processData():
-    processInputDataRequests(auto_requests_Opt)
+def calcDistance(src, dest):
+    if src is not None and dest is not None:
+        x1 = src.nodePosition[0]
+        x2 = dest.nodePosition[0]
+        y1 = src.nodePosition[1]
+        y2 = dest.nodePosition[1]
+
+        a = (int(x1) - int(x2)) ** 2
+        b = (int(y1) - int(y2)) ** 2
+
+        d = (a + b) ** 0.5
+        return d
+    else:
+        return 0
+
+
+def processInputDataRequests(filePath):
+    with open(filePath) as fp:
+        fp.readline()  # <-- This is so that it skips the first line
+        for cnt, line in enumerate(fp):
+            if (line == "\n") or (line == ""):
+                continue
+            else:
+                line = line.strip('\n')
+                currentElements = line.split(';')
+
+                requestedFunctions = ((currentElements.pop(3)).strip('['))
+                requestedFunctions = (requestedFunctions.strip(']')).split(',')
+                requestNum = currentElements[0]
+                srcNode = currentElements[1]
+                destNode = currentElements[2]
+                requestedBW = currentElements[3]  # .strip('\n')
+
+                r = Request(requestNum, srcNode, destNode, requestedFunctions, requestedBW, 0)
+                Request.StaticTotalRequestList.append(r)
+                print("Request: {} has been created.".format(requestNum))
+
+        print("All requests have been created.")
+
+
+def processAllInputData():
     createFunctions()  # <---- Creates all functions
 
     if os.path.isfile(NodeInputData):
@@ -154,50 +137,68 @@ def processData():
         processInputDataRequests(auto_requests_Opt)
         print("FINISHED PROCESSING ALL DATA REQUESTS!")
 
-    for obj in NodeObj.StaticLinkList:
-        print(obj)
-        print("-----------")
 
-    heyMan = processGraphData()
-    print(heyMan)
-    cool = createAdjacencyMatrix(heyMan)
-    print(cool)
-
-    print("FINISHED!")
-
-
-def processGraphData():
-# the purpose of this method is to create a graph of all links and their corresponding siblings
-    nodes = []
-    node_dict = {}
+def set_edges():
+    visited_links = []
 
     for link in NodeObj.StaticLinkList:
-        count = 0
-        node_links = []
-        currentID = link.linkSrc
+        current_link_tup = (link.linkSrc, link.linkDest, link.linkWeight)
+        if current_link_tup not in visited_links:
+            edges.append(current_link_tup)
+            visited_links.append(visited_links)
 
-        # Checks if the node ID has already been accounted for
-        if link.linkSrc not in nodes:
-            nodes.append(link.linkSrc)
 
-        # Iterates through the list of links finding every single neighbor for currentID
-        for l in NodeObj.StaticLinkList:
-            if l.linkSrc == currentID:
-                count += 1
-                node_links.append(l.linkDest)
+def dijsktra(graph, initial, end):
+    # shortest paths is a dict of nodes
+    # whose values is a tuple of (previous node, weight)
+    shortest_paths = {initial: (None, 0)}
+    current_node = initial
+    visited = set()  # <-- what does set() do?
 
-        node_dict.setdefault(currentID, node_links)
+    while current_node != end:
+        visited.add(current_node)
+        destinations = graph.edges[current_node]
+        weight_to_current_node = shortest_paths[current_node][1]
 
-    return node_dict
+        for next_node in destinations:
+            weight = graph.weights[(current_node, next_node)] + weight_to_current_node
+            if next_node not in shortest_paths:
+                shortest_paths[next_node] = (current_node, weight)
+            else:
+                current_shortest_weight = shortest_paths[next_node][1]
+                if current_shortest_weight > weight:
+                    shortest_paths[next_node] = (current_node, weight)
 
-#Snagged from Stack overflow: https://stackoverflow.com/questions/37353759/how-do-i-generate-an-adjacency-matrix-of-a-graph-from-a-dictionary-in-python
-def createAdjacencyMatrix(inputDict):
-    keys = sorted(inputDict.keys())
-    size = len(keys)
+        next_destinations = {node: shortest_paths[node] for node in shortest_paths if node not in visited}
 
-    M = [[0] * size for i in range(size)]
+        if not next_destinations:
+            return "Route Not Possible"
+        # next node is the destination with the lowest weight
+        current_node = min(next_destinations, key=lambda k: next_destinations[k][1])
 
-    for a, b in [(keys.index(a), keys.index(b)) for a, row in inputDict.items() for b in row]:
-        M[a][b] = 2 if (a == b) else 1
+    # Work back through destinations in shortest path
+    path = []
+    while current_node is not None:
+        path.append(current_node)
+        next_node = shortest_paths[current_node][0]
+        current_node = next_node
 
-    return M
+    # Reverse path
+    path = path[::-1]
+    return "Path: {} Weight: {}".format(path, weight)
+
+
+# def processData():
+if __name__ == '__main__':
+    processAllInputData()
+    print("Input data processed!")
+
+    set_edges()
+
+    for edge in edges:
+        GRAPH.add_edge(*edge)
+
+    for req in Request.StaticTotalRequestList:
+        processRequest(req)
+
+    print("FINISHED!")
