@@ -6,6 +6,7 @@ from src.Request import Request
 from src.Function import Function
 from src.Graph_Class import Graph
 
+
 # Resources
 baseFolder = r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-"
 resourcesFolder = os.path.join(baseFolder, "resources")
@@ -16,6 +17,7 @@ auto_requests_Opt = os.path.join(resourcesFolder, "auto_requests_Opt.txt")
 # My new data I created
 NodeInputData = os.path.join(resourcesFolder, "NodeInputData.csv")
 
+# Need these for path finding
 GRAPH = Graph()
 edges = []
 
@@ -188,8 +190,18 @@ def dijsktra(graph, initial, end):
     return "Path: {} Weight: {}".format(path, weight)
 
 
-# def processData():
-if __name__ == '__main__':
+# def create_list_of_links_to_draw():
+#     for link in NodeObj.StaticLinkList:
+#         startingNode = NodeObj.returnNode(link.linkSrc)
+#         endingNode = NodeObj.returnNode(link.linkDest)
+#
+#         starting_node_position = startingNode.nodePosition
+#         ending_node_position = endingNode.nodePosition
+#
+
+
+def processData():
+# if __name__ == '__main__':
     processAllInputData()
     print("Input data processed!")
 

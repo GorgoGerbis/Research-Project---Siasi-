@@ -34,8 +34,6 @@ RED = (255, 0, 0)
 BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 
-StaticCurrentDisplayedNodes = []
-
 # --------------------------------
 # GLOBAL VARS, Using a Dictionary. # No idea why I need this tbh
 _VARS = {'surf': False}
@@ -63,25 +61,19 @@ def startGUI():
                 drawNode(nodes)
 
         # if linksDrawn:
-        #     for link in NodeObj.StaticLinkList:  # Currently draws all available links
-        #         drawLink(link)
+        #      for link in NodeObj.StaticLinkList:  # Currently draws all available links
+        #          drawLink(link)
 
         inputRect = pygame.Rect(15, 400, 200, 100)
         pygame.draw.rect(SCREEN, WHITE, inputRect, width=2)  # < -- For some reason not working
 
         pygame.display.update()
 
-#
+
 # def find_link_position(link):
 #     if link in NodeObj.StaticLinkList:
-#         for node in NodeObj.StaticNodeList:
-#             if node.nodeID == link.linkSrc:
-#                 CURRENT_STARTING_NODE = node
-#
-#         for node in NodeObj.StaticNodeList:
-#             if node.nodeID == link.linkDest:
-#                 CURRENT_ENDING_NODE = node
-#
+#         CURRENT_STARTING_NODE = NodeObj.returnNode(link.linkSrc)
+#         CURRENT_ENDING_NODE = NodeObj.returnNode(link.linkDest)
 #     drawLink()
 #
 # def drawLink():
@@ -112,8 +104,6 @@ def drawNode(node):  # Parameter will be nodeObj
     txt_surface = font.render("Node: {}".format(node.nodeID), False, BLACK)
     rect = pygame.draw.rect(SCREEN, WHITE, (int(node.nodePosition[0]), int(node.nodePosition[1]), 80, 20))
     SCREEN.blit(txt_surface, (rect.x, rect.y))
-
-    StaticCurrentDisplayedNodes.append(node)
 
 
 def drawGrid(divisions):
