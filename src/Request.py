@@ -18,7 +18,7 @@ class Request():
         self.requestedBW = requestedBW
         self.requestStatus = requestStatus
 
-        # Request.StaticTotalRequestList.append(self)
+        Request.StaticTotalRequestList.append(self)
 
 
     def calculateRequestPossibility(self):

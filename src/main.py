@@ -3,19 +3,29 @@ import os
 from src.NodeObj import NodeObj
 from src.LinkObj import LinkObj
 from src.Request import Request
-from src.Function import Function
+from src.FuncObj import FuncObj
 from src.Graph_Class import Graph
 
+#ProcessPathing
+import ProcessPathing
 
 # Resources
 baseFolder = r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-"
-resourcesFolder = os.path.join(baseFolder, "resources")
-LinkOpt = os.path.join(resourcesFolder, "LinkInputData.csv")
-NodeOpt = os.path.join(resourcesFolder, "NodeInputData.csv")
-auto_requests_Opt = os.path.join(resourcesFolder, "auto_requests_Opt.txt")
 
-# My new data I created
-NodeInputData = os.path.join(resourcesFolder, "NodeInputData.csv")
+# resourcesFolder = os.path.join(baseFolder, "resources")
+# LinkOpt = os.path.join(resourcesFolder, "LinkInputData.csv")
+# NodeOpt = os.path.join(resourcesFolder, "NodeInputData.csv")
+# auto_requests_Opt = os.path.join(resourcesFolder, "auto_requests_Opt.txt")
+
+resourcesFolder = os.path.join(baseFolder, "resources")
+# LinkOpt = os.path.join(resourcesFolder, "LinkInputData-EXSMALL-5-17-21.csv")
+# NodeOpt = os.path.join(resourcesFolder, "NodeInputData-EXSMALL-5-17-21.csv")
+# auto_requests_Opt = os.path.join(resourcesFolder, "requests-EXSMALL-5-17-21.txt")
+
+NodeOpt = os.path.join(resourcesFolder, "NodeInputData-EXSMALL-TEST-5-17-21.csv")
+LinkOpt = os.path.join(resourcesFolder, "LinkInputData-EXSMALL-TEST-5-17-21.csv")
+auto_requests_Opt = os.path.join(resourcesFolder, "requests-EXSMALL-TEST-5-17-21.txt")
+
 
 # Need these for path finding
 GRAPH = Graph()
@@ -26,18 +36,6 @@ def processRequest(req):
     print("<----- Processing Request Number: {} Source: {} Destination: {}".format(req.requestID, req.source, req.destination))
     output = dijsktra(GRAPH, req.source, req.destination)
     print("{}\n".format(output))
-
-
-def createFunctions():
-    functionOne = Function("f1", 10, 10, 10)
-    functionTwo = Function("f2", 5, 5, 5)
-    functionThree = Function("f3", 30, 30, 30)
-    functionFour = Function("f4", 35, 35, 35)
-    functionFive = Function("f5", 1, 1, 1)
-
-    print("Created functions: {}, {}, {}, {}, {}".format(functionOne.functionID, functionTwo.functionID,
-                                                         functionThree.functionID, functionFour.functionID,
-                                                         functionFive.functionID))
 
 
 def processInputDataNode(filePath):
@@ -66,18 +64,19 @@ def processInputDataLink(filePath):
 
             currentElements = line.split(';')
 
-            source = currentElements[0]
-            destination = currentElements[1]
-            bandwidth = currentElements[2]
-            edgeDelay = currentElements[3]
-            edgeCost = currentElements[4]
+            linkID = currentElements[0]
+            source = currentElements[1]
+            destination = currentElements[2]
+            bandwidth = currentElements[3]
+            edgeDelay = currentElements[4]
+            edgeCost = currentElements[5]
 
             startingNode = NodeObj.returnNode(source)
             endingNode = NodeObj.returnNode(destination)
 
             length = calcDistance(startingNode, endingNode)
 
-            current_link = LinkObj(source, destination, bandwidth, edgeDelay, edgeCost.strip('\n'), length)
+            current_link = LinkObj(linkID, source, destination, bandwidth, edgeDelay, edgeCost.strip('\n'), length)
             NodeObj.StaticLinkList.append(current_link)
 
 
@@ -122,22 +121,27 @@ def processInputDataRequests(filePath):
 
 
 def processAllInputData():
-    createFunctions()  # <---- Creates all functions
 
-    if os.path.isfile(NodeInputData):
+    if os.path.isfile(NodeOpt):
         print("NODE FILE PATH WORKS!")
-        processInputDataNode(NodeInputData)
+        processInputDataNode(NodeOpt)
         print("NODE DATA FILE PROCESSED NODES CREATED!")
+    else:
+        print("COULD NOT OPEN NODE FILE")
 
     if os.path.isfile(LinkOpt):
         print("LINK FILE PATH WORKS!")
         processInputDataLink(LinkOpt)
         print("LINK DATA FILE PROCESSED LINKS CREATED!")
+    else:
+        print("COULD NOT OPEN LINK FILE")
 
     if os.path.isfile(auto_requests_Opt):
         print("PROCESSING INPUT DATA REQUESTS!")
         processInputDataRequests(auto_requests_Opt)
         print("FINISHED PROCESSING ALL DATA REQUESTS!")
+    else:
+        print("COULD NOT OPEN REQUEST FILE")
 
 
 def set_edges():
@@ -190,20 +194,11 @@ def dijsktra(graph, initial, end):
     return "Path: {} Weight: {}".format(path, weight)
 
 
-# def create_list_of_links_to_draw():
-#     for link in NodeObj.StaticLinkList:
-#         startingNode = NodeObj.returnNode(link.linkSrc)
-#         endingNode = NodeObj.returnNode(link.linkDest)
-#
-#         starting_node_position = startingNode.nodePosition
-#         ending_node_position = endingNode.nodePosition
-#
-
-
 def processData():
-# if __name__ == '__main__':
     processAllInputData()
     print("Input data processed!")
+
+    ProcessPathing.find_specific_data("1", "1", "1")
 
     set_edges()
 
@@ -214,3 +209,17 @@ def processData():
         processRequest(req)
 
     print("FINISHED!")
+
+# if __name__ == '__main__':
+#     processAllInputData()
+#     print("Input data processed!")
+#
+#     set_edges()
+#
+#     for edge in edges:
+#         GRAPH.add_edge(*edge)
+#
+#     for req in Request.StaticTotalRequestList:
+#         processRequest(req)
+#
+#     print("FINISHED!")

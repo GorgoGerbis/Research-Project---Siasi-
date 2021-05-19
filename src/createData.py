@@ -6,9 +6,13 @@ from src.FuncObj import FuncObj
 
 baseFolder = r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-"
 resourcesFolder = os.path.join(baseFolder, "resources")
-NodeInputData = os.path.join(resourcesFolder, "NodeInputData5-EXSMALL-5-17-21.csv")
-LinkInputData = os.path.join(resourcesFolder, "LinkInputData-EXSMALL-5-17-21.csv")
-auto_requests_Opt = os.path.join(resourcesFolder, "requests-EXSMALL-5-17-21.txt")
+# NodeInputData = os.path.join(resourcesFolder, "NodeInputData-EXSMALL-5-17-21.csv")
+# LinkInputData = os.path.join(resourcesFolder, "LinkInputData-EXSMALL-5-17-21.csv")
+# auto_requests_Opt = os.path.join(resourcesFolder, "requests-EXSMALL-5-17-21.txt")
+
+NodeInputData = os.path.join(resourcesFolder, "NodeInputData-EXSMALL-TEST-5-17-21.csv")
+LinkInputData = os.path.join(resourcesFolder, "LinkInputData-EXSMALL-TEST-5-17-21.csv")
+auto_requests_Opt = os.path.join(resourcesFolder, "requests-EXSMALL-TEST-5-17-21.txt")
 
 
 def createNodeInputData(number_of_nodes):
@@ -26,8 +30,11 @@ def createNodeInputData(number_of_nodes):
             long = random.randint(60, 740)
             stat = status[random.randint(0, 3)]
 
-            cpu = random.randint(0, 100)
-            mem = random.randint(0, 100)
+            # cpu = random.randint(0, 100)
+            # mem = random.randint(0, 100)
+
+            cpu = 100
+            mem = 100
             pbs = physical_buffer_size[random.randint(0, 4)]
 
             resources = [cpu, mem, pbs]
@@ -44,13 +51,14 @@ def createLinkInputData(number_of_links, number_of_nodes):
         fp.write(heading)
 
         for cnt in range(number_of_links):
+            linkID = cnt+1
             src = random.randint(1, number_of_nodes)
             dest = random.randint(1, number_of_nodes)
             bw = random.randint(0, 1000)
             ed = random.randint(0, 1000)
             ec = random.randint(0, 1000)
 
-            linkLine = "{};{};{};{};{}\n".format(src, dest, bw, ed, ec)
+            linkLine = "{};{};{};{};{};{}\n".format(linkID, src, dest, bw, ed, ec)
             fp.write(linkLine)
 
 
@@ -87,6 +95,11 @@ def createRequests(number_of_requests, number_of_nodes):
 
 
 if __name__ == '__main__':
-    createNodeInputData(6)
-    createLinkInputData(10, 6)
-    createRequests(10, 6)
+
+    num_nodes = 6
+    num_links = 10
+    num_requests = 10
+
+    createNodeInputData(num_nodes)
+    createLinkInputData(num_links, num_nodes)
+    createRequests(num_requests, num_nodes)

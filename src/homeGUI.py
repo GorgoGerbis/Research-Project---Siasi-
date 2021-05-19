@@ -42,6 +42,7 @@ _VARS = {'surf': False}
 CURRENT_STARTING_NODE = None
 CURRENT_ENDING_NODE = None
 
+
 def startGUI():
     pygame.init()  # Initial Setup
 
@@ -60,28 +61,10 @@ def startGUI():
             for nodes in NodeObj.StaticNodeList:  # Currently draws all available nodes
                 drawNode(nodes)
 
-        # if linksDrawn:
-        #      for link in NodeObj.StaticLinkList:  # Currently draws all available links
-        #          drawLink(link)
-
         inputRect = pygame.Rect(15, 400, 200, 100)
         pygame.draw.rect(SCREEN, WHITE, inputRect, width=2)  # < -- For some reason not working
 
         pygame.display.update()
-
-
-# def find_link_position(link):
-#     if link in NodeObj.StaticLinkList:
-#         CURRENT_STARTING_NODE = NodeObj.returnNode(link.linkSrc)
-#         CURRENT_ENDING_NODE = NodeObj.returnNode(link.linkDest)
-#     drawLink()
-#
-# def drawLink():
-#     startingNodePosition = (int(CURRENT_STARTING_NODE.nodePosition[0]), int(CURRENT_STARTING_NODE.nodePosition[1]))
-#     endingNodePosition = (int(CURRENT_ENDING_NODE.nodePosition[0]), int(CURRENT_ENDING_NODE.nodePosition[1]))
-#     pygame.draw.line(SCREEN, BLACK, startingNodePosition, endingNodePosition)
-#     CURRENT_STARTING_NODE = None
-#     CURRENT_ENDING_NODE = None
 
 
 def drawNode(node):  # Parameter will be nodeObj
