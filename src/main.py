@@ -36,14 +36,17 @@ def processInputDataNode(filePath):
             # print("Line {}: {}".format(cnt, line))
             currentElements = line.split(';')
 
+            # This is so the resources are seperated into a list
             resources = currentElements.pop(4)
+            resources = resources.strip('][').split(', ')
+
             id = currentElements[0]
             position = [currentElements[1], currentElements[2]]
             status = currentElements[3]
             processingDelay = currentElements[4]
             cost = currentElements[5].strip('\n')
 
-            newNodeObj = NodeObj(id, position, status, processingDelay, cost, resources)
+            newNodeObj = NodeObj(id, position, status, resources, processingDelay, cost)
             print(newNodeObj)
 
 
@@ -97,8 +100,8 @@ def processInputDataRequests(filePath):
                 line = line.strip('\n')
                 currentElements = line.split(';')
 
-                tempRequestedFunctions = ((currentElements.pop(3)).strip('['))
-                tempRequestedFunctions = (tempRequestedFunctions.strip(']')).split(',')
+                tempRequestedFunctions = currentElements.pop(3)
+                tempRequestedFunctions = (tempRequestedFunctions.strip('][')).split(', ')
                 requestNum = currentElements[0]
                 srcNode = currentElements[1]
                 destNode = currentElements[2]

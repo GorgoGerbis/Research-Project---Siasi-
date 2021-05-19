@@ -33,13 +33,14 @@ def calculate_path(req, node, link):
 # Todo need to add a function that essentially tells the path finder to skip this node and move on the next one.
 def calculate_node_resources(req, node):
     node_resources = node.nodeResources
-    # node_resources_CPU = node_resources[0]
-    # node_resources_RAM = node_resources[1]
+    node_resources_CPU = node_resources[0]
+    node_resources_RAM = node_resources[1]
     node_processing_delay = node.processingDelay
     node_cost = node.nodeCost
 
     for func in req.requestedFunctions:
-        current_func = func
+        current_func = FuncObj[func]
+        print(current_func)
         print()
 
 def find_specific_data(reqId, nodeId, linkId):
