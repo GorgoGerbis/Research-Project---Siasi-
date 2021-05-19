@@ -1,4 +1,6 @@
-
+"""
+Node resources: [CPU, RAM, Physical buffer size]
+"""
 class NodeObj:
     # BE CAREFUL WHEN CHANGING THINGS IN THIS CLASS ITS USED EVERYWHERE
     StaticLinkList = []  # Static List of all links
@@ -9,7 +11,7 @@ class NodeObj:
         self.nodeID = nodeID
         self.nodePosition = nodePosition
         self.status = status
-        self.nodeResources = nodeResources
+        self.nodeResources = nodeResources.split("[]")
         self.processingDelay = processingDelay
         self.nodeCost = nodeCost
 

@@ -2,9 +2,11 @@
 from src.NodeObj import NodeObj
 from src.LinkObj import LinkObj
 from src.Request import Request
+from src.FuncObj import FuncObj
 
 
 # ToDo need to find a way to constantly feed the path that is currently being processed on.
+# Todo will need to find a way to accurately calculate the physical buffer size
 
 # This checks to see if the path is possible resource-wise
 # def calculate_path(req, node, link):
@@ -16,11 +18,29 @@ from src.Request import Request
 # Push request forward or deny request
 
 def calculate_path(req, node, link):
-    functions = req.functions
-    bw = req.requestedBW
-    status = req.requestStatus
+    req_functions = req.requestedFunctions
+    req_bw = req.requestedBW
+    req_status = req.requestStatus
+
+    node_ID = node.nodeID
+    node_status = node.status
+
+    calculate_node_resources(req, node)     # <-- For testing purposes will remove this later
+
     return
 
+
+# Todo need to add a function that essentially tells the path finder to skip this node and move on the next one.
+def calculate_node_resources(req, node):
+    node_resources = node.nodeResources
+    # node_resources_CPU = node_resources[0]
+    # node_resources_RAM = node_resources[1]
+    node_processing_delay = node.processingDelay
+    node_cost = node.nodeCost
+
+    for func in req.requestedFunctions:
+        current_func = func
+        print()
 
 def find_specific_data(reqId, nodeId, linkId):
     not_done = True

@@ -90,7 +90,7 @@ def createRequests(number_of_requests, number_of_nodes):
                         outputFunctions.append(current_func)
                 i += 1
 
-            requestLine = "{};{};{};{};{};\n".format(reqID, src, dest, outputFunctions, requestedBW)
+            requestLine = "{};{};{};{};{}\n".format(reqID, src, dest, outputFunctions, requestedBW)
             fp.write(requestLine)
 
 

@@ -12,16 +12,7 @@ import ProcessPathing
 # Resources
 baseFolder = r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-"
 
-# resourcesFolder = os.path.join(baseFolder, "resources")
-# LinkOpt = os.path.join(resourcesFolder, "LinkInputData.csv")
-# NodeOpt = os.path.join(resourcesFolder, "NodeInputData.csv")
-# auto_requests_Opt = os.path.join(resourcesFolder, "auto_requests_Opt.txt")
-
 resourcesFolder = os.path.join(baseFolder, "resources")
-# LinkOpt = os.path.join(resourcesFolder, "LinkInputData-EXSMALL-5-17-21.csv")
-# NodeOpt = os.path.join(resourcesFolder, "NodeInputData-EXSMALL-5-17-21.csv")
-# auto_requests_Opt = os.path.join(resourcesFolder, "requests-EXSMALL-5-17-21.txt")
-
 NodeOpt = os.path.join(resourcesFolder, "NodeInputData-EXSMALL-TEST-5-17-21.csv")
 LinkOpt = os.path.join(resourcesFolder, "LinkInputData-EXSMALL-TEST-5-17-21.csv")
 auto_requests_Opt = os.path.join(resourcesFolder, "requests-EXSMALL-TEST-5-17-21.txt")
@@ -35,7 +26,7 @@ edges = []
 def processRequest(req):
     print("<----- Processing Request Number: {} Source: {} Destination: {}".format(req.requestID, req.source, req.destination))
     output = dijsktra(GRAPH, req.source, req.destination)
-    print("{}\n".format(output))
+    print("Request ID: {} Output: {}\n".format(req.requestID, output))
 
 
 def processInputDataNode(filePath):
@@ -52,7 +43,7 @@ def processInputDataNode(filePath):
             processingDelay = currentElements[4]
             cost = currentElements[5].strip('\n')
 
-            newNodeObj = NodeObj(id, position, status, resources, processingDelay, cost)
+            newNodeObj = NodeObj(id, position, status, processingDelay, cost, resources)
             print(newNodeObj)
 
 
@@ -106,14 +97,20 @@ def processInputDataRequests(filePath):
                 line = line.strip('\n')
                 currentElements = line.split(';')
 
-                requestedFunctions = ((currentElements.pop(3)).strip('['))
-                requestedFunctions = (requestedFunctions.strip(']')).split(',')
+                tempRequestedFunctions = ((currentElements.pop(3)).strip('['))
+                tempRequestedFunctions = (tempRequestedFunctions.strip(']')).split(',')
                 requestNum = currentElements[0]
                 srcNode = currentElements[1]
                 destNode = currentElements[2]
                 requestedBW = currentElements[3]  # .strip('\n')
 
+                requestedFunctions = []
+                for i in tempRequestedFunctions:    # This is to get rid of the extra quotes around the functions
+                    t = i.strip(" ' ' ")
+                    requestedFunctions.append(t)
+
                 r = Request(requestNum, srcNode, destNode, requestedFunctions, requestedBW, 0)
+
                 Request.StaticTotalRequestList.append(r)
                 print("Request: {} has been created.".format(requestNum))
 
@@ -161,13 +158,15 @@ def dijsktra(graph, initial, end):
     current_node = initial
     visited = set()  # <-- what does set() do?
 
+    weight = 0  # Defining this variable early
+
     while current_node != end:
         visited.add(current_node)
         destinations = graph.edges[current_node]
         weight_to_current_node = shortest_paths[current_node][1]
 
         for next_node in destinations:
-            weight = graph.weights[(current_node, next_node)] + weight_to_current_node
+            weight += graph.weights[(current_node, next_node)] + weight_to_current_node
             if next_node not in shortest_paths:
                 shortest_paths[next_node] = (current_node, weight)
             else:
@@ -198,7 +197,8 @@ def processData():
     processAllInputData()
     print("Input data processed!")
 
-    ProcessPathing.find_specific_data("1", "1", "1")
+    r, n, l = ProcessPathing.find_specific_data("1", "1", "1")
+    ProcessPathing.calculate_path(r, n, l)
 
     set_edges()
 

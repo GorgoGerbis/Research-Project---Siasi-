@@ -1,7 +1,8 @@
 from src.NodeObj import NodeObj
 
+
 class Request():
-# Purpose of this class is to take in requests and calculate the amount of resources required as well as time delay
+    # Purpose of this class is to take in requests and calculate the amount of resources required as well as time delay
 
     StaticTotalRequestList = []
     staticApprovedRequestList = []
@@ -10,16 +11,15 @@ class Request():
     REQUEST_DENIED = 1
     REQUEST_APPROVED = 2
 
-    def __init__(self, requestID, source, destination, functions, requestedBW, requestStatus):
+    def __init__(self, requestID, source, destination, requestedFunctions, requestedBW, requestStatus):
         self.requestID = requestID
         self.source = source
         self.destination = destination
-        self.functions = functions
+        self.requestedFunctions = requestedFunctions
         self.requestedBW = requestedBW
         self.requestStatus = requestStatus
 
         Request.StaticTotalRequestList.append(self)
-
 
     def calculateRequestPossibility(self):
         pointA = self.source
@@ -27,7 +27,7 @@ class Request():
         pointB = self.destination
         pointBNode = NodeObj.giveRequestedNode(self.destination)
 
-        if ((pointANode and pointBNode) in NodeObj.StaticNodeList):
+        if (pointANode and pointBNode) in NodeObj.StaticNodeList:
             print("Request {} source node and destination node both exist.".format(self.requestID))
 
 
@@ -37,4 +37,5 @@ class Request():
     # def calculateRequestFunctionCost(self):
 
     def __str__(self):
-        return "REQUEST NUMBER: {} REQUEST SOURCE: {} REQUESTED DESTINATION: {} REQUESTED BANDWIDTH: {}".format(self.requestID, self.source, self.destination, self.functions, self.requestedBW)
+        return "REQUEST NUMBER: {} REQUEST SOURCE: {} REQUESTED DESTINATION: {} REQUESTED FUNCTIONS: {} REQUESTED BANDWIDTH: {}".format(
+            self.requestID, self.source, self.destination, self.requestedFunctions, self.requestedBW)
