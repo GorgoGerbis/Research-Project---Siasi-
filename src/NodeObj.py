@@ -21,41 +21,6 @@ class NodeObj:
 
         NodeObj.StaticNodeList.append(self)  # <-- APPENDS CURRENT NODE TO STATIC LIST OF ALL NODES
 
-    # Should compile and return a list of all sibling node ids and node objects
-    def returnSiblingNodes(self):
-        directLinks = []
-        output = []
-
-        for link in NodeObj.StaticLinkList:
-            linkSrc = link.linkSrc
-            linkDest = link.linkDest
-            if linkSrc == self.nodeID:
-                directLinks.append(link.linkDest)
-            elif linkDest == self.nodeID:
-                directLinks.append(link.linkSrc)
-
-        # print("Added all direct sibling links to local list")
-
-        for node in NodeObj.StaticNodeList:
-            for id in directLinks:
-                if node.nodeID == id:
-                    output.append(node)
-
-        # print("Added all direct sibling node objects")
-        return output
-
-    def areSiblings(self, other):
-        # Should probably rewrite this function
-        looking = True
-        siblings = False
-
-        while looking:
-            for link in NodeObj.StaticLinkList:
-                if (link.linkSrc == self.nodeID) and (link.linkDest == other.nodeID):
-                    looking = False
-                    siblings = True
-        return siblings
-
     def returnNode(id):
         for node in NodeObj.StaticNodeList:
             if node.nodeID == id:

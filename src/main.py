@@ -6,7 +6,7 @@ from src.Request import Request
 from src.FuncObj import FuncObj
 from src.Graph_Class import Graph
 
-#ProcessPathing
+# ProcessPathing
 import ProcessPathing
 
 # Resources
@@ -17,14 +17,14 @@ NodeOpt = os.path.join(resourcesFolder, "NodeInputData-EXSMALL-TEST-5-17-21.csv"
 LinkOpt = os.path.join(resourcesFolder, "LinkInputData-EXSMALL-TEST-5-17-21.csv")
 auto_requests_Opt = os.path.join(resourcesFolder, "requests-EXSMALL-TEST-5-17-21.txt")
 
-
 # Need these for path finding
 GRAPH = Graph()
 edges = []
 
 
 def processRequest(req):
-    print("<----- Processing Request Number: {} Source: {} Destination: {}".format(req.requestID, req.source, req.destination))
+    print("<----- Processing Request Number: {} Source: {} Destination: {}".format(req.requestID, req.source,
+                                                                                   req.destination))
     output = dijsktra(GRAPH, req.source, req.destination)
     print("Request ID: {} Output: {}\n".format(req.requestID, output))
 
@@ -108,7 +108,7 @@ def processInputDataRequests(filePath):
                 requestedBW = currentElements[3]  # .strip('\n')
 
                 requestedFunctions = []
-                for i in tempRequestedFunctions:    # This is to get rid of the extra quotes around the functions
+                for i in tempRequestedFunctions:  # This is to get rid of the extra quotes around the functions
                     t = i.strip(" ' ' ")
                     requestedFunctions.append(t)
 
@@ -121,7 +121,6 @@ def processInputDataRequests(filePath):
 
 
 def processAllInputData():
-
     if os.path.isfile(NodeOpt):
         print("NODE FILE PATH WORKS!")
         processInputDataNode(NodeOpt)
