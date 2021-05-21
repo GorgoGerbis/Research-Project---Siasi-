@@ -5,6 +5,7 @@ from src.Request import Request
 from src.FuncObj import FuncObj
 
 
+# Todo Need to come up with a solution that resets the nodes available resources after request has been processed
 # ToDo need to find a way to constantly feed the path that is currently being processed on.
 # Todo will need to find a way to accurately calculate the physical buffer size
 
@@ -25,7 +26,7 @@ def calculate_path(req, node, link):
     node_ID = node.nodeID
     node_status = node.status
 
-    calculate_node_resources(req, node)     # <-- For testing purposes will remove this later
+    calculate_node_resources(req, node)  # <-- For testing purposes will remove this later
 
     return
 
@@ -38,10 +39,13 @@ def calculate_node_resources(req, node):
     node_processing_delay = node.processingDelay
     node_cost = node.nodeCost
 
-    for func in req.requestedFunctions:
+    for func in req.requestedFunctions:  # Gets the current function
         current_func = FuncObj[func]
-        print(current_func)
-        print()
+        current_resources = current_func.value
+        cpu_needed = current_resources[0]
+        ram_needed = current_resources[1]
+        bw_needed = current_resources[2]
+
 
 def find_specific_data(reqId, nodeId, linkId):
     not_done = True
