@@ -7,7 +7,7 @@ from src.FuncObj import FuncObj
 from src.Graph_Class import Graph
 
 # ProcessPathing
-import ProcessPathing
+from src import ProcessPathing, outputData
 
 # Resources
 baseFolder = r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-"
@@ -17,6 +17,10 @@ NodeOpt = os.path.join(resourcesFolder, "NodeInputData-EXSMALL-TEST-5-17-21.csv"
 LinkOpt = os.path.join(resourcesFolder, "LinkInputData-EXSMALL-TEST-5-17-21.csv")
 auto_requests_Opt = os.path.join(resourcesFolder, "requests-EXSMALL-TEST-5-17-21.txt")
 
+REQUESTS_FAILED = []
+REQUESTS_PASSED = []
+REQUESTS = []
+
 # Need these for path finding
 GRAPH = Graph()
 edges = []
@@ -25,8 +29,19 @@ edges = []
 def processRequest(req):
     print("<----- Processing Request Number: {} Source: {} Destination: {}".format(req.requestID, req.source,
                                                                                    req.destination))
-    output = dijsktra(GRAPH, req.source, req.destination)
-    print("Request ID: {} Output: {}\n".format(req.requestID, output))
+    output_Dijkstra = dijsktra(GRAPH, req.source, req.destination)
+
+    output_string = "Request ID: {} {}\n".format(req.requestID, output_Dijkstra)
+    print("Request ID: {} {}\n".format(req.requestID, output_Dijkstra))
+
+    REQUESTS.append(output_string)
+
+    if "ROUTE NOT POSSIBLE" in output_string:
+        REQUESTS_FAILED.append(output_string)
+    else:
+        REQUESTS_PASSED.append(output_string)
+
+    print("ALL REQUESTS PROCESSED")
 
 
 def processInputDataNode(filePath):
@@ -207,9 +222,11 @@ def processData():
     for edge in edges:
         GRAPH.add_edge(*edge)
 
+    print("Processing requests")
     for req in Request.StaticTotalRequestList:
         processRequest(req)
 
+    outputData.create_output(REQUESTS, REQUESTS_FAILED, REQUESTS_PASSED)
     print("FINISHED!")
 
 # if __name__ == '__main__':

@@ -2,12 +2,13 @@ import tkinter
 import sys
 import pygame
 import random
+import src.main as m    # ToDo I adjust line 11 to get rid of the error
 from pygame.locals import KEYDOWN, K_q  # <--- was on the tutorial
 
 # ToDo need to fix the overall layout and cleanliness of this script bc its a mess...
 
 # MY OWN CLASSES
-import main as m
+#import main as m    # This is throwing an error Idk why the script runs fine
 from src.NodeObj import NodeObj
 from src.LinkObj import LinkObj
 

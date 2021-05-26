@@ -6,6 +6,7 @@ from src.FuncObj import FuncObj
 
 baseFolder = r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-"
 resourcesFolder = os.path.join(baseFolder, "resources")
+
 # NodeInputData = os.path.join(resourcesFolder, "NodeInputData-EXSMALL-5-17-21.csv")
 # LinkInputData = os.path.join(resourcesFolder, "LinkInputData-EXSMALL-5-17-21.csv")
 # auto_requests_Opt = os.path.join(resourcesFolder, "requests-EXSMALL-5-17-21.txt")

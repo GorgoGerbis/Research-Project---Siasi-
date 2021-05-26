@@ -1,4 +1,4 @@
-from NodeObj import NodeObj
+from src.NodeObj import NodeObj
 
 
 class LinkObj(NodeObj):  # Most likely need to make this a subclass of NodeObj
