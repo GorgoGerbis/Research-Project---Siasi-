@@ -1,1 +1,8 @@
-Request ID;Path;Weight;
+Request ID;Source;Destination;Functions;BW;ALL FAILED
+1; 6; 4; ['F6', 'F4', 'F3']; 5; Route Not Possible;
+1; 6; 4; ['F6', 'F4', 'F3']; 5; Route Not Possible;
+2; 5; 6; ['F5', 'F2', 'F4']; 5; Route Not Possible;
+2; 5; 6; ['F5', 'F2', 'F4']; 5; Route Not Possible;
+5; 4; 6; ['F6', 'F5']; 5; Route Not Possible;
+5; 4; 6; ['F6', 'F5']; 5; Route Not Possible;
+10; 4; 6; ['F2', 'F1']; 5; Route Not Possible;

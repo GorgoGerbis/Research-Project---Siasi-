@@ -31,15 +31,15 @@ def processRequest(req):
                                                                                    req.destination))
     output_Dijkstra = dijsktra(GRAPH, req.source, req.destination)
 
-    output_string = "Request ID: {} {}\n".format(req.requestID, output_Dijkstra)
+    output_list = [req.requestID, req.source, req.destination, req.requestedFunctions, req.requestedBW, output_Dijkstra]
     print("Request ID: {} {}\n".format(req.requestID, output_Dijkstra))
 
-    REQUESTS.append(output_string)
+    REQUESTS.append(output_list)
 
-    if "ROUTE NOT POSSIBLE" in output_string:
-        REQUESTS_FAILED.append(output_string)
+    if "Route Not Possible" in output_list:
+        REQUESTS_FAILED.append(output_list)
     else:
-        REQUESTS_PASSED.append(output_string)
+        REQUESTS_PASSED.append(output_list)
 
     print("ALL REQUESTS PROCESSED")
 
