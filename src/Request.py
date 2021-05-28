@@ -19,8 +19,6 @@ class Request():
         self.requestedBW = requestedBW
         self.requestStatus = requestStatus
 
-        Request.StaticTotalRequestList.append(self)
-
     def calculateRequestPossibility(self):
         pointA = self.source
         pointANode = NodeObj.giveRequestedNode(self.source)
