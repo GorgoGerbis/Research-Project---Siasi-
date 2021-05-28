@@ -50,6 +50,7 @@ def dijsktra(graph, start, end):
     visited = set()  # <-- what does set() do?
 
     weight = 0  # Defining this variable early
+    count = 0
 
     while current_node != end:
         visited.add(current_node)
@@ -57,7 +58,8 @@ def dijsktra(graph, start, end):
         weight_to_current_node = shortest_paths[current_node][1]
 
         for next_node in destinations:
-            weight += graph.weights[(current_node, next_node)] + weight_to_current_node
+            # weight += graph.weights[(current_node, next_node)] + weight_to_current_node
+            count += 1
             if next_node not in shortest_paths:
                 shortest_paths[next_node] = (current_node, weight)
             else:
