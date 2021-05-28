@@ -86,25 +86,8 @@ def dijsktra(graph, start, end):
     return "Path: {} Weight: {}".format(path, weight)
 
 
-def processData():
-    processInputData.processAllInputData()
-    print("Input data processed!")
-
-    set_edges()
-
-    for edge in edges:
-        GRAPH.add_edge(*edge)
-
-    print("Processing requests")
-    for req in Request.StaticTotalRequestList:
-        processRequest(req)
-    print("ALL REQUESTS PROCESSED")
-
-    outputData.create_output(REQUESTS, REQUESTS_FAILED, REQUESTS_PASSED)
-    print("FINISHED!")
-
-# if __name__ == '__main__':
-#     processAllInputData()
+# def processData():
+#     processInputData.processAllInputData()
 #     print("Input data processed!")
 #
 #     set_edges()
@@ -112,7 +95,15 @@ def processData():
 #     for edge in edges:
 #         GRAPH.add_edge(*edge)
 #
+#     print("Processing requests")
 #     for req in Request.StaticTotalRequestList:
 #         processRequest(req)
+#     print("ALL REQUESTS PROCESSED")
 #
+#     outputData.create_output(REQUESTS, REQUESTS_FAILED, REQUESTS_PASSED)
 #     print("FINISHED!")
+
+if __name__ == '__main__':
+    processInputData.processAllInputData()
+    print("Input data processed!")
+    ProcessPathing.run()
