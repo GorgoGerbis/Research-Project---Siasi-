@@ -111,23 +111,52 @@ def dijsktra(graph, start, end):
 
 def process_path_resources_node(req, path):
     unmapped_functions = req.requestedFunctions  # List of requested functions
-    mapped_functions = []
     count = 0
 
-    while count < len(unmapped_functions):     # while they're still functions that have yet to be mapped
+    while count < len(unmapped_functions):  # while they're still functions that have yet to be mapped
         for step in path:
             for current_node in NodeObj.StaticNodeList:
                 if current_node.nodeID == step:
                     step_node = current_node  # Finally get the needed node, this method can be avoided
                     if count >= len(unmapped_functions):
                         break
-                    current_func = FuncObj.__getattr__(unmapped_functions[count])   # Will always get the next function up
-                    if step_node.compareCPU(current_func.value[0]) and step_node.compareRAM(current_func.value[1]) and step_node.compareBW(current_func.value[2]):   # Checks to see if this node has enough resources to map the func
+                    current_func = FuncObj.__getattr__(
+                        unmapped_functions[count])  # Will always get the next function up
+                    if step_node.compareCPU(current_func.value[0]) and step_node.compareRAM(
+                            current_func.value[1]) and step_node.compareBW(
+                        current_func.value[2]):  # Checks to see if this node has enough resources to map the func
                         print("NODE HAS ENOUGH RESOURCES TO MAP FUNCTION {}".format(current_func))
-                        mapped_functions.append(current_func)
                         count += 1
                     else:
                         print("NODE DOES NOT HAVE ENOUGH RESOURCES")
+
+
+"""
+Smaller helper function that basically does what process_path_resources
+does but only for a particular node and a particular request.
+"""
+
+
+def process_resources_node(func, node):
+    current_func = FuncObj.__getattr__(func)
+    if node.compareCPU(current_func.value[0]) and node.compareRAM(current_func.value[1]) and node.compareBW(
+            current_func.value[2]):  # Checks to see if this node has enough resources to map the func
+        return True
+    else:
+        return False
+
+
+"""
+Smaller helper function that processes if link has enough resources to be used.
+"""
+
+
+def process_resources_link(req, link):
+    if link.compareBW(req.requestedBW):
+        return True
+    else:
+        return False
+
 
 # This basically manages this script - Functions as control panel
 # Maybe nake this into its own seperate class.

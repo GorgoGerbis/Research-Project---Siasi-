@@ -17,6 +17,11 @@ class LinkObj(NodeObj):  # Most likely need to make this a subclass of NodeObj
     def showLinkSourceID(self):
         return self.linkSrc
 
+    def compareBW(self, bw):
+        if self.linkBW >= bw:
+            self.linkBW -= bw
+            return True
+
     def __str__(self):
         string = "LinkID {} Source {} Dest {} BandWidth {} Delay {} Cost {} Weight {}".format(self.linkID, self.linkSrc, self.linkDest, self.linkBW, self.linkED, self.linkEC, self.linkWeight)
         return string

@@ -28,18 +28,24 @@ class NodeObj:
 
     def compareCPU(self, cpu):
         if int(self.nodeResources[0]) >= cpu:
+            x = int(self.nodeResources[0]) - cpu
+            self.nodeResources[0] = x
             return True
         else:
             return False
 
     def compareRAM(self, ram):
         if int(self.nodeResources[1]) >= ram:
+            x = int(self.nodeResources[1]) - ram
+            self.nodeResources[1] = x
             return True
         else:
             return False
 
     def compareBW(self, bw):
         if int(self.nodeResources[2]) >= bw:
+            x = int(self.nodeResources[2]) - bw
+            self.nodeResources[2] = x
             return True
         else:
             return False
