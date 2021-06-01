@@ -26,6 +26,24 @@ class NodeObj:
             if node.nodeID == id:
                 return node
 
+    def compareCPU(self, cpu):
+        if int(self.nodeResources[0]) >= cpu:
+            return True
+        else:
+            return False
+
+    def compareRAM(self, ram):
+        if int(self.nodeResources[1]) >= ram:
+            return True
+        else:
+            return False
+
+    def compareBW(self, bw):
+        if int(self.nodeResources[2]) >= bw:
+            return True
+        else:
+            return False
+
     def __str__(self):
         string = "Node ID: {} Node Position: {} Node Status: {} Node Resources: {} Processing Delay: {} Node cost: {} Failure probability: {}".format(
             self.nodeID, (self.nodePosition[0], self.nodePosition[1]), self.status, self.nodeResources,
