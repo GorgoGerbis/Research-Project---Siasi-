@@ -16,6 +16,8 @@ from itertools import islice
 GRAPH = nx.Graph()
 edges = []
 
+POSSIBLE_PATHS = []
+
 
 def set_graph_nodes():
     added_nodes = []
@@ -32,25 +34,64 @@ def set_graph_edges():
             GRAPH.add_edge(link.linkSrc, link.linkDest)
             visited_links.append(link)
 
-
-dfs_visited = set()  # Set to keep track of visited nodes.
-
-
-def depth_first_search_traversable(visited, graph, node):
-    if node not in visited:
-        print(node)
-        visited.add(node)
-        for neighbour in graph[node]:
-            depth_first_search_traversable(visited, graph, neighbour)
+def get_current_link(src, dest):
+    for link in NodeObj.StaticLinkList:
+        if link.linkSrc == src and link.linkDest == dest:
+            return link
 
 
+def get_current_node(id):
+    for node in NodeObj.StaticNodeList:
+        if node.nodeID == id:
+            return node
+
+
+# ToDo Process if a path has enough resources to be traversed
+# ToDo Have to update the network if resources have been taken so that next path doesnt use unavailable resources
+# def process_path_resources(req, path):
+#     unmapped_functions = req.requestedFunctions
+#     while len(unmapped_functions > 0):
+#         for step in path:
+#             if can_map == True:
+#                 map_func(func)
+#                 unmapped_functions.pop(func)
+#                 # go to next step
+#             else if num_func <= num_nodes_left:
+#                 if can_traverse_forward:
+#                     skip_current_node
+#                     # go to next step
+#             else:
+#                 raise not_enough_resources
+#     return
+
+# def process_path_resources_node(req, path):
+#
+#     unmapped_functions = req.requestedFunctions # List of requested functions]
+#     count = 0
+#
+#     while len(unmapped_functions) != 0:
+#         for step in path:
+#             print(step)
+#             for current_node in NodeObj.StaticNodeList:
+#                 if current_node.nodeID == step:
+#                     step_node = current_node    # Finally get the needed node, this method can be avoided
+#             resources = step_node.nodeResources
+#             if resources > unmapped_functions.pop(count):
+
+
+
+
+# This basically manages this script - Functions as control panel
+# Maybe nake this into its own seperate class.
 def run():
     set_graph_nodes()
     set_graph_edges()
     print("SETUP NODES AND EDGES")
 
-    paths = nx.all_simple_paths(GRAPH, "1", "4")
+    paths = nx.all_simple_paths(GRAPH, "3", "5")
     print(list(paths))
+
+    # Request 7;3;5;['F4', 'F6', 'F2'];5
 
     nx.draw(GRAPH, with_labels=True, font_weight='bold')
     plt.show()

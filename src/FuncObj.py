@@ -18,6 +18,7 @@ class enumproperty(object):
         raise AttributeError("can't delete pseudo-member %r" % self.name)
 
 class FuncObj(Enum):
+
     F1 = [10, 10, 10]
     F2 = [25, 25, 25]
     F3 = [45, 45, 45]

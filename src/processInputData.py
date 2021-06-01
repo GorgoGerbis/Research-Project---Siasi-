@@ -31,9 +31,11 @@ def processInputDataNode(filePath):
             position = [currentElements[1], currentElements[2]]
             status = currentElements[3]
             processingDelay = currentElements[4]
-            cost = currentElements[5].strip('\n')
+            cost = currentElements[5]
 
-            newNodeObj = NodeObj(id, position, status, resources, processingDelay, cost)
+            failure = currentElements[6].strip('\n')
+
+            newNodeObj = NodeObj(id, position, status, resources, processingDelay, cost, failure)
             print(newNodeObj)
 
 

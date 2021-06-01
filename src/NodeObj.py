@@ -9,7 +9,7 @@ class NodeObj:
     StaticNodeList = []  # Static List of all nodes
     TotalNodeCount = 0  # Static variable keeping track of amount of nodes
 
-    def __init__(self, nodeID, nodePosition, status, nodeResources, processingDelay, nodeCost):
+    def __init__(self, nodeID, nodePosition, status, nodeResources, processingDelay, nodeCost, failureProbablity):
         self.nodeID = nodeID
         self.nodePosition = nodePosition
         self.status = status
@@ -18,6 +18,7 @@ class NodeObj:
         self.processingDelay = processingDelay
 
         self.nodeResources = nodeResources
+        self.failureProbablity = failureProbablity
 
         NodeObj.StaticNodeList.append(self)  # <-- APPENDS CURRENT NODE TO STATIC LIST OF ALL NODES
 

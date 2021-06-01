@@ -18,7 +18,7 @@ def createNodeInputData(number_of_nodes):
 
     with open(NodeInputData, 'w') as fp:
         heading = "NodeId;Latitude;Longitude;Status;Resources[CPU Memory Physical Buffer " \
-                  "Size];ProcessingDelay;NodeCost\n"
+                  "Size];ProcessingDelay;NodeCost;PercentFailure\n"
         fp.write(heading)
 
         for cnt in range(number_of_nodes):
@@ -41,14 +41,15 @@ def createNodeInputData(number_of_nodes):
             # processing_delay = random.randint(0, 100)
             processing_delay = random.randint(1, 3)
             nodeCost = random.randint(1, 5)
+            pf = random.randint(1, 4)
 
-            nodeLine = "{};{};{};{};{};{};{}\n".format(nodeID, lat, long, stat, resources, processing_delay, nodeCost)
+            nodeLine = "{};{};{};{};{};{};{};{}\n".format(nodeID, lat, long, stat, resources, processing_delay, nodeCost,pf)
             fp.write(nodeLine)
 
 
 def createLinkInputData(number_of_links, number_of_nodes):
     with open(LinkInputData, 'w') as fp:
-        heading = "Link ID;Source;Destination;Bandwidth;EdgeDelay;EdgeCost\n"
+        heading = "Link ID;Source;Destination;Bandwidth;EdgeDelay;EdgeCost;PercentFailure\n"
         fp.write(heading)
 
         for cnt in range(number_of_links):
