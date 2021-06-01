@@ -13,7 +13,6 @@ class NodeObj:
         self.nodeID = nodeID
         self.nodePosition = nodePosition
         self.status = status
-        # self.nodeResources = nodeResources
         self.nodeCost = nodeCost
         self.processingDelay = processingDelay
 
@@ -28,7 +27,7 @@ class NodeObj:
                 return node
 
     def __str__(self):
-        string = "Node ID: {} Node Position: {} Node Status: {} Node Resources: {} Processing Delay: {} Node cost: {}".format(
+        string = "Node ID: {} Node Position: {} Node Status: {} Node Resources: {} Processing Delay: {} Node cost: {} Failure probability: {}".format(
             self.nodeID, (self.nodePosition[0], self.nodePosition[1]), self.status, self.nodeResources,
-            self.processingDelay, self.nodeCost)
+            self.processingDelay, self.nodeCost, self.failureProbablity)
         return string

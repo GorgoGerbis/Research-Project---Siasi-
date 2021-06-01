@@ -34,6 +34,7 @@ def set_graph_edges():
             GRAPH.add_edge(link.linkSrc, link.linkDest)
             visited_links.append(link)
 
+
 def get_current_link(src, dest):
     for link in NodeObj.StaticLinkList:
         if link.linkSrc == src and link.linkDest == dest:
@@ -77,8 +78,6 @@ def get_current_node(id):
 #                     step_node = current_node    # Finally get the needed node, this method can be avoided
 #             resources = step_node.nodeResources
 #             if resources > unmapped_functions.pop(count):
-
-
 
 
 # This basically manages this script - Functions as control panel

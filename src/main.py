@@ -16,6 +16,14 @@ GRAPH = Graph()
 edges = []
 
 
+def processFailureProbablity():
+    for node in NodeObj.StaticNodeList:
+        if int(node.failureProbablity) >= 3:
+            node.status == "R"
+        else:
+            node.status == "A"
+
+
 def processRequest(req):
     print("<----- Processing Request Number: {} Source: {} Destination: {}".format(req.requestID, req.source,
                                                                                    req.destination))
@@ -106,4 +114,6 @@ def dijsktra(graph, start, end):
 if __name__ == '__main__':
     processInputData.processAllInputData()
     print("Input data processed!")
+
+    processFailureProbablity()
     ProcessPathing.run()
