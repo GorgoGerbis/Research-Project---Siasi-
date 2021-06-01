@@ -120,11 +120,8 @@ def process_path_resources_node(req, path):
                     step_node = current_node  # Finally get the needed node, this method can be avoided
                     if count >= len(unmapped_functions):
                         break
-                    current_func = FuncObj.__getattr__(
-                        unmapped_functions[count])  # Will always get the next function up
-                    if step_node.compareCPU(current_func.value[0]) and step_node.compareRAM(
-                            current_func.value[1]) and step_node.compareBW(
-                        current_func.value[2]):  # Checks to see if this node has enough resources to map the func
+                    current_func = FuncObj.__getattr__(unmapped_functions[count])  # Will always get the next function up
+                    if step_node.compareCPU(current_func.value[0]) and step_node.compareRAM(current_func.value[1]) and step_node.compareBW(current_func.value[2]):  # Checks to see if this node has enough resources to map the func
                         print("NODE HAS ENOUGH RESOURCES TO MAP FUNCTION {}".format(current_func))
                         count += 1
                     else:
@@ -132,6 +129,7 @@ def process_path_resources_node(req, path):
 
 
 """
+@ process_resources_node(func, node)
 Smaller helper function that basically does what process_path_resources
 does but only for a particular node and a particular request.
 """
@@ -141,18 +139,21 @@ def process_resources_node(func, node):
     current_func = FuncObj.__getattr__(func)
     if node.compareCPU(current_func.value[0]) and node.compareRAM(current_func.value[1]) and node.compareBW(
             current_func.value[2]):  # Checks to see if this node has enough resources to map the func
+        node.map_function(current_func.value[0], current_func.value[1], current_func.value[2])
         return True
     else:
         return False
 
 
 """
+@ process_resources_link(req, link)
 Smaller helper function that processes if link has enough resources to be used.
 """
 
 
 def process_resources_link(req, link):
     if link.compareBW(req.requestedBW):
+        link.map_request(req.requestedBW)
         return True
     else:
         return False
@@ -163,17 +164,25 @@ def process_resources_link(req, link):
 def run():
     set_graph_nodes()
     set_graph_edges()
-    print("SETUP NODES AND EDGES")
+    print("SETUP NODES AND EDGES")  # setup the graph
 
-    paths = nx.all_simple_paths(GRAPH, "3", "5")
-    print(list(paths))
+    # paths = nx.all_simple_paths(GRAPH, "17", "19")
+    # print(list(paths))
 
-    # dijsktra(GRAPH, "3", "5")
+    # shortest_path = nx.shortest_path(GRAPH, "17", "19")
+    # print("<---------- SHORTEST PATH {} --------------->".format(shortest_path))
 
     # Request 1;17;19;['F4', 'F6'];5
-    path = ['17', '2', '23', '19']
-    req = Request(1, '17', '19', ['F4', 'F6'], 5, 0)
-    process_path_resources_node(req, path)
+    # path = ['17', '2', '23', '19']
+    # req = Request(1, '17', '19', ['F4', 'F6'], 5, 0)
+    # process_path_resources_node(req, path)
+
+    print("<----------------ProcessPathing.py began processing all requests---------------->\n")
+    for req in Request.StaticTotalRequestList:
+        shortest_path = nx.shortest_path(GRAPH, req.source, req.destination)
+        print("Request: {} Shortest Path: {}\n".format(req.requestID, shortest_path))
+        process_path_resources_node(req, shortest_path)
+
 
     nx.draw(GRAPH, with_labels=True, font_weight='bold')
     plt.show()

@@ -19,8 +19,12 @@ class LinkObj(NodeObj):  # Most likely need to make this a subclass of NodeObj
 
     def compareBW(self, bw):
         if self.linkBW >= bw:
-            self.linkBW -= bw
             return True
+        else:
+            return False
+
+    def map_request(self, bw):
+        self.linkBW = int(self.linkBW) - bw
 
     def __str__(self):
         string = "LinkID {} Source {} Dest {} BandWidth {} Delay {} Cost {} Weight {}".format(self.linkID, self.linkSrc, self.linkDest, self.linkBW, self.linkED, self.linkEC, self.linkWeight)

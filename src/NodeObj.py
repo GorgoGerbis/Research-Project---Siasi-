@@ -28,27 +28,26 @@ class NodeObj:
 
     def compareCPU(self, cpu):
         if int(self.nodeResources[0]) >= cpu:
-            x = int(self.nodeResources[0]) - cpu
-            self.nodeResources[0] = x
             return True
         else:
             return False
 
     def compareRAM(self, ram):
         if int(self.nodeResources[1]) >= ram:
-            x = int(self.nodeResources[1]) - ram
-            self.nodeResources[1] = x
             return True
         else:
             return False
 
     def compareBW(self, bw):
         if int(self.nodeResources[2]) >= bw:
-            x = int(self.nodeResources[2]) - bw
-            self.nodeResources[2] = x
             return True
         else:
             return False
+
+    def map_function(self, cpu, ram, bw):
+        self.nodeResources[0] = int(self.nodeResources[0]) - cpu
+        self.nodeResources[1] = int(self.nodeResources[1]) - ram
+        self.nodeResources[2] = int(self.nodeResources[2]) - bw
 
     def __str__(self):
         string = "Node ID: {} Node Position: {} Node Status: {} Node Resources: {} Processing Delay: {} Node cost: {} Failure probability: {}".format(
