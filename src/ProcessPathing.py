@@ -109,33 +109,30 @@ def dijsktra(graph, start, end):
 #                 raise not_enough_resources
 #     return
 
-def process_path_resources_node(req, path):
+def process_path_resources(req, path):
     unmapped_functions = req.requestedFunctions  # List of requested functions
     count = 0
-
-    while count < len(unmapped_functions):  # while they're still functions that have yet to be mapped
-        for step in path:
-            for current_node in NodeObj.StaticNodeList:
-                if current_node.nodeID == step:
-                    step_node = current_node  # Finally get the needed node, this method can be avoided
-                    if count >= len(unmapped_functions):
-                        break
-                    current_func = FuncObj.__getattr__(unmapped_functions[count])  # Will always get the next function up
-                    if step_node.compareCPU(current_func.value[0]) and step_node.compareRAM(current_func.value[1]) and step_node.compareBW(current_func.value[2]):  # Checks to see if this node has enough resources to map the func
-                        print("NODE HAS ENOUGH RESOURCES TO MAP FUNCTION {}".format(current_func))
+    for step in path:
+        for current_node in NodeObj.StaticNodeList:
+            if current_node.nodeID == step:
+                if count < len(unmapped_functions):
+                    if process_resources_node(current_node, unmapped_functions[count]):
+                        print("FUNCTION {} HAS BEEN MAPPED TO NODE {}".format(unmapped_functions[count], current_node.nodeID))
                         count += 1
                     else:
-                        print("NODE DOES NOT HAVE ENOUGH RESOURCES")
+                        print("NODE {} DOES NOT HAVE ENOUGH RESOURCES TO MAP FUNCTION {}".format(current_node.nodeID, unmapped_functions[count]))
+                        # needs to skip over to the next node in the path
+                        continue
+                else:
+                    break
 
 
 """
 @ process_resources_node(func, node)
-Smaller helper function that basically does what process_path_resources
-does but only for a particular node and a particular request.
+Smaller helper function that first checks if node has enough resources to map function.
+Then if yes, subtracts the resources taken by the function.
 """
-
-
-def process_resources_node(func, node):
+def process_resources_node(node, func):
     current_func = FuncObj.__getattr__(func)
     if node.compareCPU(current_func.value[0]) and node.compareRAM(current_func.value[1]) and node.compareBW(
             current_func.value[2]):  # Checks to see if this node has enough resources to map the func
@@ -149,8 +146,6 @@ def process_resources_node(func, node):
 @ process_resources_link(req, link)
 Smaller helper function that processes if link has enough resources to be used.
 """
-
-
 def process_resources_link(req, link):
     if link.compareBW(req.requestedBW):
         link.map_request(req.requestedBW)
@@ -181,8 +176,8 @@ def run():
     for req in Request.StaticTotalRequestList:
         shortest_path = nx.shortest_path(GRAPH, req.source, req.destination)
         print("Request: {} Shortest Path: {}\n".format(req.requestID, shortest_path))
-        process_path_resources_node(req, shortest_path)
-
+        process_path_resources(req, shortest_path)
+    print("<----------------ProcessPathing.py finished processing all requests---------------->\n")
 
     nx.draw(GRAPH, with_labels=True, font_weight='bold')
     plt.show()

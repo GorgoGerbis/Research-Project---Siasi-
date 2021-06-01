@@ -10,9 +10,12 @@ from src.FuncObj import FuncObj
 baseFolder = r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-"
 outputFolder = os.path.join(baseFolder, "output")
 
+REQUESTS_FILE = os.path.join(outputFolder, "REQUESTS.csv")
 REQUESTS_FAILED_FILE = os.path.join(outputFolder, "REQUESTS_FAILED.csv")
 REQUESTS_PASSED_FILE = os.path.join(outputFolder, "REQUESTS_PASSED.csv")
-REQUESTS_FILE = os.path.join(outputFolder, "REQUESTS.csv")
+# ToDo need to implement the output onto a csv file
+REQUESTS_PASSED_FAILURE_PROBABILITY = os.path.join(outputFolder, "REQUESTS_PASSED_FAILURE_PROBABILITY.csv")
+REQUESTS_FAILED_FAILURE_PROBABILITY = os.path.join(outputFolder, "REQUESTS_FAILED_FAILURE_PROBABILITY.csv")
 
 
 def create_requests_failed(requests_failed):
@@ -22,8 +25,7 @@ def create_requests_failed(requests_failed):
 
         for i in range(len(requests_failed)-1):
             current_raw = requests_failed[i]
-            fp.write("{}; {}; {}; {}; {}; {};\n".format(current_raw[0], current_raw[1], current_raw[2], current_raw[3],
-                                                         current_raw[4], current_raw[5]))
+            fp.write("{}; {}; {}; {}; {}; {};\n".format(current_raw[0], current_raw[1], current_raw[2], current_raw[3], current_raw[4], current_raw[5]))
 
 
 def create_requests_passed(requests_passed):
