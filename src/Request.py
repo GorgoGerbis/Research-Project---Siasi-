@@ -8,8 +8,9 @@ class Request:
     staticApprovedRequestList = []
 
     REQUEST_NEEDS_CALCULATING = 0
-    REQUEST_DENIED = 1
-    REQUEST_APPROVED = 2
+    REQUEST_ONGOING = 1
+    REQUEST_DENIED = 2
+    REQUEST_APPROVED = 3
 
     def __init__(self, requestID, source, destination, requestedFunctions, requestedBW, requestStatus):
         self.requestID = requestID
