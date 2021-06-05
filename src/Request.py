@@ -12,13 +12,14 @@ class Request:
     REQUEST_DENIED = 2
     REQUEST_APPROVED = 3
 
-    def __init__(self, requestID, source, destination, requestedFunctions, requestedBW, requestStatus):
+    def __init__(self, requestID, source, destination, requestedFunctions, requestedBW, requestStatus, request_delay_threshold):
         self.requestID = requestID
         self.source = source
         self.destination = destination
         self.requestedFunctions = requestedFunctions
         self.requestedBW = requestedBW
         self.requestStatus = requestStatus
+        self.request_delay_threshold = request_delay_threshold
 
     def __str__(self):
         return "REQUEST NUMBER: {} REQUEST SOURCE: {} REQUESTED DESTINATION: {} REQUESTED FUNCTIONS: {} REQUESTED BANDWIDTH: {}".format(
