@@ -26,7 +26,6 @@ y = RAM usage
 z = Bandwidth taken
 """
 
-
 class FuncObj(Enum):
     F1 = [1, 1, 1]
     F2 = [2, 2, 2]

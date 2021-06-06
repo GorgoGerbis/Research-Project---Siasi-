@@ -99,12 +99,15 @@ def processInputDataRequests(filePath):
                 destNode = currentElements[2]
                 requestedBW = currentElements[3]  # .strip('\n')
 
+                request_delay_threshold = 20
+                request_status = "UNFULFILLED"
+
                 requestedFunctions = []
                 for i in tempRequestedFunctions:  # This is to get rid of the extra quotes around the functions
                     t = i.strip(" ' ' ")
                     requestedFunctions.append(t)
 
-                r = Request(requestNum, srcNode, destNode, requestedFunctions, requestedBW, 0)
+                r = Request(requestNum, srcNode, destNode, requestedFunctions, requestedBW, request_status, request_delay_threshold)
 
                 Request.StaticTotalRequestList.append(r)
                 print("Request: {} has been created.".format(requestNum))

@@ -174,9 +174,9 @@ def run():
 
     print("<----------------ProcessPathing.py began processing all requests---------------->\n")
     for req in Request.StaticTotalRequestList:
-        shortest_path = nx.shortest_path(GRAPH, req.source, req.destination)
-        print("Request: {} Shortest Path: {}".format(req.requestID, shortest_path))
-        process_path_resources(req, shortest_path)
+        path_one = nx.shortest_path(GRAPH, req.source, req.destination)
+        print("Request: {} Shortest Path: {}".format(req.requestID, path_one))
+        process_path_resources(req, path_one)
         print("\n")
     print("<----------------ProcessPathing.py finished processing all requests---------------->\n")
 

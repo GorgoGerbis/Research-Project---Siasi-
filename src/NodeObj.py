@@ -1,4 +1,5 @@
 """
+@author: Jackson Walker
 Node resources: [CPU, RAM, Physical buffer size]
 """
 
@@ -9,21 +10,30 @@ class NodeObj:
     StaticNodeList = []  # Static List of all nodes
     TotalNodeCount = 0  # Static variable keeping track of amount of nodes
 
-    def __init__(self, nodeID, nodePosition, status, nodeResources, processingDelay, nodeCost, failureProbablity):
+    def __init__(self, nodeID, nodePosition, status, nodeResources, processingDelay, nodeCost, failure_probability):
         self.nodeID = nodeID
         self.nodePosition = nodePosition
         self.status = status
         self.nodeCost = nodeCost
         self.processingDelay = processingDelay
-
         self.nodeResources = nodeResources
-        self.failureProbablity = failureProbablity
+        self.failure_probability = failure_probability
 
         NodeObj.StaticNodeList.append(self)  # <-- APPENDS CURRENT NODE TO STATIC LIST OF ALL NODES
 
-    def returnNode(id):
+    def get_neighbors(self):
+        neighbors = []
+        for lnk in NodeObj.StaticLinkList:
+            if lnk.linkDest == self.nodeID:
+                n = self.returnNode(lnk.linkSrc)
+                neighbors.append(n)
+        return neighbors
+
+    # This method has to be static so that it can be accessed everywhere basically just a helper function
+    @staticmethod
+    def returnNode(i):
         for node in NodeObj.StaticNodeList:
-            if node.nodeID == id:
+            if node.nodeID == i:
                 return node
 
     def compareCPU(self, cpu):
@@ -52,5 +62,5 @@ class NodeObj:
     def __str__(self):
         string = "Node ID: {} Node Position: {} Node Status: {} Node Resources: {} Processing Delay: {} Node cost: {} Failure probability: {}".format(
             self.nodeID, (self.nodePosition[0], self.nodePosition[1]), self.status, self.nodeResources,
-            self.processingDelay, self.nodeCost, self.failureProbablity)
+            self.processingDelay, self.nodeCost, self.failure_probability)
         return string

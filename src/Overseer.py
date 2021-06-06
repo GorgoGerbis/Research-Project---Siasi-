@@ -16,9 +16,9 @@ GRAPH = Graph()
 edges = []
 
 
-def processFailureProbablity():
+def process_failure_probability():
     for node in NodeObj.StaticNodeList:
-        if int(node.failureProbablity) >= 3:
+        if int(node.failure_probability) >= 3:
             node.status == "R"
         else:
             node.status == "A"
@@ -156,5 +156,5 @@ if __name__ == '__main__':
     processInputData.processAllInputData()
     print("Input data processed!")
 
-    processFailureProbablity()
+    process_failure_probability()
     ProcessPathing.run()
