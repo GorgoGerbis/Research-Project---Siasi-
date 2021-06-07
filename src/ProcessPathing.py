@@ -13,11 +13,11 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from itertools import islice
 
+
 GRAPH = nx.Graph()
 edges = []
 
 POSSIBLE_PATHS = []
-
 
 def set_graph_nodes():
     added_nodes = []
@@ -33,18 +33,6 @@ def set_graph_edges():
         if link not in visited_links:
             GRAPH.add_edge(link.linkSrc, link.linkDest)
             visited_links.append(link)
-
-
-def get_current_link(src, dest):
-    for link in NodeObj.StaticLinkList:
-        if link.linkSrc == src and link.linkDest == dest:
-            return link
-
-
-def get_current_node(id):
-    for node in NodeObj.StaticNodeList:
-        if node.nodeID == id:
-            return node
 
 
 def dijsktra(graph, start, end):
@@ -91,24 +79,6 @@ def dijsktra(graph, start, end):
     return "Path: {} Weight: {}".format(path, weight)
 
 
-# ToDo Process if a path has enough resources to be traversed
-# ToDo Have to update the network if resources have been taken so that next path doesnt use unavailable resources
-# def process_path_resources(req, path):
-#     unmapped_functions = req.requestedFunctions
-#     while len(unmapped_functions > 0):
-#         for step in path:
-#             if can_map == True:
-#                 map_func(func)
-#                 unmapped_functions.pop(func)
-#                 # go to next step
-#             else if num_func <= num_nodes_left:
-#                 if can_traverse_forward:
-#                     skip_current_node
-#                     # go to next step
-#             else:
-#                 raise not_enough_resources
-#     return
-
 def process_path_resources(req, path):
     unmapped_functions = req.requestedFunctions  # List of requested functions
     count = 0
@@ -126,7 +96,6 @@ def process_path_resources(req, path):
                 else:
                     break
 
-
 """
 @ process_resources_node(func, node)
 Smaller helper function that first checks if node has enough resources to map function.
@@ -142,20 +111,8 @@ def process_resources_node(node, func):
         return False
 
 
-"""
-@ process_resources_link(req, link)
-Smaller helper function that processes if link has enough resources to be used.
-"""
-def process_resources_link(req, link):
-    if link.compareBW(req.requestedBW):
-        link.map_request(req.requestedBW)
-        return True
-    else:
-        return False
-
-
 # This basically manages this script - Functions as control panel
-# Maybe nake this into its own seperate class.
+# Maybe make this into its own seperate class.
 def run():
     set_graph_nodes()
     set_graph_edges()

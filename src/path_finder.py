@@ -13,9 +13,12 @@ from itertools import islice
 Note that the overall delay in the path does not include the trials of alternative (candidate) nodes. 
 The path delay includes only the delay traversing over the host (selected) nodes and links. Only the final choices. 
 """
+
+
 class pathFinder():
 
-    def __init__(self, path_finder_ID, request, path_one, path_two, request_delay, request_delay_threshold, status, STATE):
+    def __init__(self, path_finder_ID, request, path_one, path_two, request_delay, request_delay_threshold, status,
+                 STATE):
         self.path_finder_ID = path_finder_ID
         self.request = request
         self.path_one = path_one
@@ -26,14 +29,13 @@ class pathFinder():
 
         self.STATE = self.check_failed()
 
-
     def check_failed(self):
         if self.request_delay > self.request_delay_threshold:
             return False
         # if request.resources == enough
-            # return False
+        # return False
         # if request.traversable == not
-            # return False
+        # return False
         # if request.
 
     def __str__(self):

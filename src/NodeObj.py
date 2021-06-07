@@ -29,14 +29,8 @@ class NodeObj:
                 neighbors.append(n)
         return neighbors
 
-    # This method has to be static so that it can be accessed everywhere basically just a helper function
-    @staticmethod
-    def returnNode(i):
-        for node in NodeObj.StaticNodeList:
-            if node.nodeID == i:
-                return node
-
     def compareCPU(self, cpu):
+        # Returns True if you have enough resources
         if int(self.nodeResources[0]) >= cpu:
             return True
         else:
@@ -58,6 +52,29 @@ class NodeObj:
         self.nodeResources[0] = int(self.nodeResources[0]) - cpu
         self.nodeResources[1] = int(self.nodeResources[1]) - ram
         self.nodeResources[2] = int(self.nodeResources[2]) - bw
+
+    def check_enough_resources(self, func):
+        c, r, b = func[0], func[1], func[2]
+        if self.compareCPU(c) and self.compareRAM(r) and self.compareBW(b):
+            self.map_function(c, r, b)
+            print("FUNCTION HAS BEEN MAPPED")
+            return 0
+        else:
+            print("NODE DOES NOT HAVE ENOUGH RESOURCES")
+            return
+
+    # This method has to be static so that it can be accessed everywhere basically just a helper function
+    @staticmethod
+    def returnNode(node_id):
+        for node in NodeObj.StaticNodeList:
+            if node.nodeID == node_id:
+                return node
+
+    @staticmethod
+    def print_resources(node):
+        # output = [CPU, RAM, Physical Buffer Size]
+        output = [node.nodeID, node.nodeResources[0], node.nodeResources[1], node.nodeResources[2]]
+        return output
 
     def __str__(self):
         string = "Node ID: {} Node Position: {} Node Status: {} Node Resources: {} Processing Delay: {} Node cost: {} Failure probability: {}".format(
