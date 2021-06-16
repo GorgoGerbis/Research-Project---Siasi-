@@ -27,16 +27,16 @@ Head vs Wall is the nickname I gave to this protocol. Works as follows.
 GRAPH = nx.Graph()
 edges = []
 
-
 def set_edges():
     visited_links = []
 
     for link in NodeObj.StaticLinkList:
-        current_link_tup = (int(link.linkSrc), int(link.linkDest), link.linkWeight)
-        if current_link_tup not in visited_links:
-            edges.append(current_link_tup)
-            GRAPH.add_edge(current_link_tup)
-            visited_links.append(current_link_tup)
+        u = link.linkSrc
+        v = link.linkDest
+        temp = [u, v]
+        if link not in visited_links:
+            edges.append(temp)
+            visited_links.append(link)
 
 
 def set_nodes():
@@ -57,11 +57,16 @@ if __name__ == '__main__':
     print("INPUT DATA PROCESSED\n")
 
     print("CREATING GRAPH\n")
-    set_nodes()
+    # set_nodes()   # I want to maybe play around with the attributes so I might still need this
     set_edges()
+    GRAPH.add_edges_from(edges)
     print("GRAPH CREATED\n")
+
+    nx.draw(GRAPH, with_labels=True, font_weight='bold')
+    plt.show()  # Need to figure out why I need this in order to stop the graph from disappearing
 
     for req in Request.STATIC_TOTAL_REQUEST_LIST:
         print("BEGUN PROCESSING REQUEST: {}\n".format(req.requestID))
         current_request_all_possible_paths = nx.all_simple_paths(GRAPH, req.source, req.destination)
-        print(current_request_all_possible_paths)
+        # for path in current_request_all_possible_paths:
+        #     print(path)
