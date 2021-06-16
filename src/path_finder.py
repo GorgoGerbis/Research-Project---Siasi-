@@ -17,8 +17,7 @@ The path delay includes only the delay traversing over the host (selected) nodes
 
 class pathFinder():
 
-    def __init__(self, path_finder_ID, request, path_one, path_two, request_delay, request_delay_threshold, status,
-                 STATE):
+    def __init__(self, path_finder_ID, request, path_one, path_two, request_delay, request_delay_threshold, status, STATE):
         self.path_finder_ID = path_finder_ID
         self.request = request
         self.path_one = path_one

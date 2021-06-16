@@ -13,11 +13,9 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from itertools import islice
 
-
 GRAPH = nx.Graph()
 edges = []
 
-POSSIBLE_PATHS = []
 
 def set_graph_nodes():
     added_nodes = []
@@ -87,20 +85,26 @@ def process_path_resources(req, path):
             if current_node.nodeID == step:
                 if count < len(unmapped_functions):
                     if process_resources_node(current_node, unmapped_functions[count]):
-                        print("FUNCTION {} HAS BEEN MAPPED TO NODE {}".format(unmapped_functions[count], current_node.nodeID))
+                        print("FUNCTION {} HAS BEEN MAPPED TO NODE {}".format(unmapped_functions[count],
+                                                                              current_node.nodeID))
                         count += 1
                     else:
-                        print("NODE {} DOES NOT HAVE ENOUGH RESOURCES TO MAP FUNCTION {}".format(current_node.nodeID, unmapped_functions[count]))
+                        print("NODE {} DOES NOT HAVE ENOUGH RESOURCES TO MAP FUNCTION {}".format(current_node.nodeID,
+                                                                                                 unmapped_functions[
+                                                                                                     count]))
                         # needs to skip over to the next node in the path
                         continue
                 else:
                     break
+
 
 """
 @ process_resources_node(func, node)
 Smaller helper function that first checks if node has enough resources to map function.
 Then if yes, subtracts the resources taken by the function.
 """
+
+
 def process_resources_node(node, func):
     current_func = FuncObj.__getattr__(func)
     if node.compareCPU(current_func.value[0]) and node.compareRAM(current_func.value[1]) and node.compareBW(
@@ -116,18 +120,7 @@ def process_resources_node(node, func):
 def run():
     set_graph_nodes()
     set_graph_edges()
-    print("SETUP NODES AND EDGES")  # setup the graph
-
-    # paths = nx.all_simple_paths(GRAPH, "17", "19")
-    # print(list(paths))
-
-    # shortest_path = nx.shortest_path(GRAPH, "17", "19")
-    # print("<---------- SHORTEST PATH {} --------------->".format(shortest_path))
-
-    # Request 1;17;19;['F4', 'F6'];5
-    # path = ['17', '2', '23', '19']
-    # req = Request(1, '17', '19', ['F4', 'F6'], 5, 0)
-    # process_path_resources_node(req, path)
+    print("SETUP NODES AND EDGES\n")  # setup the graph
 
     print("<----------------ProcessPathing.py began processing all requests---------------->\n")
     for req in Request.StaticTotalRequestList:

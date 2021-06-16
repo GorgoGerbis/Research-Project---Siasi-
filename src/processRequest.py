@@ -8,55 +8,8 @@ from src.FuncObj import FuncObj
 # ToDo need to find a way to constantly feed the path that is currently being processed on.
 # Todo will need to find a way to accurately calculate the physical buffer size
 
-# Need these for path finding
-import networkx as nx
-import matplotlib.pyplot as plt
-from itertools import islice
 
-def dijsktra_mod(graph, start, end):
-    # shortest paths is a dict of nodes
-    # whose values is a tuple of (previous node, weight)
-    shortest_paths = {start: (None, 0)}
-    current_node = start
-    visited = set()  # <-- what does set() do?
-
-    weight = 0  # Defining this variable early
-    count = 0
-
-    while current_node != end:
-        visited.add(current_node)
-        destinations = graph.edges[current_node]
-        weight_to_current_node = shortest_paths[current_node][1]
-
-        for next_node in destinations:
-            # weight += graph.weights[(current_node, next_node)] + weight_to_current_node
-            count += 1
-            if next_node not in shortest_paths:
-                shortest_paths[next_node] = (current_node, weight)
-            else:
-                current_shortest_weight = shortest_paths[next_node][1]
-                if current_shortest_weight > weight:
-                    shortest_paths[next_node] = (current_node, weight)
-
-        next_destinations = {node: shortest_paths[node] for node in shortest_paths if node not in visited}
-
-        if not next_destinations:
-            return "Route Not Possible"
-        # next node is the destination with the lowest weight
-        current_node = min(next_destinations, key=lambda k: next_destinations[k][1])
-
-    # Work back through destinations in shortest path
-    path = []
-    while current_node is not None:
-        path.append(current_node)
-        next_node = shortest_paths[current_node][0]
-        current_node = next_node
-
-    # Reverse path
-    path = path[::-1]
-    return "Path: {} Weight: {}".format(path, weight)
-
-def find_path_one(req):
+def find_path_one():
     """
     WITHOUT FAILURE PROBABILITY
 
@@ -85,9 +38,14 @@ def find_path_two():
     """
     return
 
-if __name__ == '__main__':
+def dijkstra_shortest_path_with_resources(GRAPH, starting_node, ending_node):
+    visited_nodes = []
+    unvisited_nodes = STATIC_ALL_NODES
 
+    while(len(unvisited_nodes) > 0):    # While nodes remain unvisited
+        visit
+
+
+if __name__ == '__main__':
     print("<----------------ProcessPathing.py began processing all requests---------------->\n")
-    for req in Request.StaticTotalRequestList:
-        path_one = dijsktra_mod(GRAPH, 1, 18)
     print("<----------------ProcessPathing.py finished processing all requests---------------->\n")
