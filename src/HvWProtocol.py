@@ -8,9 +8,6 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from itertools import islice
 
-# ProcessPathing
-from src import ProcessPathing, outputData
-
 """
 "Head vs Wall" Protocol or HvWProtocol
 author: Jackson Walker
@@ -31,24 +28,25 @@ GRAPH = nx.Graph()
 edges = []
 
 
-def set_nodes():
-    visited_nodes = []
-
-    for node in NodeObj.StaticNodeList:
-        current_node_tup = (node.nodePosition[0], node.nodePosition[1])
-        if current_node_tup not in visited_nodes:
-            GRAPH.add_node(current_node_tup)
-            visited_nodes.append(current_node_tup)
-
-
 def set_edges():
     visited_links = []
 
     for link in NodeObj.StaticLinkList:
         current_link_tup = (int(link.linkSrc), int(link.linkDest), link.linkWeight)
         if current_link_tup not in visited_links:
-            # GRAPH.add_edge(current_link_tup)
-            visited_links.append(visited_links)
+            edges.append(current_link_tup)
+            GRAPH.add_edge(current_link_tup)
+            visited_links.append(current_link_tup)
+
+
+def set_nodes():
+    visited_nodes = []
+
+    for node in NodeObj.StaticNodeList:
+        current_node_id = int(node.nodeID)
+        if current_node_id not in visited_nodes:
+            GRAPH.add_node(current_node_id)
+            visited_nodes.append(current_node_id)
 
 
 if __name__ == '__main__':
