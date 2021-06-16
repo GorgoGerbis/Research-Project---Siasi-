@@ -1,7 +1,6 @@
 import os
 from src.Request import Request
 from src.FuncObj import FuncObj
-from src.Graph_Class import Graph
 
 # ProcessPathing
 import src.ProcessPathing

@@ -1,12 +1,12 @@
-from src.NodeObj import NodeObj
-
 
 class Request:
-    # Purpose of this class is to take in requests and calculate the amount of resources required as well as time delay
 
-    StaticTotalRequestList = []
-    staticApprovedRequestList = []
+    # Static lists keeping track of all incoming requests
+    STATIC_TOTAL_REQUEST_LIST = []
+    STATIC_APPROVED_REQUEST_LIST = []
+    STATIC_DENIED_REQUEST_LIST = []
 
+    # @ToDo Request states that I might honestly delete bc they're unused at the moment
     REQUEST_NEEDS_CALCULATING = 0
     REQUEST_ONGOING = 1
     REQUEST_DENIED = 2
@@ -22,5 +22,4 @@ class Request:
         self.request_delay_threshold = request_delay_threshold
 
     def __str__(self):
-        return "REQUEST NUMBER: {} REQUEST SOURCE: {} REQUESTED DESTINATION: {} REQUESTED FUNCTIONS: {} REQUESTED BANDWIDTH: {}".format(
-            self.requestID, self.source, self.destination, self.requestedFunctions, self.requestedBW)
+        return "REQUEST ID: {} SOURCE: {} DESTINATION: {} FUNCTIONS: {} BANDWIDTH: {} STATUS {} DELAY THRESHOLD: {}".format(self.requestID, self.source, self.destination, self.requestedFunctions, self.requestedBW, self.requestStatus, self.request_delay_threshold)

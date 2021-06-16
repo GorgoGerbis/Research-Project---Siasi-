@@ -7,7 +7,7 @@ from pygame.locals import KEYDOWN, K_q  # <--- was on the tutorial
 # ToDo should probably start writing some sort of documentation but thats future Jackson Work
 
 # MY OWN CLASSES
-import main as m
+# import main as m
 from src.NodeObj import NodeObj
 from src.LinkObj import LinkObj
 

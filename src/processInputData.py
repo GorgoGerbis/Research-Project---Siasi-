@@ -66,22 +66,6 @@ def processInputDataLink(filePath):
                 NodeObj.StaticLinkList.append(current_link)
 
 
-# def calcDistance(src, dest):
-#     if src is not None and dest is not None:
-#         x1 = src.nodePosition[0]
-#         x2 = dest.nodePosition[0]
-#         y1 = src.nodePosition[1]
-#         y2 = dest.nodePosition[1]
-#
-#         a = (int(x1) - int(x2)) ** 2
-#         b = (int(y1) - int(y2)) ** 2
-#
-#         d = (a + b) ** 0.5
-#         return d
-#     else:
-#         return 0
-
-
 def processInputDataRequests(filePath):
     with open(filePath) as fp:
         fp.readline()  # <-- This is so that it skips the first line
@@ -109,7 +93,7 @@ def processInputDataRequests(filePath):
 
                 r = Request(requestNum, srcNode, destNode, requestedFunctions, requestedBW, request_status, request_delay_threshold)
 
-                Request.StaticTotalRequestList.append(r)
+                Request.STATIC_TOTAL_REQUEST_LIST.append(r)
                 print("Request: {} has been created.".format(requestNum))
 
         print("All requests have been created.")
@@ -117,22 +101,22 @@ def processInputDataRequests(filePath):
 
 def processAllInputData():
     if os.path.isfile(NodeOpt):
-        print("NODE FILE PATH WORKS!")
+        print("INPUT_DATA_BOT: NODE FILE PATH WORKS!")
         processInputDataNode(NodeOpt)
-        print("NODE DATA FILE PROCESSED NODES CREATED!")
+        print("INPUT_DATA_BOT: NODE DATA FILE PROCESSED NODES CREATED!")
     else:
-        print("COULD NOT OPEN NODE FILE")
+        print("INPUT_DATA_BOT: COULD NOT OPEN NODE FILE")
 
     if os.path.isfile(LinkOpt):
-        print("LINK FILE PATH WORKS!")
+        print("INPUT_DATA_BOT: LINK FILE PATH WORKS!")
         processInputDataLink(LinkOpt)
-        print("LINK DATA FILE PROCESSED LINKS CREATED!")
+        print("INPUT_DATA_BOT: LINK DATA FILE PROCESSED LINKS CREATED!")
     else:
-        print("COULD NOT OPEN LINK FILE")
+        print("INPUT_DATA_BOT: COULD NOT OPEN LINK FILE")
 
     if os.path.isfile(auto_requests_Opt):
-        print("PROCESSING INPUT DATA REQUESTS!")
+        print("INPUT_DATA_BOT: PROCESSING INPUT DATA REQUESTS!")
         processInputDataRequests(auto_requests_Opt)
-        print("FINISHED PROCESSING ALL DATA REQUESTS!")
+        print("INPUT_DATA_BOT: FINISHED PROCESSING ALL DATA REQUESTS!")
     else:
-        print("COULD NOT OPEN REQUEST FILE")
+        print("INPUT_DATA_BOT: COULD NOT OPEN REQUEST FILE")
