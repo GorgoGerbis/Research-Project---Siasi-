@@ -1,6 +1,7 @@
 from src.NodeObj import NodeObj
 from src.FuncObj import FuncObj
 from src.LinkObj import LinkObj
+from src.Request import Request
 
 """
 @author: Jackson Walker
@@ -30,10 +31,9 @@ TURTLE = Meets all criteria for success EXCEPT, delay threshold. SHOULD BE NOTED
 POOR = Path is traversable but does not have enough resources
 STATE_UNKNOWN = The state of the path has yet to be determined.
 """
-from src.Request import Request
-
 BACKUP_PATHS = []  # PLACEHOLDER for list of all
 DELAY_THRESHOLD = 25
+OPTIMAL_PATH = ""
 
 STATE_UNKNOWN = 0
 POOR = 1
@@ -73,11 +73,12 @@ Return T/F depending on if the path has enough resources to map the function
 #     print("PATH STATE HAS BEEN SET!")
 
 # @Todo need to be eliminating paths that done meet the standards as they are being processed
+# @Todo need to remember to clear BACKUP_PATHS when finished processing request
 def set_path_state(path_obj):  # <-- This one DOES NOT use failure probability
     # Given a path must then determine and set the state of the path
     while path_obj.state == STATE_UNKNOWN:
         if calculate_path_resources(path_obj):
-            if calculate_path_speed(path_obj, path_obj.delay):
+            if calculate_path_speed(path_obj, DELAY_THRESHOLD):
                 BACKUP_PATHS.append(path_obj)
                 calculate_optimal_path()
             else:
@@ -90,24 +91,6 @@ def set_path_state(path_obj):  # <-- This one DOES NOT use failure probability
     print("PATH STATE HAS BEEN SET!")
 
 
-def calculate_path_failure(path, failure_threshold):
-    if path.failure <= failure_threshold:
-        return True
-    else:
-        return False
-
-
-def calculate_optimal_path():
-    for path in BACKUP_PATHS:
-        if path.optimal:
-            path.state = OPTIMAL
-            # BACKUP_PATHS.pop(path)   # Basically if a path is the best one then it
-            # gets set as the best one and removed from the PATHS list
-        else:
-            path.state = BACKUP
-
-
-##########################################################################################################################
 def calculate_path_resources(path_obj):
     """
     We can exit the loop and return something when we either:
@@ -226,16 +209,61 @@ def calculate_path_speed(path_obj, delay_threshold):
         return False
 
 
-# ToDo Temporary function I made to test out my methods in this class
-def temp_run(path_obj):
-    calculate_path_resources(path_obj)
-    calculate_path_speed(path_obj, DELAY_THRESHOLD)
-    print(path_obj)
+def calculate_path_failure(path, failure_threshold):
+    if path.failure <= failure_threshold:
+        return True
+    else:
+        return False
 
 
 ##########################################################################################################################
 
+
+def calculate_optimal_path():
+    """
+    Compares every single path that meets all the other specified criteria and finds
+    the shortest one.
+    """
+    if OPTIMAL_PATH == "":
+        current_best = BACKUP_PATHS[0]
+
+        for path_obj in BACKUP_PATHS:
+            if path_obj.DELAY < current_best.DELAY:
+                current_best = path_obj
+            elif path_obj.DELAY == current_best.DELAY:
+                if path_obj.COST < current_best.COST:
+                    current_best = path_obj
+
+        current_best.state = 5
+        PathObj.OPTIMAL_PATH = current_best.pathID
+
+    else:
+        reigning_best = PathObj.OPTIMAL_PATH
+
+        for path_obj in BACKUP_PATHS:
+            if path_obj.DELAY < reigning_best.DELAY:
+                reigning_best = path_obj
+            elif path_obj.DELAY == reigning_best.DELAY:
+                if path_obj.COST < reigning_best.COST:
+                    reigning_best = path_obj
+
+        reigning_best.state = 5
+        PathObj.OPTIMAL_PATH = reigning_best.pathID
+
+
+# ToDo Temporary function I made to test out my methods in this class
+def temp_run(path_obj):
+    set_path_state(path_obj)
+    print(OPTIMAL_PATH)
+    print("BOOBIES")
+
+
+##########################################################################################################################
+
+
 class PathObj:
+
+    StaticPathsList = []
 
     def __init__(self, pathID, route, state, REQ_INFO, MAPPING_LOCATION, DELAY, COST):
         """
@@ -254,11 +282,21 @@ class PathObj:
         self.DELAY = DELAY
         self.COST = COST
 
+        PathObj.StaticPathsList.append(self)
+
+    @staticmethod
+    def returnPath(id):
+        for p in PathObj.StaticPathsList:
+            if p.pathID == id:
+                return p
+
+
     def __str__(self):
-        return "Path ID: {} Route: {} State: {} REQ_FUNCTIONS: {} REQ_DELAY_THRESHOLD = {} PATH DELAY: {} PATH COST: {}".format(self.pathID,
-                                                                                                   self.route,
-                                                                                                   self.state,
-                                                                                                   self.REQ_INFO[0],
-                                                                                                   self.REQ_INFO[1],
-                                                                                                   self.DELAY,
-                                                                                                   self.COST)
+        return "Path ID: {} Route: {} State: {} REQ_FUNCTIONS: {} REQ_DELAY_THRESHOLD = {} PATH DELAY: {} PATH COST: {}".format(
+            self.pathID,
+            self.route,
+            self.state,
+            self.REQ_INFO[0],
+            self.REQ_INFO[1],
+            self.DELAY,
+            self.COST)
