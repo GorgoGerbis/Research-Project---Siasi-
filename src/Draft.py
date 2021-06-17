@@ -61,11 +61,20 @@ def set_path_state(path):
     print("PATH STATE HAS BEEN SET!")
 
 
-def calculate_path_resources(path):
-    if path.resources:
-        return True
-    else:
+# Function that returns True if the path has enough resources and false if not
+def calculate_path_resources(path_obj):
+    route = path_obj.route
+    funcs = path_obj.REQ_INFO[0]
+    dest = path_obj.route[-1]   # Retrieves the last element in the route list
+
+    if len(funcs) > len(route):     # Immediately checks to see if we have enough nodes to map
         return False
+    else:
+        for step in route:
+            # NEED to put an if statement or something here that basically says,
+            # as long as the current step isn't the destination and as long as
+            # we have functions to map continue...
+            current_node = NodeObj.returnNode(step)
 
 
 def calculate_path_speed(path, delay_threshold):

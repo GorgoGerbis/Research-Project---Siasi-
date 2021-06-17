@@ -24,8 +24,12 @@ def processInputDataNode(filePath):
             currentElements = line.split(';')
 
             # This is so the resources are seperated into a list
-            resources = currentElements.pop(4)
-            resources = resources.strip('][').split(', ')
+            temp_resources = currentElements.pop(4)
+            temp_resources = temp_resources.strip('][').split(', ')
+            resources = []
+
+            for i in temp_resources:
+                resources.append(int(i))
 
             id = currentElements[0]
             position = [currentElements[1], currentElements[2]]

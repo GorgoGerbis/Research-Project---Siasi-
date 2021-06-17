@@ -1,12 +1,17 @@
 import os
 from src.NodeObj import NodeObj
 from src.Request import Request
-from src import processInputData
+from src.PathObj import PathObj
+from src import ProcessInputData
 
 # Need these for path finding
 import networkx as nx
 import matplotlib.pyplot as plt
 from itertools import islice
+
+#ToDo TESTING PURPOSES
+from src.PathObj import temp_run
+#ToDo TESTING PURPOSES
 
 """
 "Head vs Wall" Protocol or HvWProtocol
@@ -26,6 +31,7 @@ Head vs Wall is the nickname I gave to this protocol. Works as follows.
 # Variables to set up graph for network
 GRAPH = nx.Graph()
 edges = []
+
 
 def set_edges():
     visited_links = []
@@ -49,24 +55,42 @@ def set_nodes():
             visited_nodes.append(current_node_id)
 
 
+def remove_inadequate_paths(p, r):
+    if len(p) < len(r.requestedFunctions):
+        return False
+    else:
+        return True
+
+
 if __name__ == '__main__':
     print("Begin Processing requests using: 'Head vs. Wall' Protocol\n")
 
     print("BEGIN PROCESSING INPUT DATA\n")
-    processInputData.processAllInputData()
+    ProcessInputData.processAllInputData()
     print("INPUT DATA PROCESSED\n")
 
-    print("CREATING GRAPH\n")
-    # set_nodes()   # I want to maybe play around with the attributes so I might still need this
     set_edges()
     GRAPH.add_edges_from(edges)
-    print("GRAPH CREATED\n")
+    # set_nodes()  # I want to maybe play around with the attributes so I might still need this Todo Need to fix set_nodes()
 
     nx.draw(GRAPH, with_labels=True, font_weight='bold')
-    plt.show()  # Need to figure out why I need this in order to stop the graph from disappearing
+    plt.show()  # ToDo Need to figure out why I need this in order to stop the graph from disappearing
 
-    for req in Request.STATIC_TOTAL_REQUEST_LIST:
-        print("BEGUN PROCESSING REQUEST: {}\n".format(req.requestID))
+    ############# SETUP IS NOW OVER WE CAN BEGIN PROCESSING ##############
+
+    for req in Request.STATIC_TOTAL_REQUEST_LIST:   # STEP ONE
+        print("BEGUN PROCESSING REQUEST: {} Source: {} Destination {} Functions: {}\n".format(req.requestID, req.source, req.destination, req.requestedFunctions))
+
+        count = 1  # Needs to be reset to 1 when a new request is being processed
+
+        current_request_data = [req.requestedFunctions, req.request_delay_threshold]    # Can add to this later as needed
         current_request_all_possible_paths = nx.all_simple_paths(GRAPH, req.source, req.destination)
-        # for path in current_request_all_possible_paths:
-        #     print(path)
+
+        for path in current_request_all_possible_paths:     # STEP TWO
+            if remove_inadequate_paths(path, req):  # Only paths who have enough nodes for mapping can move forward
+                count += 1
+                pathID = "R{}P{}".format(req.requestID, count)  # Ex: Given request 4 and path 20 would be: R4P20
+                new_path_obj = PathObj(pathID, path, 0, current_request_data)     # ToDo should make a static list of all paths being processed for a single request
+
+                ############## TESTING ###############
+                temp_run(new_path_obj)
