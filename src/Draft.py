@@ -21,81 +21,21 @@ POOR = Path is traversable but does not have enough resources
 STATE_UNKNOWN = The state of the path has yet to be determined.
 """
 
-BACKUP_PATHS = []  # PLACEHOLDER for list of all
 
-STATE_UNKNOWN = 0
-POOR = 1
-TURTLE = 2
-FLUNK = 3
-BACKUP = 4
-OPTIMAL = 5
+# ToDo I should make some help functions that retrieve all the links and nodes being used in a path.
 
-"""
-For this method I assume the following:
-The path parameter is traversable.
-The path has enough nodes to map one function per node.
-A node can have multiple functions mapped to it but it cannot map multiple functions from the same request.
+def get_all_used(path):
+    links_to_get = []
 
-Return T/F depending on if the path has enough resources to map the function
-"""
+    for i in range(len(path) - 1):
+        duo = [path[i], path[i + 1]]
+        links_to_get.append(duo)
+        i += 1
+
+    return links_to_get
 
 
-def set_path_state(path):
-    # Given a path must then determine and set the state of the path
-    while path.state == STATE_UNKNOWN:
-        if calculate_path_resources(path):
-            if calculate_path_speed(path, path.delay):
-                if calculate_path_failure(path, path.fail):
-                    BACKUP_PATHS.append(path)
-                    calculate_optimal_path()
-                else:
-                    print("PATH FAILURE PROBABILITY IS TOO HIGH")
-                    path.state = FLUNK
-            else:
-                print("PATH IS TOO SLOW")
-                path.state = TURTLE
-        else:
-            print("PATH DOES NOT HAVE ENOUGH RESOURCES")
-            path.state = POOR
-
-    print("PATH STATE HAS BEEN SET!")
-
-
-# Function that returns True if the path has enough resources and false if not
-def calculate_path_resources(path_obj):
-    route = path_obj.route
-    funcs = path_obj.REQ_INFO[0]
-    dest = path_obj.route[-1]   # Retrieves the last element in the route list
-
-    if len(funcs) > len(route):     # Immediately checks to see if we have enough nodes to map
-        return False
-    else:
-        for step in route:
-            # NEED to put an if statement or something here that basically says,
-            # as long as the current step isn't the destination and as long as
-            # we have functions to map continue...
-            current_node = NodeObj.returnNode(step)
-
-
-def calculate_path_speed(path, delay_threshold):
-    if path.speed <= delay_threshold:
-        return True
-    else:
-        return False
-
-
-def calculate_path_failure(path, failure_threshold):
-    if path.failure <= failure_threshold:
-        return True
-    else:
-        return False
-
-
-def calculate_optimal_path():
-    for path in BACKUP_PATHS:
-        if path.optimal:
-            path.state = OPTIMAL
-            # BACKUP_PATHS.pop(path)   # Basically if a path is the best one then it
-            # gets set as the best one and removed from the PATHS list
-        else:
-            path.state = BACKUP
+if __name__ == '__main__':
+    path = ['17', '15', '8', '21', '10']
+    output = get_all_used(path)
+    print(output)

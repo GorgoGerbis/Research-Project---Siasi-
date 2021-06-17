@@ -1,7 +1,7 @@
 """
 @author: Jackson Walker
-Node resources: [CPU, RAM, Physical buffer size]
 """
+
 
 # Different node statuses:
 OFFLINE = 0
@@ -65,10 +65,10 @@ class NodeObj:
         if self.compareCPU(c) and self.compareRAM(r) and self.compareBW(b):
             # self.map_function(c, r, b) #ToDo <----DONT FORGET TO COMMENT THIS LINE OUT OR EVERYTHING IS GOING TO BE MAPPED.
             print("NODE {} DOES HAVE SUFFICIENT RESOURCES TO MAP FUNCTION {}\n".format(self.nodeID, func))
-            return 0
+            return True
         else:
             print("NODE {} DOES NOT HAVE SUFFICIENT RESOURCES TO MAP FUNCTION {}\n".format(self.nodeID, func))
-            return 1
+            return False
 
     # This method has to be static so that it can be accessed everywhere basically just a helper function
     @staticmethod

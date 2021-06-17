@@ -1,9 +1,9 @@
 from src.NodeObj import NodeObj
 
 
-class LinkObj(NodeObj):  # Most likely need to make this a subclass of NodeObj
+class LinkObj(NodeObj):  # <-- This means its a subclass of NodeObj right?
 
-    def __init__(self, linkID, linkSrc, linkDest, linkBW, linkED, linkEC, linkWeight):
+    def __init__(self, linkID, linkSrc, linkDest, linkBW, linkED, linkEC, linkWeight):  # ToDo What was the difference between linkEC and linkWeight?
         self.linkID = linkID
         self.linkSrc = linkSrc
         self.linkDest = linkDest
@@ -28,18 +28,17 @@ class LinkObj(NodeObj):  # Most likely need to make this a subclass of NodeObj
 
     def check_enough_resources(self, req_bw):
         if self.compareBW(req_bw):
-            self.map_request(req_bw)
-            print("LINK HAS BEEN TRAVERSED")
-            return 0
+            # self.map_request(req_bw)
+            print("LINK HAS ENOUGH RESOURCES FOR TRAVERSAL")
+            return True
         else:
-            print("NOT ENOUGH RESOURCES FOR TRAVERSAL")
-            return 1
+            print("LINK DOES NOT ENOUGH RESOURCES FOR TRAVERSAL")
+            return False
 
-    # This method has to be static so that it can be accessed everywhere basically just a helper function
     @staticmethod
-    def returnLink(link_id):
+    def returnLink(src, dest):
         for link in NodeObj.StaticLinkList:
-            if link.linkID == link_id:
+            if (link.linkSrc == src and link.linkDest == dest) or (link.linkSrc == dest and link.linkDest == src):
                 return link
 
     def __str__(self):

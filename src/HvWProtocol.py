@@ -90,7 +90,7 @@ if __name__ == '__main__':
             if remove_inadequate_paths(path, req):  # Only paths who have enough nodes for mapping can move forward
                 count += 1
                 pathID = "R{}P{}".format(req.requestID, count)  # Ex: Given request 4 and path 20 would be: R4P20
-                new_path_obj = PathObj(pathID, path, 0, current_request_data)     # ToDo should make a static list of all paths being processed for a single request
+                new_path_obj = PathObj(pathID, path, 0, current_request_data, {}, 0, 0)     # ToDo should make a static list of all paths being processed for a single request
 
                 ############## TESTING ###############
                 temp_run(new_path_obj)
