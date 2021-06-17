@@ -33,14 +33,7 @@ STATE_UNKNOWN = The state of the path has yet to be determined.
 """
 BACKUP_PATHS = []  # PLACEHOLDER for list of all
 DELAY_THRESHOLD = 25
-OPTIMAL_PATH = ""
-
-STATE_UNKNOWN = 0
-POOR = 1
-TURTLE = 2
-FLUNK = 3
-BACKUP = 4
-OPTIMAL = 5
+OPTIMAL_PATH_SET = False
 
 """
 For this method I assume the following:
@@ -52,47 +45,27 @@ Return T/F depending on if the path has enough resources to map the function
 """
 
 
-# def set_path_state(path_obj):  # <-- This one uses Failure probability
-#     # Given a path must then determine and set the state of the path
-#     while path_obj.state == STATE_UNKNOWN:
-#         if calculate_path_resources(path_obj):
-#             if calculate_path_speed(path_obj, path_obj.delay):
-#                 if calculate_path_failure(path_obj, path_obj.fail):
-#                     BACKUP_PATHS.append(path_obj)
-#                     calculate_optimal_path()
-#                 else:
-#                     print("PATH FAILURE PROBABILITY IS TOO HIGH")
-#                     path_obj.state = FLUNK
-#             else:
-#                 print("PATH IS TOO SLOW")
-#                 path_obj.state = TURTLE
-#         else:
-#             print("PATH DOES NOT HAVE ENOUGH RESOURCES")
-#             path_obj.state = POOR
-#
-#     print("PATH STATE HAS BEEN SET!")
-
 # @Todo need to be eliminating paths that done meet the standards as they are being processed
 # @Todo need to remember to clear BACKUP_PATHS when finished processing request
 def set_path_state(path_obj):  # <-- This one DOES NOT use failure probability
     # Given a path must then determine and set the state of the path
-    while path_obj.state == STATE_UNKNOWN:
+    if path_obj.state == STATE_UNKNOWN:
         if calculate_path_resources(path_obj):
             if calculate_path_speed(path_obj, DELAY_THRESHOLD):
                 BACKUP_PATHS.append(path_obj)
-                calculate_optimal_path()
             else:
-                print("PATH IS TOO SLOW")
                 path_obj.state = TURTLE
         else:
-            print("PATH DOES NOT HAVE ENOUGH RESOURCES")
             path_obj.state = POOR
 
-    print("PATH STATE HAS BEEN SET!")
+    # print("PATH {} STATE HAS BEEN SET TO: {}".format(path_obj.pathID, path_obj.state))
 
 
 def calculate_path_resources(path_obj):
     """
+    ToDo need to implement a way for multiple nodes to be mapped to a single function.
+    ToDo Need to also factor in link resources as well.
+
     We can exit the loop and return something when we either:
     1) Know that the path DOES have enough resources, return True.
     2) Know that for whatever reason our functions CANNOT be mapped to the nodes on the path, return False.
@@ -113,11 +86,11 @@ def calculate_path_resources(path_obj):
         if len(funcs_mapped) == len(funcs_to_map):  # <--- Means we've mapped all the functions
             return True
         elif step == dest and len(funcs_mapped) < len(funcs_to_map):
+            path_obj.state = POOR
             return False
         else:
             current_node = NodeObj.returnNode(step)  # Retrieves the current requested node for comparison
-            current_func = FuncObj.retrieve_function_value(
-                funcs_to_map[func_count])  # Retrieves the current requested function
+            current_func = FuncObj.retrieve_function_value(funcs_to_map[func_count])  # Retrieves the current requested function
 
             if current_node.check_enough_resources(current_func):
                 # If the current node has enough resources...
@@ -125,8 +98,11 @@ def calculate_path_resources(path_obj):
                 func_count += 1
                 funcs_mapped.append(current_func)
                 path_obj.MAPPING_LOCATION.setdefault(step, current_func)
-                continue  # We continue on the path.
-                # ToDo need to implement a way for multiple nodes to be mapped to a single function
+                # continue  # We continue on the path.
+            else:
+                if step == dest:
+                    path_obj.state = POOR
+                    return False
 
 
 def calculate_path_speed(path_obj, delay_threshold):
@@ -216,15 +192,12 @@ def calculate_path_failure(path, failure_threshold):
         return False
 
 
-##########################################################################################################################
-
-
 def calculate_optimal_path():
     """
     Compares every single path that meets all the other specified criteria and finds
     the shortest one.
     """
-    if OPTIMAL_PATH == "":
+    if not OPTIMAL_PATH_SET:
         current_best = BACKUP_PATHS[0]
 
         for path_obj in BACKUP_PATHS:
@@ -235,10 +208,10 @@ def calculate_optimal_path():
                     current_best = path_obj
 
         current_best.state = 5
-        PathObj.OPTIMAL_PATH = current_best.pathID
+        PathObj.OPTIMAL_PATH_SET = True
 
     else:
-        reigning_best = PathObj.OPTIMAL_PATH
+        reigning_best = PathObj.returnOptimalPath(BACKUP_PATHS)
 
         for path_obj in BACKUP_PATHS:
             if path_obj.DELAY < reigning_best.DELAY:
@@ -248,17 +221,31 @@ def calculate_optimal_path():
                     reigning_best = path_obj
 
         reigning_best.state = 5
-        PathObj.OPTIMAL_PATH = reigning_best.pathID
-
-
-# ToDo Temporary function I made to test out my methods in this class
-def temp_run(path_obj):
-    set_path_state(path_obj)
-    print(OPTIMAL_PATH)
-    print("BOOBIES")
+        PathObj.OPTIMAL_PATH_SET = True
 
 
 ##########################################################################################################################
+
+
+# ToDo Temporary function I made to test out my methods in this class
+def temp_run(paths):
+    for path in paths:
+        set_path_state(path)
+
+    calculate_optimal_path()
+    print(PathObj.returnOptimalPath(BACKUP_PATHS))
+    PathObj.StaticPathsList.clear()
+
+
+##########################################################################################################################
+
+# Path Object States
+STATE_UNKNOWN = 0
+POOR = 1
+TURTLE = 2
+FLUNK = 3
+BACKUP = 4
+OPTIMAL = 5
 
 
 class PathObj:
@@ -285,11 +272,16 @@ class PathObj:
         PathObj.StaticPathsList.append(self)
 
     @staticmethod
+    def returnOptimalPath(backup_paths_list):
+        for path in backup_paths_list:
+            if path.state == OPTIMAL:
+                return path
+
+    @staticmethod
     def returnPath(id):
         for p in PathObj.StaticPathsList:
             if p.pathID == id:
                 return p
-
 
     def __str__(self):
         return "Path ID: {} Route: {} State: {} REQ_FUNCTIONS: {} REQ_DELAY_THRESHOLD = {} PATH DELAY: {} PATH COST: {}".format(

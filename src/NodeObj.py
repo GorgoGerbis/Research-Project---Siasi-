@@ -36,21 +36,21 @@ class NodeObj:
     def compareCPU(self, cpu):
         # Returns True if you have enough resources
         if self.nodeResources[0] >= cpu:
-            print("{} >= {}".format(self.nodeResources[0], cpu))
+            # print("{} >= {}".format(self.nodeResources[0], cpu))
             return True
         else:
             return False
 
     def compareRAM(self, ram):
         if self.nodeResources[1] >= ram:
-            print("{} >= {}".format(self.nodeResources[1], ram))
+            # print("{} >= {}".format(self.nodeResources[1], ram))
             return True
         else:
             return False
 
     def compareBW(self, bw):
         if self.nodeResources[2] >= bw:
-            print("{} >= {}".format(self.nodeResources[2], bw))
+            # print("{} >= {}".format(self.nodeResources[2], bw))
             return True
         else:
             return False
@@ -64,10 +64,10 @@ class NodeObj:
         c, r, b = func.value[0], func.value[1], func.value[2]
         if self.compareCPU(c) and self.compareRAM(r) and self.compareBW(b):
             # self.map_function(c, r, b) #ToDo <----DONT FORGET TO COMMENT THIS LINE OUT OR EVERYTHING IS GOING TO BE MAPPED.
-            print("NODE {} DOES HAVE SUFFICIENT RESOURCES TO MAP FUNCTION {}\n".format(self.nodeID, func))
+            # print("NODE {} DOES HAVE SUFFICIENT RESOURCES TO MAP FUNCTION {}\n".format(self.nodeID, func))
             return True
         else:
-            print("NODE {} DOES NOT HAVE SUFFICIENT RESOURCES TO MAP FUNCTION {}\n".format(self.nodeID, func))
+            # print("NODE {} DOES NOT HAVE SUFFICIENT RESOURCES TO MAP FUNCTION {}\n".format(self.nodeID, func))
             return False
 
     # This method has to be static so that it can be accessed everywhere basically just a helper function
