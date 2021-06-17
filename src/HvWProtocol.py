@@ -20,12 +20,13 @@ author: Jackson Walker
 Head vs Wall is the nickname I gave to this protocol. Works as follows.
 
 1) Takes in request and begins processing.
-2) Gather every single possible traversable path from point a to b.
+2) Gather every single possible traversable path from point a to b and turn
+    them into PathObj objects.
 3) Begin the process of combing through each path separating the ones 
    that meet the required criteria for success and those that don't.
-4) Successful paths are then put into a list where they are then
-   turned into 'PathObj' objects.
-5) Sort these 'PathObj' objects and find the most optimum path.
+4) Successful paths are then put into a list of backup paths.
+5) Sort through BACKUP_PATHS and find the most optimum path.
+6) Map that path to the network.
 """
 
 # Variables to set up graph for network
@@ -82,7 +83,6 @@ if __name__ == '__main__':
         print("BEGUN PROCESSING REQUEST: {} Source: {} Destination {} Functions: {}\n".format(req.requestID, req.source, req.destination, req.requestedFunctions))
 
         count = 1  # Needs to be reset to 1 when a new request is being processed
-
         current_request_data = [req.requestedFunctions, req.request_delay_threshold]    # Can add to this later as needed
         current_request_all_possible_paths = nx.all_simple_paths(GRAPH, req.source, req.destination)
 
@@ -91,6 +91,12 @@ if __name__ == '__main__':
                 pathID = "R{}P{}".format(req.requestID, count)  # Ex: Given request 4 and path 20 would be: R4P20
                 new_path_obj = PathObj(pathID, path, 0, current_request_data, {}, 0, 0)     # ToDo should make a static list of all paths being processed for a single request
                 count += 1
+            else:
+                continue
 
         ############## TESTING ###############
-        temp_run(PathObj.StaticPathsList)
+        temp_run(PathObj.StaticPathsList, req)   # <--- Step 3, 4 and 5 starts here
+
+    print("ALL DONE FINDING FIRST PATHS\n")
+    print(PathObj.StaticOptimalPathsList)
+    print("Oh word?")
