@@ -42,19 +42,10 @@ FLUNK = 3
 BACKUP = 4
 OPTIMAL = 5
 
-"""
-For this method I assume the following:
-The path parameter is traversable.
-The path has enough nodes to map one function per node.
-A node can have multiple functions mapped to it but it cannot map multiple functions from the same request.
-
-Return T/F depending on if the path has enough resources to map the function
-"""
-
 
 # @Todo need to be eliminating paths that done meet the standards as they are being processed
 # @Todo need to remember to clear BACKUP_PATHS when finished processing request
-def set_path_state(path_obj):  # <-- This one DOES NOT use failure probability
+def set_path_state_PATHONE(path_obj):  # <-- This one DOES NOT use failure probability
     # Given a path must then determine and set the state of the path
     if path_obj.state == STATE_UNKNOWN:
         if calculate_path_resources(path_obj):
@@ -64,8 +55,6 @@ def set_path_state(path_obj):  # <-- This one DOES NOT use failure probability
                 path_obj.state = TURTLE
         else:
             path_obj.state = POOR
-
-    # print("PATH {} STATE HAS BEEN SET TO: {}".format(path_obj.pathID, path_obj.state))
 
 
 def calculate_path_resources(path_obj):
@@ -102,7 +91,7 @@ def calculate_path_resources(path_obj):
                 path_obj.state = POOR
                 return False
         else:
-            current_node = step    # First we must determine if mapping is even possible
+            current_node = step  # First we must determine if mapping is even possible
             # print("Node ID: {} Status: {}".format(current_node.nodeID, current_node.status))
 
             if current_node.status == 'O':
@@ -111,7 +100,7 @@ def calculate_path_resources(path_obj):
             elif current_node.status == 'R':
                 print("MAPPING ON NODE {} IS NOT POSSIBLE, RELAY TO NEXT NODE IN PATH".format(current_node.nodeID))
                 continue
-            else:   # Next we need to determine if a node has enough resources for mapping and how many it can handle
+            else:  # Next we need to determine if a node has enough resources for mapping and how many it can handle
                 temp_mappable_funcs = current_node.how_many_functions_mappable(funcs_to_map)
 
                 if len(temp_mappable_funcs) == 0 and step == end_node and len(funcs_to_map) > 0:
@@ -120,20 +109,23 @@ def calculate_path_resources(path_obj):
 
                 elif len(temp_mappable_funcs) == 1:
                     temp_func_list = []
-                    current_func = FuncObj.retrieve_function_value(funcs_to_map.pop(0))  # Retrieves the current requested function
+                    current_func = FuncObj.retrieve_function_value(
+                        funcs_to_map.pop(0))  # Retrieves the current requested function
                     funcs_mapped.append(current_func)
                     temp_func_list.append(current_func)
                     path_obj.MAPPING_LOCATION.append([current_node, temp_func_list])
                     func_count += 1
 
-                else:   # <---- len(temp_mappable_funcs) > 1
+                else:  # <---- len(temp_mappable_funcs) > 1
                     temp_func_list = []
-                    for i in range(len(temp_mappable_funcs)-1):
-                        current_func = FuncObj.retrieve_function_value(funcs_to_map.pop(0))  # Retrieves the current requested function
+                    for i in range(len(temp_mappable_funcs) - 1):
+                        current_func = FuncObj.retrieve_function_value(
+                            funcs_to_map.pop(0))  # Retrieves the current requested function
                         funcs_mapped.append(current_func)
                         temp_func_list.append(current_func)
                         func_count += 1
                     path_obj.MAPPING_LOCATION.append([current_node, temp_func_list])
+
 
 def calculate_path_speed(path_obj, delay_threshold):
     """
@@ -256,11 +248,8 @@ def calculate_optimal_path():
         PathObj.OPTIMAL_PATH_SET = True
 
 
-##########################################################################################################################
-
-
 def map_path(path_obj):
-    if path_obj.state == OPTIMAL:   # Checks to make sure we are mapping the optimal path
+    if path_obj.state == OPTIMAL:  # Checks to make sure we are mapping the optimal path
         print("MAPPING PATH {}\n".format(path_obj.pathID))
         fused_list = PathObj.create_fusion_obj_list(path_obj.route)
         mapping_list = path_obj.MAPPING_LOCATION
@@ -280,24 +269,21 @@ def map_path(path_obj):
                         used_node.map_function_obj(f)
 
 
-# ToDo Temporary function I made to test out my methods in this class
-def temp_run(paths, req):
+def run(paths, req):
     for path in paths:
-        set_path_state(path)
+        set_path_state_PATHONE(path)
 
     calculate_optimal_path()
-    optimal_path = PathObj.returnOptimalPath(PathObj.BACKUP_PATHS)
-    tup = (req, optimal_path)
 
+    optimal_path = PathObj.returnOptimalPath(PathObj.BACKUP_PATHS)
     map_path(optimal_path)
 
+    optimal_string = "| REQUEST: {} FUNCTIONS: {} | OPTIMAL PATH = {} ROUTE: {} DELAY={} COST={} ".format(req.requestID, req.requestedFunctions, optimal_path.pathID, optimal_path.route, optimal_path.DELAY, optimal_path.COST)
+    PathObj.StaticOptimalPathsList.append(optimal_string)
+
     # Data cleanup process
-    PathObj.StaticOptimalPathsList.append(tup)
     PathObj.BACKUP_PATHS.clear()
     PathObj.StaticPathsList.clear()
-
-
-##########################################################################################################################
 
 
 class PathObj:
@@ -358,4 +344,5 @@ class PathObj:
                 return p
 
     def __str__(self):
-        return "Path ID: {} Route: {} State: {} REQ_FUNCTIONS: {} REQ_DELAY_THRESHOLD = {} PATH DELAY: {} PATH COST: {}\n".format(self.pathID, self.route, self.state, self.REQ_INFO[0], self.REQ_INFO[1], self.DELAY, self.COST)
+        return "Path ID: {} Route: {} State: {} REQ_FUNCTIONS: {} REQ_DELAY_THRESHOLD = {} PATH DELAY: {} PATH COST: {}\n".format(
+            self.pathID, self.route, self.state, self.REQ_INFO[0], self.REQ_INFO[1], self.DELAY, self.COST)

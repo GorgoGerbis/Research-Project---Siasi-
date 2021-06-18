@@ -112,24 +112,6 @@ def create_fusion_list(path):
     return output_list
 
 
-def create_fusion_list_recent(path):
-    links_to_get = []
-    output_list = []
-
-    for i in range(len(path) - 1):
-        duo = [path[i], path[i + 1]]
-        links_to_get.append(duo)
-        i += 1
-
-    for n in path:
-        output_list.append(n)
-        if len(links_to_get) != 0:
-            l = links_to_get.pop(0)
-            output_list.append(l)
-
-    return output_list
-
-
 if __name__ == '__main__':
     path = ['17', '15', '8', '21', '10']
     output = create_fusion_list(path)

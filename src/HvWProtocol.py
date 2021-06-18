@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 from itertools import islice
 
 #ToDo TESTING PURPOSES
-from src.PathObj import temp_run
+from src.PathObj import run
 #ToDo TESTING PURPOSES
 
 """
@@ -96,8 +96,9 @@ if __name__ == '__main__':
                 continue
 
         ############## TESTING ###############
-        temp_run(PathObj.StaticPathsList, req)   # <--- Step 3, 4 and 5 starts here
+        run(PathObj.StaticPathsList, req)   # <--- Step 3, 4 and 5 starts here
 
     print("ALL DONE FINDING FIRST PATHS\n")
-    print(PathObj.StaticOptimalPathsList)
+    for op in PathObj.StaticOptimalPathsList:
+        print(op+" | PATH ONE | WITHOUT FAULT TOLERANCE |\n")
     print("END\n")
