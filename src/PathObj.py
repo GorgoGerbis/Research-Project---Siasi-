@@ -97,13 +97,13 @@ class PathObj:
             self.FAILURE_PROBABILITY = 0
         else:
             for element in PathObj.current_path_failures:
-                #['21', <bound method NodeObj.calculate_failure of <src.NodeObj.NodeObj object at 0x0000027C6981B3A0>>]
-                obj_failures = element[1]
+                obj_failures += element[1]
 
             avg_failure_rate = obj_failures/num_trials
             output = (avg_failure_rate + 1) / (num_trials + 2)
 
-            self.FAILURE_PROBABILITY = output
+            # self.FAILURE_PROBABILITY = output
+            self.FAILURE_PROBABILITY = avg_failure_rate
 
     @staticmethod
     def create_fusion_obj_list(path):

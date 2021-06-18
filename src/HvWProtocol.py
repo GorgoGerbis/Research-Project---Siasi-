@@ -85,12 +85,12 @@ if __name__ == '__main__':
 
         for path in current_request_all_possible_paths:     # STEP TWO
             pathID = "R{}P{}".format(req.requestID, count)  # Ex: Given request 4 and path 20 would be: R4P20
-            new_path_obj = PathObj(pathID, path, 0, current_request_data, [], 0, 0, 0, 1)  # ToDo should make a static list of all paths being processed for a single request
+            new_path_obj = PathObj(pathID, path, 0, current_request_data, [], 0, 0, 0, 2)  # ToDo should make a static list of all paths being processed for a single request
             count += 1
 
         ############## TESTING ###############
-        RUN_PATH_ONE(PathObj.StaticPathsList, req)   # <--- Step 3, 4 and 5 starts here
-        # RUN_PATH_TWO(PathObj.StaticPathsList, req)
+        # RUN_PATH_ONE(PathObj.StaticPathsList, req)   # <--- Step 3, 4 and 5 starts here
+        RUN_PATH_TWO(PathObj.StaticPathsList, req)
 
     print("ALL DONE FINDING FIRST PATHS\n")
     for op in PathObj.StaticOptimalPathsList:
