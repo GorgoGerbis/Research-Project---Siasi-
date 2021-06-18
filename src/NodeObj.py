@@ -1,8 +1,11 @@
 from src.FuncObj import FuncObj
+import random
 """
 @author: Jackson Walker
 """
 
+# ToDo Need to make a method returning these values so only need to edit FuncObj.py when adding a new function.
+FUNCTION_COSTS = [[1, 1, 1], [2, 2, 2], [3, 3, 3], [4, 4, 4], [5, 5, 5], [6, 6, 6]]
 
 class NodeObj:
     # BE CAREFUL WHEN CHANGING THINGS IN THIS CLASS ITS USED EVERYWHERE
@@ -37,26 +40,12 @@ class NodeObj:
                 neighbors.append(n)
         return neighbors
 
-    def check_mappable(self):
-        """
-        Purpose of this method is to see if a particular
-        node has enough resources to map any functions.
-        Checks the given nodes available resources and then
-        compares them to the cost of each function.
-
-        :return: True if mapping is still possible and False if not.
-        """
-        return True
-
-    # ToDo need to figure out when and how often the status of a node is checked
-    def get_status(self):
-        cpu = self.nodeResources[0]
-        ram = self.nodeResources[1]
-        bw = self.nodeResources[2]
-
+    def get_status(self): # ToDo need to figure out when and how often the status of a node is checked
         if self.check_isolated():
             self.status = "O"
-        elif cpu <= 0 or ram <= 0 or bw <= 0:
+        elif self.check_mappable():
+            self.status = "A"
+        else:
             self.status = "R"
 
     def check_isolated(self):
@@ -149,14 +138,41 @@ class NodeObj:
             # print("NODE {} DOES NOT HAVE SUFFICIENT RESOURCES TO MAP FUNCTION {}\n".format(self.nodeID, func))
             return False
 
-    @staticmethod
-    def calculate_failure_probability(self):
+    def check_mappable(self):
+        """
+        Purpose of this method is to see if a particular
+        node has enough resources to map any functions.
+        Checks the given nodes available resources and then
+        compares them to the cost of each function.
+
+        :return: True if mapping is still possible and False if not.
+        """
+        costs = FUNCTION_COSTS
+        mappable = 0
+
+        for func in costs:
+            c = func[0]
+            r = func[1]
+            b = func[2]
+
+            if self.HELPER_check_enough_resources(c, r, b):
+                mappable += 1
+
+        if mappable > 0:
+            return True
+        else:
+            return False
+
+    def calculate_failure(self):
         """
         calculate whether or not a node has failed.
         :param self:
-        :return:
+        :return: True if success, False if failed
         """
-        return
+        number_of_failures = self.failure_probability
+        number_of_trials = 10
+        fail_rate = (number_of_failures + 1) / (number_of_trials + 2)
+        return fail_rate
 
     @staticmethod
     def returnNode(node_id):

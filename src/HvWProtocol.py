@@ -1,17 +1,17 @@
 import os
+from src import ProcessInputData
 from src.NodeObj import NodeObj
 from src.Request import Request
 from src.PathObj import PathObj
-from src import ProcessInputData
 
-# Need these for path finding
+from src.ProcessPathing import RUN_PATH_ONE
+from src.ProcessPathing import RUN_PATH_TWO
+
+# Need these for path finding and graphing
 import networkx as nx
 import matplotlib.pyplot as plt
 from itertools import islice
 
-#ToDo TESTING PURPOSES
-from src.PathObj import run
-#ToDo TESTING PURPOSES
 
 """
 "Head vs Wall" Protocol or HvWProtocol
@@ -90,13 +90,14 @@ if __name__ == '__main__':
         for path in current_request_all_possible_paths:     # STEP TWO
             if remove_inadequate_paths(path, req):  # Only paths who have enough nodes for mapping can move forward
                 pathID = "R{}P{}".format(req.requestID, count)  # Ex: Given request 4 and path 20 would be: R4P20
-                new_path_obj = PathObj(pathID, path, 0, current_request_data, [], 0, 0)     # ToDo should make a static list of all paths being processed for a single request
+                new_path_obj = PathObj(pathID, path, 0, current_request_data, [], 0, 0, 0)     # ToDo should make a static list of all paths being processed for a single request
                 count += 1
             else:
                 continue
 
         ############## TESTING ###############
-        run(PathObj.StaticPathsList, req)   # <--- Step 3, 4 and 5 starts here
+        # RUN_PATH_ONE(PathObj.StaticPathsList, req)   # <--- Step 3, 4 and 5 starts here
+        RUN_PATH_TWO(PathObj.StaticPathsList, req)
 
     print("ALL DONE FINDING FIRST PATHS\n")
     for op in PathObj.StaticOptimalPathsList:

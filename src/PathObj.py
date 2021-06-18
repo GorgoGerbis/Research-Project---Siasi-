@@ -43,343 +43,17 @@ BACKUP = 4
 OPTIMAL = 5
 
 
-# @Todo need to be eliminating paths that done meet the standards as they are being processed
-# @Todo need to remember to clear BACKUP_PATHS when finished processing request
-def set_path_state_PATHTWO(path_obj):  # <-- This one DOES NOT use failure probability
-    # Given a path must then determine and set the state of the path
-    if path_obj.state == STATE_UNKNOWN:
-        if calculate_path_resources_PATHTWO(path_obj):
-            if calculate_path_speed(path_obj, DELAY_THRESHOLD):
-                PathObj.BACKUP_PATHS.append(path_obj)
-            else:
-                path_obj.state = TURTLE
-        else:
-            path_obj.state = POOR
-
-
-# @Todo need to be eliminating paths that done meet the standards as they are being processed
-# @Todo need to remember to clear BACKUP_PATHS when finished processing request
-def set_path_state_PATHONE(path_obj):  # <-- This one DOES NOT use failure probability
-    # Given a path must then determine and set the state of the path
-    if path_obj.state == STATE_UNKNOWN:
-        if calculate_path_resources_PATHONE(path_obj):
-            if calculate_path_speed(path_obj, DELAY_THRESHOLD):
-                PathObj.BACKUP_PATHS.append(path_obj)
-            else:
-                path_obj.state = TURTLE
-        else:
-            path_obj.state = POOR
-
-
-def calculate_path_resources_PATHTWO(path_obj):
-    """
-    We can exit the loop and return something when we either:
-    1) Know that the path DOES have enough resources, return True.
-    2) Know that for whatever reason our functions CANNOT be mapped to the nodes on the path, return False.
-
-    RETURN TRUE: Path has proven that it is able to map every function while being at a stable rate of failure.
-    RETURN FALSE: Destination has been reached before all functions have been mapped and/or failure probability is too high.
-
-    :param path_obj: an object of the PathObj class
-    :return: Boolean
-    """
-    fused_path = PathObj.create_fusion_obj_list(path_obj.route)
-    funcs_to_map = path_obj.REQ_INFO[0]
-    requested_bandwidth = int(path_obj.REQ_INFO[2])
-    end_node = fused_path[-1]
-
-    funcs_mapped = []
-    func_count = 0
-
-    for step in fused_path:
-        if len(funcs_mapped) != 0 and len(funcs_to_map) == 0:
-            return True
-
-        if type(step) == LinkObj:
-            # print("Link ID: {} Src: {} Dest: {}".format(step.linkID, step.linkSrc, step.linkDest))
-            # NOTE: In HvW Protocol if a link doesnt have enough BW the path fails
-            if not step.check_enough_resources(requested_bandwidth):
-                path_obj.state = POOR
-                return False
-        else:
-            current_node = step  # First we must determine if mapping is even possible
-            # print("Node ID: {} Status: {}".format(current_node.nodeID, current_node.status))
-
-            if current_node.status == 'O':
-                print("MAPPING ON NODE {} IS NOT POSSIBLE NODE IS OFFLINE".format(current_node.nodeID))
-                continue
-            elif current_node.status == 'R':
-                print("MAPPING ON NODE {} IS NOT POSSIBLE, RELAY TO NEXT NODE IN PATH".format(current_node.nodeID))
-                continue
-            else:  # Next we need to determine if a node has enough resources for mapping and how many it can handle
-                temp_mappable_funcs = current_node.how_many_functions_mappable(funcs_to_map)
-
-                if len(temp_mappable_funcs) == 0 and step == end_node and len(funcs_to_map) > 0:
-                    path_obj.state = POOR
-                    return False
-
-                elif len(temp_mappable_funcs) == 1:
-                    temp_func_list = []
-                    current_func = FuncObj.retrieve_function_value(
-                        funcs_to_map.pop(0))  # Retrieves the current requested function
-                    funcs_mapped.append(current_func)
-                    temp_func_list.append(current_func)
-                    path_obj.MAPPING_LOCATION.append([current_node, temp_func_list])
-                    func_count += 1
-
-                else:  # <---- len(temp_mappable_funcs) > 1
-                    temp_func_list = []
-                    for i in range(len(temp_mappable_funcs) - 1):
-                        current_func = FuncObj.retrieve_function_value(
-                            funcs_to_map.pop(0))  # Retrieves the current requested function
-                        funcs_mapped.append(current_func)
-                        temp_func_list.append(current_func)
-                        func_count += 1
-                    path_obj.MAPPING_LOCATION.append([current_node, temp_func_list])
-
-
-def calculate_path_resources_PATHONE(path_obj):
-    """
-    We can exit the loop and return something when we either:
-    1) Know that the path DOES have enough resources, return True.
-    2) Know that for whatever reason our functions CANNOT be mapped to the nodes on the path, return False.
-
-    RETURN TRUE: Path has proven that it is able to map every function.
-    RETURN FALSE: Destination has been reached before all functions have been mapped.
-
-    :param path_obj: an object of the PathObj class
-    :return: Boolean
-    """
-    fused_path = PathObj.create_fusion_obj_list(path_obj.route)
-    funcs_to_map = path_obj.REQ_INFO[0]
-    requested_bandwidth = int(path_obj.REQ_INFO[2])
-    end_node = fused_path[-1]
-
-    funcs_mapped = []
-    func_count = 0
-
-    for step in fused_path:
-        if len(funcs_mapped) != 0 and len(funcs_to_map) == 0:
-            return True
-
-        if type(step) == LinkObj:
-            # print("Link ID: {} Src: {} Dest: {}".format(step.linkID, step.linkSrc, step.linkDest))
-            # NOTE: In HvW Protocol if a link doesnt have enough BW the path fails
-            if not step.check_enough_resources(requested_bandwidth):
-                path_obj.state = POOR
-                return False
-        else:
-            current_node = step  # First we must determine if mapping is even possible
-            # print("Node ID: {} Status: {}".format(current_node.nodeID, current_node.status))
-
-            if current_node.status == 'O':
-                print("MAPPING ON NODE {} IS NOT POSSIBLE NODE IS OFFLINE".format(current_node.nodeID))
-                continue
-            elif current_node.status == 'R':
-                print("MAPPING ON NODE {} IS NOT POSSIBLE, RELAY TO NEXT NODE IN PATH".format(current_node.nodeID))
-                continue
-            else:  # Next we need to determine if a node has enough resources for mapping and how many it can handle
-                temp_mappable_funcs = current_node.how_many_functions_mappable(funcs_to_map)
-
-                if len(temp_mappable_funcs) == 0 and step == end_node and len(funcs_to_map) > 0:
-                    path_obj.state = POOR
-                    return False
-
-                elif len(temp_mappable_funcs) == 1:
-                    temp_func_list = []
-                    current_func = FuncObj.retrieve_function_value(
-                        funcs_to_map.pop(0))  # Retrieves the current requested function
-                    funcs_mapped.append(current_func)
-                    temp_func_list.append(current_func)
-                    path_obj.MAPPING_LOCATION.append([current_node, temp_func_list])
-                    func_count += 1
-
-                else:  # <---- len(temp_mappable_funcs) > 1
-                    temp_func_list = []
-                    for i in range(len(temp_mappable_funcs) - 1):
-                        current_func = FuncObj.retrieve_function_value(
-                            funcs_to_map.pop(0))  # Retrieves the current requested function
-                        funcs_mapped.append(current_func)
-                        temp_func_list.append(current_func)
-                        func_count += 1
-                    path_obj.MAPPING_LOCATION.append([current_node, temp_func_list])
-
-
-def calculate_path_speed(path_obj, delay_threshold):
-    """
-    Method that is responsible for predicting and calculating the time it would take for a request to be
-    processed on a particular path. This method also calculates and sets the values of DELAY and COST for
-    each PathObj.
-
-    At this stage every path being processed through this function and beyond meets at least the minimum
-    requirements for resources and node mapping.
-
-    RETURN TRUE: Path has proven that it is able to fully process its request within the delay threshold.
-    RETURN FALSE: Path is unable to process its request without exceeding the delay threshold.
-
-    1) Need to retrieve needed data from all nodes with mapped functions
-    2) Need to retrieve needed data from all links being used
-    3) Just have to add it up and make sure its within the threshold
-
-    Things that need to be calculated:
-    PATH_COST = node_cost + link_cost
-    PATH_DELAY = node_processing_delay + link_edge_delay
-
-    PATH_DELAY <= delay_threshold
-
-    1) Link EdgeDelay
-    2) Link EdgeCost
-    3) Node Processing Delay for nodes with functions mapped to them
-    4) Node cost
-
-    :param path_obj: an object of the PathObj class
-    :param delay_threshold: The numerical value representing the window of time to fulfill a request before failure.
-    :return: Boolean
-    """
-    route = path_obj.route
-    mapping_list = path_obj.MAPPING_LOCATION
-
-    link_list = []
-    PATH_DELAY = 0
-    PATH_COST = 0
-
-    for i in range(len(route) - 1): # Retrieve needed link objects
-        s = route[i]  # Starting node
-        d = route[i + 1]  # Destination node
-
-        lnk = LinkObj.returnLink(s, d)
-        ED = lnk.linkED
-        EC = lnk.linkEC
-        link_list.append([ED, EC])
-
-        i += 1
-
-    for l in link_list:
-        linkED = l[0]
-        linkEC = l[1]
-
-        PATH_DELAY += int(linkED)
-        PATH_COST += int(linkEC)
-
-    for temp_list in mapping_list:
-        node = temp_list[0]
-        funcs = temp_list[1]
-
-        PD = node.processingDelay
-        NC = node.nodeCost
-
-        PATH_DELAY += int(PD) * len(funcs)
-        PATH_COST += int(NC) * len(funcs)
-
-    # Setting the DELAY and PATH attributes for this PathObj
-    path_obj.DELAY = PATH_DELAY
-    path_obj.COST = PATH_COST
-
-    if path_obj.DELAY <= delay_threshold:
-        return True
-    else:
-        return False
-
-
-def calculate_path_failure(path_obj, failure_threshold):
-    failure_rate = path_obj.get_path_failure_probability
-    if failure_rate <= failure_threshold:
-        return True
-    else:
-        return False
-
-
-def calculate_optimal_path():
-    """
-    Compares every single path that meets all the other specified criteria and finds
-    the shortest one.
-    """
-    if not OPTIMAL_PATH_SET:
-        current_best = PathObj.BACKUP_PATHS[0]
-
-        for path_obj in PathObj.BACKUP_PATHS:
-            if path_obj.DELAY < current_best.DELAY:
-                current_best = path_obj
-            elif path_obj.DELAY == current_best.DELAY:
-                if path_obj.COST < current_best.COST:
-                    current_best = path_obj
-
-        current_best.state = 5
-        PathObj.OPTIMAL_PATH_SET = True
-
-    else:
-        reigning_best = PathObj.returnOptimalPath(PathObj.BACKUP_PATHS)
-
-        for path_obj in PathObj.BACKUP_PATHS:
-            if path_obj.DELAY < reigning_best.DELAY:
-                reigning_best = path_obj
-            elif path_obj.DELAY == reigning_best.DELAY:
-                if path_obj.COST < reigning_best.COST:
-                    reigning_best = path_obj
-
-        reigning_best.state = 5
-        PathObj.OPTIMAL_PATH_SET = True
-
-
-def map_path(path_obj):
-    if path_obj.state == OPTIMAL:  # Checks to make sure we are mapping the optimal path
-        print("MAPPING PATH {}\n".format(path_obj.pathID))
-        fused_list = PathObj.create_fusion_obj_list(path_obj.route)
-        mapping_list = path_obj.MAPPING_LOCATION
-        requested_bandwidth = int(path_obj.REQ_INFO[2])
-
-        for element in fused_list:
-            if type(element) == LinkObj:
-                link = element
-                link.map_request(requested_bandwidth)
-            else:
-                # node = element
-                for temp_list in mapping_list:
-                    used_node = temp_list[0]
-                    funcs = temp_list[1]
-
-                    for f in funcs:
-                        used_node.map_function_obj(f)
-
-
-def run(paths, req):
-    for path in paths:
-        set_path_state_PATHONE(path)
-
-    calculate_optimal_path()
-
-    optimal_path = PathObj.returnOptimalPath(PathObj.BACKUP_PATHS)
-    map_path(optimal_path)
-
-    optimal_string = "| REQUEST: {} FUNCTIONS: {} | OPTIMAL PATH = {} ROUTE: {} DELAY={} COST={} ".format(req.requestID, req.requestedFunctions, optimal_path.pathID, optimal_path.route, optimal_path.DELAY, optimal_path.COST)
-    PathObj.StaticOptimalPathsList.append(optimal_string)
-
-    # Data cleanup process
-    PathObj.BACKUP_PATHS.clear()
-    PathObj.StaticPathsList.clear()
-
-
-def CALCULATE_FAILURE_PROBABILITY(number_of_failures, number_of_trials):
-    """
-    We calculate the failure probability using the rule of succession formula
-    created by Pierre-Simon Laplace.
-
-    link: https://en.wikipedia.org/wiki/Rule_of_succession
-
-    :param number_of_failures: The number of failures during trials
-    :param number_of_trials: The number of trials ran
-    :return: failure_probability: an integer/double representing the probability of failure
-    """
-    failure_probability = (number_of_failures + 1) / (number_of_trials + 2)
-    return failure_probability
-
-
 class PathObj:
-    BACKUP_PATHS = []  # PLACEHOLDER for list of all
-    StaticOptimalPathsList = []
-    StaticPathsList = []
 
-    def __init__(self, pathID, route, state, REQ_INFO, MAPPING_LOCATION, DELAY, COST):
+    # STATIC LIST OF ALL OPTIMAL PATHS
+    StaticOptimalPathsList = []
+
+    # These static lists all get cleared when the optimal paths are found
+    BACKUP_PATHS = []
+    StaticPathsList = []
+    current_path_failures = []
+
+    def __init__(self, pathID, route, state, REQ_INFO, MAPPING_LOCATION, DELAY, COST, FAILURE_PROBABILITY, PATH_TYPE=0):
         """
 
         :param pathID:
@@ -387,6 +61,10 @@ class PathObj:
         :param state:
         :param REQ_INFO: [request.requestedFunctions, request.request_delay_threshold, request.requestedBW]
         :param MAPPING_LOCATION: [ NodeObj, [FuncObj] ]
+        :param DELAY: Total delay time of PathObj
+        :param COST: Total cost of PathObj
+        :param FAILURE_PROBABILITY: The probability of the path failing
+        :param PATH_TYPE: Just differentiates between with or without fault tolerance
         """
         self.pathID = pathID
         self.route = route
@@ -396,10 +74,35 @@ class PathObj:
         self.DELAY = DELAY
         self.COST = COST
 
+        # New stuff added today 6/18/21
+        self.FAILURE_PROBABILITY = FAILURE_PROBABILITY
+        self.PATH_TYPE = PATH_TYPE
+
         PathObj.StaticPathsList.append(self)
 
-    def get_path_failure_probability(self):
-        return
+    def set_failure_probability(self):
+        """
+            We calculate the failure probability using the rule of succession formula
+            created by Pierre-Simon Laplace.
+
+            link: https://en.wikipedia.org/wiki/Rule_of_succession
+
+            :param self: PathObj being referenced
+            :return: failure_probability: an integer/double representing the probability of failure
+            """
+        num_trials = len(self.current_path_failures)
+        obj_failures = 0
+
+        if num_trials == 0:
+            self.FAILURE_PROBABILITY = 0
+        else:
+            for element in self.current_path_failures:
+                obj_failures = int(element[1])
+
+            avg_failure_rate = obj_failures/num_trials
+            output = (avg_failure_rate + 1) / (num_trials + 2)
+
+            self.FAILURE_PROBABILITY = output
 
     @staticmethod
     def create_fusion_obj_list(path):

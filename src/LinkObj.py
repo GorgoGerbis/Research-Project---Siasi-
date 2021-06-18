@@ -3,7 +3,7 @@ from src.NodeObj import NodeObj
 
 class LinkObj(NodeObj):  # <-- This means its a subclass of NodeObj right?
 
-    def __init__(self, linkID, linkSrc, linkDest, linkBW, linkED, linkEC, linkWeight):  # ToDo What was the difference between linkEC and linkWeight?
+    def __init__(self, linkID, linkSrc, linkDest, linkBW, linkED, linkEC, linkWeight, failure_probability=2):  # ToDo What was the difference between linkEC and linkWeight?
         self.linkID = linkID
         self.linkSrc = linkSrc
         self.linkDest = linkDest
@@ -11,6 +11,8 @@ class LinkObj(NodeObj):  # <-- This means its a subclass of NodeObj right?
         self.linkED = linkED
         self.linkEC = linkEC
         self.linkWeight = linkWeight
+
+        self.failure_probability = failure_probability
 
         NodeObj.StaticLinkList.append(self)
 
@@ -34,6 +36,17 @@ class LinkObj(NodeObj):  # <-- This means its a subclass of NodeObj right?
         else:
             # print("LINK {} DOES NOT ENOUGH RESOURCES FOR TRAVERSAL FROM {} TO {}".format(self.linkID, self.linkSrc, self.linkED))
             return False
+
+    def calculate_failure(self):
+        """
+        calculate whether or not a node has failed.
+        :param self:
+        :return: True if success, False if failed
+        """
+        number_of_failures = self.failure_probability
+        number_of_trials = 10
+        fail_rate = (number_of_failures + 1) / (number_of_trials + 2)
+        return fail_rate
 
     @staticmethod
     def returnLink(src, dest):

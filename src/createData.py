@@ -1,7 +1,6 @@
 import os
 import random
 from src.FuncObj import FuncObj
-# This script just makes data for me to play with
 
 
 baseFolder = r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-"
@@ -14,7 +13,7 @@ auto_requests_Opt = os.path.join(resourcesFolder, "requests-EXSMALL-TEST-5-17-21
 
 def createNodeInputData(number_of_nodes):
     status = ["A", "I", "R", "O"]  # Status of the node
-    physical_buffer_size = [10, 20, 30, 40, 50]     # Dont need to be using this for now so just ignore it
+    physical_buffer_size = [10, 20, 30, 40, 50]     # Don't need to be using this for now so just ignore it
 
     with open(NodeInputData, 'w') as fp:
         heading = "NodeId;Latitude;Longitude;Status;Resources[CPU Memory Physical Buffer " \
@@ -43,7 +42,7 @@ def createNodeInputData(number_of_nodes):
             nodeCost = random.randint(1, 5)
             pf = random.randint(1, 4)
 
-            nodeLine = "{};{};{};{};{};{};{};{}\n".format(nodeID, lat, long, stat, resources, processing_delay, nodeCost,pf)
+            nodeLine = "{};{};{};{};{};{};{};{}\n".format(nodeID, lat, long, stat, resources, processing_delay, nodeCost, pf)
             fp.write(nodeLine)
 
 
