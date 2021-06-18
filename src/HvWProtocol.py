@@ -74,8 +74,9 @@ if __name__ == '__main__':
     GRAPH.add_edges_from(edges)
     # set_nodes()  # I want to maybe play around with the attributes so I might still need this Todo Need to fix set_nodes()
 
-    nx.draw(GRAPH, with_labels=True, font_weight='bold')
-    plt.show()  # ToDo Need to figure out why I need this in order to stop the graph from disappearing
+    # Just commented out so I don't have to keep closing the window every time
+    # nx.draw(GRAPH, with_labels=True, font_weight='bold')
+    # plt.show()  # ToDo Need to figure out why I need this in order to stop the graph from disappearing
 
     ############# SETUP IS NOW OVER WE CAN BEGIN PROCESSING ##############
 
@@ -83,13 +84,13 @@ if __name__ == '__main__':
         print("BEGUN PROCESSING REQUEST: {} Source: {} Destination {} Functions: {}\n".format(req.requestID, req.source, req.destination, req.requestedFunctions))
 
         count = 1  # Needs to be reset to 1 when a new request is being processed
-        current_request_data = [req.requestedFunctions, req.request_delay_threshold]    # Can add to this later as needed
+        current_request_data = [req.requestedFunctions, req.request_delay_threshold, req.requestedBW]    # Can add to this later as needed
         current_request_all_possible_paths = nx.all_simple_paths(GRAPH, req.source, req.destination)
 
         for path in current_request_all_possible_paths:     # STEP TWO
             if remove_inadequate_paths(path, req):  # Only paths who have enough nodes for mapping can move forward
                 pathID = "R{}P{}".format(req.requestID, count)  # Ex: Given request 4 and path 20 would be: R4P20
-                new_path_obj = PathObj(pathID, path, 0, current_request_data, {}, 0, 0)     # ToDo should make a static list of all paths being processed for a single request
+                new_path_obj = PathObj(pathID, path, 0, current_request_data, [], 0, 0)     # ToDo should make a static list of all paths being processed for a single request
                 count += 1
             else:
                 continue
@@ -99,4 +100,4 @@ if __name__ == '__main__':
 
     print("ALL DONE FINDING FIRST PATHS\n")
     print(PathObj.StaticOptimalPathsList)
-    print("Oh word?")
+    print("END\n")

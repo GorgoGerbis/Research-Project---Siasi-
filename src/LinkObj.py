@@ -29,10 +29,10 @@ class LinkObj(NodeObj):  # <-- This means its a subclass of NodeObj right?
     def check_enough_resources(self, req_bw):
         if self.compareBW(req_bw):
             # self.map_request(req_bw)
-            print("LINK HAS ENOUGH RESOURCES FOR TRAVERSAL")
+            # print("LINK {} HAS ENOUGH RESOURCES FOR TRAVERSAL FROM {} TO {}".format(self.linkID, self.linkSrc, self.linkED))
             return True
         else:
-            print("LINK DOES NOT ENOUGH RESOURCES FOR TRAVERSAL")
+            # print("LINK {} DOES NOT ENOUGH RESOURCES FOR TRAVERSAL FROM {} TO {}".format(self.linkID, self.linkSrc, self.linkED))
             return False
 
     @staticmethod

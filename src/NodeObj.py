@@ -1,11 +1,7 @@
+from src.FuncObj import FuncObj
 """
 @author: Jackson Walker
 """
-
-
-# Different node statuses:
-OFFLINE = 0
-ONLINE = 1
 
 
 class NodeObj:
@@ -55,10 +51,48 @@ class NodeObj:
         else:
             return False
 
+    def how_many_functions_mappable(self, func_list):
+        mappable_funcs = []
+
+        t_cpu = 0
+        t_ram = 0
+        t_bw = 0
+
+        for f in func_list:
+            temp_func = FuncObj.retrieve_function_value(f)  # Retrieves the current requested function
+            # Current func requirements
+            c_cpu = temp_func.value[0] + t_cpu
+            c_ram = temp_func.value[1] + t_ram
+            c_bw = temp_func.value[2] + t_bw
+
+            if self.HELPER_check_enough_resources(c_cpu, c_ram, c_bw):
+                t_cpu += temp_func.value[0]
+                t_ram += temp_func.value[1]
+                t_bw += temp_func.value[2]
+                mappable_funcs.append(temp_func)
+            else:
+                return mappable_funcs
+
+        return mappable_funcs
+
     def map_function(self, cpu, ram, bw):
         self.nodeResources[0] = int(self.nodeResources[0]) - cpu
         self.nodeResources[1] = int(self.nodeResources[1]) - ram
         self.nodeResources[2] = int(self.nodeResources[2]) - bw
+
+    def map_function_obj(self, func):
+        self.nodeResources[0] = int(self.nodeResources[0]) - func.value[0]
+        self.nodeResources[1] = int(self.nodeResources[1]) - func.value[1]
+        self.nodeResources[2] = int(self.nodeResources[2]) - func.value[2]
+
+    def HELPER_check_enough_resources(self, c, r, b):
+        if self.compareCPU(c) and self.compareRAM(r) and self.compareBW(b):
+            # self.map_function(c, r, b) #ToDo <----DONT FORGET TO COMMENT THIS LINE OUT OR EVERYTHING IS GOING TO BE MAPPED.
+            # print("NODE {} DOES HAVE SUFFICIENT RESOURCES TO MAP FUNCTION {}\n".format(self.nodeID, func))
+            return True
+        else:
+            # print("NODE {} DOES NOT HAVE SUFFICIENT RESOURCES TO MAP FUNCTION {}\n".format(self.nodeID, func))
+            return False
 
     def check_enough_resources(self, func):
         c, r, b = func.value[0], func.value[1], func.value[2]
@@ -79,7 +113,6 @@ class NodeObj:
 
     @staticmethod
     def print_resources(node):
-        # output = [CPU, RAM, Physical Buffer Size]
         output = [node.nodeID, node.nodeResources[0], node.nodeResources[1], node.nodeResources[2]]
         return output
 

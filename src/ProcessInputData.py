@@ -54,8 +54,8 @@ def processInputDataLink(filePath):
             linkID = currentElements[0]
             source = currentElements[1]
             destination = currentElements[2]
-            bandwidth = currentElements[3]
-            edgeDelay = currentElements[4]
+            bandwidth = int(currentElements[3])
+            edgeDelay = int(currentElements[4])
             edgeCost = currentElements[5]
 
             startingNode = NodeObj.returnNode(source)
