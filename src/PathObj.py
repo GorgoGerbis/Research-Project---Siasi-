@@ -90,14 +90,15 @@ class PathObj:
         :return: failure_probability: an integer/double representing the probability of failure
         """
 
-        num_trials = len(self.current_path_failures)
+        num_trials = len(PathObj.current_path_failures)
         obj_failures = 0
 
         if num_trials == 0:
             self.FAILURE_PROBABILITY = 0
         else:
-            for element in self.current_path_failures:
-                obj_failures = int(element[1])
+            for element in PathObj.current_path_failures:
+                #['21', <bound method NodeObj.calculate_failure of <src.NodeObj.NodeObj object at 0x0000027C6981B3A0>>]
+                obj_failures = element[1]
 
             avg_failure_rate = obj_failures/num_trials
             output = (avg_failure_rate + 1) / (num_trials + 2)

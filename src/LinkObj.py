@@ -37,13 +37,15 @@ class LinkObj(NodeObj):  # <-- This means its a subclass of NodeObj right?
             # print("LINK {} DOES NOT ENOUGH RESOURCES FOR TRAVERSAL FROM {} TO {}".format(self.linkID, self.linkSrc, self.linkED))
             return False
 
-    def calculate_failure(self):
+    @staticmethod
+    def calculate_failure(lid):
         """
         calculate whether or not a node has failed.
-        :param self:
+        :param lid = linkID
         :return: True if success, False if failed
         """
-        number_of_failures = self.failure_probability
+        l = LinkObj.returnNode(lid)
+        number_of_failures = l.failure_probability
         number_of_trials = 10
         fail_rate = (number_of_failures + 1) / (number_of_trials + 2)
         return fail_rate

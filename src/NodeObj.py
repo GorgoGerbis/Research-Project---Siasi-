@@ -163,13 +163,15 @@ class NodeObj:
         else:
             return False
 
-    def calculate_failure(self):
+    @staticmethod
+    def calculate_failure(nid):
         """
         calculate whether or not a node has failed.
-        :param self:
+        :param nid = nodeID
         :return: True if success, False if failed
         """
-        number_of_failures = self.failure_probability
+        n = NodeObj.returnNode(nid)
+        number_of_failures = n.failure_probability
         number_of_trials = 10
         fail_rate = (number_of_failures + 1) / (number_of_trials + 2)
         return fail_rate

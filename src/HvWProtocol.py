@@ -28,6 +28,8 @@ Head vs Wall is the nickname I gave to this protocol. Works as follows.
 4) Successful paths are then put into a list of backup paths.
 5) Sort through BACKUP_PATHS and find the most optimum path.
 6) Map that path to the network.
+
+The networkx method 'all_simple_paths' uses a modified depth first search.
 """
 
 # Variables to set up graph for network
@@ -69,8 +71,8 @@ if __name__ == '__main__':
     # set_nodes()  # I want to maybe play around with the attributes so I might still need this Todo Need to fix set_nodes()
 
     # Just commented out so I don't have to keep closing the window every time
-    # nx.draw(GRAPH, with_labels=True, font_weight='bold')
-    # plt.show()  # ToDo Need to figure out why I need this in order to stop the graph from disappearing
+    nx.draw(GRAPH, with_labels=True, font_weight='bold')
+    plt.show()  # ToDo Need to figure out why I need this in order to stop the graph from disappearing
 
     ############# SETUP IS NOW OVER WE CAN BEGIN PROCESSING ##############
 
@@ -83,12 +85,12 @@ if __name__ == '__main__':
 
         for path in current_request_all_possible_paths:     # STEP TWO
             pathID = "R{}P{}".format(req.requestID, count)  # Ex: Given request 4 and path 20 would be: R4P20
-            new_path_obj = PathObj(pathID, path, 0, current_request_data, [], 0, 0, 0, 2)  # ToDo should make a static list of all paths being processed for a single request
+            new_path_obj = PathObj(pathID, path, 0, current_request_data, [], 0, 0, 0, 1)  # ToDo should make a static list of all paths being processed for a single request
             count += 1
 
         ############## TESTING ###############
-        # RUN_PATH_ONE(PathObj.StaticPathsList, req)   # <--- Step 3, 4 and 5 starts here
-        RUN_PATH_TWO(PathObj.StaticPathsList, req)
+        RUN_PATH_ONE(PathObj.StaticPathsList, req)   # <--- Step 3, 4 and 5 starts here
+        # RUN_PATH_TWO(PathObj.StaticPathsList, req)
 
     print("ALL DONE FINDING FIRST PATHS\n")
     for op in PathObj.StaticOptimalPathsList:

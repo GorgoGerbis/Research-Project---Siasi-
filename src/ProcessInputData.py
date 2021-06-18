@@ -7,9 +7,9 @@ from src.Request import Request
 baseFolder = r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-"
 
 resourcesFolder = os.path.join(baseFolder, "resources")
-NodeOpt = os.path.join(resourcesFolder, "NodeInputData-EXSMALL-TEST-5-17-21.csv")
-LinkOpt = os.path.join(resourcesFolder, "LinkInputData-EXSMALL-TEST-5-17-21.csv")
-auto_requests_Opt = os.path.join(resourcesFolder, "requests-EXSMALL-TEST-5-17-21.txt")
+NodeOpt = os.path.join(resourcesFolder, "NodeInputData-EXSMALL-TEST-6-18-21.csv")
+LinkOpt = os.path.join(resourcesFolder, "LinkInputData-EXSMALL-TEST-6-18-21.csv")
+auto_requests_Opt = os.path.join(resourcesFolder, "requests-EXSMALL-TEST-6-18-21.txt")
 
 REQUESTS_FAILED = []
 REQUESTS_PASSED = []

@@ -105,10 +105,10 @@ def calculate_path_resources_PATH_ONE(path_obj):
             # print("Node ID: {} Status: {}".format(current_node.nodeID, current_node.status))
 
             if current_node.status == 'O':
-                print("MAPPING ON NODE {} IS NOT POSSIBLE NODE IS OFFLINE".format(current_node.nodeID))
+                # print("MAPPING ON NODE {} IS NOT POSSIBLE NODE IS OFFLINE".format(current_node.nodeID))
                 continue
             elif current_node.status == 'R':
-                print("MAPPING ON NODE {} IS NOT POSSIBLE, RELAY TO NEXT NODE IN PATH".format(current_node.nodeID))
+                # print("MAPPING ON NODE {} IS NOT POSSIBLE, RELAY TO NEXT NODE IN PATH".format(current_node.nodeID))
                 continue
             else:  # Next we need to determine if a node has enough resources for mapping and how many it can handle
                 temp_mappable_funcs = current_node.how_many_functions_mappable(funcs_to_map)
@@ -172,6 +172,7 @@ def calculate_path_resources_PATH_TWO(path_obj):
             #     return False
         else:
             current_node = step  # First we must determine if mapping is even possible
+            node_failure = NodeObj.calculate_failure(current_node.nodeID)
             # print("Node ID: {} Status: {}".format(current_node.nodeID, current_node.status))
 
             # Determining the status of a node and if it has failed
@@ -182,9 +183,9 @@ def calculate_path_resources_PATH_TWO(path_obj):
             elif current_node.status == 'R':
                 # print("MAPPING ON NODE {} IS NOT POSSIBLE, RELAY TO NEXT NODE IN PATH".format(current_node.nodeID))
                 continue
-            elif current_node.calculate_failure() >= 0.5:
+            elif node_failure >= 0.5:
                 # print("NODE {} FAILED, MOVING ONTO NEXT NODE IN PATH".format(current_node.nodeID))
-                PathObj.current_path_failures.append([current_node.nodeID, current_node.calculate_failure])
+                PathObj.current_path_failures.append([current_node.nodeID, node_failure])
                 continue
             else:  # Next we need to determine if a node has enough resources for mapping and how many it can handle
                 temp_mappable_funcs = current_node.how_many_functions_mappable(funcs_to_map)
