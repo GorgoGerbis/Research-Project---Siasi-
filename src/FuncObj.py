@@ -19,15 +19,13 @@ class enumproperty(object):
         raise AttributeError("can't delete pseudo-member %r" % self.name)
 
 
-""" 
-Enum functions [x, y, z]
-x = CPU usage
-y = RAM usage
-z = Bandwidth taken
-"""
-
-
 class FuncObj(Enum):
+    """
+    Enum functions [x, y, z]
+    x = CPU usage
+    y = RAM usage
+    z = Bandwidth taken
+    """
     F1 = [1, 1, 1]
     F2 = [2, 2, 2]
     F3 = [3, 3, 3]

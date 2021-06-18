@@ -10,6 +10,11 @@ class NodeObj:
     StaticNodeList = []  # Static List of all nodes
     TotalNodeCount = 0  # Static variable keeping track of amount of nodes
 
+    # NODE STATUS
+    UNAVAILABLE = "O"
+    AVAILABLE = "A"
+    RELAY = "R"
+
     def __init__(self, nodeID, nodePosition, status, nodeResources, processingDelay, nodeCost, failure_probability):
         self.nodeID = nodeID
         self.nodePosition = nodePosition
@@ -27,7 +32,47 @@ class NodeObj:
             if lnk.linkDest == self.nodeID:
                 n = self.returnNode(lnk.linkSrc)
                 neighbors.append(n)
+            elif lnk.linkSrc == self.nodeID:
+                n = self.returnNode(lnk.linkDest)
+                neighbors.append(n)
         return neighbors
+
+    def check_mappable(self):
+        """
+        Purpose of this method is to see if a particular
+        node has enough resources to map any functions.
+        Checks the given nodes available resources and then
+        compares them to the cost of each function.
+
+        :return: True if mapping is still possible and False if not.
+        """
+        return True
+
+    # ToDo need to figure out when and how often the status of a node is checked
+    def get_status(self):
+        cpu = self.nodeResources[0]
+        ram = self.nodeResources[1]
+        bw = self.nodeResources[2]
+
+        if self.check_isolated():
+            self.status = "O"
+        elif cpu <= 0 or ram <= 0 or bw <= 0:
+            self.status = "R"
+
+    def check_isolated(self):
+        neighbors = []
+        for lnk in NodeObj.StaticLinkList:
+            if lnk.linkDest == self.nodeID:
+                n = self.returnNode(lnk.linkSrc)
+                neighbors.append(n)
+            elif lnk.linkSrc == self.nodeID:
+                n = self.returnNode(lnk.linkDest)
+                neighbors.append(n)
+
+        if len(neighbors) <= 0:
+            return True
+        else:
+            return False
 
     def compareCPU(self, cpu):
         # Returns True if you have enough resources
@@ -104,7 +149,15 @@ class NodeObj:
             # print("NODE {} DOES NOT HAVE SUFFICIENT RESOURCES TO MAP FUNCTION {}\n".format(self.nodeID, func))
             return False
 
-    # This method has to be static so that it can be accessed everywhere basically just a helper function
+    @staticmethod
+    def calculate_failure_probability(self):
+        """
+        calculate whether or not a node has failed.
+        :param self:
+        :return:
+        """
+        return
+
     @staticmethod
     def returnNode(node_id):
         for node in NodeObj.StaticNodeList:
