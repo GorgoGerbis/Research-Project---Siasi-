@@ -30,6 +30,7 @@ TURTLE = Meets all criteria for success EXCEPT, delay threshold. SHOULD BE NOTED
 POOR = Path is traversable but does not have enough resources
 STATE_UNKNOWN = The state of the path has yet to be determined.
 """
+
 DELAY_THRESHOLD = 25
 OPTIMAL_PATH_SET = False
 
@@ -43,7 +44,6 @@ OPTIMAL = 5
 
 
 class PathObj:
-
     # STATIC LIST OF ALL OPTIMAL PATHS
     StaticOptimalPathsList = []
 
@@ -54,7 +54,6 @@ class PathObj:
 
     def __init__(self, pathID, route, state, REQ_INFO, MAPPING_LOCATION, DELAY, COST, FAILURE_PROBABILITY, PATH_TYPE):
         """
-
         :param pathID: path objects name Ex: "R1P87" R# = request number P# = path number
         :param route: The list that holds the nodes being traversed in this path
         :param state: Current state of the path

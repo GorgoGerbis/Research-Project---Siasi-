@@ -27,4 +27,4 @@ STATE_UNKNOWN = The state of the path has yet to be determined.
 
 
 if __name__ == '__main__':
-    print("BOOBIES")
+    path = ['6', ['6', '18'], '18', ['18', '14'], '14', ['14', '15'], '15']
