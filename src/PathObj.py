@@ -2,7 +2,6 @@ from src.NodeObj import NodeObj
 from src.FuncObj import FuncObj
 from src.LinkObj import LinkObj
 from src.Request import Request
-
 """
 @author: Jackson Walker
 Path resources: [CPU, RAM, Physical buffer size]
@@ -53,12 +52,12 @@ class PathObj:
     StaticPathsList = []
     current_path_failures = []
 
-    def __init__(self, pathID, route, state, REQ_INFO, MAPPING_LOCATION, DELAY, COST, FAILURE_PROBABILITY, PATH_TYPE=0):
+    def __init__(self, pathID, route, state, REQ_INFO, MAPPING_LOCATION, DELAY, COST, FAILURE_PROBABILITY, PATH_TYPE):
         """
 
-        :param pathID:
-        :param route:
-        :param state:
+        :param pathID: path objects name Ex: "R1P87" R# = request number P# = path number
+        :param route: The list that holds the nodes being traversed in this path
+        :param state: Current state of the path
         :param REQ_INFO: [request.requestedFunctions, request.request_delay_threshold, request.requestedBW]
         :param MAPPING_LOCATION: [ NodeObj, [FuncObj] ]
         :param DELAY: Total delay time of PathObj
@@ -82,14 +81,15 @@ class PathObj:
 
     def set_failure_probability(self):
         """
-            We calculate the failure probability using the rule of succession formula
-            created by Pierre-Simon Laplace.
+        We calculate the failure probability using the rule of succession formula
+        created by Pierre-Simon Laplace.
 
-            link: https://en.wikipedia.org/wiki/Rule_of_succession
+        link: https://en.wikipedia.org/wiki/Rule_of_succession
 
-            :param self: PathObj being referenced
-            :return: failure_probability: an integer/double representing the probability of failure
-            """
+        :param self: PathObj being referenced
+        :return: failure_probability: an integer/double representing the probability of failure
+        """
+
         num_trials = len(self.current_path_failures)
         obj_failures = 0
 
@@ -138,5 +138,7 @@ class PathObj:
                 return p
 
     def __str__(self):
-        return "Path ID: {} Route: {} State: {} REQ_FUNCTIONS: {} REQ_DELAY_THRESHOLD = {} PATH DELAY: {} PATH COST: {}\n".format(
-            self.pathID, self.route, self.state, self.REQ_INFO[0], self.REQ_INFO[1], self.DELAY, self.COST)
+        if self.PATH_TYPE != 2:
+            return "Path ID: {} Route: {} State: {} REQ_FUNCTIONS: {} REQ_DELAY_THRESHOLD = {} PATH DELAY: {} PATH COST: {}\n".format(self.pathID, self.route, self.state, self.REQ_INFO[0], self.REQ_INFO[1], self.DELAY, self.COST)
+        else:
+            return "Path ID: {} FAILURE PROBABILITY = {}% Route: {} State: {} REQ_FUNCTIONS: {} REQ_DELAY_THRESHOLD = {} PATH DELAY: {} PATH COST: {}\n".format(self.pathID, self.FAILURE_PROBABILITY, self.route, self.state, self.REQ_INFO[0], self.REQ_INFO[1], self.DELAY, self.COST)

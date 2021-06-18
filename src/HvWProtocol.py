@@ -4,13 +4,14 @@ from src.NodeObj import NodeObj
 from src.Request import Request
 from src.PathObj import PathObj
 
-from src.ProcessPathing import RUN_PATH_ONE
-from src.ProcessPathing import RUN_PATH_TWO
-
 # Need these for path finding and graphing
 import networkx as nx
 import matplotlib.pyplot as plt
 from itertools import islice
+
+# Need these to process requests
+from src.ProcessPathing import RUN_PATH_ONE
+from src.ProcessPathing import RUN_PATH_TWO
 
 
 """
@@ -56,13 +57,6 @@ def set_nodes():
             visited_nodes.append(current_node_id)
 
 
-def remove_inadequate_paths(p, r):
-    if len(p) < len(r.requestedFunctions):
-        return False
-    else:
-        return True
-
-
 if __name__ == '__main__':
     print("Begin Processing requests using: 'Head vs. Wall' Protocol\n")
 
@@ -88,12 +82,9 @@ if __name__ == '__main__':
         current_request_all_possible_paths = nx.all_simple_paths(GRAPH, req.source, req.destination)
 
         for path in current_request_all_possible_paths:     # STEP TWO
-            if remove_inadequate_paths(path, req):  # Only paths who have enough nodes for mapping can move forward
-                pathID = "R{}P{}".format(req.requestID, count)  # Ex: Given request 4 and path 20 would be: R4P20
-                new_path_obj = PathObj(pathID, path, 0, current_request_data, [], 0, 0, 0)     # ToDo should make a static list of all paths being processed for a single request
-                count += 1
-            else:
-                continue
+            pathID = "R{}P{}".format(req.requestID, count)  # Ex: Given request 4 and path 20 would be: R4P20
+            new_path_obj = PathObj(pathID, path, 0, current_request_data, [], 0, 0, 0, 2)  # ToDo should make a static list of all paths being processed for a single request
+            count += 1
 
         ############## TESTING ###############
         # RUN_PATH_ONE(PathObj.StaticPathsList, req)   # <--- Step 3, 4 and 5 starts here
@@ -101,5 +92,5 @@ if __name__ == '__main__':
 
     print("ALL DONE FINDING FIRST PATHS\n")
     for op in PathObj.StaticOptimalPathsList:
-        print(op+" | PATH ONE | WITHOUT FAULT TOLERANCE |\n")
+        print(op)
     print("END\n")

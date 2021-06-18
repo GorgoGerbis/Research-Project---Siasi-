@@ -3,7 +3,6 @@ from src.PathObj import PathObj
 from src.FuncObj import FuncObj
 from src.LinkObj import LinkObj
 from src.Request import Request
-
 """
 @author: Jackson Walker
 Path resources: [CPU, RAM, Physical buffer size]
@@ -32,6 +31,7 @@ TURTLE = Meets all criteria for success EXCEPT, delay threshold. SHOULD BE NOTED
 POOR = Path is traversable but does not have enough resources
 STATE_UNKNOWN = The state of the path has yet to be determined.
 """
+
 DELAY_THRESHOLD = 25
 OPTIMAL_PATH_SET = False
 
@@ -406,10 +406,8 @@ def RUN_PATH_ONE(paths, req):
 
         calculate_optimal_PATH_ONE()
         optimal_path = PathObj.returnOptimalPath(PathObj.BACKUP_PATHS)
+        PathObj.StaticOptimalPathsList.append(optimal_path)
         map_path(optimal_path)
-
-        optimal_string = "| REQUEST: {} FUNCTIONS: {} | OPTIMAL PATH = {} ROUTE: {} DELAY={} COST={} ".format(req.requestID, req.requestedFunctions, optimal_path.pathID, optimal_path.route, optimal_path.DELAY, optimal_path.COST)
-        PathObj.StaticOptimalPathsList.append(optimal_string)
 
     # Data cleanup process
     PathObj.BACKUP_PATHS.clear()
@@ -430,12 +428,8 @@ def RUN_PATH_TWO(paths, req):
 
         calculate_optimal_PATH_TWO()
         optimal_path = PathObj.returnOptimalPath(PathObj.BACKUP_PATHS)
+        PathObj.StaticOptimalPathsList.append(optimal_path)
         map_path(optimal_path)
-
-        optimal_string = "| REQUEST: {} FUNCTIONS: {} | OPTIMAL PATH = {} ROUTE: {} DELAY={} COST={} ".format(
-            req.requestID, req.requestedFunctions, optimal_path.pathID, optimal_path.route, optimal_path.DELAY,
-            optimal_path.COST)
-        PathObj.StaticOptimalPathsList.append(optimal_string)
 
     # Data cleanup process
     PathObj.BACKUP_PATHS.clear()
