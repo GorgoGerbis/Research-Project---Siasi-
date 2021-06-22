@@ -25,10 +25,10 @@ Once the path state is determined the paths are then able to be sorted and used.
 PATH_STATE:
 
 OPTIMAL = The best most optimal path for this request. Path that will be mapped.
-BACKUP = Path meets all criteria for success but is not the most optimal
-FLUNK = Meets all criteria for success EXCEPT does NOT meet failure threshold
-TURTLE = Meets all criteria for success EXCEPT, delay threshold. SHOULD BE NOTED THAT FAILURE THRESHOLD IS NOT CALCULATED FOR THESE PATHS
-POOR = Path is traversable but does not have enough resources
+BACKUP = Path meets all criteria for success but is not the most optimal.
+FLUNK = Meets all criteria for success EXCEPT does NOT meet failure threshold.
+TURTLE = Meets all criteria for success EXCEPT, delay threshold.
+POOR = Path is traversable but does not have enough resources.
 STATE_UNKNOWN = The state of the path has yet to be determined.
 """
 

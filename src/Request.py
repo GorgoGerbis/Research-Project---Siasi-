@@ -21,14 +21,14 @@ class Request:
         self.requestStatus = requestStatus
         self.request_delay_threshold = request_delay_threshold
 
-        self.PATH_ONE = self.get_PATH_ONE()
-        self.PATH_TWO = self.get_PATH_TWO()
+        self.PATH_ONE = PATH_ONE
+        self.PATH_TWO = PATH_TWO
 
-    def get_PATH_ONE(self):
-        return 0
+    def get_PATH_ONE(self, path_obj):
+        self.PATH_ONE = path_obj
 
-    def get_PATH_TWO(self):
-        return 0
+    def get_PATH_TWO(self, path_obj):
+        self.PATH_TWO = path_obj
 
     @staticmethod
     def return_request(reqID):

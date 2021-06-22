@@ -5,10 +5,12 @@ from src.FuncObj import FuncObj
 
 baseFolder = r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-"
 resourcesFolder = os.path.join(baseFolder, "resources")
-
 NodeInputData = os.path.join(resourcesFolder, "NodeInputData-EXSMALL-TEST-6-18-21.csv")
 LinkInputData = os.path.join(resourcesFolder, "LinkInputData-EXSMALL-TEST-6-18-21.csv")
 auto_requests_Opt = os.path.join(resourcesFolder, "requests-EXSMALL-TEST-6-18-21.txt")
+# NodeOpt = os.path.join(resourcesFolder, "NodeInputData-LARGE-TEST-6-18-21.csv")
+# LinkOpt = os.path.join(resourcesFolder, "LinkInputData-LARGE-TEST-6-18-21.csv")
+# auto_requests_Opt = os.path.join(resourcesFolder, "requests-LARGE-TEST-6-18-21.txt")
 
 
 def createNodeInputData(number_of_nodes):

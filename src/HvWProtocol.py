@@ -1,4 +1,3 @@
-import os
 from src import ProcessInputData
 from src.NodeObj import NodeObj
 from src.Request import Request
@@ -12,6 +11,9 @@ from itertools import islice
 # Need these to process requests
 from src.ProcessPathing import RUN_PATH_ONE
 from src.ProcessPathing import RUN_PATH_TWO
+
+# Creating output files
+import src.CreateOutputData
 
 
 """
@@ -95,4 +97,5 @@ if __name__ == '__main__':
     print("ALL DONE FINDING FIRST PATHS\n")
     for op in PathObj.StaticOptimalPathsList:
         print(op)
-    print("END\n")
+
+    print("STARTING CREATION OF OUTPUT FILES\n")
