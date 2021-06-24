@@ -32,7 +32,8 @@ POOR = Path is traversable but does not have enough resources.
 STATE_UNKNOWN = The state of the path has yet to be determined.
 """
 
-DELAY_THRESHOLD = 25
+REQUEST_DELAY_THRESHOLD = 20.5
+FAILURE_THRESHOLD = 51
 OPTIMAL_PATH_SET = False
 
 # Path Object States
@@ -49,7 +50,7 @@ def set_path_state_PATH_ONE(path_obj):  # <-- This one DOES NOT use failure prob
     # Given a path must then determine and set the state of the path
     if path_obj.state == STATE_UNKNOWN:
         if calculate_path_resources_PATH_ONE(path_obj):
-            if calculate_path_speed(path_obj, DELAY_THRESHOLD):
+            if calculate_path_speed(path_obj, REQUEST_DELAY_THRESHOLD):
                 PathObj.BACKUP_PATHS.append(path_obj)
             else:
                 path_obj.state = TURTLE
@@ -62,7 +63,7 @@ def set_path_state_PATH_TWO(path_obj):  # <-- This one DOES NOT use failure prob
     # Given a path must then determine and set the state of the path
     if path_obj.state == STATE_UNKNOWN:
         if calculate_path_resources_PATH_TWO(path_obj):
-            if calculate_path_speed(path_obj, DELAY_THRESHOLD):
+            if calculate_path_speed(path_obj, REQUEST_DELAY_THRESHOLD):
                 PathObj.BACKUP_PATHS.append(path_obj)
             else:
                 path_obj.state = TURTLE

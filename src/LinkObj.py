@@ -1,17 +1,16 @@
 from src.NodeObj import NodeObj
 
+REQUEST_DELAY_THRESHOLD = 20.5
 
 class LinkObj(NodeObj):  # <-- This means its a subclass of NodeObj right?
 
-    def __init__(self, linkID, linkSrc, linkDest, linkBW, linkED, linkEC, linkWeight, failure_probability=2):  # ToDo What was the difference between linkEC and linkWeight?
+    def __init__(self, linkID, linkSrc, linkDest, linkBW, linkED, linkEC, failure_probability):
         self.linkID = linkID
         self.linkSrc = linkSrc
         self.linkDest = linkDest
         self.linkBW = linkBW
         self.linkED = linkED
         self.linkEC = linkEC
-        self.linkWeight = linkWeight
-
         self.failure_probability = failure_probability
 
         NodeObj.StaticLinkList.append(self)
@@ -38,16 +37,15 @@ class LinkObj(NodeObj):  # <-- This means its a subclass of NodeObj right?
             return False
 
     @staticmethod
-    def calculate_failure(lid):
+    def calculate_failure(src, dest):
         """
         calculate whether or not a node has failed.
         :param lid = linkID
         :return: True if success, False if failed
         """
-        l = LinkObj.returnNode(lid)
-        number_of_failures = l.failure_probability
-        number_of_trials = 10
-        fail_rate = (number_of_failures + 1) / (number_of_trials + 2)
+        l = LinkObj.returnLink(src, dest)
+        number_of_failures = REQUEST_DELAY_THRESHOLD * l.failure_probability
+        fail_rate = (number_of_failures + 1) / (REQUEST_DELAY_THRESHOLD + 2)
         return fail_rate
 
     @staticmethod

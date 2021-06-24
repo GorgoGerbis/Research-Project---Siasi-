@@ -2,14 +2,15 @@ import os
 from src.NodeObj import NodeObj
 from src.LinkObj import LinkObj
 from src.Request import Request
+from src.HvWProtocol import REQUEST_DELAY_THRESHOLD
 
 # Resources
 baseFolder = r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-"
 
 resourcesFolder = os.path.join(baseFolder, "resources")
-NodeOpt = os.path.join(resourcesFolder, "NodeInputData-EXSMALL-TEST-6-18-21.csv")
-LinkOpt = os.path.join(resourcesFolder, "LinkInputData-EXSMALL-TEST-6-18-21.csv")
-auto_requests_Opt = os.path.join(resourcesFolder, "requests-EXSMALL-TEST-6-18-21.txt")
+NodeInputData = os.path.join(resourcesFolder, "NodeInputData-EXSMALL-TEST-6-23-21.csv")
+LinkInputData = os.path.join(resourcesFolder, "LinkInputData-EXSMALL-TEST-6-23-21.csv")
+auto_requests_Opt = os.path.join(resourcesFolder, "requests-EXSMALL-TEST-6-23-21.txt")
 # NodeOpt = os.path.join(resourcesFolder, "NodeInputData-LARGE-TEST-6-18-21.csv")
 # LinkOpt = os.path.join(resourcesFolder, "LinkInputData-LARGE-TEST-6-18-21.csv")
 # auto_requests_Opt = os.path.join(resourcesFolder, "requests-LARGE-TEST-6-18-21.txt")
@@ -34,16 +35,16 @@ def processInputDataNode(filePath):
             for i in temp_resources:
                 resources.append(int(i))
 
-            id = currentElements[0]
-            position = [currentElements[1], currentElements[2]]
+            id = int(currentElements[0])
+            position = [int(currentElements[1]), int(currentElements[2])]
             status = currentElements[3]
-            processingDelay = currentElements[4]
-            cost = currentElements[5]
+            processingDelay = int(currentElements[4])
+            cost = int(currentElements[5])
 
-            failure = int(currentElements[6].strip('\n'))
+            failure = float(currentElements[6].strip('\n'))
 
-            newNodeObj = NodeObj(id, position, status, resources, processingDelay, cost, failure)
-            print(newNodeObj)
+            current_node = NodeObj(id, position, status, resources, processingDelay, cost, failure)
+            print(current_node)
 
 
 def processInputDataLink(filePath):
@@ -54,20 +55,15 @@ def processInputDataLink(filePath):
 
             currentElements = line.split(';')
 
-            linkID = currentElements[0]
-            source = currentElements[1]
-            destination = currentElements[2]
+            linkID = int(currentElements[0])
+            source = int(currentElements[1])
+            destination = int(currentElements[2])
             bandwidth = int(currentElements[3])
-            edgeDelay = int(currentElements[4])
-            edgeCost = currentElements[5]
+            edgeDelay = float(currentElements[4])
+            edgeCost = int(currentElements[5])
+            failure_probability = float(currentElements[6].strip('\n'))
 
-            startingNode = NodeObj.returnNode(source)
-            endingNode = NodeObj.returnNode(destination)
-
-            # length = calcDistance(startingNode, endingNode)
-            length = 1
-
-            current_link = LinkObj(linkID, source, destination, bandwidth, edgeDelay, edgeCost.strip('\n'), length)
+            current_link = LinkObj(linkID, source, destination, bandwidth, edgeDelay, edgeCost, failure_probability)
 
             if current_link not in NodeObj.StaticLinkList:
                 NodeObj.StaticLinkList.append(current_link)
@@ -85,12 +81,12 @@ def processInputDataRequests(filePath):
 
                 tempRequestedFunctions = currentElements.pop(3)
                 tempRequestedFunctions = (tempRequestedFunctions.strip('][')).split(', ')
-                requestNum = currentElements[0]
-                srcNode = currentElements[1]
-                destNode = currentElements[2]
-                requestedBW = currentElements[3]  # .strip('\n')
+                requestNum = int(currentElements[0])
+                srcNode = int(currentElements[1])
+                destNode = int(currentElements[2])
+                requestedBW = int(currentElements[3])  # .strip('\n')
 
-                request_delay_threshold = 20
+                request_delay_threshold = REQUEST_DELAY_THRESHOLD
                 request_status = "UNFULFILLED"
 
                 requestedFunctions = []
@@ -98,25 +94,25 @@ def processInputDataRequests(filePath):
                     t = i.strip(" ' ' ")
                     requestedFunctions.append(t)
 
-                r = Request(requestNum, srcNode, destNode, requestedFunctions, requestedBW, request_status, request_delay_threshold)
+                current_request = Request(requestNum, srcNode, destNode, requestedFunctions, requestedBW, request_status, request_delay_threshold)
 
-                Request.STATIC_TOTAL_REQUEST_LIST.append(r)
+                Request.STATIC_TOTAL_REQUEST_LIST.append(current_request)
                 print("Request: {} has been created.".format(requestNum))
 
         print("All requests have been created.")
 
 
 def processAllInputData():
-    if os.path.isfile(NodeOpt):
+    if os.path.isfile(NodeInputData):
         print("INPUT_DATA_BOT: NODE FILE PATH WORKS!")
-        processInputDataNode(NodeOpt)
+        processInputDataNode(NodeInputData)
         print("INPUT_DATA_BOT: NODE DATA FILE PROCESSED NODES CREATED!")
     else:
         print("INPUT_DATA_BOT: COULD NOT OPEN NODE FILE")
 
-    if os.path.isfile(LinkOpt):
+    if os.path.isfile(LinkInputData):
         print("INPUT_DATA_BOT: LINK FILE PATH WORKS!")
-        processInputDataLink(LinkOpt)
+        processInputDataLink(LinkInputData)
         print("INPUT_DATA_BOT: LINK DATA FILE PROCESSED LINKS CREATED!")
     else:
         print("INPUT_DATA_BOT: COULD NOT OPEN LINK FILE")

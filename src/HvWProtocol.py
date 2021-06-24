@@ -15,6 +15,7 @@ from src.ProcessPathing import RUN_PATH_TWO
 # Creating output files
 import src.CreateOutputData
 
+REQUEST_DELAY_THRESHOLD = 20.5
 
 """
 "Head vs Wall" Protocol or HvWProtocol

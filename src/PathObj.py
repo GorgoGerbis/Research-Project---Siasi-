@@ -31,8 +31,8 @@ POOR = Path is traversable but does not have enough resources
 STATE_UNKNOWN = The state of the path has yet to be determined.
 """
 
-DELAY_THRESHOLD = 25
 OPTIMAL_PATH_SET = False
+REQUEST_DELAY_THRESHOLD = 20.5
 
 # Path Object States
 STATE_UNKNOWN = 0
@@ -86,23 +86,60 @@ class PathObj:
         link: https://en.wikipedia.org/wiki/Rule_of_succession
 
         :param self: PathObj being referenced
-        :return: failure_probability: an integer/double representing the probability of failure
+        :return: failure_probability: a float representing the probability of failure
         """
+        fused_path = self.create_fusion_obj_list(self.route)
 
-        num_trials = len(PathObj.current_path_failures)
-        obj_failures = 0
+        link_temp = []
+        node_temp = []
 
-        if num_trials == 0:
-            self.FAILURE_PROBABILITY = 0
-        else:
-            for element in PathObj.current_path_failures:
-                obj_failures += element[1]
+        link_count = 0
+        node_count = 0
 
-            avg_failure_rate = obj_failures/num_trials
-            output = (avg_failure_rate + 1) / (num_trials + 2)
+        for step in fused_path:
+            if type(step) == LinkObj:
+                current_fail = LinkObj.calculate_failure(step.linkSrc, step.linkDest)
+                link_temp.append(current_fail)
+                link_count += 1
+            else:
+                current_fail = NodeObj.calculate_failure(step.nodeID)
+                node_temp.append(current_fail)
+                node_count += 1
 
-            # self.FAILURE_PROBABILITY = output
-            self.FAILURE_PROBABILITY = avg_failure_rate
+        ALF = 1
+        OLF = 0
+
+        ANF = 1
+        ONF = 0
+
+        for i in link_temp:
+            ALF *= i
+            OLF += i
+
+        for j in node_temp:
+            ANF *= j
+            ONF += j
+
+        OLF = OLF - ALF
+        ONF = ONF - ANF
+
+        l = REQUEST_DELAY_THRESHOLD*OLF
+        n = REQUEST_DELAY_THRESHOLD*ONF
+
+        L = (l + 1) / (REQUEST_DELAY_THRESHOLD + 2)
+        N = (n + 1) / (REQUEST_DELAY_THRESHOLD + 2)
+
+        ALL = N*L
+        O = (N+L) - ALL
+
+        failure_probability = (O + 1)/(REQUEST_DELAY_THRESHOLD + 2)
+        failure_probability *= 100
+
+        if failure_probability < 0:
+            failure_probability *= -1
+
+        self.FAILURE_PROBABILITY = failure_probability
+
 
     @staticmethod
     def create_fusion_obj_list(path):

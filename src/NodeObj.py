@@ -1,11 +1,13 @@
 from src.FuncObj import FuncObj
 import random
+
 """
 @author: Jackson Walker
 """
 
 # ToDo Need to make a method returning these values so only need to edit FuncObj.py when adding a new function.
 FUNCTION_COSTS = [[1, 1, 1], [2, 2, 2], [3, 3, 3], [4, 4, 4], [5, 5, 5], [6, 6, 6]]
+REQUEST_DELAY_THRESHOLD = 20.5
 
 class NodeObj:
     # BE CAREFUL WHEN CHANGING THINGS IN THIS CLASS ITS USED EVERYWHERE
@@ -171,9 +173,8 @@ class NodeObj:
         :return: True if success, False if failed
         """
         n = NodeObj.returnNode(nid)
-        number_of_failures = n.failure_probability
-        number_of_trials = 10
-        fail_rate = (number_of_failures + 1) / (number_of_trials + 2)
+        number_of_failures = REQUEST_DELAY_THRESHOLD*n.failure_probability
+        fail_rate = (number_of_failures + 1) / (REQUEST_DELAY_THRESHOLD + 2)
         return fail_rate
 
     @staticmethod

@@ -5,9 +5,9 @@ from src.FuncObj import FuncObj
 
 baseFolder = r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-"
 resourcesFolder = os.path.join(baseFolder, "resources")
-NodeInputData = os.path.join(resourcesFolder, "NodeInputData-EXSMALL-TEST-6-18-21.csv")
-LinkInputData = os.path.join(resourcesFolder, "LinkInputData-EXSMALL-TEST-6-18-21.csv")
-auto_requests_Opt = os.path.join(resourcesFolder, "requests-EXSMALL-TEST-6-18-21.txt")
+NodeInputData = os.path.join(resourcesFolder, "NodeInputData-EXSMALL-TEST-6-23-21.csv")
+LinkInputData = os.path.join(resourcesFolder, "LinkInputData-EXSMALL-TEST-6-23-21.csv")
+auto_requests_Opt = os.path.join(resourcesFolder, "requests-EXSMALL-TEST-6-23-21.txt")
 # NodeOpt = os.path.join(resourcesFolder, "NodeInputData-LARGE-TEST-6-18-21.csv")
 # LinkOpt = os.path.join(resourcesFolder, "LinkInputData-LARGE-TEST-6-18-21.csv")
 # auto_requests_Opt = os.path.join(resourcesFolder, "requests-LARGE-TEST-6-18-21.txt")
@@ -15,25 +15,24 @@ auto_requests_Opt = os.path.join(resourcesFolder, "requests-EXSMALL-TEST-6-18-21
 
 def createNodeInputData(number_of_nodes):
     status = ["A", "I", "R", "O"]  # Status of the node
-    physical_buffer_size = [10, 20, 30, 40, 50]     # Don't need to be using this for now so just ignore it
 
     with open(NodeInputData, 'w') as fp:
         heading = "NodeId;Latitude;Longitude;Status;Resources[CPU Memory Physical Buffer " \
                   "Size];ProcessingDelay;NodeCost;PercentFailure\n"
         fp.write(heading)
 
+        num_range = [20, 30, 40, 50]
+
         for cnt in range(number_of_nodes):
             nodeID = cnt + 1  # Ensures we have the correct number for the node
             lat = random.randint(60, 940)
             long = random.randint(60, 740)
             stat = status[0]
-            cpu = 30
-            mem = 30
-            pbs = 30 # = physical_buffer_size[random.randint(0, 4)]
-            resources = [cpu, mem, pbs]
-            processing_delay = random.randint(1, 10)
-            nodeCost = random.randint(1, 5)     # Lets make the node cost be the distance later
-            pf = random.randint(1, 5)
+            pick_one = random.randint(0, 3)
+            resources = [num_range[pick_one], num_range[pick_one], num_range[pick_one]]     # [CPU, RAM, Physical Buffer size]
+            processing_delay = 1
+            nodeCost = 5
+            pf = random.randint(1, 50) / 100    # Dividing to make them decimals
 
             nodeLine = "{};{};{};{};{};{};{};{}\n".format(nodeID, lat, long, stat, resources, processing_delay, nodeCost, pf)
             fp.write(nodeLine)
@@ -49,10 +48,11 @@ def createLinkInputData(number_of_links, number_of_nodes):
             src = random.randint(1, number_of_nodes)
             dest = random.randint(1, number_of_nodes)
             bw = 15
-            ed = 1
-            ec = 1
+            ed = random.randint(2, 6) / 10  # Dividing to make them decimals
+            ec = 5
+            link_failure = random.randint(1, 50) / 100  # Dividing to make them decimals
 
-            linkLine = "{};{};{};{};{};{}\n".format(linkID, src, dest, bw, ed, ec)
+            linkLine = "{};{};{};{};{};{};{}\n".format(linkID, src, dest, bw, ed, ec, link_failure)
             fp.write(linkLine)
 
 
@@ -71,10 +71,8 @@ def createRequests(number_of_requests, number_of_nodes):
                 dest = random.randint(1, number_of_nodes)
 
             requested_num_func = random.randint(1, 6)  # Random amount of functions
-            requestedBW = requested_num_func
+            requestedBW = 5
             outputFunctions = []    # The random list of functions
-
-            i = 1
 
             for i in range(requested_num_func):
                 if i <= requested_num_func:
@@ -94,6 +92,9 @@ if __name__ == '__main__':
     num_links = 48
     num_requests = 15
 
+    print("CREATING NEW INPUT DATA!\n")
+    print("TOTAL NODES: {} TOTAL LINKS: {} TOTAL REQUESTS: {}\n".format(num_nodes, num_links, num_requests))
     createNodeInputData(num_nodes)
     createLinkInputData(num_links, num_nodes)
     createRequests(num_requests, num_nodes)
+    print("FINISHED CREATING INPUT DATA\n")
