@@ -163,18 +163,19 @@ def calculate_path_resources_PATH_TWO(path_obj):
             return True
 
         if type(step) == LinkObj:
-            # print("Link ID: {} Src: {} Dest: {}".format(step.linkID, step.linkSrc, step.linkDest))
             # NOTE: In HvW Protocol if a link doesnt have enough BW the path fails
             if not step.check_enough_resources(requested_bandwidth):
                 path_obj.state = POOR
                 return False
-            # if step.calculate_failure() >= 0.5:
-            #     path_obj.state = FLUNK
-            #     return False
+            if step.calculate_failure(step.linkSrc, step.linkDest) >= 0.5:
+                path_obj.state = FLUNK
+                return False
+            else:
+                path_obj.DELAY += step.linkED
+                path_obj.COST += step.linkEC
         else:
             current_node = step  # First we must determine if mapping is even possible
             node_failure = NodeObj.calculate_failure(current_node.nodeID)
-            # print("Node ID: {} Status: {}".format(current_node.nodeID, current_node.status))
 
             # Determining the status of a node and if it has failed
             if current_node.status == 'O':
@@ -183,18 +184,25 @@ def calculate_path_resources_PATH_TWO(path_obj):
                 return False
             elif current_node.status == 'R':
                 # print("MAPPING ON NODE {} IS NOT POSSIBLE, RELAY TO NEXT NODE IN PATH".format(current_node.nodeID))
+                path_obj.DELAY += current_node.processingDelay
+                path_obj.COST += current_node.nodeCost
                 continue
             elif node_failure >= 0.5:
                 # print("NODE {} FAILED, MOVING ONTO NEXT NODE IN PATH".format(current_node.nodeID))
                 PathObj.current_path_failures.append([current_node.nodeID, node_failure])
-                continue
+                path_obj.state = POOR
+                return False
             else:  # Next we need to determine if a node has enough resources for mapping and how many it can handle
                 temp_mappable_funcs = current_node.how_many_functions_mappable(funcs_to_map)
+                path_obj.DELAY += current_node.processingDelay
+                path_obj.COST += current_node.nodeCost
 
-                if len(temp_mappable_funcs) == 0 and step == end_node and len(funcs_to_map) > 0:
-                    path_obj.state = POOR
-                    return False
-
+                if len(temp_mappable_funcs) == 0:
+                    if len(funcs_to_map) >= 0 and step != end_node:
+                        continue
+                    elif len(funcs_to_map) > 0 and step == end_node:
+                        path_obj.state = POOR
+                        return False
                 elif len(temp_mappable_funcs) == 1:
                     temp_func_list = []
                     current_func = FuncObj.retrieve_function_value(
@@ -207,8 +215,7 @@ def calculate_path_resources_PATH_TWO(path_obj):
                 else:  # <---- len(temp_mappable_funcs) > 1
                     temp_func_list = []
                     for i in range(len(temp_mappable_funcs) - 1):
-                        current_func = FuncObj.retrieve_function_value(
-                            funcs_to_map.pop(0))  # Retrieves the current requested function
+                        current_func = FuncObj.retrieve_function_value(funcs_to_map.pop(0))  # Retrieves the current requested function
                         funcs_mapped.append(current_func)
                         temp_func_list.append(current_func)
                         func_count += 1

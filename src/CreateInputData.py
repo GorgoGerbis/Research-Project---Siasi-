@@ -48,7 +48,7 @@ def createLinkInputData(number_of_links, number_of_nodes):
             src = random.randint(1, number_of_nodes)
             dest = random.randint(1, number_of_nodes)
             bw = 15
-            ed = random.randint(2, 6) / 10  # Dividing to make them decimals
+            ed = 1 # random.randint(2, 6) / 10  # Dividing to make them decimals
             ec = 5
             link_failure = random.randint(1, 50) / 100  # Dividing to make them decimals
 
