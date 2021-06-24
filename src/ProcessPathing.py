@@ -161,8 +161,7 @@ def calculate_path_resources_PATH_TWO(path_obj):
     for step in fused_path:
         if len(funcs_mapped) != 0 and len(funcs_to_map) == 0:
             return True
-
-        if type(step) == LinkObj:
+        elif type(step) == LinkObj:
             # NOTE: In HvW Protocol if a link doesnt have enough BW the path fails
             if not step.check_enough_resources(requested_bandwidth):
                 path_obj.state = POOR
@@ -170,9 +169,6 @@ def calculate_path_resources_PATH_TWO(path_obj):
             if step.calculate_failure(step.linkSrc, step.linkDest) >= 0.5:
                 path_obj.state = FLUNK
                 return False
-            else:
-                path_obj.DELAY += step.linkED
-                path_obj.COST += step.linkEC
         else:
             current_node = step  # First we must determine if mapping is even possible
             node_failure = NodeObj.calculate_failure(current_node.nodeID)
@@ -184,8 +180,6 @@ def calculate_path_resources_PATH_TWO(path_obj):
                 return False
             elif current_node.status == 'R':
                 # print("MAPPING ON NODE {} IS NOT POSSIBLE, RELAY TO NEXT NODE IN PATH".format(current_node.nodeID))
-                path_obj.DELAY += current_node.processingDelay
-                path_obj.COST += current_node.nodeCost
                 continue
             elif node_failure >= 0.5:
                 # print("NODE {} FAILED, MOVING ONTO NEXT NODE IN PATH".format(current_node.nodeID))
@@ -194,8 +188,6 @@ def calculate_path_resources_PATH_TWO(path_obj):
                 return False
             else:  # Next we need to determine if a node has enough resources for mapping and how many it can handle
                 temp_mappable_funcs = current_node.how_many_functions_mappable(funcs_to_map)
-                path_obj.DELAY += current_node.processingDelay
-                path_obj.COST += current_node.nodeCost
 
                 if len(temp_mappable_funcs) == 0:
                     if len(funcs_to_map) >= 0 and step != end_node:
@@ -253,44 +245,15 @@ def calculate_path_speed(path_obj, delay_threshold):
     :param delay_threshold: The numerical value representing the window of time to fulfill a request before failure.
     :return: Boolean
     """
-    route = path_obj.route
-    mapping_list = path_obj.MAPPING_LOCATION
+    fused_list = PathObj.create_fusion_obj_list(path_obj.route)
 
-    link_list = []
-    PATH_DELAY = 0
-    PATH_COST = 0
-
-    for i in range(len(route) - 1): # Retrieve needed link objects
-        s = route[i]  # Starting node
-        d = route[i + 1]  # Destination node
-
-        lnk = LinkObj.returnLink(s, d)
-        ED = lnk.linkED
-        EC = lnk.linkEC
-        link_list.append([ED, EC])
-
-        i += 1
-
-    for l in link_list:
-        linkED = l[0]
-        linkEC = l[1]
-
-        PATH_DELAY += int(linkED)
-        PATH_COST += int(linkEC)
-
-    for temp_list in mapping_list:
-        node = temp_list[0]
-        funcs = temp_list[1]
-
-        PD = node.processingDelay
-        NC = node.nodeCost
-
-        PATH_DELAY += int(PD) * len(funcs)
-        PATH_COST += int(NC) * len(funcs)
-
-    # Setting the DELAY and PATH attributes for this PathObj
-    path_obj.DELAY = PATH_DELAY
-    path_obj.COST = PATH_COST
+    for step in fused_list:
+        if type(step) == LinkObj:
+            path_obj.DELAY += step.linkED
+            path_obj.COST += step.linkEC
+        elif type(step) == NodeObj:
+            path_obj.DELAY += step.processingDelay
+            path_obj.COST += step.nodeCost
 
     if path_obj.DELAY <= delay_threshold:
         return True
