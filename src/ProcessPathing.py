@@ -385,13 +385,14 @@ def map_path(path_obj):
                 link = element
                 link.map_request(requested_bandwidth)
             else:
-                # node = element
                 for temp_list in mapping_list:
                     used_node = temp_list[0]
                     funcs = temp_list[1]
 
                     for f in funcs:
                         used_node.map_function_obj(f)
+
+    print("PATH MAPPED")
 
 
 def RUN_PATH_ONE(paths, req):

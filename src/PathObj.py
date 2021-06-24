@@ -89,22 +89,16 @@ class PathObj:
         :return: failure_probability: a float representing the probability of failure
         """
         fused_path = self.create_fusion_obj_list(self.route)
-
         link_temp = []
         node_temp = []
-
-        link_count = 0
-        node_count = 0
 
         for step in fused_path:
             if type(step) == LinkObj:
                 current_fail = LinkObj.calculate_failure(step.linkSrc, step.linkDest)
                 link_temp.append(current_fail)
-                link_count += 1
             else:
                 current_fail = NodeObj.calculate_failure(step.nodeID)
                 node_temp.append(current_fail)
-                node_count += 1
 
         ALF = 1
         OLF = 0

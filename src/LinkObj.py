@@ -55,5 +55,4 @@ class LinkObj(NodeObj):  # <-- This means its a subclass of NodeObj right?
                 return link
 
     def __str__(self):
-        string = "LinkID {} Source {} Dest {} BandWidth {} Delay {} Cost {} Weight {}".format(self.linkID, self.linkSrc, self.linkDest, self.linkBW, self.linkED, self.linkEC, self.linkWeight)
-        return string
+        return "LinkID {} Source {} Dest {} BandWidth {} Delay {} Cost {} Failure Probability {}".format(self.linkID, self.linkSrc, self.linkDest, self.linkBW, self.linkED, self.linkEC, self.failure_probability)
