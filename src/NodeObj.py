@@ -7,7 +7,7 @@ import random
 
 # ToDo Need to make a method returning these values so only need to edit FuncObj.py when adding a new function.
 FUNCTION_COSTS = [[1, 1, 1], [2, 2, 2], [3, 3, 3], [4, 4, 4], [5, 5, 5], [6, 6, 6]]
-REQUEST_DELAY_THRESHOLD = 20.5
+REQUEST_DELAY_THRESHOLD = 30.5
 
 class NodeObj:
     # BE CAREFUL WHEN CHANGING THINGS IN THIS CLASS ITS USED EVERYWHERE

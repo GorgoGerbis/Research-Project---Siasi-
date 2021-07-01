@@ -2,6 +2,8 @@ from src import ProcessInputData
 from src.NodeObj import NodeObj
 from src.Request import Request
 from src.PathObj import PathObj
+from src.CreateOutputData import output_file
+import ProcessPathing
 
 # Need these for path finding and graphing
 import networkx as nx
@@ -15,7 +17,7 @@ from src.ProcessPathing import RUN_PATH_TWO
 # Creating output files
 import src.CreateOutputData
 
-REQUEST_DELAY_THRESHOLD = 20.5
+REQUEST_DELAY_THRESHOLD = 30.5
 
 """
 "Head vs Wall" Protocol or HvWProtocol
@@ -83,20 +85,27 @@ if __name__ == '__main__':
         print("BEGUN PROCESSING REQUEST: {} Source: {} Destination {} Functions: {}\n".format(req.requestID, req.source, req.destination, req.requestedFunctions))
 
         count = 1  # Needs to be reset to 1 when a new request is being processed
-        current_request_data = [req.requestedFunctions, req.request_delay_threshold, req.requestedBW]    # Can add to this later as needed
+        current_request_data = [req.requestedFunctions, req.request_delay_threshold, req.requestedBW]
         current_request_all_possible_paths = nx.all_simple_paths(GRAPH, req.source, req.destination)
 
         for path in current_request_all_possible_paths:     # STEP TWO
-            pathID = "R{}P{}".format(req.requestID, count)  # Ex: Given request 4 and path 20 would be: R4P20
+            pathID = "R{}P{}".format(req.requestID, count)
             new_path_obj = PathObj(pathID, path, 0, current_request_data, [], 0, 0, 0, 2)  # ToDo should make a static list of all paths being processed for a single request
+
+            ProcessPathing.set_path_state_PATH_ONE(new_path_obj)
+            # ProcessPathing.set_path_state_PATH_TWO(new_path_obj)
+
             count += 1
 
         ############## TESTING ###############
-        # RUN_PATH_ONE(PathObj.StaticPathsList, req)   # <--- Step 3, 4 and 5 starts here
-        RUN_PATH_TWO(PathObj.StaticPathsList, req)
+        # RUN_PATH_ONE(req)   # <--- Step 3, 4 and 5 starts here
+        RUN_PATH_TWO(req)
+
+    x = Request.STATIC_TOTAL_REQUEST_LIST
 
     print("ALL DONE FINDING FIRST PATHS\n")
     for op in PathObj.StaticOptimalPathsList:
         print(op)
 
     print("STARTING CREATION OF OUTPUT FILES\n")
+    output_file()

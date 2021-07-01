@@ -32,7 +32,7 @@ STATE_UNKNOWN = The state of the path has yet to be determined.
 """
 
 OPTIMAL_PATH_SET = False
-REQUEST_DELAY_THRESHOLD = 20.5
+REQUEST_DELAY_THRESHOLD = 30.5
 
 # Path Object States
 STATE_UNKNOWN = 0
@@ -51,6 +51,8 @@ class PathObj:
     BACKUP_PATHS = []
     StaticPathsList = []
     current_path_failures = []
+
+    current_request_paths_list = []
 
     def __init__(self, pathID, route, state, REQ_INFO, MAPPING_LOCATION, DELAY, COST, FAILURE_PROBABILITY, PATH_TYPE):
         """
@@ -71,12 +73,11 @@ class PathObj:
         self.MAPPING_LOCATION = MAPPING_LOCATION
         self.DELAY = DELAY
         self.COST = COST
-
-        # New stuff added today 6/18/21
         self.FAILURE_PROBABILITY = FAILURE_PROBABILITY
         self.PATH_TYPE = PATH_TYPE
 
         PathObj.StaticPathsList.append(self)
+        PathObj.current_request_paths_list.append(self)
 
     def set_failure_probability(self):
         """

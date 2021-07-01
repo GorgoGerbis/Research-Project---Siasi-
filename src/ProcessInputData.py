@@ -8,12 +8,13 @@ from src.HvWProtocol import REQUEST_DELAY_THRESHOLD
 baseFolder = r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-"
 
 resourcesFolder = os.path.join(baseFolder, "resources")
-NodeInputData = os.path.join(resourcesFolder, "NodeInputData-EXSMALL-TEST-6-23-21.csv")
-LinkInputData = os.path.join(resourcesFolder, "LinkInputData-EXSMALL-TEST-6-23-21.csv")
-auto_requests_Opt = os.path.join(resourcesFolder, "requests-EXSMALL-TEST-6-23-21.txt")
-# NodeOpt = os.path.join(resourcesFolder, "NodeInputData-LARGE-TEST-6-18-21.csv")
-# LinkOpt = os.path.join(resourcesFolder, "LinkInputData-LARGE-TEST-6-18-21.csv")
-# auto_requests_Opt = os.path.join(resourcesFolder, "requests-LARGE-TEST-6-18-21.txt")
+# NodeInputData = os.path.join(resourcesFolder, "NodeInputData-EXSMALL-TEST-6-24-21.csv")
+# LinkInputData = os.path.join(resourcesFolder, "LinkInputData-EXSMALL-TEST-6-24-21.csv")
+# auto_requests_Opt = os.path.join(resourcesFolder, "requests-EXSMALL-TEST-6-24-21.txt")
+
+NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-A-6-30-21.csv")
+LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-A-6-30-21.csv")
+auto_requests_Opt = os.path.join(resourcesFolder, "requests-TEST-A-6-30-21.txt")
 
 REQUESTS_FAILED = []
 REQUESTS_PASSED = []
@@ -94,7 +95,7 @@ def processInputDataRequests(filePath):
                     t = i.strip(" ' ' ")
                     requestedFunctions.append(t)
 
-                current_request = Request(requestNum, srcNode, destNode, requestedFunctions, requestedBW, request_status, request_delay_threshold)
+                current_request = Request(requestNum, srcNode, destNode, requestedFunctions, requestedBW, request_status, request_delay_threshold, None, None)
 
                 Request.STATIC_TOTAL_REQUEST_LIST.append(current_request)
                 print("Request: {} has been created.".format(requestNum))

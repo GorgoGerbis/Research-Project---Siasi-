@@ -5,12 +5,12 @@ from src.FuncObj import FuncObj
 
 baseFolder = r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-"
 resourcesFolder = os.path.join(baseFolder, "resources")
-NodeInputData = os.path.join(resourcesFolder, "NodeInputData-EXSMALL-TEST-6-23-21.csv")
-LinkInputData = os.path.join(resourcesFolder, "LinkInputData-EXSMALL-TEST-6-23-21.csv")
-auto_requests_Opt = os.path.join(resourcesFolder, "requests-EXSMALL-TEST-6-23-21.txt")
-# NodeOpt = os.path.join(resourcesFolder, "NodeInputData-LARGE-TEST-6-18-21.csv")
-# LinkOpt = os.path.join(resourcesFolder, "LinkInputData-LARGE-TEST-6-18-21.csv")
-# auto_requests_Opt = os.path.join(resourcesFolder, "requests-LARGE-TEST-6-18-21.txt")
+NodeInputData = os.path.join(resourcesFolder, "NodeInputData-EXSMALL-TEST-6-24-21.csv")
+LinkInputData = os.path.join(resourcesFolder, "LinkInputData-EXSMALL-TEST-6-24-21.csv")
+auto_requests_Opt = os.path.join(resourcesFolder, "requests-EXSMALL-TEST-6-24-21.txt")
+# NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-A-6-30-21.csv")
+# LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-A-6-30-21.csv")
+# auto_requests_Opt = os.path.join(resourcesFolder, "requests-TEST-A-6-30-21.txt")
 
 
 def createNodeInputData(number_of_nodes):
@@ -29,7 +29,8 @@ def createNodeInputData(number_of_nodes):
             long = random.randint(60, 740)
             stat = status[0]
             pick_one = random.randint(0, 3)
-            resources = [num_range[pick_one], num_range[pick_one], num_range[pick_one]]     # [CPU, RAM, Physical Buffer size]
+            # resources = [num_range[pick_one], num_range[pick_one], num_range[pick_one]]     # [CPU, RAM, Physical Buffer size]
+            resources = [40, 40, 40]
             processing_delay = 1
             nodeCost = 5
             pf = random.randint(1, 50) / 100    # Dividing to make them decimals
@@ -88,9 +89,9 @@ def createRequests(number_of_requests, number_of_nodes):
 
 if __name__ == '__main__':
 
-    num_nodes = 24
-    num_links = 48
-    num_requests = 15
+    num_nodes = 42
+    num_links = 63
+    num_requests = 100
 
     print("CREATING NEW INPUT DATA!\n")
     print("TOTAL NODES: {} TOTAL LINKS: {} TOTAL REQUESTS: {}\n".format(num_nodes, num_links, num_requests))
