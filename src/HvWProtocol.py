@@ -158,19 +158,29 @@ def create_figure_ONE():
 
     max_delay = 0
 
-    y_list = []
+    a_list = []
+    b_list = []
 
     for req in Request.STATIC_TOTAL_REQUEST_LIST:
         obj = req.PATH_ONE
         if obj is not None:
-            y_list.append(obj.DELAY)
+            a_list.append(obj.DELAY)
+
+            if obj.DELAY > max_delay:
+                max_delay = obj.DELAY
+
+    for req in Request.STATIC_TOTAL_REQUEST_LIST:
+        obj = req.PATH_TWO
+        if obj is not None:
+            b_list.append(obj.DELAY)
 
             if obj.DELAY > max_delay:
                 max_delay = obj.DELAY
 
     num_reqs = len(Request.STATIC_TOTAL_REQUEST_LIST)
     plt.axis([0, num_reqs, 0, max_delay+10])
-    plt.plot(y_list)
+    plt.plot(a_list)
+    plt.plot(b_list, color='r')
     plt.show()
 
 
@@ -180,24 +190,30 @@ def create_figure_TWO():
     plt.ylabel("Average cost per request")
 
     max_cost = 0
-    i = 0
 
-    y_list = []
-    x_list = []
+    a_list = []
+    b_list = []
 
     for req in Request.STATIC_TOTAL_REQUEST_LIST:
         obj = req.PATH_ONE
         if obj is not None:
-            i += 1
-            y_list.append(obj.COST)
-            x_list.append(i)
+            a_list.append(obj.COST)
+
+            if obj.COST > max_cost:
+                max_cost = obj.COST
+
+    for req in Request.STATIC_TOTAL_REQUEST_LIST:
+        obj = req.PATH_TWO
+        if obj is not None:
+            b_list.append(obj.COST)
 
             if obj.COST > max_cost:
                 max_cost = obj.COST
 
     num_reqs = len(Request.STATIC_TOTAL_REQUEST_LIST)
     plt.axis([0, num_reqs, 0, max_cost])
-    plt.plot(y_list)
+    plt.plot(a_list)
+    plt.plot(b_list, color='r')
     plt.show()
 
 
@@ -209,8 +225,14 @@ def create_figure_THREE():
     num_passed = 0
     num_failed = 0
 
+    num_passed_other = 0
+    num_failed_other = 0
+
     x_list = []
     y_list = []
+
+    a_list = []
+    b_list = []
 
     for req in Request.STATIC_TOTAL_REQUEST_LIST:
         if req.requestStatus[0] == 3:
@@ -222,9 +244,24 @@ def create_figure_THREE():
             x_list.append(num_passed)
             y_list.append(num_failed)
 
-    num_reqs = num_passed + num_failed
+    for req in Request.STATIC_TOTAL_REQUEST_LIST:
+        if req.requestStatus[1] == 3:
+            num_passed_other += 1
+            a_list.append(num_passed_other)
+            b_list.append(num_failed_other)
+        elif req.requestStatus[1] == 2:
+            num_failed_other += 1
+            a_list.append(num_passed_other)
+            b_list.append(num_failed_other)
+
+    if (num_passed + num_failed) > (num_passed_other + num_failed_other):
+        num_reqs = num_passed + num_failed
+    else:
+        num_reqs = num_passed_other + num_failed_other
+
     plt.axis([0, num_reqs, -1, num_failed])
     plt.plot(x_list, y_list)
+    plt.plot(a_list, b_list, color='r')
     plt.show()
 
 

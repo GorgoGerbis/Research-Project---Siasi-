@@ -43,16 +43,12 @@ def createNodeInputData(number_of_nodes):
                   "Size];ProcessingDelay;NodeCost;PercentFailure\n"
         fp.write(heading)
 
-        num_range = [20, 30, 40, 50]
-
         for cnt in range(number_of_nodes):
             nodeID = cnt + 1  # Ensures we have the correct number for the node
             lat = random.randint(60, 940)
             long = random.randint(60, 740)
             stat = status[0]
-            pick_one = random.randint(0, 3)
-            # resources = [num_range[pick_one], num_range[pick_one], num_range[pick_one]]     # [CPU, RAM, Physical Buffer size]
-            resources = [100, 100, 100]
+            resources = [100, 100, 100] # [CPU, RAM, Physical Buffer size]
             processing_delay = 1
             nodeCost = 5
             pf = random.randint(1, 60) / 100    # Dividing to make them decimals
