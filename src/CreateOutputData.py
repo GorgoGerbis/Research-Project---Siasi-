@@ -13,8 +13,8 @@ from src.FuncObj import FuncObj
 baseFolder = r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-"
 outputFolder = os.path.join(baseFolder, "output")
 
-REQUESTS_FILE = os.path.join(outputFolder, "REQUESTS_OUTPUT_TEST.csv")
-REQUESTS_FILE_WITH = os.path.join(outputFolder, "REQUESTS_OUTPUT_TEST_WITH_FAULT.csv")
+REQUESTS_FILE = os.path.join(outputFolder, "REQUESTS_OUTPUT_A.csv")
+REQUESTS_FILE_WITH = os.path.join(outputFolder, "REQUESTS_OUTPUT_A_WITH_FAULT.csv")
 
 REQUEST_NEEDS_CALCULATING = 0
 REQUEST_ONGOING = 1
