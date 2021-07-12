@@ -13,14 +13,8 @@ from src.FuncObj import FuncObj
 baseFolder = r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-"
 outputFolder = os.path.join(baseFolder, "output")
 
-REQUESTS_FILE = os.path.join(outputFolder, "REQUESTS_OUTPUT.csv")
-REQUESTS_FAILED_FILE = os.path.join(outputFolder, "REQUESTS_FAILED.csv")
-REQUESTS_PASSED_FILE = os.path.join(outputFolder, "REQUESTS_PASSED.csv")
-REQUESTS_PASSED_FAILURE_PROBABILITY = os.path.join(outputFolder, "REQUESTS_PASSED_FAILURE_PROBABILITY.csv")
-REQUESTS_FAILED_FAILURE_PROBABILITY = os.path.join(outputFolder, "REQUESTS_FAILED_FAILURE_PROBABILITY.csv")
-
-REQUESTS_OUTPUT = os.path.join(outputFolder, "REQUESTS_OUTPUT_TEST_A.csv")
-REQUESTS_OUTPUT_WITH_FAULT = os.path.join(outputFolder, "REQUESTS_OUTPUT_TEST_A_WITH_FAULT.csv")
+REQUESTS_FILE = os.path.join(outputFolder, "REQUESTS_OUTPUT_TEST.csv")
+REQUESTS_FILE_WITH = os.path.join(outputFolder, "REQUESTS_OUTPUT_TEST_WITH_FAULT.csv")
 
 REQUEST_NEEDS_CALCULATING = 0
 REQUEST_ONGOING = 1
@@ -109,7 +103,7 @@ def output_file_PATH_ONE():
 
 
 def output_file_PATH_TWO():
-    with open(REQUESTS_FILE, 'w') as fp:
+    with open(REQUESTS_FILE_WITH, 'w') as fp:
         main_header = "DATASET=TEST_A,TYPE=WITH_FAULT_TOLERANCE,NODES=42,LINKS=63,REQUESTS=100\n"
         average_header = "REQUEST PASSED, REQUESTS FAILED, AVERAGE REQUEST DELAY, AVERAGE REQUEST COST\n"
         p, f, avd, avc = get_average_data_PATH_TWO()
@@ -126,15 +120,3 @@ def output_file_PATH_TWO():
                 fp.write("APPROVED,{},{},{},{},{},{},{}\n".format(req.requestID, current_path.pathID, current_path.FAILURE_PROBABILITY, current_path.DELAY, current_path.COST, req.requestedFunctions, current_path.route))
             else:
                 fp.write("DENIED,{},NONE,NONE,0,0,{},NONE\n".format(req.requestID, req.requestedFunctions))
-
-
-def create_data_graph():
-    num_reqs = len(Request.STATIC_TOTAL_REQUEST_LIST)
-    num_passed = len(Request.STATIC_APPROVED_REQUEST_LIST)
-
-    x = np.linspace(-1, 1, num_reqs)
-    y1 = 2 * num_passed + 1
-
-    plt.figure(num=3, figsize=(8, 5))
-    plt.plot(x, y1, color='red', linewidth=1.0)
-    plt.show()

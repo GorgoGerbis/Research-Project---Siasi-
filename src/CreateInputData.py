@@ -6,9 +6,9 @@ from src.FuncObj import FuncObj
 
 baseFolder = r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-"
 resourcesFolder = os.path.join(baseFolder, "resources")
-# NodeInputData = os.path.join(resourcesFolder, "NodeInputData-EXSMALL-TEST-6-24-21.csv")
-# LinkInputData = os.path.join(resourcesFolder, "LinkInputData-EXSMALL-TEST-6-24-21.csv")
-# auto_requests_Opt = os.path.join(resourcesFolder, "requests-EXSMALL-TEST-6-24-21.txt")
+NodeInputData = os.path.join(resourcesFolder, "NodeInputData-EXSMALL-TEST-6-24-21.csv")
+LinkInputData = os.path.join(resourcesFolder, "LinkInputData-EXSMALL-TEST-6-24-21.csv")
+auto_requests_Opt = os.path.join(resourcesFolder, "requests-EXSMALL-TEST-6-24-21.txt")
 
 # NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-A-7-03-21.csv")
 # LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-A-7-03-21.csv")
@@ -22,9 +22,9 @@ resourcesFolder = os.path.join(baseFolder, "resources")
 # LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-C-7-03-21.csv")
 # auto_requests_Opt = os.path.join(resourcesFolder, "requests-TEST-C-7-03-21.txt")
 
-NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-D-7-03-21.csv")
-LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-D-7-03-21.csv")
-auto_requests_Opt = os.path.join(resourcesFolder, "requests-TEST-D-7-03-21.txt")
+# NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-D-7-03-21.csv")
+# LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-D-7-03-21.csv")
+# auto_requests_Opt = os.path.join(resourcesFolder, "requests-TEST-D-7-03-21.txt")
 
 # NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-E-7-03-21.csv")
 # LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-E-7-03-21.csv")
@@ -33,7 +33,6 @@ auto_requests_Opt = os.path.join(resourcesFolder, "requests-TEST-D-7-03-21.txt")
 # NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-F-7-03-21.csv")
 # LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-F-7-03-21.csv")
 # auto_requests_Opt = os.path.join(resourcesFolder, "requests-TEST-F-7-03-21.txt")
-
 
 
 def createNodeInputData(number_of_nodes):
@@ -93,8 +92,8 @@ def createRequests(number_of_requests, number_of_nodes):
 
         for cnt in range(number_of_requests):
             reqID = cnt + 1  # Ensures we have the correct number for the node
-            src = random.randint(1, number_of_nodes)
-            dest = random.randint(1, number_of_nodes)
+
+            src, dest = not_the_same(number_of_nodes)
 
             if dest == src:
                 dest = random.randint(1, number_of_nodes)
@@ -126,10 +125,21 @@ def create_pair(num_links, num_nodes, output):
     return output
 
 
+def not_the_same(num_nodes):
+    con = True
+    while con:
+        src = random.randint(1, num_nodes)
+        dest = random.randint(1, num_nodes)
+
+        if src != dest:
+            con = False
+            return src, dest
+
+
 if __name__ == '__main__':
-    num_nodes = 84
-    num_links = 124
-    num_requests = 150
+    num_nodes = 12
+    num_links = 24
+    num_requests = 48
 
     print("CREATING NEW INPUT DATA!\n")
     print("TOTAL NODES: {} TOTAL LINKS: {} TOTAL REQUESTS: {}\n".format(num_nodes, num_links, num_requests))
