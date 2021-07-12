@@ -12,17 +12,17 @@ resourcesFolder = os.path.join(baseFolder, "resources")
 # LinkInputData = os.path.join(resourcesFolder, "LinkInputData-EXSMALL-TEST-6-24-21.csv")
 # auto_requests_Opt = os.path.join(resourcesFolder, "requests-EXSMALL-TEST-6-24-21.txt")
 
-NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-A-7-03-21.csv")
-LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-A-7-03-21.csv")
-auto_requests_Opt = os.path.join(resourcesFolder, "requests-TEST-A-7-03-21.txt")
+# NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-A-7-03-21.csv")
+# LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-A-7-03-21.csv")
+# auto_requests_Opt = os.path.join(resourcesFolder, "requests-TEST-A-7-03-21.txt")
 
 # NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-B-7-03-21.csv")
 # LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-B-7-03-21.csv")
 # auto_requests_Opt = os.path.join(resourcesFolder, "requests-TEST-B-7-03-21.txt")
 
-# NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-C-7-03-21.csv")
-# LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-C-7-03-21.csv")
-# auto_requests_Opt = os.path.join(resourcesFolder, "requests-TEST-C-7-03-21.txt")
+NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-C-7-03-21.csv")
+LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-C-7-03-21.csv")
+auto_requests_Opt = os.path.join(resourcesFolder, "requests-TEST-C-7-03-21.txt")
 
 # NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-D-7-03-21.csv")
 # LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-D-7-03-21.csv")
