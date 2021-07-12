@@ -167,7 +167,7 @@ def calculate_path_resources_PATH_TWO(path_obj):
             if not step.check_enough_resources(requested_bandwidth):
                 path_obj.state = POOR
                 return False
-            if step.calculate_failure(step.linkSrc, step.linkDest) >= 0.5:
+            if step.calculate_failure(step.linkSrc, step.linkDest) >= 0.55:
                 path_obj.state = FLUNK
                 return False
         else:
@@ -182,7 +182,7 @@ def calculate_path_resources_PATH_TWO(path_obj):
             elif current_node.status == 'R':
                 # print("MAPPING ON NODE {} IS NOT POSSIBLE, RELAY TO NEXT NODE IN PATH".format(current_node.nodeID))
                 continue
-            elif node_failure >= 0.5:
+            elif node_failure >= 0.55:
                 # print("NODE {} FAILED, MOVING ONTO NEXT NODE IN PATH".format(current_node.nodeID))
                 PathObj.current_path_failures.append([current_node.nodeID, node_failure])
                 path_obj.state = POOR
@@ -374,11 +374,11 @@ def RUN_PATH_ONE(req):
         set_path_state_PATH_ONE(path)
 
     if len(PathObj.BACKUP_PATHS) == 0:
-        req.requestStatus = 2   # Fail current request if no paths
+        req.requestStatus[0] = 2   # Fail current request if no paths
         Request.STATIC_DENIED_REQUEST_LIST.append(req)
 
     else:
-        req.requestStatus = 3
+        req.requestStatus[0] = 3
         Request.STATIC_APPROVED_REQUEST_LIST.append(req)
 
         calculate_optimal_PATH_ONE()
@@ -398,11 +398,11 @@ def RUN_PATH_TWO(req):
         set_path_state_PATH_TWO(path)
 
     if len(PathObj.BACKUP_PATHS) == 0:
-        req.requestStatus = 2  # Fail current request if no paths
+        req.requestStatus[1] = 2  # Fail current request if no paths
         Request.STATIC_DENIED_REQUEST_LIST.append(req)
 
     else:
-        req.requestStatus = 3
+        req.requestStatus[1] = 3
         Request.STATIC_APPROVED_REQUEST_LIST.append(req)
 
         calculate_optimal_PATH_TWO()

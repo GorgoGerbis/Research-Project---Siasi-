@@ -16,6 +16,9 @@ class NodeObj:
     StaticNodeList = []  # Static List of all nodes
     TotalNodeCount = 0  # Static variable keeping track of amount of nodes
 
+    StaticNodeResources = []
+    StaticLinkResources = []
+
     # NODE STATUS
     UNAVAILABLE = "O"
     AVAILABLE = "A"
@@ -31,6 +34,12 @@ class NodeObj:
         self.failure_probability = failure_probability
 
         NodeObj.StaticNodeList.append(self)  # <-- APPENDS CURRENT NODE TO STATIC LIST OF ALL NODES
+
+    def reset_node(self):
+        for pair in NodeObj.StaticNodeResources:
+            if self.nodeID == pair[0]:
+                self.nodeResources = [100, 100, 100]
+                self.status = "A"
 
     def get_neighbors(self):
         neighbors = []

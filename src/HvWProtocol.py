@@ -1,8 +1,9 @@
+import os
 from src import ProcessInputData
 from src.NodeObj import NodeObj
 from src.Request import Request
 from src.PathObj import PathObj
-from src.CreateOutputData import output_file_PATH_ONE
+import CreateOutputData
 from src.CreateOutputData import output_file_PATH_TWO
 import ProcessPathing
 
@@ -14,6 +15,38 @@ from itertools import islice
 # Need these to process requests
 from src.ProcessPathing import RUN_PATH_ONE
 from src.ProcessPathing import RUN_PATH_TWO
+
+# Resources
+baseFolder = r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-"
+
+resourcesFolder = os.path.join(baseFolder, "resources")
+NodeInputData = os.path.join(resourcesFolder, "NodeInputData-EXSMALL-TEST-6-24-21.csv")
+LinkInputData = os.path.join(resourcesFolder, "LinkInputData-EXSMALL-TEST-6-24-21.csv")
+auto_requests_Opt = os.path.join(resourcesFolder, "requests-EXSMALL-TEST-6-24-21.txt")
+
+# NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-A-7-03-21.csv")
+# LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-A-7-03-21.csv")
+# auto_requests_Opt = os.path.join(resourcesFolder, "requests-TEST-A-7-03-21.txt")
+
+# NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-B-7-03-21.csv")
+# LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-B-7-03-21.csv")
+# auto_requests_Opt = os.path.join(resourcesFolder, "requests-TEST-B-7-03-21.txt")
+
+# NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-C-7-03-21.csv")
+# LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-C-7-03-21.csv")
+# auto_requests_Opt = os.path.join(resourcesFolder, "requests-TEST-C-7-03-21.txt")
+
+# NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-D-7-03-21.csv")
+# LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-D-7-03-21.csv")
+# auto_requests_Opt = os.path.join(resourcesFolder, "requests-TEST-D-7-03-21.txt")
+
+# NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-E-7-03-21.csv")
+# LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-E-7-03-21.csv")
+# auto_requests_Opt = os.path.join(resourcesFolder, "requests-TEST-E-7-03-21.txt")
+
+# NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-F-7-03-21.csv")
+# LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-F-7-03-21.csv")
+# auto_requests_Opt = os.path.join(resourcesFolder, "requests-TEST-F-7-03-21.txt")
 
 # Creating output files
 import src.CreateOutputData
@@ -96,15 +129,26 @@ def process_path_two():
         current_request_all_possible_paths = nx.all_simple_paths(GRAPH, req.source, req.destination)
 
         for path in current_request_all_possible_paths:     # STEP TWO
-            if path != "":
+            if len(path) != 0:
                 pathID = "R{}P{}".format(req.requestID, count)
-                new_path_obj = PathObj(pathID, path, 0, current_request_data, [], 0, 0, 0, 2)  # ToDo should make a static list of all paths being processed for a single request
+                # ToDo should make a static list of all paths being processed for a single request
+                new_path_obj = PathObj(pathID, path, 0, current_request_data, [], 0, 0, 0, 2)
 
                 ProcessPathing.set_path_state_PATH_TWO(new_path_obj)
 
                 count += 1
 
         RUN_PATH_TWO(req)
+
+
+def reset_all_resources():
+    for node in NodeObj.StaticNodeList:
+        node.reset_node()
+        print("RESET NODE {}".format(node.nodeID))
+
+    for link in NodeObj.StaticLinkList:
+        link.reset_link()
+        print("RESET LINK {}".format(link.linkID))
 
 
 def create_figure_ONE():
@@ -169,11 +213,11 @@ def create_figure_THREE():
     y_list = []
 
     for req in Request.STATIC_TOTAL_REQUEST_LIST:
-        if req.requestStatus == 3:
+        if req.requestStatus[0] == 3:
             num_passed += 1
             x_list.append(num_passed)
             y_list.append(num_failed)
-        elif req.requestStatus == 2:
+        elif req.requestStatus[0] == 2:
             num_failed += 1
             x_list.append(num_passed)
             y_list.append(num_failed)
@@ -186,7 +230,6 @@ def create_figure_THREE():
 
 if __name__ == '__main__':
     print("Begin Processing requests using: 'Head vs. Wall' Protocol\n")
-
     print("BEGIN PROCESSING INPUT DATA\n")
     ProcessInputData.processAllInputData()
     print("INPUT DATA PROCESSED\n")
@@ -200,16 +243,29 @@ if __name__ == '__main__':
 
     ############# SETUP IS NOW OVER WE CAN BEGIN PROCESSING ##############
     process_path_one()
-    # process_path_two()
-
     print("ALL DONE FINDING FIRST PATHS\n")
     for op in PathObj.StaticOptimalPathsList:
         print(op)
 
     print("STARTING CREATION OF OUTPUT FILES\n")
-    output_file_PATH_ONE()
-    # output_file_PATH_TWO()
+    CreateOutputData.output_file_PATH_ONE()
+    print("CREATED PATH ONE OUTPUT FILES\n")
+    ##########################################################
 
+    print("RESETTING NODE AND LINK RESOURCES\n")
+    reset_all_resources()
+
+    ############# BEGIN PROCESSING FOR PATH TWO ##############
+    process_path_two()
+    print("ALL DONE FINDING SECOND PATHS\n")
+    for op in PathObj.StaticOptimalPathsList:
+        print(op)
+
+    print("STARTING CREATION OF FAILURE PROBABILITY OUTPUT FILES\n")
+    output_file_PATH_TWO()
+    ##########################################################
+
+    ############# CREATE OUTPUT DATA GRAPHS ##############
     create_figure_ONE()
     create_figure_TWO()
     create_figure_THREE()

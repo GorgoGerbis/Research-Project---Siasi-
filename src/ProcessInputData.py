@@ -64,6 +64,7 @@ def processInputDataNode(filePath):
 
             failure = float(currentElements[6].strip('\n'))
 
+            NodeObj.StaticNodeResources.append([id, [100, 100, 100]])   # @ToDo remember to change this as well so the nodes are properly reset
             current_node = NodeObj(id, position, status, resources, processingDelay, cost, failure)
             print(current_node)
 
@@ -84,6 +85,7 @@ def processInputDataLink(filePath):
             edgeCost = int(currentElements[5])
             failure_probability = float(currentElements[6].strip('\n'))
 
+            NodeObj.StaticLinkResources.append([linkID, bandwidth])
             current_link = LinkObj(linkID, source, destination, bandwidth, edgeDelay, edgeCost, failure_probability)
 
             if current_link not in NodeObj.StaticLinkList:
@@ -108,7 +110,7 @@ def processInputDataRequests(filePath):
                 requestedBW = int(currentElements[3])  # .strip('\n')
 
                 request_delay_threshold = REQUEST_DELAY_THRESHOLD
-                request_status = "UNFULFILLED"
+                request_status = [0, 0]
 
                 requestedFunctions = []
                 for i in tempRequestedFunctions:  # This is to get rid of the extra quotes around the functions

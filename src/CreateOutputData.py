@@ -32,8 +32,8 @@ def get_average_data_PATH_ONE():
     average_request_cost = []
 
     for req in Request.STATIC_TOTAL_REQUEST_LIST:
-        current_path = req.PATH_ONE
-        if req.requestStatus == REQUEST_APPROVED:
+        if req.requestStatus[0] == 3:
+            current_path = req.PATH_ONE
             total_approved += 1
             average_request_delay.append(current_path.DELAY)
             average_request_cost.append(current_path.COST)
@@ -62,8 +62,8 @@ def get_average_data_PATH_TWO():
     average_request_cost = []
 
     for req in Request.STATIC_TOTAL_REQUEST_LIST:
-        current_path = req.PATH_TWO
-        if req.requestStatus == REQUEST_APPROVED:
+        if req.requestStatus[1] == 3:
+            current_path = req.PATH_TWO
             total_approved += 1
             average_request_delay.append(current_path.DELAY)
             average_request_cost.append(current_path.COST)
@@ -96,7 +96,7 @@ def output_file_PATH_ONE():
 
         for req in Request.STATIC_TOTAL_REQUEST_LIST:
             current_path = req.PATH_ONE
-            if req.requestStatus == REQUEST_APPROVED:
+            if req.requestStatus[0] == REQUEST_APPROVED:
                 fp.write("APPROVED,{},{},{},{},{},{},{}\n".format(req.requestID, current_path.pathID, 0, current_path.DELAY, current_path.COST, req.requestedFunctions, current_path.route))
             else:
                 fp.write("DENIED,{},NONE,NONE,0,0,{},NONE\n".format(req.requestID, req.requestedFunctions))
@@ -116,7 +116,7 @@ def output_file_PATH_TWO():
 
         for req in Request.STATIC_TOTAL_REQUEST_LIST:
             current_path = req.PATH_TWO
-            if req.requestStatus == REQUEST_APPROVED:
+            if req.requestStatus[1] == REQUEST_APPROVED:
                 fp.write("APPROVED,{},{},{},{},{},{},{}\n".format(req.requestID, current_path.pathID, current_path.FAILURE_PROBABILITY, current_path.DELAY, current_path.COST, req.requestedFunctions, current_path.route))
             else:
                 fp.write("DENIED,{},NONE,NONE,0,0,{},NONE\n".format(req.requestID, req.requestedFunctions))

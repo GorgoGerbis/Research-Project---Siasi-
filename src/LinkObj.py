@@ -2,6 +2,7 @@ from src.NodeObj import NodeObj
 
 REQUEST_DELAY_THRESHOLD = 20.5
 
+
 class LinkObj(NodeObj):  # <-- This means its a subclass of NodeObj right?
 
     def __init__(self, linkID, linkSrc, linkDest, linkBW, linkED, linkEC, failure_probability):
@@ -14,6 +15,11 @@ class LinkObj(NodeObj):  # <-- This means its a subclass of NodeObj right?
         self.failure_probability = failure_probability
 
         NodeObj.StaticLinkList.append(self)
+
+    def reset_link(self):
+        for pair in NodeObj.StaticLinkResources:
+            if self.linkID == pair[0]:
+                self.linkBW = pair[1]
 
     def showLinkSourceID(self):
         return self.linkSrc
