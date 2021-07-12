@@ -12,9 +12,29 @@ resourcesFolder = os.path.join(baseFolder, "resources")
 # LinkInputData = os.path.join(resourcesFolder, "LinkInputData-EXSMALL-TEST-6-24-21.csv")
 # auto_requests_Opt = os.path.join(resourcesFolder, "requests-EXSMALL-TEST-6-24-21.txt")
 
-NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-A-6-30-21.csv")
-LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-A-6-30-21.csv")
-auto_requests_Opt = os.path.join(resourcesFolder, "requests-TEST-A-6-30-21.txt")
+NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-A-7-03-21.csv")
+LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-A-7-03-21.csv")
+auto_requests_Opt = os.path.join(resourcesFolder, "requests-TEST-A-7-03-21.txt")
+
+# NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-B-7-03-21.csv")
+# LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-B-7-03-21.csv")
+# auto_requests_Opt = os.path.join(resourcesFolder, "requests-TEST-B-7-03-21.txt")
+
+# NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-C-7-03-21.csv")
+# LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-C-7-03-21.csv")
+# auto_requests_Opt = os.path.join(resourcesFolder, "requests-TEST-C-7-03-21.txt")
+
+# NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-D-7-03-21.csv")
+# LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-D-7-03-21.csv")
+# auto_requests_Opt = os.path.join(resourcesFolder, "requests-TEST-D-7-03-21.txt")
+
+# NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-E-7-03-21.csv")
+# LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-E-7-03-21.csv")
+# auto_requests_Opt = os.path.join(resourcesFolder, "requests-TEST-E-7-03-21.txt")
+
+# NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-F-7-03-21.csv")
+# LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-F-7-03-21.csv")
+# auto_requests_Opt = os.path.join(resourcesFolder, "requests-TEST-F-7-03-21.txt")
 
 REQUESTS_FAILED = []
 REQUESTS_PASSED = []

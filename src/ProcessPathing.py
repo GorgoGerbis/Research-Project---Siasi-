@@ -370,6 +370,7 @@ def map_path(path_obj):
 
 def RUN_PATH_ONE(req):
     for path in PathObj.current_request_paths_list:
+        print(path)
         set_path_state_PATH_ONE(path)
 
     if len(PathObj.BACKUP_PATHS) == 0:
@@ -393,8 +394,8 @@ def RUN_PATH_ONE(req):
 
 
 def RUN_PATH_TWO(req):
-    # for path in PathObj.current_request_paths_list:
-    #     set_path_state_PATH_TWO(path)
+    for path in PathObj.current_request_paths_list:
+        set_path_state_PATH_TWO(path)
 
     if len(PathObj.BACKUP_PATHS) == 0:
         req.requestStatus = 2  # Fail current request if no paths
