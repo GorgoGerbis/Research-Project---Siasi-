@@ -6,33 +6,25 @@ from src.FuncObj import FuncObj
 
 baseFolder = r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-"
 resourcesFolder = os.path.join(baseFolder, "resources")
-NodeInputData = os.path.join(resourcesFolder, "NodeInputData-EXSMALL-TEST-6-24-21.csv")
-LinkInputData = os.path.join(resourcesFolder, "LinkInputData-EXSMALL-TEST-6-24-21.csv")
-auto_requests_Opt = os.path.join(resourcesFolder, "requests-EXSMALL-TEST-6-24-21.txt")
+NodeInputData = os.path.join(resourcesFolder, "NodeInputData-EXSMALL-TEST-7-19-21.csv")
+LinkInputData = os.path.join(resourcesFolder, "LinkInputData-EXSMALL-TEST-7-19-21.csv")
+auto_requests_Opt = os.path.join(resourcesFolder, "requests-EXSMALL-TEST-7-19-21.txt")
 
-# NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-A-7-03-21.csv")
-# LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-A-7-03-21.csv")
-# auto_requests_Opt = os.path.join(resourcesFolder, "requests-TEST-A-7-03-21.txt")
+# NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-A-7-19-21.csv")
+# LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-A-7-19-21.csv")
+# auto_requests_Opt = os.path.join(resourcesFolder, "requests-TEST-A-7-19-21.txt")
 
-# NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-B-7-03-21.csv")
-# LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-B-7-03-21.csv")
-# auto_requests_Opt = os.path.join(resourcesFolder, "requests-TEST-B-7-03-21.txt")
+# NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-B-7-19-21.csv")
+# LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-B-7-19-21.csv")
+# auto_requests_Opt = os.path.join(resourcesFolder, "requests-TEST-B-7-19-21.txt")
 
-# NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-C-7-03-21.csv")
-# LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-C-7-03-21.csv")
-# auto_requests_Opt = os.path.join(resourcesFolder, "requests-TEST-C-7-03-21.txt")
+# NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-C-7-19-21.csv")
+# LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-C-7-19-21.csv")
+# auto_requests_Opt = os.path.join(resourcesFolder, "requests-TEST-C-7-19-21.txt")
 
-# NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-D-7-03-21.csv")
-# LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-D-7-03-21.csv")
-# auto_requests_Opt = os.path.join(resourcesFolder, "requests-TEST-D-7-03-21.txt")
-
-# NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-E-7-03-21.csv")
-# LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-E-7-03-21.csv")
-# auto_requests_Opt = os.path.join(resourcesFolder, "requests-TEST-E-7-03-21.txt")
-
-# NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-F-7-03-21.csv")
-# LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-F-7-03-21.csv")
-# auto_requests_Opt = os.path.join(resourcesFolder, "requests-TEST-F-7-03-21.txt")
+# NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-D-7-19-21.csv")
+# LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-D-7-19-21.csv")
+# auto_requests_Opt = os.path.join(resourcesFolder, "requests-TEST-D-7-19-21.txt")
 
 
 def createNodeInputData(number_of_nodes):
@@ -48,10 +40,10 @@ def createNodeInputData(number_of_nodes):
             lat = random.randint(60, 940)
             long = random.randint(60, 740)
             stat = status[0]
-            resources = [100, 100, 100] # [CPU, RAM, Physical Buffer size]
+            resources = [200, 200, 200] # [CPU, RAM, Physical Buffer size]
             processing_delay = 1
             nodeCost = 5
-            pf = random.randint(1, 60) / 100    # Dividing to make them decimals
+            pf = random.randint(1, 55) / 100    # Dividing to make them decimals
 
             nodeLine = "{};{};{};{};{};{};{};{}\n".format(nodeID, lat, long, stat, resources, processing_delay, nodeCost, pf)
             fp.write(nodeLine)
@@ -71,10 +63,10 @@ def createLinkInputData(number_of_links, num_nodes):
             src = link_list[i][0]
             dest = link_list[i][1]
 
-            bw = 15
+            bw = 60
             ed = 1 # random.randint(2, 6) / 10  # Dividing to make them decimals
             ec = 5
-            link_failure = random.randint(1, 60) / 100  # Dividing to make them decimals
+            link_failure = random.randint(1, 55) / 100  # Dividing to make them decimals
 
             linkLine = "{};{};{};{};{};{};{}\n".format(linkID, src, dest, bw, ed, ec, link_failure)
             fp.write(linkLine)
@@ -133,9 +125,9 @@ def not_the_same(num_nodes):
 
 
 if __name__ == '__main__':
-    num_nodes = 12
-    num_links = 24
-    num_requests = 48
+    num_nodes = 24  # 42
+    num_links = 48  # 64
+    num_requests = 50  # 150
 
     print("CREATING NEW INPUT DATA!\n")
     print("TOTAL NODES: {} TOTAL LINKS: {} TOTAL REQUESTS: {}\n".format(num_nodes, num_links, num_requests))
