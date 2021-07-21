@@ -40,7 +40,7 @@ def createNodeInputData(number_of_nodes):
             lat = random.randint(60, 940)
             long = random.randint(60, 740)
             stat = status[0]
-            resources = [200, 200, 200] # [CPU, RAM, Physical Buffer size]
+            resources = [50, 50, 50] # [CPU, RAM, Physical Buffer size]
             processing_delay = 1
             nodeCost = 5
             pf = random.randint(1, 55) / 100    # Dividing to make them decimals
@@ -63,7 +63,7 @@ def createLinkInputData(number_of_links, num_nodes):
             src = link_list[i][0]
             dest = link_list[i][1]
 
-            bw = 60
+            bw = 35
             ed = 1 # random.randint(2, 6) / 10  # Dividing to make them decimals
             ec = 5
             link_failure = random.randint(1, 55) / 100  # Dividing to make them decimals

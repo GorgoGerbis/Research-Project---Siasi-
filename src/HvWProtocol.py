@@ -124,40 +124,43 @@ def create_figure_ONE():
     plt.xlabel("Number of incoming requests")
     plt.ylabel("Average delay per request")
 
-    max_delay = 80
+    path_one_delays = []
+    path_two_delays = []
 
-    average_list_PO = []
-    average_list_PT = []
-    count = 0
-    cnt = 0
-    current_average_PO = 0
-    current_average_PT = 0
+    path_one_avg = []
+    path_two_avg = []
 
     for req in Request.STATIC_TOTAL_REQUEST_LIST:
         obj = req.PATH_ONE
         if obj is not None:
-            add = 0
-            current_average_PO = obj.DELAY
-            for i in average_list_PO:
-                add += i
-            count += 1
-            current_average_PO = (current_average_PO + add) / count
-            average_list_PO.append(current_average_PO)
+            path_one_delays.append(obj.DELAY)
+
+    count = 0
+    total_delay_a = 0
+    for delay in path_one_delays:
+        count += 1
+        total_delay_a += delay
+        current_delay = total_delay_a / count
+        path_one_avg.append(current_delay)
 
     for req in Request.STATIC_TOTAL_REQUEST_LIST:
         obj = req.PATH_TWO
         if obj is not None:
-            add = 0
-            current_average_PT = obj.DELAY
-            for i in average_list_PT:
-                add += i
-            cnt += 1
-            current_average_PT = (current_average_PT + add) / cnt
-            average_list_PT.append(current_average_PT)
+            path_two_delays.append(obj.DELAY)
 
-    plt.axis([1, len(average_list_PO), 1, max_delay])
-    plt.plot(average_list_PO)
-    plt.plot(average_list_PT, color='r')
+    cnt = 0
+    total_delay_b = 0
+    for delay in path_two_delays:
+        cnt += 1
+        total_delay_b += delay
+        current_delay = total_delay_b / cnt
+        path_two_avg.append(current_delay)
+
+    plt.axis([1, len(path_one_delays), 1, 200])
+    plt.plot(path_one_delays, color='b')
+    plt.plot(path_one_avg, color='g')
+    plt.plot(path_two_delays, color='r')
+    plt.plot(path_two_avg, color='y')
     plt.show()
 
 
@@ -166,40 +169,43 @@ def create_figure_TWO():
     plt.xlabel("Number of incoming requests")
     plt.ylabel("Average cost per request")
 
-    max_cost = 80
+    path_one_costs = []
+    path_two_costs = []
 
-    average_list_PO = []
-    average_list_PT = []
-    count = 0
-    cnt = 0
-    current_average_PO = 0
-    current_average_PT = 0
+    path_one_avg = []
+    path_two_avg = []
 
     for req in Request.STATIC_TOTAL_REQUEST_LIST:
         obj = req.PATH_ONE
         if obj is not None:
-            count += 1
-            add = 0
-            current_average_PO = obj.COST
-            for i in average_list_PO:
-                add += i
-            current_average_PO = (current_average_PO + add) / count
-            average_list_PO.append(current_average_PO)
+            path_one_costs.append(obj.COST)
+
+    count = 0
+    total_delay_a = 0
+    for delay in path_one_costs:
+        count += 1
+        total_delay_a += delay
+        current_delay = total_delay_a / count
+        path_one_avg.append(current_delay)
 
     for req in Request.STATIC_TOTAL_REQUEST_LIST:
         obj = req.PATH_TWO
         if obj is not None:
-            cnt += 1
-            add = 0
-            current_average_PT = obj.COST
-            for i in average_list_PT:
-                add += i
-            current_average_PT = (current_average_PT + add) / cnt
-            average_list_PT.append(current_average_PT)
+            path_two_costs.append(obj.COST)
 
-    plt.axis([1, len(average_list_PO), 1, max_cost])
-    plt.plot(average_list_PO)
-    plt.plot(average_list_PT, color='r')
+    cnt = 0
+    total_delay_b = 0
+    for delay in path_two_costs:
+        cnt += 1
+        total_delay_b += delay
+        current_delay = total_delay_b / cnt
+        path_two_avg.append(current_delay)
+
+    plt.axis([1, len(path_one_costs), 1, 250])
+    plt.plot(path_one_costs, color='b')
+    plt.plot(path_one_avg, color='g')
+    plt.plot(path_two_costs, color='r')
+    plt.plot(path_two_avg, color='y')
     plt.show()
 
 
@@ -208,39 +214,38 @@ def create_figure_THREE():
     plt.xlabel("Number of incoming requests")
     plt.ylabel("Number of failed requests")
 
-    num_passed = 0
-    num_failed = 0
+    path_one_total = 0
+    path_two_total = 0
 
-    num_passed_other = 0
+    num_failed = 0
     num_failed_other = 0
 
-    x_list = []
-    y_list = []
+    path_one_list = []
+    path_two_list = []
 
-    a_list = []
-    b_list = []
+    path_one_avg = []
+    path_two_avg = []
 
     for req in Request.STATIC_TOTAL_REQUEST_LIST:
         if req.requestStatus[0] == 3:
-            num_passed += 1
-            y_list.append(num_failed)
-        elif req.requestStatus[0] == 2:
             num_failed += 1
-            y_list.append(num_failed)
+            path_one_total += 1
+            path_one_list.append(num_failed)
+            path_one_avg.append(num_failed / path_one_total)
 
     for req in Request.STATIC_TOTAL_REQUEST_LIST:
         if req.requestStatus[1] == 3:
-            num_passed_other += 1
-            b_list.append(num_failed_other)
-        elif req.requestStatus[1] == 2:
             num_failed_other += 1
-            b_list.append(num_failed_other)
+            path_two_total += 1
+            path_two_list.append(num_failed_other)
+            path_two_avg.append(num_failed_other / path_two_total)
 
-    plt.axis([0, len(y_list), 0, num_failed_other])
-    plt.plot(y_list)
-    plt.plot(b_list, color='r')
+    plt.axis([1, 150, 1, 150])
+    plt.plot(path_one_list, color='b')
+    plt.plot(path_one_avg, color='g')
+    plt.plot(path_two_list, color='r')
+    plt.plot(path_two_avg, color='y')
     plt.show()
-
 
 def find_isolated_nodes():
     frick = []

@@ -93,6 +93,8 @@ class PathObj:
         link_temp = []
         node_temp = []
 
+        overall_average = 0
+
         for step in fused_path:
             if type(step) == LinkObj:
                 current_fail = LinkObj.calculate_failure(step.linkSrc, step.linkDest)
@@ -101,33 +103,15 @@ class PathObj:
                 current_fail = NodeObj.calculate_failure(step.nodeID)
                 node_temp.append(current_fail)
 
-        ALF = 1
-        OLF = 0
+        for step in link_temp:
+            overall_average += step
 
-        ANF = 1
-        ONF = 0
+        for step in node_temp:
+            overall_average += step
 
-        for i in link_temp:
-            ALF *= i
-            OLF += i
+        count = len(link_temp) + len(node_temp)
 
-        for j in node_temp:
-            ANF *= j
-            ONF += j
-
-        OLF = OLF - ALF
-        ONF = ONF - ANF
-
-        l = REQUEST_DELAY_THRESHOLD*OLF
-        n = REQUEST_DELAY_THRESHOLD*ONF
-
-        L = (l + 1) / (REQUEST_DELAY_THRESHOLD + 2)
-        N = (n + 1) / (REQUEST_DELAY_THRESHOLD + 2)
-
-        ALL = N*L
-        O = (N+L) - ALL
-
-        failure_probability = (O + 1)/(REQUEST_DELAY_THRESHOLD + 2)
+        failure_probability = overall_average / count
         failure_probability *= 100
 
         if failure_probability < 0:
