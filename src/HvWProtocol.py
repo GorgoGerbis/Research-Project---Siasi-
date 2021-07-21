@@ -124,40 +124,43 @@ def create_figure_ONE():
     plt.xlabel("Number of incoming requests")
     plt.ylabel("Average delay per request")
 
-    max_delay = 80
+    path_one_delays = []
+    path_two_delays = []
 
-    average_list_PO = []
-    average_list_PT = []
-    count = 0
-    cnt = 0
-    current_average_PO = 0
-    current_average_PT = 0
+    path_one_avg = []
+    path_two_avg = []
 
     for req in Request.STATIC_TOTAL_REQUEST_LIST:
         obj = req.PATH_ONE
         if obj is not None:
-            add = 0
-            current_average_PO = obj.DELAY
-            for i in average_list_PO:
-                add += i
-            count += 1
-            current_average_PO = (current_average_PO + add) / count
-            average_list_PO.append(current_average_PO)
+            path_one_delays.append(obj.DELAY)
+
+    count = 0
+    total_delay_a = 0
+    for delay in path_one_delays:
+        count += 1
+        total_delay_a += delay
+        current_delay = total_delay_a / count
+        path_one_avg.append(current_delay)
 
     for req in Request.STATIC_TOTAL_REQUEST_LIST:
         obj = req.PATH_TWO
         if obj is not None:
-            add = 0
-            current_average_PT = obj.DELAY
-            for i in average_list_PT:
-                add += i
-            cnt += 1
-            current_average_PT = (current_average_PT + add) / cnt
-            average_list_PT.append(current_average_PT)
+            path_two_delays.append(obj.DELAY)
 
-    plt.axis([1, len(average_list_PO), 1, max_delay])
-    plt.plot(average_list_PO)
-    plt.plot(average_list_PT, color='r')
+    cnt = 0
+    total_delay_b = 0
+    for delay in path_two_delays:
+        cnt += 1
+        total_delay_b += delay
+        current_delay = total_delay_b / cnt
+        path_two_avg.append(current_delay)
+
+    plt.axis([1, len(path_one_delays), 1, 200])
+    plt.plot(path_one_delays, color='b')
+    plt.plot(path_one_avg, color='g')
+    plt.plot(path_two_delays, color='r')
+    plt.plot(path_two_avg, color='y')
     plt.show()
 
 
