@@ -19,7 +19,7 @@ from src.ProcessPathing import RUN_PATH_TWO
 # Creating output files
 import src.CreateOutputData
 
-REQUEST_DELAY_THRESHOLD = 30.5
+REQUEST_DELAY_THRESHOLD = 120.5
 
 """
 "Head vs Wall" Protocol or HvWProtocol
@@ -124,30 +124,40 @@ def create_figure_ONE():
     plt.xlabel("Number of incoming requests")
     plt.ylabel("Average delay per request")
 
-    max_delay = 0
+    max_delay = 80
 
-    a_list = []
-    b_list = []
+    average_list_PO = []
+    average_list_PT = []
+    count = 0
+    cnt = 0
+    current_average_PO = 0
+    current_average_PT = 0
 
     for req in Request.STATIC_TOTAL_REQUEST_LIST:
         obj = req.PATH_ONE
         if obj is not None:
-            a_list.append(obj.DELAY)
-
-            if obj.DELAY > max_delay:
-                max_delay = obj.DELAY
+            add = 0
+            current_average_PO = obj.DELAY
+            for i in average_list_PO:
+                add += i
+            count += 1
+            current_average_PO = (current_average_PO + add) / count
+            average_list_PO.append(current_average_PO)
 
     for req in Request.STATIC_TOTAL_REQUEST_LIST:
         obj = req.PATH_TWO
         if obj is not None:
-            b_list.append(obj.DELAY)
+            add = 0
+            current_average_PT = obj.DELAY
+            for i in average_list_PT:
+                add += i
+            cnt += 1
+            current_average_PT = (current_average_PT + add) / cnt
+            average_list_PT.append(current_average_PT)
 
-            if obj.DELAY > max_delay:
-                max_delay = obj.DELAY
-
-    plt.axis([1, len(a_list), 0, max_delay])
-    plt.plot(a_list)
-    plt.plot(b_list, color='r')
+    plt.axis([1, len(average_list_PO), 1, max_delay])
+    plt.plot(average_list_PO)
+    plt.plot(average_list_PT, color='r')
     plt.show()
 
 
@@ -156,30 +166,40 @@ def create_figure_TWO():
     plt.xlabel("Number of incoming requests")
     plt.ylabel("Average cost per request")
 
-    max_cost = 0
+    max_cost = 80
 
-    a_list = []
-    b_list = []
+    average_list_PO = []
+    average_list_PT = []
+    count = 0
+    cnt = 0
+    current_average_PO = 0
+    current_average_PT = 0
 
     for req in Request.STATIC_TOTAL_REQUEST_LIST:
         obj = req.PATH_ONE
         if obj is not None:
-            a_list.append(obj.COST)
-
-            if obj.COST > max_cost:
-                max_cost = obj.COST
+            count += 1
+            add = 0
+            current_average_PO = obj.COST
+            for i in average_list_PO:
+                add += i
+            current_average_PO = (current_average_PO + add) / count
+            average_list_PO.append(current_average_PO)
 
     for req in Request.STATIC_TOTAL_REQUEST_LIST:
         obj = req.PATH_TWO
         if obj is not None:
-            b_list.append(obj.COST)
+            cnt += 1
+            add = 0
+            current_average_PT = obj.COST
+            for i in average_list_PT:
+                add += i
+            current_average_PT = (current_average_PT + add) / cnt
+            average_list_PT.append(current_average_PT)
 
-            if obj.COST > max_cost:
-                max_cost = obj.COST
-
-    plt.axis([1, len(a_list), 0, max_cost])
-    plt.plot(a_list)
-    plt.plot(b_list, color='r')
+    plt.axis([1, len(average_list_PO), 1, max_cost])
+    plt.plot(average_list_PO)
+    plt.plot(average_list_PT, color='r')
     plt.show()
 
 
@@ -222,6 +242,24 @@ def create_figure_THREE():
     plt.show()
 
 
+def find_isolated_nodes():
+    frick = []
+    frack = []
+
+    output = []
+
+    for n in NodeObj.StaticNodeList:
+        frick.append(n.nodeID)
+
+    for n in GRAPH:
+        frack.append(n)
+
+    for n in frick:
+        if n not in frack:
+            output.append(n)
+
+    print("The following nodes are not accessible: {}\n".format(output))
+
 if __name__ == '__main__':
     print("Begin Processing requests using: 'Head vs. Wall' Protocol\n")
     print("BEGIN PROCESSING INPUT DATA\n")
@@ -234,6 +272,8 @@ if __name__ == '__main__':
     # Just commented out so I don't have to keep closing the window every time
     nx.draw(GRAPH, with_labels=True, font_weight='bold')
     plt.show()  # ToDo Need to figure out why I need this in order to stop the graph from disappearing
+
+    find_isolated_nodes()
 
     ############# SETUP IS NOW OVER WE CAN BEGIN PROCESSING ##############
     process_path_one()
