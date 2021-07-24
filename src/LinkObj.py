@@ -5,8 +5,12 @@ REQUEST_DELAY_THRESHOLD = 20.5
 
 class LinkObj(NodeObj):  # <-- This means its a subclass of NodeObj right?
 
-    def __init__(self, linkID, linkSrc, linkDest, linkBW, linkED, linkEC, failure_probability):
+    UNAVAILABLE = "O"
+    AVAILABLE = "A"
+
+    def __init__(self, linkID, linkStatus, linkSrc, linkDest, linkBW, linkED, linkEC, failure_probability):
         self.linkID = linkID
+        self.linkStatus = linkStatus
         self.linkSrc = linkSrc
         self.linkDest = linkDest
         self.linkBW = linkBW
@@ -34,13 +38,11 @@ class LinkObj(NodeObj):  # <-- This means its a subclass of NodeObj right?
         self.linkBW = int(self.linkBW) - bw
 
     def check_enough_resources(self, req_bw):
-        if self.compareBW(req_bw):
-            # self.map_request(req_bw)
-            # print("LINK {} HAS ENOUGH RESOURCES FOR TRAVERSAL FROM {} TO {}".format(self.linkID, self.linkSrc, self.linkED))
-            return True
-        else:
-            # print("LINK {} DOES NOT ENOUGH RESOURCES FOR TRAVERSAL FROM {} TO {}".format(self.linkID, self.linkSrc, self.linkED))
+        if self.linkBW <= 0:
             return False
+        elif self.linkBW >= req_bw:
+            return True
+
 
     @staticmethod
     def calculate_failure(src, dest):

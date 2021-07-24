@@ -13,8 +13,8 @@ from src.FuncObj import FuncObj
 baseFolder = r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-"
 outputFolder = os.path.join(baseFolder, "output")
 
-REQUESTS_FILE = os.path.join(outputFolder, "REQUESTS_OUTPUT_A.csv")
-REQUESTS_FILE_WITH = os.path.join(outputFolder, "REQUESTS_OUTPUT_A_WITH_FAULT.csv")
+REQUESTS_FILE = os.path.join(outputFolder, "REQUESTS_OUTPUT_A_NEW.csv")
+REQUESTS_FILE_WITH = os.path.join(outputFolder, "REQUESTS_OUTPUT_A_WITH_FAULT_NEW.csv")
 
 REQUEST_NEEDS_CALCULATING = 0
 REQUEST_ONGOING = 1
@@ -28,6 +28,9 @@ def get_average_data_PATH_ONE():
 
     delay_average = 0
     cost_average = 0
+
+    count = 0
+
     average_request_delay = []
     average_request_cost = []
 
@@ -37,17 +40,15 @@ def get_average_data_PATH_ONE():
             total_approved += 1
             average_request_delay.append(current_path.DELAY)
             average_request_cost.append(current_path.COST)
+            delay_average += current_path.DELAY
+            cost_average += current_path.COST
+            count += 1
         else:
             total_denied += 1
+            continue
 
-    for delay in average_request_delay:
-        delay_average += delay
-
-    for cost in average_request_cost:
-        cost_average += cost
-
-    cost_average = delay_average / len(average_request_cost)
-    delay_average = delay_average / len(average_request_delay)
+    cost_average = cost_average / count
+    delay_average = delay_average / count
 
     return total_approved, total_denied, delay_average, cost_average
 
@@ -67,6 +68,8 @@ def get_average_data_PATH_TWO():
             total_approved += 1
             average_request_delay.append(current_path.DELAY)
             average_request_cost.append(current_path.COST)
+            delay_average += current_path.DELAY
+            cost_average += current_path.COST
         else:
             total_denied += 1
 
@@ -76,8 +79,8 @@ def get_average_data_PATH_TWO():
     for cost in average_request_cost:
         cost_average += cost
 
-    cost_average = delay_average / len(average_request_cost)
-    delay_average = delay_average / len(average_request_delay)
+    # cost_average = delay_average / len(average_request_cost)
+    # delay_average = delay_average / len(average_request_delay)
 
     return total_approved, total_denied, delay_average, cost_average
 

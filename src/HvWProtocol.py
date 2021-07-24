@@ -201,7 +201,7 @@ def create_figure_TWO():
         current_delay = total_delay_b / cnt
         path_two_avg.append(current_delay)
 
-    plt.axis([1, len(path_one_costs), 1, 250])
+    plt.axis([1, 300, 1, 300])
     plt.plot(path_one_costs, color='b')
     plt.plot(path_one_avg, color='g')
     plt.plot(path_two_costs, color='r')
@@ -214,37 +214,47 @@ def create_figure_THREE():
     plt.xlabel("Number of incoming requests")
     plt.ylabel("Number of failed requests")
 
-    path_one_total = 0
-    path_two_total = 0
+    total_req_one = 0
+    total_req_two = 0
 
-    num_failed = 0
-    num_failed_other = 0
+    path_one_passed = 0
+    path_one_failed = 0
+    path_two_passed = 0
+    path_two_failed = 0
 
-    path_one_list = []
-    path_two_list = []
+    path_one_paths_passed = []
+    path_two_paths_passed = []
 
-    path_one_avg = []
-    path_two_avg = []
-
-    for req in Request.STATIC_TOTAL_REQUEST_LIST:
-        if req.requestStatus[0] == 3:
-            num_failed += 1
-            path_one_total += 1
-            path_one_list.append(num_failed)
-            path_one_avg.append(num_failed / path_one_total)
+    path_one_ratio = []
+    path_two_ratio = []
 
     for req in Request.STATIC_TOTAL_REQUEST_LIST:
-        if req.requestStatus[1] == 3:
-            num_failed_other += 1
-            path_two_total += 1
-            path_two_list.append(num_failed_other)
-            path_two_avg.append(num_failed_other / path_two_total)
+        obj = req.PATH_ONE
+        total_req_one += 1
+        if obj is None:
+            path_one_failed += 1
+        elif obj is None:
+            path_one_passed += 1
+            path_one_paths_passed.append(path_one_passed)
+
+        ratio = total_req_one / path_one_failed
+        path_one_ratio.append(ratio)
+
+    for req in Request.STATIC_TOTAL_REQUEST_LIST:
+        obj = req.PATH_TWO
+        total_req_two += 1
+        if obj is None:
+            path_two_failed += 1
+        else:
+            path_two_passed += 1
+            path_two_paths_passed.append(path_two_passed)
+
+        ratio = total_req_two / path_two_failed
+        path_two_ratio.append(ratio)
 
     plt.axis([1, 150, 1, 150])
-    plt.plot(path_one_list, color='b')
-    plt.plot(path_one_avg, color='g')
-    plt.plot(path_two_list, color='r')
-    plt.plot(path_two_avg, color='y')
+    plt.plot(path_one_ratio, color='b')
+    plt.plot(path_two_ratio, color='r')
     plt.show()
 
 def find_isolated_nodes():

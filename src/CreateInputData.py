@@ -6,9 +6,13 @@ from src.FuncObj import FuncObj
 
 baseFolder = r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-"
 resourcesFolder = os.path.join(baseFolder, "resources")
-NodeInputData = os.path.join(resourcesFolder, "NodeInputData-EXSMALL-TEST-7-19-21.csv")
-LinkInputData = os.path.join(resourcesFolder, "LinkInputData-EXSMALL-TEST-7-19-21.csv")
-auto_requests_Opt = os.path.join(resourcesFolder, "requests-EXSMALL-TEST-7-19-21.txt")
+NodeInputData = os.path.join(resourcesFolder, "NodeInputData-EXXSMALL-TEST-7-19-21.csv")
+LinkInputData = os.path.join(resourcesFolder, "LinkInputData-EXXSMALL-TEST-7-19-21.csv")
+auto_requests_Opt = os.path.join(resourcesFolder, "requests-EXXSMALL-TEST-7-19-21.txt")
+
+# NodeInputData = os.path.join(resourcesFolder, "NodeInputData-EXSMALL-TEST-7-19-21.csv")
+# LinkInputData = os.path.join(resourcesFolder, "LinkInputData-EXSMALL-TEST-7-19-21.csv")
+# auto_requests_Opt = os.path.join(resourcesFolder, "requests-EXSMALL-TEST-7-19-21.txt")
 
 # NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-A-7-19-21.csv")
 # LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-A-7-19-21.csv")
@@ -125,9 +129,9 @@ def not_the_same(num_nodes):
 
 
 if __name__ == '__main__':
-    num_nodes = 24  # 42
-    num_links = 48  # 64
-    num_requests = 50  # 150
+    num_nodes = 12  # 42
+    num_links = 24  # 64
+    num_requests = 40 # 150
 
     print("CREATING NEW INPUT DATA!\n")
     print("TOTAL NODES: {} TOTAL LINKS: {} TOTAL REQUESTS: {}\n".format(num_nodes, num_links, num_requests))

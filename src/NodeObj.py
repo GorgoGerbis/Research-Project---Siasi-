@@ -7,10 +7,16 @@ import random
 
 # ToDo Need to make a method returning these values so only need to edit FuncObj.py when adding a new function.
 FUNCTION_COSTS = [[1, 1, 1], [2, 2, 2], [3, 3, 3], [4, 4, 4], [5, 5, 5], [6, 6, 6]]
-REQUEST_DELAY_THRESHOLD = 30.5
+
+# ToDo need to adjust this
+REQUEST_DELAY_THRESHOLD = 120.5
 
 
 class NodeObj:
+
+    AUTO_FAIL = []
+    AUTO_FAIL_PATH_TWO = []
+
     # BE CAREFUL WHEN CHANGING THINGS IN THIS CLASS ITS USED EVERYWHERE
     StaticLinkList = []  # Static List of all links
     StaticNodeList = []  # Static List of all nodes
@@ -38,7 +44,7 @@ class NodeObj:
     def reset_node(self):
         for pair in NodeObj.StaticNodeResources:
             if self.nodeID == pair[0]:
-                self.nodeResources = [100, 100, 100]
+                self.nodeResources = [50, 50, 50]
                 self.status = "A"
 
     def get_neighbors(self):
@@ -55,25 +61,31 @@ class NodeObj:
     def get_status(self):  # ToDo need to figure out when and how often the status of a node is checked
         if self.check_isolated():
             self.status = "O"
+            NodeObj.AUTO_FAIL.append(self.nodeID)
         elif self.check_mappable():
             self.status = "A"
         else:
             self.status = "R"
 
     def check_isolated(self):
-        neighbors = []
-        for lnk in NodeObj.StaticLinkList:
-            if lnk.linkDest == self.nodeID:
-                n = self.returnNode(lnk.linkSrc)
-                neighbors.append(n)
-            elif lnk.linkSrc == self.nodeID:
-                n = self.returnNode(lnk.linkDest)
-                neighbors.append(n)
+        tethers = self.get_tethers()
+        count = 0
+        for obj in tethers:
+            if obj.linkStatus == "O":
+                count += 1
 
-        if len(neighbors) <= 0:
+        if count == len(tethers):
             return True
-        else:
-            return False
+
+
+    def get_tethers(self):
+        output = []
+
+        for link in NodeObj.StaticLinkList:
+            if (link.linkDest == self.nodeID) or (link.linkSrc == self.nodeID):
+                output.append(link)
+
+        return output
 
     def compareCPU(self, cpu):
         # Returns True if you have enough resources

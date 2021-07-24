@@ -7,6 +7,7 @@ from src.HvWProtocol import REQUEST_DELAY_THRESHOLD
 # Resources
 baseFolder = r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-"
 resourcesFolder = os.path.join(baseFolder, "resources")
+
 # NodeInputData = os.path.join(resourcesFolder, "NodeInputData-EXSMALL-TEST-7-19-21.csv")
 # LinkInputData = os.path.join(resourcesFolder, "LinkInputData-EXSMALL-TEST-7-19-21.csv")
 # auto_requests_Opt = os.path.join(resourcesFolder, "requests-EXSMALL-TEST-7-19-21.txt")
@@ -75,9 +76,10 @@ def processInputDataLink(filePath):
             edgeDelay = float(currentElements[4])
             edgeCost = int(currentElements[5])
             failure_probability = float(currentElements[6].strip('\n'))
+            status = "A"
 
             NodeObj.StaticLinkResources.append([linkID, bandwidth])
-            current_link = LinkObj(linkID, source, destination, bandwidth, edgeDelay, edgeCost, failure_probability)
+            current_link = LinkObj(linkID, status, source, destination, bandwidth, edgeDelay, edgeCost, failure_probability)
 
             if current_link not in NodeObj.StaticLinkList:
                 NodeObj.StaticLinkList.append(current_link)

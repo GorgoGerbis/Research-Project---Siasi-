@@ -32,7 +32,7 @@ POOR = Path is traversable but does not have enough resources.
 STATE_UNKNOWN = The state of the path has yet to be determined.
 """
 
-REQUEST_DELAY_THRESHOLD = 30.5
+REQUEST_DELAY_THRESHOLD = 120.5
 FAILURE_THRESHOLD = 51
 OPTIMAL_PATH_SET = False
 
@@ -108,7 +108,9 @@ def calculate_path_resources_PATH_ONE(path_obj):
 
             if current_node.status == 'O':
                 # print("MAPPING ON NODE {} IS NOT POSSIBLE NODE IS OFFLINE".format(current_node.nodeID))
-                continue
+                NodeObj.AUTO_FAIL.append(current_node.nodeID)
+                path_obj.state = POOR
+                return False
             elif current_node.status == 'R':
                 # print("MAPPING ON NODE {} IS NOT POSSIBLE, RELAY TO NEXT NODE IN PATH".format(current_node.nodeID))
                 continue
@@ -121,7 +123,7 @@ def calculate_path_resources_PATH_ONE(path_obj):
 
                 elif len(temp_mappable_funcs) == 1:
                     temp_func_list = []
-                    current_func = FuncObj.retrieve_function_value(funcs_to_map.pop(0))  # Retrieves the current requested function
+                    current_func = FuncObj.retrieve_function_value(funcs_to_map.pop(0))# current_func = FuncObj.retrieve_function_value(funcs_to_map.pop(0))  # Retrieves the current requested function
                     funcs_mapped.append(current_func)
                     temp_func_list.append(current_func)
                     path_obj.MAPPING_LOCATION.append([current_node, temp_func_list])
@@ -175,9 +177,9 @@ def calculate_path_resources_PATH_TWO(path_obj):
             node_failure = NodeObj.calculate_failure(current_node.nodeID)
 
             # Determining the status of a node and if it has failed
-            if current_node.status == 'O':
+            if current_node.get_status == "O":
                 # print("MAPPING ON NODE {} IS NOT POSSIBLE NODE IS OFFLINE".format(current_node.nodeID))
-                path_obj.state = POOR
+                NodeObj.AUTO_FAIL_PATH_TWO.append(current_node.nodeID)
                 return False
             elif current_node.status == 'R':
                 # print("MAPPING ON NODE {} IS NOT POSSIBLE, RELAY TO NEXT NODE IN PATH".format(current_node.nodeID))
@@ -372,6 +374,7 @@ def RUN_PATH_ONE(req):
     for path in PathObj.current_request_paths_list:
         print(path)
         set_path_state_PATH_ONE(path)
+        print(path)
 
     if len(PathObj.BACKUP_PATHS) == 0:
         req.requestStatus[0] = 2   # Fail current request if no paths
