@@ -9,7 +9,7 @@ import random
 FUNCTION_COSTS = [[1, 1, 1], [2, 2, 2], [3, 3, 3], [4, 4, 4], [5, 5, 5], [6, 6, 6]]
 
 # ToDo need to adjust this
-REQUEST_DELAY_THRESHOLD = 120.5
+REQUEST_DELAY_THRESHOLD = 250.5
 
 
 class NodeObj:
@@ -184,6 +184,15 @@ class NodeObj:
 
         if mappable > 0:
             return True
+        else:
+            return False
+
+    def check_region(self, x, y):
+        if x[0] <= self.nodeID <= x[1]:
+            if y[0] <= self.nodeID <= y[1]:
+                return True
+            else:
+                return False
         else:
             return False
 

@@ -165,7 +165,7 @@ def calculate_path_resources_PATH_TWO(path_obj):
         if len(funcs_mapped) != 0 and len(funcs_to_map) == 0:
             return True
         elif type(step) == LinkObj:
-            dw # NOTE: In HvW Protocol if a link doesnt have enough BW the path fails
+            # NOTE: In HvW Protocol if a link doesnt have enough BW the path fails
             if not step.check_enough_resources(requested_bandwidth):
                 path_obj.state = POOR
                 return False

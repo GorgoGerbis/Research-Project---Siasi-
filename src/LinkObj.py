@@ -1,6 +1,6 @@
 from src.NodeObj import NodeObj
 
-REQUEST_DELAY_THRESHOLD = 20.5
+REQUEST_DELAY_THRESHOLD = 250.5
 
 
 class LinkObj(NodeObj):  # <-- This means its a subclass of NodeObj right?
