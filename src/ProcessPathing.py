@@ -32,7 +32,7 @@ POOR = Path is traversable but does not have enough resources.
 STATE_UNKNOWN = The state of the path has yet to be determined.
 """
 
-REQUEST_DELAY_THRESHOLD = 120.5
+REQUEST_DELAY_THRESHOLD = 250.5
 FAILURE_THRESHOLD = 51
 OPTIMAL_PATH_SET = False
 
@@ -165,7 +165,7 @@ def calculate_path_resources_PATH_TWO(path_obj):
         if len(funcs_mapped) != 0 and len(funcs_to_map) == 0:
             return True
         elif type(step) == LinkObj:
-            # NOTE: In HvW Protocol if a link doesnt have enough BW the path fails
+            dw # NOTE: In HvW Protocol if a link doesnt have enough BW the path fails
             if not step.check_enough_resources(requested_bandwidth):
                 path_obj.state = POOR
                 return False

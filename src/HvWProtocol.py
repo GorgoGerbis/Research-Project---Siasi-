@@ -19,7 +19,7 @@ from src.ProcessPathing import RUN_PATH_TWO
 # Creating output files
 import src.CreateOutputData
 
-REQUEST_DELAY_THRESHOLD = 120.5
+REQUEST_DELAY_THRESHOLD = 250.5
 
 """
 "Head vs Wall" Protocol or HvWProtocol
@@ -156,7 +156,7 @@ def create_figure_ONE():
         current_delay = total_delay_b / cnt
         path_two_avg.append(current_delay)
 
-    plt.axis([1, len(path_one_delays), 1, 200])
+    plt.axis([1, 200, 1, 300])
     plt.plot(path_one_delays, color='b')
     plt.plot(path_one_avg, color='g')
     plt.plot(path_two_delays, color='r')
@@ -181,12 +181,12 @@ def create_figure_TWO():
             path_one_costs.append(obj.COST)
 
     count = 0
-    total_delay_a = 0
-    for delay in path_one_costs:
+    total_cost_a = 0
+    for cost in path_one_costs:
         count += 1
-        total_delay_a += delay
-        current_delay = total_delay_a / count
-        path_one_avg.append(current_delay)
+        total_cost_a += cost
+        current_cost = total_cost_a / count
+        path_one_avg.append(current_cost)
 
     for req in Request.STATIC_TOTAL_REQUEST_LIST:
         obj = req.PATH_TWO
@@ -194,12 +194,12 @@ def create_figure_TWO():
             path_two_costs.append(obj.COST)
 
     cnt = 0
-    total_delay_b = 0
-    for delay in path_two_costs:
+    total_cost_a = 0
+    for cost in path_two_costs:
         cnt += 1
-        total_delay_b += delay
-        current_delay = total_delay_b / cnt
-        path_two_avg.append(current_delay)
+        total_cost_a += cost
+        current_cost = total_cost_a / cnt
+        path_two_avg.append(current_cost)
 
     plt.axis([1, 300, 1, 300])
     plt.plot(path_one_costs, color='b')
@@ -208,54 +208,97 @@ def create_figure_TWO():
     plt.plot(path_two_avg, color='y')
     plt.show()
 
+# def create_figure_FOUR():
+#     plt.title("FIGURE 4: Number of incoming requests vs. FAILURE_RATES_OF_NODES_OVER_TIME")
+#     plt.xlabel("Number of incoming requests")
+#     plt.ylabel("")
+#
+#     path_one_costs = []
+#     path_two_costs = []
+#
+#     path_one_avg = []
+#     path_two_avg = []
+#
+#     for req in Request.STATIC_TOTAL_REQUEST_LIST:
+#         obj = req.PATH_ONE
+#         if obj is not None:
+#             path_one_costs.append(obj.COST)
+#
+#     count = 0
+#     total_delay_a = 0
+#     for cost in path_one_costs:
+#         count += 1
+#         total_delay_a += cost
+#         current_delay = total_delay_a / count
+#         path_one_avg.append(current_delay)
+#
+#     for req in Request.STATIC_TOTAL_REQUEST_LIST:
+#         obj = req.PATH_TWO
+#         if obj is not None:
+#             path_two_costs.append(obj.COST)
+#
+#     cnt = 0
+#     total_delay_b = 0
+#     for delay in path_two_costs:
+#         cnt += 1
+#         total_delay_b += delay
+#         current_delay = total_delay_b / cnt
+#         path_two_avg.append(current_delay)
+#
+#     plt.axis([1, 300, 1, 300])
+#     plt.plot(path_one_costs, color='b')
+#     plt.plot(path_one_avg, color='g')
+#     plt.plot(path_two_costs, color='r')
+#     plt.plot(path_two_avg, color='y')
+#     plt.show()
 
-def create_figure_THREE():
-    plt.title("FIGURE 3: Number of incoming requests vs. Number of failed requests")
-    plt.xlabel("Number of incoming requests")
-    plt.ylabel("Number of failed requests")
-
-    total_req_one = 0
-    total_req_two = 0
-
-    path_one_passed = 0
-    path_one_failed = 0
-    path_two_passed = 0
-    path_two_failed = 0
-
-    path_one_paths_passed = []
-    path_two_paths_passed = []
-
-    path_one_ratio = []
-    path_two_ratio = []
-
-    for req in Request.STATIC_TOTAL_REQUEST_LIST:
-        obj = req.PATH_ONE
-        total_req_one += 1
-        if obj is None:
-            path_one_failed += 1
-        elif obj is None:
-            path_one_passed += 1
-            path_one_paths_passed.append(path_one_passed)
-
-        ratio = total_req_one / path_one_failed
-        path_one_ratio.append(ratio)
-
-    for req in Request.STATIC_TOTAL_REQUEST_LIST:
-        obj = req.PATH_TWO
-        total_req_two += 1
-        if obj is None:
-            path_two_failed += 1
-        else:
-            path_two_passed += 1
-            path_two_paths_passed.append(path_two_passed)
-
-        ratio = total_req_two / path_two_failed
-        path_two_ratio.append(ratio)
-
-    plt.axis([1, 150, 1, 150])
-    plt.plot(path_one_ratio, color='b')
-    plt.plot(path_two_ratio, color='r')
-    plt.show()
+# def create_figure_THREE():
+#     plt.title("FIGURE 3: Number of incoming requests vs. Number of failed requests")
+#     plt.xlabel("Number of incoming requests")
+#     plt.ylabel("Number of failed requests")
+#
+#     total_req_one = 0
+#     total_req_two = 0
+#
+#     path_one_passed = 0
+#     path_one_failed = 0
+#     path_two_passed = 0
+#     path_two_failed = 0
+#
+#     path_one_paths_passed = []
+#     path_two_paths_passed = []
+#
+#     path_one_ratio = []
+#     path_two_ratio = []
+#
+#     for req in Request.STATIC_TOTAL_REQUEST_LIST:
+#         obj = req.PATH_ONE
+#         total_req_one += 1
+#         if obj is None:
+#             path_one_failed += 1
+#         elif obj is None:
+#             path_one_passed += 1
+#             path_one_paths_passed.append(path_one_passed)
+#
+#         ratio = total_req_one / path_one_failed
+#         path_one_ratio.append(ratio)
+#
+#     for req in Request.STATIC_TOTAL_REQUEST_LIST:
+#         obj = req.PATH_TWO
+#         total_req_two += 1
+#         if obj is None:
+#             path_two_failed += 1
+#         else:
+#             path_two_passed += 1
+#             path_two_paths_passed.append(path_two_passed)
+#
+#         ratio = total_req_two / path_two_failed
+#         path_two_ratio.append(ratio)
+#
+#     plt.axis([1, 150, 1, 150])
+#     plt.plot(path_one_ratio, color='b')
+#     plt.plot(path_two_ratio, color='r')
+#     plt.show()
 
 def find_isolated_nodes():
     frick = []
@@ -317,4 +360,4 @@ if __name__ == '__main__':
     ############# CREATE OUTPUT DATA GRAPHS ##############
     create_figure_ONE()
     create_figure_TWO()
-    create_figure_THREE()
+    # create_figure_THREE()

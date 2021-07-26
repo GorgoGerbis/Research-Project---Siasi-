@@ -32,7 +32,7 @@ STATE_UNKNOWN = The state of the path has yet to be determined.
 """
 
 OPTIMAL_PATH_SET = False
-REQUEST_DELAY_THRESHOLD = 30.5
+REQUEST_DELAY_THRESHOLD = 250.5
 
 # Path Object States
 STATE_UNKNOWN = 0
