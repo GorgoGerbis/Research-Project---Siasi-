@@ -134,7 +134,6 @@ def create_figure_ONE():
     plt.title("FIGURE 1: Number of incoming requests vs. Average delay per request")
     plt.xlabel("Number of incoming requests")
     plt.ylabel("Average delay per request")
-    plt.title("Figure 1")
 
     path_one_delays = []
     path_two_delays = []
@@ -180,7 +179,6 @@ def create_figure_TWO():
     plt.title("FIGURE 2: Number of incoming requests vs. Average cost per request")
     plt.xlabel("Number of incoming requests")
     plt.ylabel("Average cost per request")
-    plt.title("Figure 2")
 
     path_one_costs = []
     path_two_costs = []
@@ -225,7 +223,6 @@ def create_figure_FOUR():
     plt.title("FIGURE 4: Number of incoming requests vs. FAILURE_RATES_OF_NODES_OVER_TIME")
     plt.xlabel("Number of incoming requests")
     plt.ylabel("Failure rates of nodes over time")
-    plt.title("Figure 4")
 
     path_one_failures = []
     path_two_failures = []
