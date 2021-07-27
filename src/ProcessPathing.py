@@ -164,7 +164,7 @@ def calculate_path_resources_PATH_TWO(path_obj):
     for step in fused_path:
         if len(funcs_mapped) != 0 and len(funcs_to_map) == 0:
             return True
-        elif type(step) == LinkObj:
+        if type(step) == LinkObj:
             # NOTE: In HvW Protocol if a link doesnt have enough BW the path fails
             if not step.check_enough_resources(requested_bandwidth):
                 path_obj.state = POOR

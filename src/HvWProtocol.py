@@ -258,8 +258,6 @@ def create_figure_FOUR():
                     path_two_failures.append(current_node_failures)
                     path_two_avg.append(current_node_failures/req_num)
 
-
-
     plt.axis([1, 150, 1, 300])
     plt.plot(path_one_failures, color='b')
     plt.plot(path_one_avg, color='g')
@@ -348,7 +346,7 @@ if __name__ == '__main__':
 
     find_isolated_nodes()
 
-    ############# SETUP IS NOW OVER WE CAN BEGIN PROCESSING ##############
+    ############ SETUP IS NOW OVER WE CAN BEGIN PROCESSING ##############
     process_path_one()
     print("ALL DONE FINDING FIRST PATHS\n")
     for op in PathObj.StaticOptimalPathsList:
@@ -357,7 +355,7 @@ if __name__ == '__main__':
     print("STARTING CREATION OF OUTPUT FILES\n")
     CreateOutputData.output_file_PATH_ONE()
     print("CREATED PATH ONE OUTPUT FILES\n")
-    ##########################################################
+    #########################################################
 
     print("RESETTING NODE AND LINK RESOURCES\n")
     reset_all_resources()

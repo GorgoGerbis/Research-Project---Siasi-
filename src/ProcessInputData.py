@@ -8,13 +8,13 @@ from src.HvWProtocol import REQUEST_DELAY_THRESHOLD
 baseFolder = r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-"
 resourcesFolder = os.path.join(baseFolder, "resources")
 
-# NodeInputData = os.path.join(resourcesFolder, "NodeInputData-EXSMALL-TEST-7-19-21.csv")
-# LinkInputData = os.path.join(resourcesFolder, "LinkInputData-EXSMALL-TEST-7-19-21.csv")
-# auto_requests_Opt = os.path.join(resourcesFolder, "requests-EXSMALL-TEST-7-19-21.txt")
+NodeInputData = os.path.join(resourcesFolder, "NodeInputData-EXSMALL-TEST-7-19-21.csv")
+LinkInputData = os.path.join(resourcesFolder, "LinkInputData-EXSMALL-TEST-7-19-21.csv")
+auto_requests_Opt = os.path.join(resourcesFolder, "requests-EXSMALL-TEST-7-19-21.txt")
 
-NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-A-7-19-21.csv")
-LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-A-7-19-21.csv")
-auto_requests_Opt = os.path.join(resourcesFolder, "requests-TEST-A-7-19-21.txt")
+# NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-A-7-19-21.csv")
+# LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-A-7-19-21.csv")
+# auto_requests_Opt = os.path.join(resourcesFolder, "requests-TEST-A-7-19-21.txt")
 
 # NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-B-7-19-21.csv")
 # LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-B-7-19-21.csv")
