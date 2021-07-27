@@ -177,9 +177,10 @@ def calculate_path_resources_PATH_TWO(path_obj):
             node_failure = NodeObj.calculate_failure(current_node.nodeID)
 
             # Determining the status of a node and if it has failed
-            if current_node.get_status == "O":
+            if current_node.get_status == 'O':
                 # print("MAPPING ON NODE {} IS NOT POSSIBLE NODE IS OFFLINE".format(current_node.nodeID))
                 NodeObj.AUTO_FAIL_PATH_TWO.append(current_node.nodeID)
+                path_obj.state = POOR
                 return False
             elif current_node.status == 'R':
                 # print("MAPPING ON NODE {} IS NOT POSSIBLE, RELAY TO NEXT NODE IN PATH".format(current_node.nodeID))
@@ -193,11 +194,11 @@ def calculate_path_resources_PATH_TWO(path_obj):
                 temp_mappable_funcs = current_node.how_many_functions_mappable(funcs_to_map)
 
                 if len(temp_mappable_funcs) == 0:
-                    if len(funcs_to_map) >= 0 and step != end_node:
-                        continue
-                    elif len(funcs_to_map) > 0 and step == end_node:
+                    if len(funcs_to_map) > 0 and step == end_node:
                         path_obj.state = POOR
                         return False
+                    if len(funcs_to_map) >= 0 and step != end_node:
+                        continue
                 elif len(temp_mappable_funcs) == 1:
                     temp_func_list = []
                     current_func = FuncObj.retrieve_function_value(funcs_to_map.pop(0))  # Retrieves the current requested function
