@@ -56,7 +56,7 @@ def processInputDataNode(filePath):
 
             failure = float(currentElements[6].strip('\n'))
 
-            NodeObj.StaticNodeResources.append([id, [100, 100, 100]])   # @ToDo remember to change this as well so the nodes are properly reset
+            NodeObj.StaticNodeResources.append([id, [50, 50, 50]])   # @ToDo remember to change this as well so the nodes are properly reset
             current_node = NodeObj(id, position, status, resources, processingDelay, cost, failure)
             print(current_node)
 
