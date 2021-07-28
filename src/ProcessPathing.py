@@ -70,7 +70,7 @@ def set_path_state_PATH_TWO(path_obj):  # <-- This one DOES NOT use failure prob
     if path_obj.state == STATE_UNKNOWN:
         if calculate_path_resources_PATH_TWO(path_obj):
             if calculate_path_speed(path_obj, REQUEST_DELAY_THRESHOLD):
-                PathObj.state = BACKUP
+                path_obj.state = BACKUP
                 PathObj.BACKUP_PATHS.append(path_obj)
             else:
                 path_obj.state = TURTLE
@@ -360,7 +360,7 @@ def calculate_optimal_PATH_TWO():
         PathObj.OPTIMAL_PATH_SET = True
 
 
-def map_path(path_obj):
+def map_path_PATH_ONE(path_obj):
     if path_obj.state == OPTIMAL:  # Checks to make sure we are mapping the optimal path
         print("MAPPING PATH {}\n".format(path_obj.pathID))
         fused_list = PathObj.create_fusion_obj_list(path_obj.route)
@@ -383,11 +383,35 @@ def map_path(path_obj):
 
     print("PATH MAPPED")
 
+
+def map_path_PATH_TWO(path_obj):
+    if path_obj.state == OPTIMAL:  # Checks to make sure we are mapping the optimal path
+        print("MAPPING PATH {}\n".format(path_obj.pathID))
+        fused_list = PathObj.create_fusion_obj_list(path_obj.route)
+        mapping_list = path_obj.MAPPING_LOCATION
+        requested_bandwidth = int(path_obj.REQ_INFO[2])
+
+        for element in fused_list:
+            if type(element) == LinkObj:
+                link = element
+                link.map_request(requested_bandwidth)
+
+        print(NodeObj.StaticNodeList)
+
+        for mapping_location in mapping_list:
+            used_node = mapping_location[0]
+            funcs = mapping_location[1]
+
+            for f in funcs:
+                used_node.map_function_obj(f)
+
+    print("PATH MAPPED")
+
+
 def RUN_PATH_ONE(req):
     for path in PathObj.current_request_paths_list:
         print(path)
         set_path_state_PATH_ONE(path)
-        print(path)
 
     if len(PathObj.BACKUP_PATHS) == 0:
         req.requestStatus[0] = 2   # Fail current request if no paths
@@ -400,7 +424,7 @@ def RUN_PATH_ONE(req):
         calculate_optimal_PATH_ONE()
         optimal_path = PathObj.returnOptimalPath(PathObj.BACKUP_PATHS)
         PathObj.StaticOptimalPathsList.append(optimal_path)
-        map_path(optimal_path)
+        map_path_PATH_ONE(optimal_path)
         req.PATH_ONE = optimal_path
 
     # Data cleanup process
@@ -411,6 +435,7 @@ def RUN_PATH_ONE(req):
 
 def RUN_PATH_TWO(req):
     for path in PathObj.current_request_paths_list:
+        print(path)
         set_path_state_PATH_TWO(path)
 
     if len(PathObj.BACKUP_PATHS) == 0:
@@ -424,7 +449,7 @@ def RUN_PATH_TWO(req):
         calculate_optimal_PATH_TWO()
         optimal_path = PathObj.returnOptimalPath(PathObj.BACKUP_PATHS)
         PathObj.StaticOptimalPathsList.append(optimal_path)
-        map_path(optimal_path)
+        map_path_PATH_TWO(optimal_path)
         req.PATH_TWO = optimal_path
 
     # Data cleanup process
