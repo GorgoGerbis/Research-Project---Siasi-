@@ -3,6 +3,10 @@ from src.PathObj import PathObj
 from src.FuncObj import FuncObj
 from src.LinkObj import LinkObj
 from src.Request import Request
+
+from ControlPanel import GLOBAL_REQUEST_DELAY_THRESHOLD
+from ControlPanel import GlOBAL_FAILURE_THRESHOLD
+
 """
 @author: Jackson Walker
 Path resources: [CPU, RAM, Physical buffer size]
@@ -32,8 +36,8 @@ POOR = Path is traversable but does not have enough resources.
 STATE_UNKNOWN = The state of the path has yet to be determined.
 """
 
-REQUEST_DELAY_THRESHOLD = 250.5
-FAILURE_THRESHOLD = 51
+REQUEST_DELAY_THRESHOLD = GLOBAL_REQUEST_DELAY_THRESHOLD
+FAILURE_THRESHOLD = GlOBAL_FAILURE_THRESHOLD
 OPTIMAL_PATH_SET = False
 
 # Path Object States
@@ -51,11 +55,13 @@ def set_path_state_PATH_ONE(path_obj):  # <-- This one DOES NOT use failure prob
     if path_obj.state == STATE_UNKNOWN:
         if calculate_path_resources_PATH_ONE(path_obj):
             if calculate_path_speed(path_obj, REQUEST_DELAY_THRESHOLD):
+                path_obj.state = BACKUP
                 PathObj.BACKUP_PATHS.append(path_obj)
             else:
                 path_obj.state = TURTLE
         else:
             path_obj.state = POOR
+            print("PATH {} DOES NOT HAVE ENOUGH RESOURCES!".format(path_obj.pathID))
 
 
 # @Todo need to remember to clear BACKUP_PATHS when finished processing request
@@ -64,11 +70,13 @@ def set_path_state_PATH_TWO(path_obj):  # <-- This one DOES NOT use failure prob
     if path_obj.state == STATE_UNKNOWN:
         if calculate_path_resources_PATH_TWO(path_obj):
             if calculate_path_speed(path_obj, REQUEST_DELAY_THRESHOLD):
+                PathObj.state = BACKUP
                 PathObj.BACKUP_PATHS.append(path_obj)
             else:
                 path_obj.state = TURTLE
         else:
             path_obj.state = POOR
+            print("PATH {} DOES NOT HAVE ENOUGH RESOURCES!".format(path_obj.pathID))
 
 
 def calculate_path_resources_PATH_ONE(path_obj):
@@ -115,7 +123,7 @@ def calculate_path_resources_PATH_ONE(path_obj):
                 # print("MAPPING ON NODE {} IS NOT POSSIBLE, RELAY TO NEXT NODE IN PATH".format(current_node.nodeID))
                 continue
             else:  # Next we need to determine if a node has enough resources for mapping and how many it can handle
-                temp_mappable_funcs = current_node.how_many_functions_mappable(funcs_to_map)
+                temp_mappable_funcs = current_node.how_many_functions_mappable(funcs_to_map) # List of all functions mappable to the current node
 
                 if len(temp_mappable_funcs) == 0 and step == end_node and len(funcs_to_map) > 0:
                     path_obj.state = POOR
@@ -131,13 +139,14 @@ def calculate_path_resources_PATH_ONE(path_obj):
 
                 else:  # <---- len(temp_mappable_funcs) > 1
                     temp_func_list = []
-                    for i in range(len(temp_mappable_funcs) - 1):
-                        current_func = FuncObj.retrieve_function_value(
-                            funcs_to_map.pop(0))  # Retrieves the current requested function
+                    for func in temp_mappable_funcs:
+                        current_func = FuncObj.retrieve_function_value(funcs_to_map.pop(0))  # Retrieves the current requested function
                         funcs_mapped.append(current_func)
                         temp_func_list.append(current_func)
                         func_count += 1
-                    path_obj.MAPPING_LOCATION.append([current_node, temp_func_list])
+
+                    if len(temp_func_list) != 0:
+                        path_obj.MAPPING_LOCATION.append([current_node, temp_func_list])
 
 
 def calculate_path_resources_PATH_TWO(path_obj):
@@ -209,12 +218,14 @@ def calculate_path_resources_PATH_TWO(path_obj):
 
                 else:  # <---- len(temp_mappable_funcs) > 1
                     temp_func_list = []
-                    for i in range(len(temp_mappable_funcs) - 1):
+                    for func in temp_mappable_funcs:
                         current_func = FuncObj.retrieve_function_value(funcs_to_map.pop(0))  # Retrieves the current requested function
                         funcs_mapped.append(current_func)
                         temp_func_list.append(current_func)
                         func_count += 1
-                    path_obj.MAPPING_LOCATION.append([current_node, temp_func_list])
+
+                    if len(temp_func_list) != 0:
+                        path_obj.MAPPING_LOCATION.append([current_node, temp_func_list])
 
 
 def calculate_path_speed(path_obj, delay_threshold):
@@ -360,16 +371,17 @@ def map_path(path_obj):
             if type(element) == LinkObj:
                 link = element
                 link.map_request(requested_bandwidth)
-            else:
-                for temp_list in mapping_list:
-                    used_node = temp_list[0]
-                    funcs = temp_list[1]
 
-                    for f in funcs:
-                        used_node.map_function_obj(f)
+        print(NodeObj.StaticNodeList)
+
+        for mapping_location in mapping_list:
+            used_node = mapping_location[0]
+            funcs = mapping_location[1]
+
+            for f in funcs:
+                used_node.map_function_obj(f)
 
     print("PATH MAPPED")
-
 
 def RUN_PATH_ONE(req):
     for path in PathObj.current_request_paths_list:

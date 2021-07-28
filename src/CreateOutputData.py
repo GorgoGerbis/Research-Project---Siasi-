@@ -1,20 +1,6 @@
-import os
-import matplotlib.pyplot as plt
-import numpy as np
-
 from src.Request import Request
-from src.FuncObj import FuncObj
-from src.PathObj import PathObj
-
-# ProcessPathing
-import src.ProcessPathing
-from src.FuncObj import FuncObj
-
-baseFolder = r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-"
-outputFolder = os.path.join(baseFolder, "output")
-
-REQUESTS_FILE = os.path.join(outputFolder, "REQUESTS_OUTPUT_TEST_NEW_7_26.csv")
-REQUESTS_FILE_WITH = os.path.join(outputFolder, "REQUESTS_OUTPUT_TEST_WITH_FAULT_NEW_7_26.csv")
+from src.ControlPanel import GLOBAL_OUTPUT_FILE_PATH_ONE
+from src.ControlPanel import GLOBAL_OUTPUT_FILE_PATH_TWO
 
 REQUEST_NEEDS_CALCULATING = 0
 REQUEST_ONGOING = 1
@@ -86,7 +72,7 @@ def get_average_data_PATH_TWO():
 
 
 def output_file_PATH_ONE():
-    with open(REQUESTS_FILE, 'w') as fp:
+    with open(GLOBAL_OUTPUT_FILE_PATH_ONE, 'w') as fp:
         main_header = "DATASET=TEST_A,TYPE=WITHOUT_FAULT_TOLERANCE,NODES=42,LINKS=63,REQUESTS=100\n"
         average_header = "REQUEST PASSED, REQUESTS FAILED, AVERAGE REQUEST DELAY, AVERAGE REQUEST COST\n"
         p, f, avd, avc = get_average_data_PATH_ONE()
@@ -106,7 +92,7 @@ def output_file_PATH_ONE():
 
 
 def output_file_PATH_TWO():
-    with open(REQUESTS_FILE_WITH, 'w') as fp:
+    with open(GLOBAL_OUTPUT_FILE_PATH_TWO, 'w') as fp:
         main_header = "DATASET=TEST_A,TYPE=WITH_FAULT_TOLERANCE,NODES=42,LINKS=63,REQUESTS=100\n"
         average_header = "REQUEST PASSED, REQUESTS FAILED, AVERAGE REQUEST DELAY, AVERAGE REQUEST COST\n"
         p, f, avd, avc = get_average_data_PATH_TWO()

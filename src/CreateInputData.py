@@ -3,32 +3,9 @@ import random
 from src.NodeObj import NodeObj
 from src.FuncObj import FuncObj
 
-
-baseFolder = r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-"
-resourcesFolder = os.path.join(baseFolder, "resources")
-NodeInputData = os.path.join(resourcesFolder, "NodeInputData-EXXSMALL-A-7-19-21.csv")
-LinkInputData = os.path.join(resourcesFolder, "LinkInputData-EXXSMALL-A-7-19-21.csv")
-auto_requests_Opt = os.path.join(resourcesFolder, "requests-EXXSMALL-A-7-19-21.txt")
-
-# NodeInputData = os.path.join(resourcesFolder, "NodeInputData-EXSMALL-TEST-7-19-21.csv")
-# LinkInputData = os.path.join(resourcesFolder, "LinkInputData-EXSMALL-TEST-7-19-21.csv")
-# auto_requests_Opt = os.path.join(resourcesFolder, "requests-EXSMALL-TEST-7-19-21.txt")
-
-# NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-A-7-19-21.csv")
-# LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-A-7-19-21.csv")
-# auto_requests_Opt = os.path.join(resourcesFolder, "requests-TEST-A-7-19-21.txt")
-
-# NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-B-7-19-21.csv")
-# LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-B-7-19-21.csv")
-# auto_requests_Opt = os.path.join(resourcesFolder, "requests-TEST-B-7-19-21.txt")
-
-# NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-C-7-19-21.csv")
-# LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-C-7-19-21.csv")
-# auto_requests_Opt = os.path.join(resourcesFolder, "requests-TEST-C-7-19-21.txt")
-
-# NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-D-7-19-21.csv")
-# LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-D-7-19-21.csv")
-# auto_requests_Opt = os.path.join(resourcesFolder, "requests-TEST-D-7-19-21.txt")
+from src.ControlPanel import NodeInputData
+from src.ControlPanel import LinkInputData
+from src.ControlPanel import RequestInputData
 
 
 def createNodeInputData(number_of_nodes):
@@ -42,9 +19,9 @@ def createNodeInputData(number_of_nodes):
         for cnt in range(number_of_nodes):
             nodeID = cnt + 1  # Ensures we have the correct number for the node
             lat = random.randint(60, 940)
-            long = random.randint(60, 740)
+            long = random.randint(60, 940)
             stat = status[0]
-            resources = [50, 50, 50] # [CPU, RAM, Physical Buffer size]
+            resources = [200, 200, 200] # [CPU, RAM, Physical Buffer size]
             processing_delay = 1
             nodeCost = 5
             pf = random.randint(1, 55) / 100    # Dividing to make them decimals
@@ -77,7 +54,7 @@ def createLinkInputData(number_of_links, num_nodes):
 
 
 def createRequests(number_of_requests, number_of_nodes):
-    with open(auto_requests_Opt, 'w') as fp:
+    with open(RequestInputData, 'w') as fp:
         heading = "requestID;source;destination;{function1[r1,r2,r3], Function2[r1,r2,r3], Function3[r1,r2," \
                   "r3]};RequestedBandwidth\n"
         fp.write(heading)

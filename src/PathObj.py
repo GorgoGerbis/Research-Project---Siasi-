@@ -2,6 +2,7 @@ from src.NodeObj import NodeObj
 from src.FuncObj import FuncObj
 from src.LinkObj import LinkObj
 from src.Request import Request
+from src.ControlPanel import GLOBAL_REQUEST_DELAY_THRESHOLD
 """
 @author: Jackson Walker
 Path resources: [CPU, RAM, Physical buffer size]
@@ -32,7 +33,7 @@ STATE_UNKNOWN = The state of the path has yet to be determined.
 """
 
 OPTIMAL_PATH_SET = False
-REQUEST_DELAY_THRESHOLD = 250.5
+REQUEST_DELAY_THRESHOLD = GLOBAL_REQUEST_DELAY_THRESHOLD
 
 # Path Object States
 STATE_UNKNOWN = 0

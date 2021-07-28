@@ -1,12 +1,14 @@
 from src.NodeObj import NodeObj
+from src.ControlPanel import GLOBAL_REQUEST_DELAY_THRESHOLD
+from src.ControlPanel import GLOBAL_LINK_BANDWIDTH
 
-REQUEST_DELAY_THRESHOLD = 250.5
+REQUEST_DELAY_THRESHOLD = GLOBAL_REQUEST_DELAY_THRESHOLD
 
 
 class LinkObj(NodeObj):  # <-- This means its a subclass of NodeObj right?
 
-    UNAVAILABLE = "O"
-    AVAILABLE = "A"
+    UNAVAILABLE = 'O'
+    AVAILABLE = 'A'
 
     def __init__(self, linkID, linkStatus, linkSrc, linkDest, linkBW, linkED, linkEC, failure_probability):
         self.linkID = linkID
@@ -23,7 +25,8 @@ class LinkObj(NodeObj):  # <-- This means its a subclass of NodeObj right?
     def reset_link(self):
         for pair in NodeObj.StaticLinkResources:
             if self.linkID == pair[0]:
-                self.linkBW = pair[1]
+                self.linkBW = GLOBAL_LINK_BANDWIDTH
+                self.linkStatus = 'A'
 
     def showLinkSourceID(self):
         return self.linkSrc

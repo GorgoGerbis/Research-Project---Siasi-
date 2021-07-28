@@ -1,4 +1,3 @@
-import os
 from src import ProcessInputData
 from src.NodeObj import NodeObj
 from src.Request import Request
@@ -6,6 +5,7 @@ from src.PathObj import PathObj
 from src.RegionObj import RegionObj
 import CreateOutputData
 from src.CreateOutputData import output_file_PATH_TWO
+from src.ControlPanel import GLOBAL_REQUEST_DELAY_THRESHOLD
 import ProcessPathing
 
 # Need these for path finding and graphing
@@ -20,7 +20,7 @@ from src.ProcessPathing import RUN_PATH_TWO
 # Creating output files
 import src.CreateOutputData
 
-REQUEST_DELAY_THRESHOLD = 250.5
+REQUEST_DELAY_THRESHOLD = GLOBAL_REQUEST_DELAY_THRESHOLD
 
 """
 "Head vs Wall" Protocol or HvWProtocol
@@ -72,7 +72,7 @@ def create_regions():
     regionBounds = [[1, 25], [26, 50], [51, 75], [76, 100], [101, 25], [126, 150]]
     for i in range(5):
         cnt = i+1
-        new_region = RegionObj(cnt, "A", [regionBounds[i][0], regionBounds[i][1]], 0)
+        new_region = RegionObj(cnt, 'A', [regionBounds[i][0], regionBounds[i][1]], [], 0)
 
     for node in NodeObj.StaticNodeList:
         RegionObj.assign_region(node)
@@ -219,6 +219,47 @@ def create_figure_TWO():
     plt.plot(path_two_avg, color='y')
     plt.show()
 
+
+def create_figure_THREE():
+    plt.title("FIGURE 3: Number of incoming requests vs. Saturation Rate of the Network")
+    plt.xlabel("Number of incoming requests")
+    plt.ylabel("Number of failed requests")
+
+    po_count = 0
+    num_failed_po = 0
+    path_one_avg = []
+
+    pt_count = 0
+    num_failed_pt = 0
+    path_two_avg = []
+
+    for req in Request.STATIC_TOTAL_REQUEST_LIST:
+        obj = req.PATH_ONE
+        po_count += 1
+        if obj is None:
+            num_failed_po += 1
+        else:
+            if num_failed_po > 0:
+                avg_num_failed = po_count / num_failed_po
+                path_one_avg.append(avg_num_failed)
+
+    for req in Request.STATIC_TOTAL_REQUEST_LIST:
+        obj = req.PATH_TWO
+        po_count += 1
+        if obj is None:
+            num_failed_pt += 1
+        else:
+            if num_failed_pt > 0:
+                avg_num_failed = pt_count / num_failed_pt
+                path_two_avg.append(avg_num_failed)
+
+
+    plt.axis([1, 150, 1, 150])
+    plt.plot(path_one_avg, color='b')
+    plt.plot(path_two_avg, color='r')
+    plt.show()
+
+
 def create_figure_FOUR():
     plt.title("FIGURE 4: Number of incoming requests vs. FAILURE_RATES_OF_NODES_OVER_TIME")
     plt.xlabel("Number of incoming requests")
@@ -265,53 +306,6 @@ def create_figure_FOUR():
     plt.plot(path_two_avg, color='y')
     plt.show()
 
-# def create_figure_THREE():
-#     plt.title("FIGURE 3: Number of incoming requests vs. Number of failed requests")
-#     plt.xlabel("Number of incoming requests")
-#     plt.ylabel("Number of failed requests")
-#
-#     total_req_one = 0
-#     total_req_two = 0
-#
-#     path_one_passed = 0
-#     path_one_failed = 0
-#     path_two_passed = 0
-#     path_two_failed = 0
-#
-#     path_one_paths_passed = []
-#     path_two_paths_passed = []
-#
-#     path_one_ratio = []
-#     path_two_ratio = []
-#
-#     for req in Request.STATIC_TOTAL_REQUEST_LIST:
-#         obj = req.PATH_ONE
-#         total_req_one += 1
-#         if obj is None:
-#             path_one_failed += 1
-#         elif obj is None:
-#             path_one_passed += 1
-#             path_one_paths_passed.append(path_one_passed)
-#
-#         ratio = total_req_one / path_one_failed
-#         path_one_ratio.append(ratio)
-#
-#     for req in Request.STATIC_TOTAL_REQUEST_LIST:
-#         obj = req.PATH_TWO
-#         total_req_two += 1
-#         if obj is None:
-#             path_two_failed += 1
-#         else:
-#             path_two_passed += 1
-#             path_two_paths_passed.append(path_two_passed)
-#
-#         ratio = total_req_two / path_two_failed
-#         path_two_ratio.append(ratio)
-#
-#     plt.axis([1, 150, 1, 150])
-#     plt.plot(path_one_ratio, color='b')
-#     plt.plot(path_two_ratio, color='r')
-#     plt.show()
 
 def find_isolated_nodes():
     frick = []
@@ -331,10 +325,12 @@ def find_isolated_nodes():
 
     print("The following nodes are not accessible: {}\n".format(output))
 
+
 if __name__ == '__main__':
     print("Begin Processing requests using: 'Head vs. Wall' Protocol\n")
     print("BEGIN PROCESSING INPUT DATA\n")
     ProcessInputData.processAllInputData()
+    # create_regions()
     print("INPUT DATA PROCESSED\n")
 
     set_edges()
@@ -373,5 +369,5 @@ if __name__ == '__main__':
     ############# CREATE OUTPUT DATA GRAPHS ##############
     create_figure_ONE()
     create_figure_TWO()
-    create_figure_FOUR()
-    # create_figure_THREE()
+    create_figure_THREE()
+    # create_figure_FOUR()

@@ -1,11 +1,11 @@
-from src.NodeObj import NodeObj
-
 REQUEST_DELAY_THRESHOLD = 250.5
 
 
 class RegionObj:
 
     STATIC_REGION_LIST = []
+    SATURATION_LIST_A = []
+    SATURATION_LIST_B = []
 
     def __init__(self, regionID, regionStatus, regionPosition, region_nodes, failure_probability):
         self.regionID = regionID
@@ -30,3 +30,7 @@ class RegionObj:
             self.region_nodes.append(node)
         else:
             print("COULDNT ASSIGN NODE")
+
+    @staticmethod
+    def adjust_saturation_rate(node):
+        return

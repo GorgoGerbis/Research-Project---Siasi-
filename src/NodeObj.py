@@ -1,4 +1,7 @@
 from src.FuncObj import FuncObj
+from src.RegionObj import RegionObj
+from src.ControlPanel import GLOBAL_NODE_RESOURCES
+from src.ControlPanel import GLOBAL_REQUEST_DELAY_THRESHOLD
 import random
 
 """
@@ -9,7 +12,7 @@ import random
 FUNCTION_COSTS = [[1, 1, 1], [2, 2, 2], [3, 3, 3], [4, 4, 4], [5, 5, 5], [6, 6, 6]]
 
 # ToDo need to adjust this
-REQUEST_DELAY_THRESHOLD = 250.5
+REQUEST_DELAY_THRESHOLD = GLOBAL_REQUEST_DELAY_THRESHOLD
 
 
 class NodeObj:
@@ -44,8 +47,8 @@ class NodeObj:
     def reset_node(self):
         for pair in NodeObj.StaticNodeResources:
             if self.nodeID == pair[0]:
-                self.nodeResources = [50, 50, 50]
-                self.status = "A"
+                self.nodeResources = GLOBAL_NODE_RESOURCES
+                self.status = 'A'
 
     def get_neighbors(self):
         neighbors = []
@@ -218,6 +221,10 @@ class NodeObj:
     def print_resources(node):
         output = [node.nodeID, node.nodeResources[0], node.nodeResources[1], node.nodeResources[2]]
         return output
+
+    @staticmethod
+    def adjust_saturation_rate(node):
+        RegionObj.adjust_saturation_rate(node)
 
     def __str__(self):
         string = "Node ID: {} Node Position: {} Node Status: {} Node Resources: {} Processing Delay: {} Node cost: {} Failure probability: {}".format(

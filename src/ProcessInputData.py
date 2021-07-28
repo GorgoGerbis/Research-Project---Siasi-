@@ -2,31 +2,14 @@ import os
 from src.NodeObj import NodeObj
 from src.LinkObj import LinkObj
 from src.Request import Request
-from src.HvWProtocol import REQUEST_DELAY_THRESHOLD
 
-# Resources
-baseFolder = r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-"
-resourcesFolder = os.path.join(baseFolder, "resources")
+from src.ControlPanel import GLOBAL_REQUEST_DELAY_THRESHOLD
+from src.ControlPanel import GLOBAL_NODE_RESOURCES
+from src.ControlPanel import GLOBAL_LINK_BANDWIDTH
 
-NodeInputData = os.path.join(resourcesFolder, "NodeInputData-EXSMALL-TEST-7-19-21.csv")
-LinkInputData = os.path.join(resourcesFolder, "LinkInputData-EXSMALL-TEST-7-19-21.csv")
-auto_requests_Opt = os.path.join(resourcesFolder, "requests-EXSMALL-TEST-7-19-21.txt")
-
-# NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-A-7-19-21.csv")
-# LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-A-7-19-21.csv")
-# auto_requests_Opt = os.path.join(resourcesFolder, "requests-TEST-A-7-19-21.txt")
-
-# NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-B-7-19-21.csv")
-# LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-B-7-19-21.csv")
-# auto_requests_Opt = os.path.join(resourcesFolder, "requests-TEST-B-7-19-21.txt")
-
-# NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-C-7-19-21.csv")
-# LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-C-7-19-21.csv")
-# auto_requests_Opt = os.path.join(resourcesFolder, "requests-TEST-C-7-19-21.txt")
-
-# NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-D-7-19-21.csv")
-# LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-D-7-19-21.csv")
-# auto_requests_Opt = os.path.join(resourcesFolder, "requests-TEST-D-7-19-21.txt")
+from src.ControlPanel import NodeInputData
+from src.ControlPanel import LinkInputData
+from src.ControlPanel import RequestInputData
 
 REQUESTS_FAILED = []
 REQUESTS_PASSED = []
@@ -56,7 +39,7 @@ def processInputDataNode(filePath):
 
             failure = float(currentElements[6].strip('\n'))
 
-            NodeObj.StaticNodeResources.append([id, [50, 50, 50]])   # @ToDo remember to change this as well so the nodes are properly reset
+            NodeObj.StaticNodeResources.append([id, GLOBAL_NODE_RESOURCES])   # @ToDo remember to change this as well so the nodes are properly reset
             current_node = NodeObj(id, position, status, resources, processingDelay, cost, failure)
             print(current_node)
 
@@ -72,7 +55,7 @@ def processInputDataLink(filePath):
             linkID = int(currentElements[0])
             source = int(currentElements[1])
             destination = int(currentElements[2])
-            bandwidth = int(currentElements[3])
+            bandwidth = GLOBAL_LINK_BANDWIDTH # bandwidth = int(currentElements[3])
             edgeDelay = float(currentElements[4])
             edgeCost = int(currentElements[5])
             failure_probability = float(currentElements[6].strip('\n'))
@@ -102,7 +85,7 @@ def processInputDataRequests(filePath):
                 destNode = int(currentElements[2])
                 requestedBW = int(currentElements[3])  # .strip('\n')
 
-                request_delay_threshold = REQUEST_DELAY_THRESHOLD
+                request_delay_threshold = GLOBAL_REQUEST_DELAY_THRESHOLD
                 request_status = [0, 0]
 
                 requestedFunctions = []
@@ -133,9 +116,9 @@ def processAllInputData():
     else:
         print("INPUT_DATA_BOT: COULD NOT OPEN LINK FILE")
 
-    if os.path.isfile(auto_requests_Opt):
+    if os.path.isfile(RequestInputData):
         print("INPUT_DATA_BOT: PROCESSING INPUT DATA REQUESTS!")
-        processInputDataRequests(auto_requests_Opt)
+        processInputDataRequests(RequestInputData)
         print("INPUT_DATA_BOT: FINISHED PROCESSING ALL DATA REQUESTS!")
     else:
         print("INPUT_DATA_BOT: COULD NOT OPEN REQUEST FILE")
