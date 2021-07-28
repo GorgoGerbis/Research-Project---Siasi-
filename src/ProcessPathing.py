@@ -389,8 +389,6 @@ def map_path_ONE(path_obj):
                 link = element
                 link.map_request(requested_bandwidth)
 
-        print(NodeObj.StaticLinkList)
-        print(NodeObj.StaticNodeList)
 
     print("PATH MAPPED")
 
@@ -413,8 +411,6 @@ def map_path_TWO(path_obj):
                 link = element
                 link.map_request(requested_bandwidth)
 
-        print(NodeObj.StaticLinkList)
-        print(NodeObj.StaticNodeList)
 
     print("PATH MAPPED")
 
@@ -459,8 +455,6 @@ def RUN_PATH_TWO(req):
         calculate_optimal_PATH_TWO()
         optimal_path = PathObj.returnOptimalPath(PathObj.BACKUP_PATHS)
         PathObj.StaticOptimalPathsList.append(optimal_path)
-        print(NodeObj.StaticNodeList)
-        print(NodeObj.StaticLinkList)
         map_path_TWO(optimal_path) # map_path_PATH_TWO(optimal_path)
         req.PATH_TWO = optimal_path
 
