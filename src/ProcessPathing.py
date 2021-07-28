@@ -178,12 +178,12 @@ def calculate_path_resources_PATH_TWO(path_obj):
             if not step.check_enough_resources(requested_bandwidth):
                 path_obj.state = POOR
                 return False
-            if step.calculate_failure(step.linkSrc, step.linkDest) >= 0.55:
-                path_obj.state = FLUNK
-                return False
+            # if step.calculate_failure(step.linkSrc, step.linkDest) >= 0.55:
+            #     path_obj.state = FLUNK
+            #     return False
         else:
             current_node = step  # First we must determine if mapping is even possible
-            node_failure = NodeObj.calculate_failure(current_node.nodeID)
+            # node_failure = NodeObj.calculate_failure(current_node.nodeID)
 
             # Determining the status of a node and if it has failed
             if current_node.get_status == 'O':
@@ -194,11 +194,11 @@ def calculate_path_resources_PATH_TWO(path_obj):
             elif current_node.status == 'R':
                 # print("MAPPING ON NODE {} IS NOT POSSIBLE, RELAY TO NEXT NODE IN PATH".format(current_node.nodeID))
                 continue
-            elif node_failure >= 0.55:
-                # print("NODE {} FAILED, MOVING ONTO NEXT NODE IN PATH".format(current_node.nodeID))
-                PathObj.current_path_failures.append([current_node.nodeID, node_failure])
-                path_obj.state = POOR
-                return False
+            # elif node_failure >= 0.55:
+            #     # print("NODE {} FAILED, MOVING ONTO NEXT NODE IN PATH".format(current_node.nodeID))
+            #     PathObj.current_path_failures.append([current_node.nodeID, node_failure])
+            #     path_obj.state = POOR
+            #     return False
             else:  # Next we need to determine if a node has enough resources for mapping and how many it can handle
                 temp_mappable_funcs = current_node.how_many_functions_mappable(funcs_to_map)
 
@@ -285,10 +285,13 @@ def calculate_path_speed(path_obj, delay_threshold):
 
 
 def calculate_path_failure(path_obj, failure_threshold):
-    failure_rate = path_obj.get_path_failure_probability
+    path_obj.set_failure_probability
+    failure_rate = path_obj.FAILURE_PROBABILITY
     if failure_rate <= failure_threshold:
         return True
     else:
+        path_obj.state = FLUNK
+        print("PATH {} = {}. FAILURE PROBABILITY IS TOO HIGH!".format(path_obj.pathID, path_obj.FAILURE_PROBABILITY))
         return False
 
 
