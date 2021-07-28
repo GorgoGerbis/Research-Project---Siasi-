@@ -260,6 +260,15 @@ def calculate_path_speed(path_obj, delay_threshold):
     :return: Boolean
     """
     fused_list = PathObj.create_fusion_obj_list(path_obj.route)
+    mapping_list = path_obj.MAPPING_LOCATION
+
+    # @ToDo remember that when a function is mapped to a node the delay for that node is: processingDelay + (processingDelay x num_funcs_mapped)
+    for mapping_location in mapping_list:
+        used_node = mapping_location[0]
+        funcs = mapping_location[1]
+
+        for f in funcs:
+            path_obj.DELAY += used_node.processingDelay
 
     for step in fused_list:
         if type(step) == LinkObj:
@@ -268,9 +277,6 @@ def calculate_path_speed(path_obj, delay_threshold):
         elif type(step) == NodeObj:
             path_obj.DELAY += step.processingDelay
             path_obj.COST += step.nodeCost
-
-    for i in range(len(path_obj.MAPPING_LOCATION)):
-        path_obj.DELAY += 1
 
     if path_obj.DELAY <= delay_threshold:
         return True
