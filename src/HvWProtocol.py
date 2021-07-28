@@ -90,7 +90,7 @@ def process_path_one():
             if len(path) != 0:
                 pathID = "R{}P{}".format(req.requestID, count)
                 # ToDo should make a static list of all paths being processed for a single request
-                PathObj(pathID, path, 0, current_request_data, [], 0, 0, 0, 2)
+                PathObj(pathID, path, 0, current_request_data, [], 0, 0, 0, 1)
                 count += 1
 
         RUN_PATH_ONE(req)   # <--- Step 3, 4 and 5 starts here

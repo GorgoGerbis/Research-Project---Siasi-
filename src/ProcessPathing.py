@@ -382,7 +382,7 @@ def map_path(path_obj):
             node_used = mapping_location[0]
             funcs_to_map = mapping_location[1]
             for f in funcs_to_map:
-                node_used.map_function_obj(node_used.nodeID, f)
+                node_used.map_function_obj(f)
 
         for element in fused_list:
             if type(element) == LinkObj:
