@@ -90,10 +90,7 @@ def process_path_one():
             if len(path) != 0:
                 pathID = "R{}P{}".format(req.requestID, count)
                 # ToDo should make a static list of all paths being processed for a single request
-                new_path_obj = PathObj(pathID, path, 0, current_request_data, [], 0, 0, 0, 2)
-
-                ProcessPathing.set_path_state_PATH_ONE(new_path_obj)
-
+                PathObj(pathID, path, 0, current_request_data, [], 0, 0, 0, 2)
                 count += 1
 
         RUN_PATH_ONE(req)   # <--- Step 3, 4 and 5 starts here
@@ -111,10 +108,7 @@ def process_path_two():
             if len(path) != 0:
                 pathID = "R{}P{}".format(req.requestID, count)
                 # ToDo should make a static list of all paths being processed for a single request
-                new_path_obj = PathObj(pathID, path, 0, current_request_data, [], 0, 0, 0, 2)
-
-                ProcessPathing.set_path_state_PATH_TWO(new_path_obj)
-
+                PathObj(pathID, path, 0, current_request_data, [], 0, 0, 0, 2)
                 count += 1
 
         RUN_PATH_TWO(req)

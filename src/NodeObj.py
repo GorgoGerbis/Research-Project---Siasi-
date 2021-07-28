@@ -80,7 +80,6 @@ class NodeObj:
         if count == len(tethers):
             return True
 
-
     def get_tethers(self):
         output = []
 
@@ -141,10 +140,12 @@ class NodeObj:
         self.nodeResources[1] = int(self.nodeResources[1]) - ram
         self.nodeResources[2] = int(self.nodeResources[2]) - bw
 
-    def map_function_obj(self, func):
-        self.nodeResources[0] = int(self.nodeResources[0]) - func.value[0]
-        self.nodeResources[1] = int(self.nodeResources[1]) - func.value[1]
-        self.nodeResources[2] = int(self.nodeResources[2]) - func.value[2]
+    def map_function_obj(self, nid, func):
+        if self.nodeID == nid:
+            resources = self.nodeResources
+            resources[0] -= func.value[0]
+            resources[1] -= func.value[1]
+            resources[2] -= func.value[2]
 
     def HELPER_check_enough_resources(self, c, r, b):
         if self.compareCPU(c) and self.compareRAM(r) and self.compareBW(b):

@@ -378,21 +378,44 @@ def map_path(path_obj):
         mapping_list = path_obj.MAPPING_LOCATION
         requested_bandwidth = int(path_obj.REQ_INFO[2])
 
+        for mapping_location in mapping_list:
+            node_used = mapping_location[0]
+            funcs_to_map = mapping_location[1]
+            for f in funcs_to_map:
+                node_used.map_function_obj(node_used.nodeID, f)
+
         for element in fused_list:
             if type(element) == LinkObj:
                 link = element
                 link.map_request(requested_bandwidth)
 
+        print(NodeObj.StaticLinkList)
         print(NodeObj.StaticNodeList)
 
-        for mapping_location in mapping_list:
-            used_node = mapping_location[0]
-            funcs = mapping_location[1]
-
-            for f in funcs:
-                used_node.map_function_obj(f)
-
     print("PATH MAPPED")
+
+# def map_path(path_obj):
+#     if path_obj.state == OPTIMAL:  # Checks to make sure we are mapping the optimal path
+#         print("MAPPING PATH {}\n".format(path_obj.pathID))
+#         fused_list = PathObj.create_fusion_obj_list(path_obj.route)
+#         mapping_list = path_obj.MAPPING_LOCATION
+#         requested_bandwidth = int(path_obj.REQ_INFO[2])
+#
+#         for element in fused_list:
+#             if type(element) == LinkObj:
+#                 link = element
+#                 link.map_request(requested_bandwidth)
+#             if type(element) == NodeObj:
+#                 if element in mapping_list:
+#                     for location in mapping_list:
+#                         funcs = location[1]
+#                         for f in funcs:
+#                             element.map_function_obj(f)
+#
+#         print(NodeObj.StaticLinkList)
+#         print(NodeObj.StaticNodeList)
+#
+#     print("PATH MAPPED")
 
 
 def RUN_PATH_ONE(req):
@@ -436,6 +459,8 @@ def RUN_PATH_TWO(req):
         calculate_optimal_PATH_TWO()
         optimal_path = PathObj.returnOptimalPath(PathObj.BACKUP_PATHS)
         PathObj.StaticOptimalPathsList.append(optimal_path)
+        print(NodeObj.StaticNodeList)
+        print(NodeObj.StaticLinkList)
         map_path(optimal_path) # map_path_PATH_TWO(optimal_path)
         req.PATH_TWO = optimal_path
 
