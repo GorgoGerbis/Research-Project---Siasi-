@@ -336,7 +336,7 @@ if __name__ == '__main__':
 
     find_isolated_nodes()
 
-    ############ SETUP IS NOW OVER WE CAN BEGIN PROCESSING ##############
+    ########### SETUP IS NOW OVER WE CAN BEGIN PROCESSING ##############
     process_path_one()
     print("ALL DONE FINDING FIRST PATHS\n")
     for op in PathObj.StaticOptimalPathsList:
@@ -363,5 +363,5 @@ if __name__ == '__main__':
     ############# CREATE OUTPUT DATA GRAPHS ##############
     create_figure_ONE()
     create_figure_TWO()
-    create_figure_THREE()
+    # create_figure_THREE()
     # create_figure_FOUR()

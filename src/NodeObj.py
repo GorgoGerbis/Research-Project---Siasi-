@@ -141,11 +141,13 @@ class NodeObj:
         self.nodeResources[2] = int(self.nodeResources[2]) - bw
 
     def map_function_obj(self, nid, func):
-        if self.nodeID == nid:
-            resources = self.nodeResources
-            resources[0] -= func.value[0]
-            resources[1] -= func.value[1]
-            resources[2] -= func.value[2]
+        for node in NodeObj.StaticNodeList:
+            if node.nodeID == nid:
+                resources = node.nodeResources
+                resources[0] -= func.value[0]
+                resources[1] -= func.value[1]
+                resources[2] -= func.value[2]
+                node.nodeResources = resources
 
     def HELPER_check_enough_resources(self, c, r, b):
         if self.compareCPU(c) and self.compareRAM(r) and self.compareBW(b):
