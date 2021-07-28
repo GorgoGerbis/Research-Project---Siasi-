@@ -347,8 +347,19 @@ if __name__ == '__main__':
     print("CREATED PATH ONE OUTPUT FILES\n")
     #########################################################
 
-    print("RESETTING NODE AND LINK RESOURCES\n")
-    reset_all_resources()
+    # print("RESETTING NODE AND LINK RESOURCES\n")
+    # reset_all_resources()
+
+    for link in NodeObj.StaticLinkList:
+        del link
+    NodeObj.StaticLinkList.clear()
+
+    for node in NodeObj.StaticNodeList:
+        del node
+    NodeObj.StaticNodeList.clear()
+
+    ProcessInputData.processInputDataNode(ProcessInputData.NodeInputData)
+    ProcessInputData.processInputDataLink(ProcessInputData.LinkInputData)
 
     ############# BEGIN PROCESSING FOR PATH TWO ##############
     process_path_two()

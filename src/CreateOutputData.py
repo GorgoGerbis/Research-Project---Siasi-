@@ -33,8 +33,8 @@ def get_average_data_PATH_ONE():
             total_denied += 1
             continue
 
-    cost_average = cost_average / count
-    delay_average = delay_average / count
+    # cost_average = cost_average / count
+    # delay_average = delay_average / count
 
     return total_approved, total_denied, delay_average, cost_average
 
