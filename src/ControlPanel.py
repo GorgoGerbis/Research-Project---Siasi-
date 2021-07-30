@@ -7,13 +7,21 @@ outputFolder = os.path.join(baseFolder, "output")
 
 # INPUT FILE PATHS
 
+NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TESTDATA-A-7-30-21.csv")
+LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TESTDATA-A-7-30-21.csv")
+RequestInputData = os.path.join(resourcesFolder, "RequestInputData-TESTDATA-A-7-30-21.txt")
+
+# NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-A-7-30-21.csv")
+# LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-A-7-30-21.csv")
+# RequestInputData = os.path.join(resourcesFolder, "RequestInputData-TEST-A-7-30-21.txt")
+#
+# NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-B-7-30-21.csv")
+# LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-B-7-30-21.csv")
+# RequestInputData = os.path.join(resourcesFolder, "RequestInputData-TEST-B-7-30-21.txt")
+
 # NodeInputData = os.path.join(resourcesFolder, "NodeInputData-FUNC-TEST-C-7-28-21.csv")
 # LinkInputData = os.path.join(resourcesFolder, "LinkInputData-FUNC-TEST-C-7-28-21.csv")
 # RequestInputData = os.path.join(resourcesFolder, "RequestInputData-FUNC-TEST-C-7-28-21.txt")
-
-NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-A-7-30-21.csv")
-LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-A-7-30-21.csv")
-RequestInputData = os.path.join(resourcesFolder, "RequestInputData-TEST-A-7-30-21.txt")
 
 # NodeInputData = os.path.join(resourcesFolder, "NodeInputData-EXSMALL-TEST-7-19-21.csv")
 # LinkInputData = os.path.join(resourcesFolder, "LinkInputData-EXSMALL-TEST-7-19-21.csv")
@@ -21,8 +29,11 @@ RequestInputData = os.path.join(resourcesFolder, "RequestInputData-TEST-A-7-30-2
 
 # OUTPUT FILE PATHS
 
-GLOBAL_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "PATH_ONE_REQUESTS_OUTPUT_TEST_A.csv")
-GLOBAL_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "PATH_TWO_REQUESTS_OUTPUT_TEST_A.csv")
+GLOBAL_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "PATH_ONE_REQUESTS_OUTPUT_SMALL_TESTDATA_A.csv")
+GLOBAL_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "PATH_TWO_REQUESTS_OUTPUT_SMALL_TESTDATA_A.csv")
+
+# GLOBAL_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "PATH_ONE_REQUESTS_OUTPUT_TEST_A.csv")
+# GLOBAL_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "PATH_TWO_REQUESTS_OUTPUT_TEST_A.csv")
 
 # GLOBAL_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "REQUESTS_OUTPUT_A_NEW_7_26.csv")
 # GLOBAL_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "REQUESTS_OUTPUT_A_WITH_FAULT_NEW_7_26.csv")

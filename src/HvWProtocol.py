@@ -162,10 +162,11 @@ def create_figure_ONE():
         path_two_avg.append(current_delay)
 
     plt.axis([1, 150, 1, 250])
-    plt.plot(path_one_delays, color='b')
-    plt.plot(path_one_avg, color='g')
-    plt.plot(path_two_delays, color='r')
-    plt.plot(path_two_avg, color='y')
+    plt.plot(path_one_delays, color='b', label="Path One Delays")
+    plt.plot(path_one_avg, color='g', label="Path One Delay Averages")
+    plt.plot(path_two_delays, color='r', label="Path Two Delays")
+    plt.plot(path_two_avg, color='y', label="Path Two Delay Averages")
+    plt.legend()
     plt.show()
 
 
@@ -207,10 +208,11 @@ def create_figure_TWO():
         path_two_avg.append(current_cost)
 
     plt.axis([1, 150, 1, 250])
-    plt.plot(path_one_costs, color='b')
-    plt.plot(path_one_avg, color='g')
-    plt.plot(path_two_costs, color='r')
-    plt.plot(path_two_avg, color='y')
+    plt.plot(path_one_costs, color='b', label="Path One Costs")
+    plt.plot(path_one_avg, color='g', label="Path One Cost Averages")
+    plt.plot(path_two_costs, color='r', label="Path Two Costs")
+    plt.plot(path_two_avg, color='y', label="Path Two Cost Averages")
+    plt.legend()
     plt.show()
 
 
@@ -313,5 +315,5 @@ if __name__ == '__main__':
     ############# CREATE OUTPUT DATA GRAPHS ##############
     create_figure_ONE()
     create_figure_TWO()
-    create_figure_THREE()
+    # create_figure_THREE()
     # create_figure_FOUR()
