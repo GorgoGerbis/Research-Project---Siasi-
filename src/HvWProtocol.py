@@ -161,7 +161,7 @@ def create_figure_ONE():
         current_delay = total_delay_b / cnt
         path_two_avg.append(current_delay)
 
-    plt.axis([1, 200, 1, 300])
+    plt.axis([1, 150, 1, 250])
     plt.plot(path_one_delays, color='b')
     plt.plot(path_one_avg, color='g')
     plt.plot(path_two_delays, color='r')
@@ -206,7 +206,7 @@ def create_figure_TWO():
         current_cost = total_cost_a / cnt
         path_two_avg.append(current_cost)
 
-    plt.axis([1, 300, 1, 300])
+    plt.axis([1, 150, 1, 250])
     plt.plot(path_one_costs, color='b')
     plt.plot(path_one_avg, color='g')
     plt.plot(path_two_costs, color='r')
@@ -215,89 +215,28 @@ def create_figure_TWO():
 
 
 def create_figure_THREE():
-    plt.title("FIGURE 3: Number of incoming requests vs. Saturation Rate of the Network")
+    plt.title("FIGURE 3: Number of incoming requests vs. Node usage in the network")
     plt.xlabel("Number of incoming requests")
-    plt.ylabel("Number of failed requests")
+    plt.ylabel("Node Usage in the network")
 
-    po_count = 0
-    num_failed_po = 0
-    path_one_avg = []
+    total_po = 0
 
-    pt_count = 0
-    num_failed_pt = 0
-    path_two_avg = []
+    po_delay_avg = 0
+    po_cost_avg = 0
 
     for req in Request.STATIC_TOTAL_REQUEST_LIST:
         obj = req.PATH_ONE
-        po_count += 1
-        if obj is None:
-            num_failed_po += 1
-        else:
-            if num_failed_po > 0:
-                avg_num_failed = po_count / num_failed_po
-                path_one_avg.append(avg_num_failed)
-
-    for req in Request.STATIC_TOTAL_REQUEST_LIST:
-        obj = req.PATH_TWO
-        po_count += 1
-        if obj is None:
-            num_failed_pt += 1
-        else:
-            if num_failed_pt > 0:
-                avg_num_failed = pt_count / num_failed_pt
-                path_two_avg.append(avg_num_failed)
-
-
-    plt.axis([1, 150, 1, 150])
-    plt.plot(path_one_avg, color='b')
-    plt.plot(path_two_avg, color='r')
-    plt.show()
-
-
-def create_figure_FOUR():
-    plt.title("FIGURE 4: Number of incoming requests vs. FAILURE_RATES_OF_NODES_OVER_TIME")
-    plt.xlabel("Number of incoming requests")
-    plt.ylabel("Failure rates of nodes over time")
-
-    path_one_failures = []
-    path_two_failures = []
-
-    path_one_avg = []
-    path_two_avg = []
-
-    current_node_failures = 0
-    req_num = 0
-
-    for request in Request.STATIC_TOTAL_REQUEST_LIST:
-        obj = request.PATH_ONE
         if obj is not None:
-            for node in NodeObj.StaticNodeList:
-                req_num += 1
-                node.get_status()
-                if node.status != "A":
-                    current_node_failures += 1
-                    path_one_failures.append(current_node_failures)
-                    path_one_avg.append(current_node_failures/req_num)
+            total_po
 
-    current_node_failures = 0
-    req_num = 0
+    total_pt = 0
 
-    for request in Request.STATIC_TOTAL_REQUEST_LIST:
-        obj = request.PATH_TWO
-        if obj is not None:
-            for node in NodeObj.StaticNodeList:
-                req_num += 1
-                node.get_status()
-                if node.status != "A":
-                    current_node_failures += 1
-                    path_two_failures.append(current_node_failures)
-                    path_two_avg.append(current_node_failures/req_num)
+    pt_delay_avg = 0
+    pt_cost_avg = 0
 
-    plt.axis([1, 150, 1, 300])
-    plt.plot(path_one_failures, color='b')
-    plt.plot(path_one_avg, color='g')
-    plt.plot(path_two_failures, color='r')
-    plt.plot(path_two_avg, color='y')
+    plt.axis([1, 150, 1, 100])
+    # plt.plot(path_one_avg, color='b')
+    # plt.plot(path_two_avg, color='r')
     plt.show()
 
 
@@ -374,5 +313,5 @@ if __name__ == '__main__':
     ############# CREATE OUTPUT DATA GRAPHS ##############
     create_figure_ONE()
     create_figure_TWO()
-    # create_figure_THREE()
+    create_figure_THREE()
     # create_figure_FOUR()
