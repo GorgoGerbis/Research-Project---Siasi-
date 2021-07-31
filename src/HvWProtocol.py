@@ -216,7 +216,7 @@ def create_figure_TWO():
     plt.show()
 
 
-def create_figure_THREE():
+def create_figure_HREE():
     plt.title("FIGURE 3: Number of incoming requests vs. Node usage in the network")
     plt.xlabel("Number of incoming requests")
     plt.ylabel("Node Usage in the network")
@@ -317,3 +317,4 @@ if __name__ == '__main__':
     create_figure_TWO()
     # create_figure_THREE()
     # create_figure_FOUR()
+

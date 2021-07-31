@@ -98,10 +98,10 @@ class PathObj:
 
         for step in fused_path:
             if type(step) == LinkObj:
-                current_fail = LinkObj.calculate_failure(step.linkSrc, step.linkDest)
+                current_fail = step.calculate_failure(step.linkSrc, step.linkDest)
                 link_temp.append(current_fail)
             else:
-                current_fail = NodeObj.calculate_failure(step.nodeID)
+                current_fail = step.calculate_failure(step.nodeID)
                 node_temp.append(current_fail)
 
         for step in link_temp:
