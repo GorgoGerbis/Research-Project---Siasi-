@@ -14,7 +14,7 @@ outputFolder = os.path.join(baseFolder, "output")
 NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-C-7-30-21.csv")
 LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-C-7-30-21.csv")
 RequestInputData = os.path.join(resourcesFolder, "RequestInputData-TEST-C-7-30-21.txt")
-#
+
 # NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-B-7-30-21.csv")
 # LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-B-7-30-21.csv")
 # RequestInputData = os.path.join(resourcesFolder, "RequestInputData-TEST-B-7-30-21.txt")
@@ -46,8 +46,8 @@ GLOBAL_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "PATH_TWO_REQUESTS_OUTP
 # A_GLOBAL_REQUEST_DELAY_THRESHOLD = 250.5
 # A_GlOBAL_FAILURE_THRESHOLD = 55.5
 
-GLOBAL_NODE_RESOURCES = [100, 100, 100]
-GLOBAL_LINK_BANDWIDTH = 35
+GLOBAL_NODE_RESOURCES = [80, 80, 80]
+GLOBAL_LINK_BANDWIDTH = 25
 GLOBAL_REQUEST_DELAY_THRESHOLD = 250.5
 GlOBAL_FAILURE_THRESHOLD = 55.5
 

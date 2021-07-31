@@ -161,7 +161,7 @@ def create_figure_ONE():
         current_delay = total_delay_b / cnt
         path_two_avg.append(current_delay)
 
-    plt.axis([1, 150, 1, 250])
+    plt.axis([1, 50, 1, 150])
     plt.plot(path_one_delays, color='b', label="Path One Delays")
     plt.plot(path_one_avg, color='g', label="Path One Delay Averages")
     plt.plot(path_two_delays, color='r', label="Path Two Delays")
@@ -207,7 +207,7 @@ def create_figure_TWO():
         current_cost = total_cost_a / cnt
         path_two_avg.append(current_cost)
 
-    plt.axis([1, 150, 1, 250])
+    plt.axis([1, 150, 1, 150])
     plt.plot(path_one_costs, color='b', label="Path One Costs")
     plt.plot(path_one_avg, color='g', label="Path One Cost Averages")
     plt.plot(path_two_costs, color='r', label="Path Two Costs")
