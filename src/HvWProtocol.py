@@ -151,7 +151,7 @@ def create_figure_ONE():
         current_delay = total_delay_b / cnt
         path_two_avg.append(current_delay)
 
-    plt.axis([0, 150, 0, 30])
+    plt.axis([0, 150, 0, 50])
     plt.plot(path_one_delays, color='b', label="Conventional mapping")
     plt.plot(path_one_avg, color='g', label="Conventional mapping averages")
     plt.plot(path_two_delays, color='r', label="Failure-aware mapping")
@@ -255,7 +255,6 @@ if __name__ == '__main__':
     print("Begin Processing requests using: 'Head vs. Wall' Protocol\n")
     print("BEGIN PROCESSING INPUT DATA\n")
     ProcessInputData.processAllInputData()
-    # create_regions()
     print("INPUT DATA PROCESSED\n")
 
     set_edges()

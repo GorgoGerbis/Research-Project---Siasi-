@@ -389,7 +389,6 @@ def map_path_ONE(path_obj):
                 link = element
                 link.map_request(requested_bandwidth)
 
-
     print("PATH MAPPED")
 
 
@@ -410,7 +409,6 @@ def map_path_TWO(path_obj):
             if type(element) == LinkObj:
                 link = element
                 link.map_request(requested_bandwidth)
-
 
     print("PATH MAPPED")
 
