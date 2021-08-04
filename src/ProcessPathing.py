@@ -436,6 +436,7 @@ def RUN_PATH_ONE(req):
     # Data cleanup process
     PathObj.BACKUP_PATHS.clear()
     PathObj.current_request_paths_list.clear()
+    PathObj.current_path_failures.clear()
     # PathObj.StaticPathsList.clear()
 
 

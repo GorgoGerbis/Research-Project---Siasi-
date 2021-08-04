@@ -40,7 +40,7 @@ def processInputDataNode(filePath):
             failure = float(currentElements[6].strip('\n'))
 
             NodeObj.StaticNodeResources.append([id, GLOBAL_NODE_RESOURCES])   # @ToDo remember to change this as well so the nodes are properly reset
-            current_node = NodeObj(id, position, status, resources, processingDelay, cost, failure)
+            current_node = NodeObj(id, position, status, GLOBAL_NODE_RESOURCES, processingDelay, cost, failure)
             print(current_node)
 
 

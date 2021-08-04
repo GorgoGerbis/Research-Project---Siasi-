@@ -114,16 +114,6 @@ def process_path_two():
         RUN_PATH_TWO(req)
 
 
-def reset_all_resources():
-    for node in NodeObj.StaticNodeList:
-        node.reset_node()
-        print("RESET NODE {}".format(node.nodeID))
-
-    for link in NodeObj.StaticLinkList:
-        link.reset_link()
-        print("RESET LINK {}".format(link.linkID))
-
-
 def create_figure_ONE():
     plt.title("FIGURE 1: Number of incoming requests vs. Average delay per request")
     plt.xlabel("Number of incoming requests")
@@ -161,11 +151,11 @@ def create_figure_ONE():
         current_delay = total_delay_b / cnt
         path_two_avg.append(current_delay)
 
-    plt.axis([1, 50, 1, 150])
-    plt.plot(path_one_delays, color='b', label="Path One Delays")
-    plt.plot(path_one_avg, color='g', label="Path One Delay Averages")
-    plt.plot(path_two_delays, color='r', label="Path Two Delays")
-    plt.plot(path_two_avg, color='y', label="Path Two Delay Averages")
+    plt.axis([0, 150, 0, 30])
+    plt.plot(path_one_delays, color='b', label="Conventional mapping")
+    plt.plot(path_one_avg, color='g', label="Conventional mapping averages")
+    plt.plot(path_two_delays, color='r', label="Failure-aware mapping")
+    plt.plot(path_two_avg, color='y', label="Failure-aware mapping averages")
     plt.legend()
     plt.show()
 
@@ -207,39 +197,39 @@ def create_figure_TWO():
         current_cost = total_cost_a / cnt
         path_two_avg.append(current_cost)
 
-    plt.axis([1, 150, 1, 150])
-    plt.plot(path_one_costs, color='b', label="Path One Costs")
-    plt.plot(path_one_avg, color='g', label="Path One Cost Averages")
-    plt.plot(path_two_costs, color='r', label="Path Two Costs")
-    plt.plot(path_two_avg, color='y', label="Path Two Cost Averages")
+    plt.axis([0, 150, 0, 150])
+    plt.plot(path_one_costs, color='b', label="Conventional mapping")
+    plt.plot(path_one_avg, color='g', label="Conventional mapping averages")
+    plt.plot(path_two_costs, color='r', label="Failure-aware mapping")
+    plt.plot(path_two_avg, color='y', label="Failure-aware mapping averages")
     plt.legend()
     plt.show()
 
 
-def create_figure_HREE():
-    plt.title("FIGURE 3: Number of incoming requests vs. Node usage in the network")
-    plt.xlabel("Number of incoming requests")
-    plt.ylabel("Node Usage in the network")
-
-    total_po = 0
-
-    po_delay_avg = 0
-    po_cost_avg = 0
-
-    for req in Request.STATIC_TOTAL_REQUEST_LIST:
-        obj = req.PATH_ONE
-        if obj is not None:
-            total_po
-
-    total_pt = 0
-
-    pt_delay_avg = 0
-    pt_cost_avg = 0
-
-    plt.axis([1, 150, 1, 100])
-    # plt.plot(path_one_avg, color='b')
-    # plt.plot(path_two_avg, color='r')
-    plt.show()
+# def create_figure_THREE():
+#     plt.title("FIGURE 3: Number of incoming requests vs. Node usage in the network")
+#     plt.xlabel("Number of incoming requests")
+#     plt.ylabel("Node Usage in the network")
+#
+#     total_po = 0
+#
+#     po_delay_avg = 0
+#     po_cost_avg = 0
+#
+#     for req in Request.STATIC_TOTAL_REQUEST_LIST:
+#         obj = req.PATH_ONE
+#         if obj is not None:
+#             total_po
+#
+#     total_pt = 0
+#
+#     pt_delay_avg = 0
+#     pt_cost_avg = 0
+#
+#     plt.axis([1, 150, 1, 100])
+#     # plt.plot(path_one_avg, color='b')
+#     # plt.plot(path_two_avg, color='r')
+#     plt.show()
 
 
 def find_isolated_nodes():
@@ -287,9 +277,6 @@ if __name__ == '__main__':
     CreateOutputData.output_file_PATH_ONE()
     print("CREATED PATH ONE OUTPUT FILES\n")
     #########################################################
-
-    # print("RESETTING NODE AND LINK RESOURCES\n")
-    # reset_all_resources()
 
     for link in NodeObj.StaticLinkList:
         del link
