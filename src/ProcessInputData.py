@@ -15,6 +15,7 @@ REQUESTS_FAILED = []
 REQUESTS_PASSED = []
 REQUESTS = []
 
+NODE_RESOURCES = GLOBAL_NODE_RESOURCES
 
 def processInputDataNode(filePath):
     with open(filePath) as fp:
@@ -39,8 +40,8 @@ def processInputDataNode(filePath):
 
             failure = float(currentElements[6].strip('\n'))
 
-            NodeObj.StaticNodeResources.append([id, GLOBAL_NODE_RESOURCES])   # @ToDo remember to change this as well so the nodes are properly reset
-            current_node = NodeObj(id, position, status, GLOBAL_NODE_RESOURCES, processingDelay, cost, failure)
+            NodeObj.StaticNodeResources.append([id, NODE_RESOURCES])   # @ToDo remember to change this as well so the nodes are properly reset
+            current_node = NodeObj(id, position, status, NODE_RESOURCES, processingDelay, cost, failure)
             print(current_node)
 
 

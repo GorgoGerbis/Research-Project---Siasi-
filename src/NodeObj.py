@@ -12,6 +12,7 @@ import random
 FUNCTION_COSTS = [[1, 1, 1], [2, 2, 2], [3, 3, 3], [4, 4, 4], [5, 5, 5], [6, 6, 6]]
 
 # ToDo need to adjust this
+NODE_RESOURCES = GLOBAL_NODE_RESOURCES
 REQUEST_DELAY_THRESHOLD = GLOBAL_REQUEST_DELAY_THRESHOLD
 
 
@@ -47,7 +48,7 @@ class NodeObj:
     def reset_node(self):
         for pair in NodeObj.StaticNodeResources:
             if self.nodeID == pair[0]:
-                self.nodeResources = GLOBAL_NODE_RESOURCES
+                self.nodeResources = NODE_RESOURCES
                 self.status = 'A'
 
     def get_neighbors(self):
