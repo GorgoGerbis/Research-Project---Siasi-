@@ -21,7 +21,7 @@ def createNodeInputData(number_of_nodes):
             lat = random.randint(60, 940)
             long = random.randint(60, 940)
             stat = status[0]
-            resources = [200, 200, 200] # [CPU, RAM, Physical Buffer size]
+            resources = [60, 60, 60] # [CPU, RAM, Physical Buffer size]
             processing_delay = 1
             nodeCost = 5
             pf = random.randint(1, 55) / 100    # Dividing to make them decimals
@@ -106,8 +106,8 @@ def not_the_same(num_nodes):
 
 
 if __name__ == '__main__':
-    num_nodes = 12 # 12
-    num_links = 35 # 24
+    num_nodes = 24 # 12
+    num_links = 48 # 24
     num_requests = 100 # 48
 
     print("CREATING NEW INPUT DATA!\n")

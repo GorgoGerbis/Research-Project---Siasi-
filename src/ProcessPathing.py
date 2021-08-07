@@ -101,12 +101,13 @@ def calculate_path_resources_PATH_ONE(path_obj):
     end_link = fused_path[-2]
 
     enough_bw = False
+    all_mapped = False
 
     funcs_mapped = []
     func_count = 0
 
     for step in fused_path:
-        if (len(funcs_mapped) != 0 and len(funcs_to_map) == 0) and enough_bw:
+        if all_mapped and enough_bw:
             return True
         if type(step) == LinkObj:
             # print("Link ID: {} Src: {} Dest: {}".format(step.linkID, step.linkSrc, step.linkDest))
@@ -118,42 +119,48 @@ def calculate_path_resources_PATH_ONE(path_obj):
             elif step.linkID == end_link.linkID:
                 enough_bw = True
         else:
-            current_node = step  # First we must determine if mapping is even possible
-            # print("Node ID: {} Status: {}".format(current_node.nodeID, current_node.status))
-
-            if current_node.status == 'O':
-                # print("MAPPING ON NODE {} IS NOT POSSIBLE NODE IS OFFLINE".format(current_node.nodeID))
-                NodeObj.AUTO_FAIL.append(current_node.nodeID)
-                path_obj.state = POOR
-                return False
-            elif current_node.status == 'R':
-                # print("MAPPING ON NODE {} IS NOT POSSIBLE, RELAY TO NEXT NODE IN PATH".format(current_node.nodeID))
+            if all_mapped:
                 continue
-            else:  # Next we need to determine if a node has enough resources for mapping and how many it can handle
-                temp_mappable_funcs = current_node.how_many_functions_mappable(funcs_to_map) # List of all functions mappable to the current node
+            else:
+                current_node = step  # First we must determine if mapping is even possible
+                # print("Node ID: {} Status: {}".format(current_node.nodeID, current_node.status))
 
-                if len(temp_mappable_funcs) == 0 and step.nodeID == end_node.nodeID and len(funcs_to_map) > 0:
+                if current_node.status == 'O':
+                    # print("MAPPING ON NODE {} IS NOT POSSIBLE NODE IS OFFLINE".format(current_node.nodeID))
+                    NodeObj.AUTO_FAIL.append(current_node.nodeID)
                     path_obj.state = POOR
                     return False
+                elif current_node.status == 'R':
+                    # print("MAPPING ON NODE {} IS NOT POSSIBLE, RELAY TO NEXT NODE IN PATH".format(current_node.nodeID))
+                    continue
+                else:  # Next we need to determine if a node has enough resources for mapping and how many it can handle
+                    temp_mappable_funcs = current_node.how_many_functions_mappable(funcs_to_map) # List of all functions mappable to the current node
 
-                elif len(temp_mappable_funcs) == 1:
-                    temp_func_list = []
-                    current_func = FuncObj.retrieve_function_value(funcs_to_map.pop(0))# current_func = FuncObj.retrieve_function_value(funcs_to_map.pop(0))  # Retrieves the current requested function
-                    funcs_mapped.append(current_func)
-                    temp_func_list.append(current_func)
-                    path_obj.MAPPING_LOCATION.append([current_node, temp_func_list])
-                    func_count += 1
+                    if len(funcs_to_map) == 0:
+                        all_mapped = True
+                        continue
 
-                else:  # <---- len(temp_mappable_funcs) > 1
-                    temp_func_list = []
-                    for func in temp_mappable_funcs:
-                        current_func = FuncObj.retrieve_function_value(funcs_to_map.pop(0))  # Retrieves the current requested function
+                    if len(temp_mappable_funcs) == 0 and step.nodeID == end_node.nodeID and len(funcs_to_map) > 0:
+                        path_obj.state = POOR
+                        return False
+                    elif len(temp_mappable_funcs) == 1:
+                        temp_func_list = []
+                        current_func = FuncObj.retrieve_function_value(funcs_to_map.pop(0))# current_func = FuncObj.retrieve_function_value(funcs_to_map.pop(0))  # Retrieves the current requested function
                         funcs_mapped.append(current_func)
                         temp_func_list.append(current_func)
+                        path_obj.MAPPING_LOCATION.append([current_node, temp_func_list])
                         func_count += 1
 
-                    if len(temp_func_list) != 0:
-                        path_obj.MAPPING_LOCATION.append([current_node, temp_func_list])
+                    else:  # <---- len(temp_mappable_funcs) > 1
+                        temp_func_list = []
+                        for func in temp_mappable_funcs:
+                            current_func = FuncObj.retrieve_function_value(funcs_to_map.pop(0))  # Retrieves the current requested function
+                            funcs_mapped.append(current_func)
+                            temp_func_list.append(current_func)
+                            func_count += 1
+
+                        if len(temp_func_list) != 0:
+                            path_obj.MAPPING_LOCATION.append([current_node, temp_func_list])
 
 
 def calculate_path_resources_PATH_TWO(path_obj):
@@ -176,11 +183,13 @@ def calculate_path_resources_PATH_TWO(path_obj):
     end_link = fused_path[-2]
 
     enough_bw = False
+    all_mapped = False
+
     funcs_mapped = []
     func_count = 0
 
     for step in fused_path:
-        if (len(funcs_mapped) != 0 and len(funcs_to_map) == 0) and enough_bw:
+        if all_mapped and enough_bw:
             return True
         if type(step) == LinkObj:
             # print("Link ID: {} Src: {} Dest: {}".format(step.linkID, step.linkSrc, step.linkDest))
@@ -193,10 +202,12 @@ def calculate_path_resources_PATH_TWO(path_obj):
                 enough_bw = True
         else:
             current_node = step  # First we must determine if mapping is even possible
-            # node_failure = NodeObj.calculate_failure(current_node.nodeID)
 
+            if len(funcs_to_map) == 0:
+                all_mapped = True
+                continue
             # Determining the status of a node and if it has failed
-            if current_node.get_status == 'O':
+            elif current_node.get_status == 'O':
                 # print("MAPPING ON NODE {} IS NOT POSSIBLE NODE IS OFFLINE".format(current_node.nodeID))
                 NodeObj.AUTO_FAIL_PATH_TWO.append(current_node.nodeID)
                 path_obj.state = POOR
@@ -204,11 +215,6 @@ def calculate_path_resources_PATH_TWO(path_obj):
             elif current_node.status == 'R':
                 # print("MAPPING ON NODE {} IS NOT POSSIBLE, RELAY TO NEXT NODE IN PATH".format(current_node.nodeID))
                 continue
-            # elif node_failure >= 0.55:
-            #     # print("NODE {} FAILED, MOVING ONTO NEXT NODE IN PATH".format(current_node.nodeID))
-            #     PathObj.current_path_failures.append([current_node.nodeID, node_failure])
-            #     path_obj.state = POOR
-            #     return False
             else:  # Next we need to determine if a node has enough resources for mapping and how many it can handle
                 temp_mappable_funcs = current_node.how_many_functions_mappable(funcs_to_map)
 
@@ -301,7 +307,7 @@ def calculate_path_failure(path_obj, failure_threshold):
         return True
     else:
         path_obj.state = FLUNK
-        print("PATH {} = {}. FAILURE PROBABILITY IS TOO HIGH!".format(path_obj.pathID, path_obj.FAILURE_PROBABILITY))
+        print("PATH {} = {} FAILURE PROBABILITY IS TOO HIGH!".format(path_obj.pathID, path_obj.FAILURE_PROBABILITY))
         return False
 
 
@@ -423,10 +429,10 @@ def map_path_TWO(path_obj):
 
 def RUN_PATH_ONE(req):
     for path in PathObj.current_request_paths_list:
-        # print(path)
         set_path_state_PATH_ONE(path)
         if path.state <= 3:
             del path
+
     if len(PathObj.BACKUP_PATHS) == 0:
         req.requestStatus[0] = 2   # Fail current request if no paths
         Request.STATIC_DENIED_REQUEST_LIST.append(req)
@@ -450,7 +456,6 @@ def RUN_PATH_ONE(req):
 
 def RUN_PATH_TWO(req):
     for path in PathObj.current_request_paths_list:
-        # print(path)
         set_path_state_PATH_TWO(path)
         if path.state <= 3:
             del path

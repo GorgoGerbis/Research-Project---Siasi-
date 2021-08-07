@@ -245,14 +245,14 @@ def create_figure_THREE():
     plt.axis([0, 150, 0, 150])
     plt.title("Conventional mapping")
     plt.xlabel("Number of processed requests")
-    plt.ylabel("Rate of successful requests")
+    plt.ylabel("Number of successful requests")
     plt.plot(total_avg, color='b', label="Conventional mapping")
 
     plt.subplot(1, 2, 2)
     plt.axis([0, 150, 0, 150])
     plt.title("Failure aware mapping")
     plt.xlabel("Number of processed requests")
-    plt.ylabel("Rate of successful requests")
+    plt.ylabel("Number of successful requests")
     plt.plot(total_avg_two, color='r', label="Failure-aware mapping")
     plt.show()
 
@@ -327,5 +327,5 @@ if __name__ == '__main__':
     create_figure_ONE()
     create_figure_TWO()
     create_figure_THREE()
-    # create_figure_FOUR()
+    create_figure_FOUR()
 
