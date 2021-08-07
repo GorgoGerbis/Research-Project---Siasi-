@@ -98,22 +98,25 @@ def calculate_path_resources_PATH_ONE(path_obj):
     funcs_to_map = req_info[0].copy()  # ToDo need to be COPYING LISTS OTHERWISE WE ARE DIRECTLY REFERENCING THEM!
     requested_bandwidth = int(req_info[2])
     end_node = fused_path[-1]
+    end_link = fused_path[-2]
+
+    enough_bw = False
 
     funcs_mapped = []
     func_count = 0
 
-    all_funks_mapped = False
-    traversable = False
-
     for step in fused_path:
-        if len(funcs_mapped) != 0 and len(funcs_to_map) == 0:
+        if (len(funcs_mapped) != 0 and len(funcs_to_map) == 0) and enough_bw:
             return True
         if type(step) == LinkObj:
             # print("Link ID: {} Src: {} Dest: {}".format(step.linkID, step.linkSrc, step.linkDest))
             # NOTE: In HvW Protocol if a link doesnt have enough BW the path fails
-            if not step.check_enough_resources(requested_bandwidth):
+            check_bw = step.check_enough_resources(requested_bandwidth)
+            if not check_bw:
                 path_obj.state = POOR
                 return False
+            elif step.linkID == end_link.linkID:
+                enough_bw = True
         else:
             current_node = step  # First we must determine if mapping is even possible
             # print("Node ID: {} Status: {}".format(current_node.nodeID, current_node.status))
@@ -170,21 +173,24 @@ def calculate_path_resources_PATH_TWO(path_obj):
     funcs_to_map = req_info[0].copy()
     requested_bandwidth = int(req_info[2])
     end_node = fused_path[-1]
+    end_link = fused_path[-2]
 
+    enough_bw = False
     funcs_mapped = []
     func_count = 0
 
     for step in fused_path:
-        if len(funcs_mapped) != 0 and len(funcs_to_map) == 0:
+        if (len(funcs_mapped) != 0 and len(funcs_to_map) == 0) and enough_bw:
             return True
         if type(step) == LinkObj:
+            # print("Link ID: {} Src: {} Dest: {}".format(step.linkID, step.linkSrc, step.linkDest))
             # NOTE: In HvW Protocol if a link doesnt have enough BW the path fails
-            if not step.check_enough_resources(requested_bandwidth):
+            check_bw = step.check_enough_resources(requested_bandwidth)
+            if not check_bw:
                 path_obj.state = POOR
                 return False
-            # if step.calculate_failure(step.linkSrc, step.linkDest) >= 0.55:
-            #     path_obj.state = FLUNK
-            #     return False
+            elif step.linkID == end_link.linkID:
+                enough_bw = True
         else:
             current_node = step  # First we must determine if mapping is even possible
             # node_failure = NodeObj.calculate_failure(current_node.nodeID)
@@ -435,10 +441,6 @@ def RUN_PATH_ONE(req):
         map_path_ONE(optimal_path) # map_path_PATH_ONE(optimal_path)
         req.PATH_ONE = optimal_path
 
-        # for path in PathObj.StaticPathsList:
-        #     if path != optimal_path:
-        #         del path
-
     # Data cleanup process
     PathObj.BACKUP_PATHS.clear()
     PathObj.current_request_paths_list.clear()
@@ -466,10 +468,6 @@ def RUN_PATH_TWO(req):
         PathObj.StaticOptimalPathsList.append(optimal_path)
         map_path_TWO(optimal_path) # map_path_PATH_TWO(optimal_path)
         req.PATH_TWO = optimal_path
-
-        # for path in PathObj.StaticPathsList:
-        #     if path != optimal_path:
-        #         del path
 
     # Data cleanup process
     PathObj.BACKUP_PATHS.clear()
