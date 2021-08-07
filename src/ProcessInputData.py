@@ -17,6 +17,7 @@ REQUESTS = []
 
 NODE_RESOURCES = GLOBAL_NODE_RESOURCES
 
+
 def processInputDataNode(filePath):
     with open(filePath) as fp:
         fp.readline()  # <-- This is so that it skips the first line
@@ -40,8 +41,8 @@ def processInputDataNode(filePath):
 
             failure = float(currentElements[6].strip('\n'))
 
-            NodeObj.StaticNodeResources.append([id, [20, 20, 20]])   # @ToDo remember to change this as well so the nodes are properly reset
-            current_node = NodeObj(id, position, status, [20, 20, 20], processingDelay, cost, failure)
+            NodeObj.StaticNodeResources.append([id, [80, 80, 80]])   # @ToDo remember to change this as well so the nodes are properly reset
+            current_node = NodeObj(id, position, status, [80, 80, 80], processingDelay, cost, failure)
             print(current_node)
 
 
@@ -56,7 +57,7 @@ def processInputDataLink(filePath):
             linkID = int(currentElements[0])
             source = int(currentElements[1])
             destination = int(currentElements[2])
-            bandwidth = GLOBAL_LINK_BANDWIDTH # bandwidth = int(currentElements[3])
+            bandwidth = 35 # bandwidth = int(currentElements[3])
             edgeDelay = float(currentElements[4])
             edgeCost = int(currentElements[5])
             failure_probability = float(currentElements[6].strip('\n'))

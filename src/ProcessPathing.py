@@ -102,10 +102,12 @@ def calculate_path_resources_PATH_ONE(path_obj):
     funcs_mapped = []
     func_count = 0
 
+    all_funks_mapped = False
+    traversable = False
+
     for step in fused_path:
         if len(funcs_mapped) != 0 and len(funcs_to_map) == 0:
             return True
-
         if type(step) == LinkObj:
             # print("Link ID: {} Src: {} Dest: {}".format(step.linkID, step.linkSrc, step.linkDest))
             # NOTE: In HvW Protocol if a link doesnt have enough BW the path fails
@@ -412,11 +414,13 @@ def map_path_TWO(path_obj):
 
     print("PATH MAPPED")
 
+
 def RUN_PATH_ONE(req):
     for path in PathObj.current_request_paths_list:
         # print(path)
         set_path_state_PATH_ONE(path)
-
+        if path.state <= 3:
+            del path
     if len(PathObj.BACKUP_PATHS) == 0:
         req.requestStatus[0] = 2   # Fail current request if no paths
         Request.STATIC_DENIED_REQUEST_LIST.append(req)
@@ -431,6 +435,10 @@ def RUN_PATH_ONE(req):
         map_path_ONE(optimal_path) # map_path_PATH_ONE(optimal_path)
         req.PATH_ONE = optimal_path
 
+        # for path in PathObj.StaticPathsList:
+        #     if path != optimal_path:
+        #         del path
+
     # Data cleanup process
     PathObj.BACKUP_PATHS.clear()
     PathObj.current_request_paths_list.clear()
@@ -442,6 +450,8 @@ def RUN_PATH_TWO(req):
     for path in PathObj.current_request_paths_list:
         # print(path)
         set_path_state_PATH_TWO(path)
+        if path.state <= 3:
+            del path
 
     if len(PathObj.BACKUP_PATHS) == 0:
         req.requestStatus[1] = 2  # Fail current request if no paths
@@ -456,6 +466,10 @@ def RUN_PATH_TWO(req):
         PathObj.StaticOptimalPathsList.append(optimal_path)
         map_path_TWO(optimal_path) # map_path_PATH_TWO(optimal_path)
         req.PATH_TWO = optimal_path
+
+        # for path in PathObj.StaticPathsList:
+        #     if path != optimal_path:
+        #         del path
 
     # Data cleanup process
     PathObj.BACKUP_PATHS.clear()

@@ -206,30 +206,55 @@ def create_figure_TWO():
     plt.show()
 
 
-# def create_figure_THREE():
-#     plt.title("FIGURE 3: Number of incoming requests vs. Node usage in the network")
-#     plt.xlabel("Number of incoming requests")
-#     plt.ylabel("Node Usage in the network")
-#
-#     total_po = 0
-#
-#     po_delay_avg = 0
-#     po_cost_avg = 0
-#
-#     for req in Request.STATIC_TOTAL_REQUEST_LIST:
-#         obj = req.PATH_ONE
-#         if obj is not None:
-#             total_po
-#
-#     total_pt = 0
-#
-#     pt_delay_avg = 0
-#     pt_cost_avg = 0
-#
-#     plt.axis([1, 150, 1, 100])
-#     # plt.plot(path_one_avg, color='b')
-#     # plt.plot(path_two_avg, color='r')
-#     plt.show()
+def create_figure_THREE():
+    plt.title("FIGURE 3: Number of incoming requests vs. Success Rate of requests")
+    plt.xlabel("Number of incoming requests")
+    plt.ylabel("Success rates of requests")
+
+    total_avg = []
+    total_avg_two = []
+    total_processed_reqs = 0
+    passed_requests = 0
+    denied_requests = 0
+
+    for req in Request.STATIC_TOTAL_REQUEST_LIST:
+        obj = req.PATH_ONE
+        total_processed_reqs += 1
+        if obj is not None:
+            passed_requests += 1
+        else:
+            denied_requests += 1
+
+        total_avg.append(passed_requests)
+
+    total_processed_reqs = 0
+    passed_requests = 0
+    denied_requests = 0
+
+    for req in Request.STATIC_TOTAL_REQUEST_LIST:
+        obj = req.PATH_TWO
+        total_processed_reqs += 1
+        if obj is not None:
+            passed_requests += 1
+        else:
+            denied_requests += 1
+
+        total_avg_two.append(passed_requests)
+
+    plt.subplot(1, 2, 1)
+    plt.axis([0, 150, 0, 150])
+    plt.title("Conventional mapping")
+    plt.xlabel("Number of processed requests")
+    plt.ylabel("Rate of successful requests")
+    plt.plot(total_avg, color='b', label="Conventional mapping")
+
+    plt.subplot(1, 2, 2)
+    plt.axis([0, 150, 0, 150])
+    plt.title("Failure aware mapping")
+    plt.xlabel("Number of processed requests")
+    plt.ylabel("Rate of successful requests")
+    plt.plot(total_avg_two, color='r', label="Failure-aware mapping")
+    plt.show()
 
 
 def find_isolated_nodes():
@@ -301,6 +326,6 @@ if __name__ == '__main__':
     ############# CREATE OUTPUT DATA GRAPHS ##############
     create_figure_ONE()
     create_figure_TWO()
-    # create_figure_THREE()
+    create_figure_THREE()
     # create_figure_FOUR()
 
