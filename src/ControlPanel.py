@@ -7,19 +7,13 @@ outputFolder = os.path.join(baseFolder, "output")
 
 # INPUT FILE PATHS
 
+# NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TESTDATA.csv")
+# LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TESTDATA.csv")
+# RequestInputData = os.path.join(resourcesFolder, "RequestInputData-TESTDATA.txt")
 
-
-# NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TESTDATA-A-7-30-21.csv")
-# LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TESTDATA-A-7-30-21.csv")
-# RequestInputData = os.path.join(resourcesFolder, "RequestInputData-TESTDATA-A-7-30-21.txt")
-
-# NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TESTDATA-B-8-5-21.csv")
-# LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TESTDATA-B-8-5-21.csv")
-# RequestInputData = os.path.join(resourcesFolder, "RequestInputData-TESTDATA-B-5-30-21.txt")
-
-NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TESTDATA.csv")
-LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TESTDATA.csv")
-RequestInputData = os.path.join(resourcesFolder, "RequestInputData-TESTDATA.txt")
+NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TESTDATA-ALPHA.csv")
+LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TESTDATA-ALPHA.csv")
+RequestInputData = os.path.join(resourcesFolder, "RequestInputData-TESTDATA-ALPHA.txt")
 
 # NodeInputData = os.path.join(resourcesFolder, "NodeInputData-TEST-C-8-1-21.csv")
 # LinkInputData = os.path.join(resourcesFolder, "LinkInputData-TEST-C-8-1-21.csv")
@@ -39,8 +33,11 @@ RequestInputData = os.path.join(resourcesFolder, "RequestInputData-TESTDATA.txt"
 
 # OUTPUT FILE PATHS
 
-GLOBAL_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "PATH_ONE_REQUESTS_OUTPUT_TESTDATA.csv")
-GLOBAL_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "PATH_TWO_REQUESTS_OUTPUT_TESTDATA.csv")
+GLOBAL_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "PATH_ONE_REQUESTS_OUTPUT_TESTDATA_ALPHA.csv")
+GLOBAL_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "PATH_TWO_REQUESTS_OUTPUT_TESTDATA_ALPHA.csv")
+
+# GLOBAL_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "PATH_ONE_REQUESTS_OUTPUT_TESTDATA.csv")
+# GLOBAL_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "PATH_TWO_REQUESTS_OUTPUT_TESTDATA.csv")
 
 # GLOBAL_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "PATH_ONE_REQUESTS_OUTPUT_C.csv")
 # GLOBAL_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "PATH_TWO_REQUESTS_OUTPUT_C.csv")
@@ -51,7 +48,12 @@ GLOBAL_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "PATH_TWO_REQUESTS_OUTP
 # REQUESTS_FILE = os.path.join(outputFolder, "REQUESTS_OUTPUT_FUNC_TEST_7_26.csv")
 # REQUESTS_FILE_WITH = os.path.join(outputFolder, "REQUESTS_OUTPUT_FUNC_TEST_WITH_FAULT_7_26.csv")
 
-GLOBAL_NODE_RESOURCES = [100, 100, 100]
-GLOBAL_LINK_BANDWIDTH = 120
+GLOBAL_NODE_RESOURCES = [200, 200, 200]
+GLOBAL_LINK_BANDWIDTH = 100
 GLOBAL_REQUEST_DELAY_THRESHOLD = 120.5
 GlOBAL_FAILURE_THRESHOLD = 65.5
+
+# GLOBAL_NODE_RESOURCES = [200, 200, 200]
+# GLOBAL_LINK_BANDWIDTH = 100
+# GLOBAL_REQUEST_DELAY_THRESHOLD = 120.5
+# GlOBAL_FAILURE_THRESHOLD = 65.5
