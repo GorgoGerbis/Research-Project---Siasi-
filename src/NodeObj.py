@@ -141,7 +141,8 @@ class NodeObj:
         self.nodeResources[1] = int(self.nodeResources[1]) - ram
         self.nodeResources[2] = int(self.nodeResources[2]) - bw
 
-    def map_function_obj(self, func):
+    def map_function_obj(self, f):
+        func = FuncObj.retrieve_function_value(f)
         self.nodeResources[0] = int(self.nodeResources[0]) - func.value[0]
         self.nodeResources[1] = int(self.nodeResources[1]) - func.value[1]
         self.nodeResources[2] = int(self.nodeResources[2]) - func.value[2]
@@ -155,11 +156,10 @@ class NodeObj:
             # print("NODE {} DOES NOT HAVE SUFFICIENT RESOURCES TO MAP FUNCTION {}\n".format(self.nodeID, func))
             return False
 
-    def check_enough_resources(self, func):
+    def check_enough_resources(self, f):
+        func = FuncObj.retrieve_function_value(f)
         c, r, b = func.value[0], func.value[1], func.value[2]
         if self.compareCPU(c) and self.compareRAM(r) and self.compareBW(b):
-            # self.map_function(c, r, b) #ToDo <----DONT FORGET TO COMMENT THIS LINE OUT OR EVERYTHING IS GOING TO BE MAPPED.
-            # print("NODE {} DOES HAVE SUFFICIENT RESOURCES TO MAP FUNCTION {}\n".format(self.nodeID, func))
             return True
         else:
             # print("NODE {} DOES NOT HAVE SUFFICIENT RESOURCES TO MAP FUNCTION {}\n".format(self.nodeID, func))

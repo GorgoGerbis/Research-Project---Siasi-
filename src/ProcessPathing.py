@@ -132,33 +132,24 @@ def calculate_path_resources_PATH_ONE(path_obj):
                 elif current_node.status == 'R':
                     continue
                 else:  # Next we need to determine if a node has enough resources for mapping and how many it can handle
-                    temp_mappable_funcs = current_node.how_many_functions_mappable(funcs_to_map) # List of all functions mappable to the current node
 
                     if len(funcs_to_map) == 0:
                         all_mapped = True
                         continue
+                    else:
+                        current_func = funcs_to_map[0]
+                        mappable = current_node.check_enough_resources(current_func)
 
-                    if len(temp_mappable_funcs) == 0 and step.nodeID == end_node.nodeID and len(funcs_to_map) > 0:
-                        path_obj.state = POOR
-                        return False
-                    elif len(temp_mappable_funcs) == 1:
-                        temp_func_list = []
-                        current_func = FuncObj.retrieve_function_value(funcs_to_map.pop(0))# current_func = FuncObj.retrieve_function_value(funcs_to_map.pop(0))  # Retrieves the current requested function
-                        funcs_mapped.append(current_func)
-                        temp_func_list.append(current_func)
-                        path_obj.MAPPING_LOCATION.append([current_node, temp_func_list])
-                        func_count += 1
-
-                    else:  # <---- len(temp_mappable_funcs) > 1
-                        temp_func_list = []
-                        for func in temp_mappable_funcs:
-                            current_func = FuncObj.retrieve_function_value(funcs_to_map.pop(0))  # Retrieves the current requested function
+                        if not mappable and step.nodeID == end_node.nodeID and len(funcs_to_map) > 0:
+                            path_obj.state = POOR
+                            return False
+                        elif mappable:
                             funcs_mapped.append(current_func)
-                            temp_func_list.append(current_func)
+                            path_obj.MAPPING_LOCATION.append([current_node, current_func])
+                            funcs_to_map.pop(0)
                             func_count += 1
-
-                        if len(temp_func_list) != 0:
-                            path_obj.MAPPING_LOCATION.append([current_node, temp_func_list])
+                        else:
+                            continue
 
 
 def calculate_path_resources_PATH_TWO(path_obj):
@@ -199,13 +190,9 @@ def calculate_path_resources_PATH_TWO(path_obj):
             elif step.linkID == end_link.linkID:
                 enough_bw = True
         else:
-            current_node = step  # First we must determine if mapping is even possible
-
-            if len(funcs_to_map) == 0:
-                all_mapped = True
-                continue
+            current_node = step
             # Determining the status of a node and if it has failed
-            elif current_node.get_status == 'O':
+            if current_node.get_status == 'O':
                 # print("MAPPING ON NODE {} IS NOT POSSIBLE NODE IS OFFLINE".format(current_node.nodeID))
                 NodeObj.AUTO_FAIL_PATH_TWO.append(current_node.nodeID)
                 path_obj.state = POOR
@@ -214,32 +201,23 @@ def calculate_path_resources_PATH_TWO(path_obj):
                 # print("MAPPING ON NODE {} IS NOT POSSIBLE, RELAY TO NEXT NODE IN PATH".format(current_node.nodeID))
                 continue
             else:  # Next we need to determine if a node has enough resources for mapping and how many it can handle
-                temp_mappable_funcs = current_node.how_many_functions_mappable(funcs_to_map)
+                if len(funcs_to_map) == 0:
+                    all_mapped = True
+                    continue
+                else:
+                    current_func = funcs_to_map[0]
+                    mappable = current_node.check_enough_resources(current_func)
 
-                if len(temp_mappable_funcs) == 0:
-                    if len(funcs_to_map) > 0 and step.nodeID == end_node.nodeID:
+                    if not mappable and step.nodeID == end_node.nodeID and len(funcs_to_map) > 0:
                         path_obj.state = POOR
                         return False
-                    if len(funcs_to_map) >= 0 and step.nodeID != end_node.nodeID:
-                        continue
-                elif len(temp_mappable_funcs) == 1:
-                    temp_func_list = []
-                    current_func = FuncObj.retrieve_function_value(funcs_to_map.pop(0))  # Retrieves the current requested function
-                    funcs_mapped.append(current_func)
-                    temp_func_list.append(current_func)
-                    path_obj.MAPPING_LOCATION.append([current_node, temp_func_list])
-                    func_count += 1
-
-                else:  # <---- len(temp_mappable_funcs) > 1
-                    temp_func_list = []
-                    for func in temp_mappable_funcs:
-                        current_func = FuncObj.retrieve_function_value(funcs_to_map.pop(0))  # Retrieves the current requested function
+                    elif mappable:
                         funcs_mapped.append(current_func)
-                        temp_func_list.append(current_func)
+                        path_obj.MAPPING_LOCATION.append([current_node, current_func])
+                        funcs_to_map.pop(0)
                         func_count += 1
-
-                    if len(temp_func_list) != 0:
-                        path_obj.MAPPING_LOCATION.append([current_node, temp_func_list])
+                    else:
+                        continue
 
 
 def calculate_path_speed(path_obj, delay_threshold):
@@ -392,9 +370,8 @@ def map_path_ONE(path_obj):
 
         for mapping_location in mapping_list:
             node_used = mapping_location[0]
-            funcs_to_map = mapping_location[1]
-            for f in funcs_to_map:
-                node_used.map_function_obj(f)
+            func = mapping_location[1]
+            node_used.map_function_obj(func)
 
         for element in fused_list:
             if type(element) == LinkObj:
@@ -413,9 +390,8 @@ def map_path_TWO(path_obj):
 
         for mapping_location in mapping_list:
             node_used = mapping_location[0]
-            funcs_to_map = mapping_location[1]
-            for f in funcs_to_map:
-                node_used.map_function_obj(f)
+            func = mapping_location[1]
+            node_used.map_function_obj(func)
 
         for element in fused_list:
             if type(element) == LinkObj:
