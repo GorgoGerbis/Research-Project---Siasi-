@@ -151,7 +151,7 @@ def create_figure_ONE():
         current_delay = total_delay_b / cnt
         path_two_avg.append(current_delay)
 
-    plt.axis([0, 150, 0, 50])
+    plt.axis([0, 100, 0, 50])
     plt.plot(path_one_delays, color='b', label="Conventional mapping")
     plt.plot(path_one_avg, color='g', label="Conventional mapping averages")
     plt.plot(path_two_delays, color='r', label="Failure-aware mapping")
@@ -197,7 +197,7 @@ def create_figure_TWO():
         current_cost = total_cost_a / cnt
         path_two_avg.append(current_cost)
 
-    plt.axis([0, 150, 0, 150])
+    plt.axis([0, 100, 0, 100])
     plt.plot(path_one_costs, color='b', label="Conventional mapping")
     plt.plot(path_one_avg, color='g', label="Conventional mapping averages")
     plt.plot(path_two_costs, color='r', label="Failure-aware mapping")
@@ -242,14 +242,14 @@ def create_figure_THREE():
         total_avg_two.append(passed_requests)
 
     plt.subplot(1, 2, 1)
-    plt.axis([0, 150, 0, 150])
+    plt.axis([0, 100, 0, 100])
     plt.title("Conventional mapping")
     plt.xlabel("Number of processed requests")
     plt.ylabel("Number of successful requests")
     plt.plot(total_avg, color='b', label="Conventional mapping")
 
     plt.subplot(1, 2, 2)
-    plt.axis([0, 150, 0, 150])
+    plt.axis([0, 100, 0, 100])
     plt.title("Failure aware mapping")
     plt.xlabel("Number of processed requests")
     plt.ylabel("Number of successful requests")

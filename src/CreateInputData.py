@@ -106,9 +106,9 @@ def not_the_same(num_nodes):
 
 
 if __name__ == '__main__':
-    num_nodes = 64 # 12
-    num_links = 100 # 24
-    num_requests = 150 # 48
+    num_nodes = 20
+    num_links = 30
+    num_requests = 100
 
     print("CREATING NEW INPUT DATA!\n")
     print("TOTAL NODES: {} TOTAL LINKS: {} TOTAL REQUESTS: {}\n".format(num_nodes, num_links, num_requests))

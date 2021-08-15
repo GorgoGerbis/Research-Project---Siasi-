@@ -1,11 +1,11 @@
 import os
+import random
 from src.NodeObj import NodeObj
 from src.LinkObj import LinkObj
 from src.Request import Request
 
 from src.ControlPanel import GLOBAL_REQUEST_DELAY_THRESHOLD
 from src.ControlPanel import GLOBAL_NODE_RESOURCES
-from src.ControlPanel import GLOBAL_LINK_BANDWIDTH
 
 from src.ControlPanel import NodeInputData
 from src.ControlPanel import LinkInputData
@@ -41,8 +41,8 @@ def processInputDataNode(filePath):
 
             failure = float(currentElements[6].strip('\n'))
 
-            NodeObj.StaticNodeResources.append([id, [200, 200, 200]])   # @ToDo remember to change this as well so the nodes are properly reset
-            current_node = NodeObj(id, position, status, [200, 200, 200], processingDelay, cost, failure)
+            NodeObj.StaticNodeResources.append([id, [100, 100, 100]])   # @ToDo remember to change this as well so the nodes are properly reset
+            current_node = NodeObj(id, position, status, [100, 100, 100], processingDelay, cost, failure)
             print(current_node)
 
 
@@ -57,8 +57,9 @@ def processInputDataLink(filePath):
             linkID = int(currentElements[0])
             source = int(currentElements[1])
             destination = int(currentElements[2])
-            bandwidth = 100 # bandwidth = 120 # bandwidth = int(currentElements[3])
-            edgeDelay = float(currentElements[4])
+            bandwidth = 80
+            edgeDelay = random.randint(3, 6)
+            edgeDelay = edgeDelay / 10
             edgeCost = int(currentElements[5])
             failure_probability = float(currentElements[6].strip('\n'))
             status = "A"
