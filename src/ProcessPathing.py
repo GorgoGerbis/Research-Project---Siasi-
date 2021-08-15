@@ -123,7 +123,6 @@ def calculate_path_resources_PATH_ONE(path_obj):
                 continue
             else:
                 current_node = step  # First we must determine if mapping is even possible
-                # print("Node ID: {} Status: {}".format(current_node.nodeID, current_node.status))
 
                 if current_node.status == 'O':
                     # print("MAPPING ON NODE {} IS NOT POSSIBLE NODE IS OFFLINE".format(current_node.nodeID))
@@ -131,7 +130,6 @@ def calculate_path_resources_PATH_ONE(path_obj):
                     path_obj.state = POOR
                     return False
                 elif current_node.status == 'R':
-                    # print("MAPPING ON NODE {} IS NOT POSSIBLE, RELAY TO NEXT NODE IN PATH".format(current_node.nodeID))
                     continue
                 else:  # Next we need to determine if a node has enough resources for mapping and how many it can handle
                     temp_mappable_funcs = current_node.how_many_functions_mappable(funcs_to_map) # List of all functions mappable to the current node
@@ -451,7 +449,6 @@ def RUN_PATH_ONE(req):
     PathObj.BACKUP_PATHS.clear()
     PathObj.current_request_paths_list.clear()
     PathObj.current_path_failures.clear()
-    # PathObj.StaticPathsList.clear()
 
 
 def RUN_PATH_TWO(req):
@@ -478,4 +475,3 @@ def RUN_PATH_TWO(req):
     PathObj.BACKUP_PATHS.clear()
     PathObj.current_request_paths_list.clear()
     PathObj.current_path_failures.clear()
-    # PathObj.StaticPathsList.clear()
