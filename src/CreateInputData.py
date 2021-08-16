@@ -7,6 +7,10 @@ from src.ControlPanel import NodeInputData
 from src.ControlPanel import LinkInputData
 from src.ControlPanel import RequestInputData
 
+from src.ControlPanel import GLOBAL_NODE_RESOURCES
+from src.ControlPanel import GLOBAL_LINK_BANDWIDTH
+from src.ControlPanel import GLOBAL_REQUEST_DELAY_THRESHOLD
+
 
 def createNodeInputData(number_of_nodes):
     status = ["A", "I", "R", "O"]  # Status of the node
@@ -21,7 +25,7 @@ def createNodeInputData(number_of_nodes):
             lat = random.randint(60, 940)
             long = random.randint(60, 940)
             stat = status[0]
-            resources = [60, 60, 60] # [CPU, RAM, Physical Buffer size]
+            resources = GLOBAL_NODE_RESOURCES # [100, 100, 100] == [CPU, RAM, Physical Buffer size]
             processing_delay = 1
             nodeCost = 5
             pf = random.randint(1, 55) / 100    # Dividing to make them decimals
@@ -44,8 +48,8 @@ def createLinkInputData(number_of_links, num_nodes):
             src = link_list[i][0]
             dest = link_list[i][1]
 
-            bw = 35
-            ed = 1 # random.randint(2, 6) / 10  # Dividing to make them decimals
+            bw = GLOBAL_LINK_BANDWIDTH
+            ed = random.randint(3, 6) / 10  # Dividing to make them decimals
             ec = 5
             link_failure = random.randint(1, 55) / 100  # Dividing to make them decimals
 

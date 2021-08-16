@@ -296,6 +296,7 @@ def calculate_optimal_PATH_ONE():
         current_best = PathObj.BACKUP_PATHS[0]
 
         for path_obj in PathObj.BACKUP_PATHS:
+            path_obj.set_failure_probability()
             if path_obj.DELAY < current_best.DELAY:
                 current_best = path_obj
             elif path_obj.DELAY == current_best.DELAY:
@@ -309,6 +310,7 @@ def calculate_optimal_PATH_ONE():
         reigning_best = PathObj.returnOptimalPath(PathObj.BACKUP_PATHS)
 
         for path_obj in PathObj.BACKUP_PATHS:
+            path_obj.set_failure_probability()
             if path_obj.DELAY < reigning_best.DELAY:
                 reigning_best = path_obj
             elif path_obj.DELAY == reigning_best.DELAY:

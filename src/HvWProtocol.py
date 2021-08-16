@@ -257,6 +257,52 @@ def create_figure_THREE():
     plt.show()
 
 
+def create_figure_FOUR():
+    plt.title("FIGURE 4: Number of incoming requests vs. Mean probability of failure")
+    plt.xlabel("Number of incoming requests")
+    plt.ylabel("Mean probability of failure")
+
+    path_one_fails = []
+    path_two_fails = []
+
+    path_one_avg= []
+    path_two_avg = []
+
+    path_one_approved = 0
+    path_two_approved = 0
+
+    for req in Request.STATIC_TOTAL_REQUEST_LIST:
+        if req.requestStatus[0] == 3:
+            path_one_approved += 1
+            obj = req.PATH_ONE
+            path_one_fails.append(obj.FAILURE_PROBABILITY)
+            path_one_avg.append(obj.FAILURE_PROBABILITY / path_one_approved)
+
+    for req in Request.STATIC_TOTAL_REQUEST_LIST:
+        if req.requestStatus[1] == 3:
+            path_two_approved += 1
+            obj = req.PATH_TWO
+            path_two_fails.append(obj.FAILURE_PROBABILITY)
+            path_two_avg.append(obj.FAILURE_PROBABILITY / path_two_approved)
+
+    plt.subplot(1, 2, 1)
+    plt.axis([0, 100, 0, 100])
+    plt.title("Failure aware mapping")
+    plt.xlabel("Number of processed requests")
+    plt.ylabel("Probability of failure")
+    plt.plot(path_one_fails, color='b', label="Failure-aware mapping")
+    plt.plot(path_one_avg, color='g', label="Failure-aware mapping averages")
+
+    plt.subplot(1, 2, 2)
+    plt.axis([0, 100, 0, 100])
+    plt.title("Failure aware mapping")
+    plt.xlabel("Number of processed requests")
+    plt.ylabel("Probability of failure")
+    plt.plot(path_two_fails, color='r', label="Failure-aware mapping")
+    plt.plot(path_two_avg, color='y', label="Failure-aware mapping averages")
+    plt.show()
+
+
 def find_isolated_nodes():
     frick = []
     frack = []
@@ -327,5 +373,5 @@ if __name__ == '__main__':
     create_figure_ONE()
     create_figure_TWO()
     create_figure_THREE()
-    #create_figure_FOUR()
+    create_figure_FOUR()
 
