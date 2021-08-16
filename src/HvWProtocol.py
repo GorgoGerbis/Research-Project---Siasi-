@@ -11,7 +11,7 @@ import ProcessPathing
 # Need these for path finding and graphing
 import networkx as nx
 import matplotlib.pyplot as plt
-from itertools import islice
+# from itertools import islice
 
 # Need these to process requests
 from src.ProcessPathing import RUN_PATH_ONE

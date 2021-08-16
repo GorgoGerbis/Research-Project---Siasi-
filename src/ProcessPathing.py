@@ -420,7 +420,7 @@ def RUN_PATH_ONE(req):
         calculate_optimal_PATH_ONE()
         optimal_path = PathObj.returnOptimalPath(PathObj.BACKUP_PATHS)
         PathObj.StaticOptimalPathsList.append(optimal_path)
-        map_path_ONE(optimal_path) # map_path_PATH_ONE(optimal_path)
+        map_path_ONE(optimal_path)
         req.PATH_ONE = optimal_path
 
     # Data cleanup process
@@ -446,7 +446,7 @@ def RUN_PATH_TWO(req):
         calculate_optimal_PATH_TWO()
         optimal_path = PathObj.returnOptimalPath(PathObj.BACKUP_PATHS)
         PathObj.StaticOptimalPathsList.append(optimal_path)
-        map_path_TWO(optimal_path) # map_path_PATH_TWO(optimal_path)
+        map_path_TWO(optimal_path)
         req.PATH_TWO = optimal_path
 
     # Data cleanup process

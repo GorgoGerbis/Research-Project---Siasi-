@@ -8,35 +8,6 @@ REQUEST_DENIED = 2
 REQUEST_APPROVED = 3
 
 
-# def get_average_data_PATH_ONE():
-#     total_approved = 0
-#     total_denied = 0
-#
-#     delay_average = 0
-#     cost_average = 0
-#
-#     count = 0
-#
-#     average_request_delay = []
-#     average_request_cost = []
-#
-#     for req in Request.STATIC_TOTAL_REQUEST_LIST:
-#         if req.requestStatus[0] == 3:
-#             current_path = req.PATH_ONE
-#             total_approved += 1
-#             average_request_delay.append(current_path.DELAY)
-#             average_request_cost.append(current_path.COST)
-#             delay_average += current_path.DELAY
-#             cost_average += current_path.COST
-#             count += 1
-#         else:
-#             total_denied += 1
-#             continue
-#
-#     # cost_average = cost_average / count
-#     # delay_average = delay_average / count
-#
-#     return total_approved, total_denied, delay_average, cost_average
 def get_average_data_PATH_ONE():
     delays = []
     costs = []
