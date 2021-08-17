@@ -5,7 +5,6 @@ from src.LinkObj import LinkObj
 from src.Request import Request
 
 from src.ControlPanel import GLOBAL_REQUEST_DELAY_THRESHOLD
-from src.ControlPanel import GLOBAL_NODE_RESOURCES
 
 from src.ControlPanel import NodeInputData
 from src.ControlPanel import LinkInputData
@@ -14,8 +13,6 @@ from src.ControlPanel import RequestInputData
 REQUESTS_FAILED = []
 REQUESTS_PASSED = []
 REQUESTS = []
-
-NODE_RESOURCES = GLOBAL_NODE_RESOURCES
 
 
 def processInputDataNode(filePath):
@@ -38,11 +35,12 @@ def processInputDataNode(filePath):
             status = currentElements[3]
             processingDelay = 1
             cost = int(currentElements[5])
+            resources = [1000, 1000, 1000]
 
             failure = float(currentElements[6].strip('\n'))
 
-            NodeObj.StaticNodeResources.append([id, [250, 250, 250]])   # @ToDo remember to change this as well so the nodes are properly reset
-            current_node = NodeObj(id, position, status, [250, 250, 250], processingDelay, cost, failure)
+            NodeObj.StaticNodeResources.append([id, resources])   # @ToDo remember to change this as well so the nodes are properly reset
+            current_node = NodeObj(id, position, status, resources, processingDelay, cost, failure)
             print(current_node)
 
 
@@ -57,8 +55,8 @@ def processInputDataLink(filePath):
             linkID = int(currentElements[0])
             source = int(currentElements[1])
             destination = int(currentElements[2])
-            bandwidth = 250
-            edgeDelay = int(currentElements[4])
+            bandwidth = 1000
+            edgeDelay = float(currentElements[4])
             edgeCost = int(currentElements[5])
             failure_probability = float(currentElements[6].strip('\n'))
             status = "A"

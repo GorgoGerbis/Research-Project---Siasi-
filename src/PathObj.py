@@ -155,7 +155,10 @@ class PathObj:
                 return p
 
     def __str__(self):
-        if self.PATH_TYPE != 2:
-            return "Path ID: {} Route: {} State: {} REQ_FUNCTIONS: {} REQ_DELAY_THRESHOLD = {} PATH DELAY: {} PATH COST: {}\n".format(self.pathID, self.route, self.state, self.REQ_INFO[0], self.REQ_INFO[1], self.DELAY, self.COST)
-        else:
-            return "Path ID: {} FAILURE PROBABILITY = {}% Route: {} State: {} REQ_FUNCTIONS: {} REQ_DELAY_THRESHOLD = {} PATH DELAY: {} PATH COST: {}\n".format(self.pathID, self.FAILURE_PROBABILITY, self.route, self.state, self.REQ_INFO[0], self.REQ_INFO[1], self.DELAY, self.COST)
+        return "Path ID: {} FAILURE PROBABILITY = {}% Route: {} State: {} REQ_FUNCTIONS: {} REQ_DELAY_THRESHOLD = {} PATH DELAY: {} PATH COST: {}\n".format(
+            self.pathID, self.FAILURE_PROBABILITY, self.route, self.state, self.REQ_INFO[0], self.REQ_INFO[1],
+            self.DELAY, self.COST)
+        # if self.PATH_TYPE != 2:
+        #     return "Path ID: {} Route: {} State: {} REQ_FUNCTIONS: {} REQ_DELAY_THRESHOLD = {} PATH DELAY: {} PATH COST: {}\n".format(self.pathID, self.route, self.state, self.REQ_INFO[0], self.REQ_INFO[1], self.DELAY, self.COST)
+        # else:
+        #     return "Path ID: {} FAILURE PROBABILITY = {}% Route: {} State: {} REQ_FUNCTIONS: {} REQ_DELAY_THRESHOLD = {} PATH DELAY: {} PATH COST: {}\n".format(self.pathID, self.FAILURE_PROBABILITY, self.route, self.state, self.REQ_INFO[0], self.REQ_INFO[1], self.DELAY, self.COST)

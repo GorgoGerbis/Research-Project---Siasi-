@@ -2,6 +2,8 @@ from src.Request import Request
 from src.ControlPanel import GLOBAL_OUTPUT_FILE_PATH_ONE
 from src.ControlPanel import GLOBAL_OUTPUT_FILE_PATH_TWO
 
+from src.NodeObj import NodeObj
+
 REQUEST_NEEDS_CALCULATING = 0
 REQUEST_ONGOING = 1
 REQUEST_DENIED = 2
@@ -12,6 +14,7 @@ def get_average_data_PATH_ONE():
     delays = []
     costs = []
     fails = []
+    lens = []
 
     total_approved = 0
     total_denied = 0
@@ -19,6 +22,7 @@ def get_average_data_PATH_ONE():
     delay = 0
     cost = 0
     fail = 0
+    lngth = 0
 
     for req in Request.STATIC_TOTAL_REQUEST_LIST:
         if req.requestStatus[0] == 3:
@@ -27,6 +31,7 @@ def get_average_data_PATH_ONE():
             delays.append(obj.DELAY)
             costs.append(obj.COST)
             fails.append(obj.FAILURE_PROBABILITY)
+            lens.append(len(obj.route))
         else:
             total_denied += 1
 
@@ -39,17 +44,22 @@ def get_average_data_PATH_ONE():
     for f in fails:
         fail += f
 
+    for l in lens:
+        lngth += l
+
     delay_average = delay / total_approved
     cost_average = cost / total_approved
     fail_average = fail / total_approved
+    route_average = lngth / total_approved
 
-    return total_approved, total_denied, delay_average, cost_average, fail_average
+    return total_approved, total_denied, delay_average, cost_average, fail_average, route_average
 
 
 def get_average_data_PATH_TWO():
     delays = []
     costs = []
     fails = []
+    lens = []
 
     total_approved = 0
     total_denied = 0
@@ -57,6 +67,7 @@ def get_average_data_PATH_TWO():
     delay = 0
     cost = 0
     fail = 0
+    lngth = 0
 
     for req in Request.STATIC_TOTAL_REQUEST_LIST:
         if req.requestStatus[1] == 3:
@@ -65,6 +76,7 @@ def get_average_data_PATH_TWO():
             delays.append(obj.DELAY)
             costs.append(obj.COST)
             fails.append(obj.FAILURE_PROBABILITY)
+            lens.append(len(obj.route))
         else:
             total_denied += 1
 
@@ -77,19 +89,23 @@ def get_average_data_PATH_TWO():
     for f in fails:
         fail += f
 
+    for l in lens:
+        lngth += l
+
     delay_average = delay / total_approved
     cost_average = cost / total_approved
     fail_average = fail / total_approved
+    route_average = lngth / total_approved
 
-    return total_approved, total_denied, delay_average, cost_average, fail_average
+    return total_approved, total_denied, delay_average, cost_average, fail_average, route_average
 
 
 def output_file_PATH_ONE():
     with open(GLOBAL_OUTPUT_FILE_PATH_ONE, 'w') as fp:
         main_header = "DATASET=TEST_A,TYPE=WITHOUT_FAULT_TOLERANCE,NODES=42,LINKS=63,REQUESTS=100\n"
-        average_header = "REQUEST PASSED, REQUESTS FAILED, AVERAGE REQUEST DELAY, AVERAGE REQUEST COST, AVERAGE FAILURE PROBABILITY\n"
-        p, f, avd, avc, FAIL = get_average_data_PATH_ONE()
-        avg = "{},{},{},{},{}\n".format(p, f, avd, avc, FAIL)
+        average_header = "REQUEST PASSED, REQUESTS FAILED, AVERAGE REQUEST DELAY, AVERAGE REQUEST COST, AVERAGE FAILURE PROBABILITY, AVERAGE LENGTH OF PATHS\n"
+        p, f, avd, avc, FAIL, r = get_average_data_PATH_ONE()
+        avg = "{},{},{},{},{},{}\n".format(p, f, avd, avc, FAIL, r)
         request_header = "REQUEST STATUS,REQUEST ID,PATH ID,FAILURE PROBABILITY,DELAY,COST,FUNCTIONS,PATH\n"
         fp.write(main_header)
         fp.write(average_header)
@@ -107,14 +123,17 @@ def output_file_PATH_ONE():
 def output_file_PATH_TWO():
     with open(GLOBAL_OUTPUT_FILE_PATH_TWO, 'w') as fp:
         main_header = "DATASET=TEST_A,TYPE=WITH_FAULT_TOLERANCE,NODES=42,LINKS=63,REQUESTS=100\n"
-        average_header = "REQUEST PASSED, REQUESTS FAILED, AVERAGE REQUEST DELAY, AVERAGE REQUEST COST, AVERAGE FAILURE PROBABILITY\n"
-        p, f, avd, avc, FAIL = get_average_data_PATH_TWO()
-        avg = "{},{},{},{},{}\n".format(p, f, avd, avc, FAIL)
+        average_header = "REQUEST PASSED, REQUESTS FAILED, AVERAGE REQUEST DELAY, AVERAGE REQUEST COST, AVERAGE FAILURE PROBABILITY, AVERAGE LENGTH OF PATHS\n"
+        p, f, avd, avc, FAIL, r = get_average_data_PATH_TWO()
+        avg = "{},{},{},{},{},{}\n".format(p, f, avd, avc, FAIL, r)
         request_header = "REQUEST STATUS,REQUEST ID,PATH ID,FAILURE PROBABILITY,DELAY,COST,FUNCTIONS,PATH\n"
         fp.write(main_header)
         fp.write(average_header)
         fp.write(avg)
         fp.write(request_header)
+
+        for f in NodeObj.StaticLinkList:
+            f
 
         for req in Request.STATIC_TOTAL_REQUEST_LIST:
             current_path = req.PATH_TWO

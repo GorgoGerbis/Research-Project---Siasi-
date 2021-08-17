@@ -99,9 +99,6 @@ def process_path_two():
         current_request_data = [req.requestedFunctions, req.request_delay_threshold, req.requestedBW]
         current_request_all_possible_paths = nx.all_simple_paths(GRAPH, req.source, req.destination)
 
-        for l in NodeObj.StaticLinkList:
-            l
-
         for path in current_request_all_possible_paths:     # STEP TWO
             if len(path) != 0:
                 pathID = "R{}P{}".format(req.requestID, count)
