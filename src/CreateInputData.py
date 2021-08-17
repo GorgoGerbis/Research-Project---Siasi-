@@ -28,7 +28,7 @@ def createNodeInputData(number_of_nodes):
             resources = GLOBAL_NODE_RESOURCES  # [100, 100, 100] == [CPU, RAM, Physical Buffer size]
             processing_delay = 1
             nodeCost = 5
-            pf = random.randint(1, 20) / 100  # Dividing to make them decimals
+            pf = random.randint(1, 100) / 100  # Dividing to make them decimals
 
             nodeLine = "{};{};{};{};{};{};{};{}\n".format(nodeID, lat, long, stat, resources, processing_delay,
                                                           nodeCost, pf)
@@ -55,7 +55,7 @@ def createLinkInputData_NETWORK_A(number_of_links, num_nodes):
             bw = GLOBAL_LINK_BANDWIDTH
             ed = random.randint(3, 6) / 10  # Dividing to make them decimals
             ec = 5
-            link_failure = random.randint(1, 20) / 100  # Dividing to make them decimals
+            link_failure = random.randint(1, 100) / 100  # Dividing to make them decimals
 
             linkLine = "{};{};{};{};{};{};{}\n".format(linkID, src, dest, bw, ed, ec, link_failure)
             fp.write(linkLine)

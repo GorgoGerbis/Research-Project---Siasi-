@@ -196,7 +196,7 @@ def create_figure_TWO():
         current_cost = total_cost_a / cnt
         path_two_avg.append(current_cost)
 
-    plt.axis([0, 100, 0, 100])
+    plt.axis([0, 100, 0, 200])
     plt.plot(path_one_costs, color='b', label="Conventional mapping")
     plt.plot(path_one_avg, color='g', label="Conventional mapping averages")
     plt.plot(path_two_costs, color='r', label="Failure-aware mapping")

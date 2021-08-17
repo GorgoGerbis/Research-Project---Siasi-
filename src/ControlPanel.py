@@ -13,8 +13,8 @@ RequestInputData = os.path.join(resourcesFolder, "RequestInputData.txt")
 
 # OUTPUT FILE PATHS
 
-GLOBAL_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "PATH_ONE_REQUESTS_OUTPUT.csv")
-GLOBAL_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "PATH_TWO_REQUESTS_OUTPUT.csv")
+GLOBAL_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "PATH_ONE_REQUESTS_OUTPUT_MAX.csv")
+GLOBAL_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "PATH_TWO_REQUESTS_OUTPUT_MAX.csv")
 
 GLOBAL_NODE_RESOURCES = [1000, 1000, 1000]
 GLOBAL_LINK_BANDWIDTH = 1000
