@@ -6,19 +6,14 @@ from src.RegionObj import RegionObj
 import CreateOutputData
 from src.CreateOutputData import output_file_PATH_TWO
 from src.ControlPanel import GLOBAL_REQUEST_DELAY_THRESHOLD
-import ProcessPathing
 
 # Need these for path finding and graphing
 import networkx as nx
 import matplotlib.pyplot as plt
-# from itertools import islice
 
 # Need these to process requests
 from src.ProcessPathing import RUN_PATH_ONE
 from src.ProcessPathing import RUN_PATH_TWO
-
-# Creating output files
-import src.CreateOutputData
 
 REQUEST_DELAY_THRESHOLD = GLOBAL_REQUEST_DELAY_THRESHOLD
 
@@ -103,6 +98,9 @@ def process_path_two():
         count = 1  # Needs to be reset to 1 when a new request is being processed
         current_request_data = [req.requestedFunctions, req.request_delay_threshold, req.requestedBW]
         current_request_all_possible_paths = nx.all_simple_paths(GRAPH, req.source, req.destination)
+
+        for l in NodeObj.StaticLinkList:
+            l
 
         for path in current_request_all_possible_paths:     # STEP TWO
             if len(path) != 0:
