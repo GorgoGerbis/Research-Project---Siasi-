@@ -7,14 +7,14 @@ outputFolder = os.path.join(baseFolder, "output")
 
 # INPUT FILE PATHS
 
-NodeInputData = os.path.join(resourcesFolder, "NodeInputData-MAX-RESOURCES.csv")
-LinkInputData = os.path.join(resourcesFolder, "LinkInputData-MAX-RESOURCES.csv")
-RequestInputData = os.path.join(resourcesFolder, "RequestInputData-MAX-RESOURCES.txt")
+NodeInputData = os.path.join(resourcesFolder, "NodeInputData.csv")
+LinkInputData = os.path.join(resourcesFolder, "LinkInputData.csv")
+RequestInputData = os.path.join(resourcesFolder, "RequestInputData.txt")
 
 # OUTPUT FILE PATHS
 
-GLOBAL_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "PATH_ONE_REQUESTS_OUTPUT_MAX_RESOURCES.csv")
-GLOBAL_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "PATH_TWO_REQUESTS_OUTPUT_MAX_RESOURCES.csv")
+GLOBAL_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "PATH_ONE_REQUESTS_OUTPUT.csv")
+GLOBAL_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "PATH_TWO_REQUESTS_OUTPUT.csv")
 
 GLOBAL_NODE_RESOURCES = [1000, 1000, 1000]
 GLOBAL_LINK_BANDWIDTH = 1000

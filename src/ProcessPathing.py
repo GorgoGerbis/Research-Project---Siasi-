@@ -380,6 +380,17 @@ def map_path_ONE(path_obj):
                 link = element
                 link.map_request(requested_bandwidth)
 
+    node_avg = 0
+    link_avg = 0
+
+    for node in NodeObj.StaticNodeList:
+        node_avg += node.nodeResources[0]
+
+    for link in NodeObj.StaticLinkList:
+        link_avg += link.linkBW
+
+    NodeObj.StaticNodeResources_PATHONE.append(node_avg / 20)
+    NodeObj.StaticLinkResources_PATHONE.append(link_avg / 30)
     print("PATH MAPPED")
 
 
@@ -400,6 +411,17 @@ def map_path_TWO(path_obj):
                 link = element
                 link.map_request(requested_bandwidth)
 
+    node_avg = 0
+    link_avg = 0
+
+    for node in NodeObj.StaticNodeList:
+        node_avg += node.nodeResources[0]
+
+    for link in NodeObj.StaticLinkList:
+        link_avg += link.linkBW
+
+    NodeObj.StaticNodeResources_PATHTWO.append(node_avg / 20)
+    NodeObj.StaticLinkResources_PATHTWO.append(link_avg / 30)
     print("PATH MAPPED")
 
 

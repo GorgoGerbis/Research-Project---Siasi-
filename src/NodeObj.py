@@ -26,8 +26,11 @@ class NodeObj:
     StaticNodeList = []  # Static List of all nodes
     TotalNodeCount = 0  # Static variable keeping track of amount of nodes
 
-    StaticNodeResources = []
-    StaticLinkResources = []
+    StaticNodeResources_PATHONE = []
+    StaticNodeResources_PATHTWO = []
+
+    StaticLinkResources_PATHONE = []
+    StaticLinkResources_PATHTWO = []
 
     # NODE STATUS
     UNAVAILABLE = "O"

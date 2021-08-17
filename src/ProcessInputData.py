@@ -39,7 +39,7 @@ def processInputDataNode(filePath):
 
             failure = float(currentElements[6].strip('\n'))
 
-            NodeObj.StaticNodeResources.append([id, resources])   # @ToDo remember to change this as well so the nodes are properly reset
+            # NodeObj.StaticNodeResources.append([id, resources])   # @ToDo remember to change this as well so the nodes are properly reset
             current_node = NodeObj(id, position, status, resources, processingDelay, cost, failure)
             print(current_node)
 
@@ -61,7 +61,7 @@ def processInputDataLink(filePath):
             failure_probability = float(currentElements[6].strip('\n'))
             status = "A"
 
-            NodeObj.StaticLinkResources.append([linkID, bandwidth])
+            # NodeObj.StaticLinkResources.append([linkID, bandwidth])
             current_link = LinkObj(linkID, status, source, destination, bandwidth, edgeDelay, edgeCost, failure_probability)
 
             if current_link not in NodeObj.StaticLinkList:

@@ -5,6 +5,9 @@ from src.PathObj import PathObj
 from src.RegionObj import RegionObj
 import CreateOutputData
 from src.CreateOutputData import output_file_PATH_TWO
+
+from src.ControlPanel import GLOBAL_NODE_RESOURCES
+from src.ControlPanel import GLOBAL_LINK_BANDWIDTH
 from src.ControlPanel import GLOBAL_REQUEST_DELAY_THRESHOLD
 
 # Need these for path finding and graphing
@@ -34,6 +37,7 @@ Head vs Wall is the nickname I gave to this protocol. Works as follows.
 
 The networkx method 'all_simple_paths' uses a modified depth first search.
 """
+
 
 # Variables to set up graph for network
 GRAPH = nx.Graph()
@@ -298,6 +302,58 @@ def create_figure_FOUR():
     plt.show()
 
 
+def create_figure_FIVE(nodes_path_one, nodes_path_two):
+    plt.title("FIGURE 5: Number of incoming requests vs. Saturation of Nodes")
+    plt.xlabel("Number of incoming requests")
+    plt.ylabel("Average node resources remaining")
+
+    DIVISOR = GLOBAL_NODE_RESOURCES[0]
+
+    path_one_avg = []
+    path_two_avg = []
+
+    for n in nodes_path_one:
+        output = n / DIVISOR
+        output = output * 100
+        path_one_avg.append(output)
+
+    for n in nodes_path_two:
+        output = n / DIVISOR
+        output = output * 100
+        path_two_avg.append(output)
+
+    plt.axis([0, 100, 0, 100])
+    plt.plot(path_one_avg, color='b', label="Conventional mapping")
+    plt.plot(path_two_avg, color='r', label="Failure-aware mapping")
+    plt.legend()
+    plt.show()
+
+
+def create_figure_SIX(links_path_one, links_path_two):
+    plt.title("FIGURE 6: Number of incoming requests vs. Saturation of Links")
+    plt.xlabel("Number of incoming requests")
+    plt.ylabel("Average link bandwidth remaining")
+
+    path_one_avg = []
+    path_two_avg = []
+
+    for l in links_path_one:
+        output = l / GLOBAL_LINK_BANDWIDTH
+        output = output * 100
+        path_one_avg.append(output)
+
+    for l in links_path_two:
+        output = l / GLOBAL_LINK_BANDWIDTH
+        output = output * 100
+        path_two_avg.append(output)
+
+    plt.axis([0, 100, 0, 100])
+    plt.plot(path_one_avg, color='b', label="Conventional mapping")
+    plt.plot(path_two_avg, color='r', label="Failure-aware mapping")
+    plt.legend()
+    plt.show()
+
+
 def find_isolated_nodes():
     frick = []
     frack = []
@@ -369,4 +425,6 @@ if __name__ == '__main__':
     create_figure_TWO()
     create_figure_THREE()
     create_figure_FOUR()
+    create_figure_FIVE(NodeObj.StaticNodeResources_PATHONE, NodeObj.StaticNodeResources_PATHTWO)
+    create_figure_SIX(NodeObj.StaticLinkResources_PATHONE, NodeObj.StaticLinkResources_PATHTWO)
 
