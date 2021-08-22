@@ -35,7 +35,7 @@ def processInputDataNode(filePath):
             status = currentElements[3]
             processingDelay = 1
             cost = int(currentElements[5])
-            resources = [1000, 1000, 1000]
+            resources = [100, 100, 100]
 
             failure = float(currentElements[6].strip('\n'))
 
@@ -55,7 +55,7 @@ def processInputDataLink(filePath):
             linkID = int(currentElements[0])
             source = int(currentElements[1])
             destination = int(currentElements[2])
-            bandwidth = 1000
+            bandwidth = 60
             edgeDelay = float(currentElements[4])
             edgeCost = int(currentElements[5])
             failure_probability = float(currentElements[6].strip('\n'))

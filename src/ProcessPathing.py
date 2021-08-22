@@ -6,6 +6,7 @@ from src.Request import Request
 
 from ControlPanel import GLOBAL_REQUEST_DELAY_THRESHOLD
 from ControlPanel import GlOBAL_FAILURE_THRESHOLD
+from ControlPanel import REQUEST_FAILURE_RATE
 
 """
 @author: Jackson Walker
@@ -36,6 +37,7 @@ POOR = Path is traversable but does not have enough resources.
 STATE_UNKNOWN = The state of the path has yet to be determined.
 """
 
+FAIL_RATE = REQUEST_FAILURE_RATE
 REQUEST_DELAY_THRESHOLD = GLOBAL_REQUEST_DELAY_THRESHOLD
 FAILURE_THRESHOLD = GlOBAL_FAILURE_THRESHOLD
 OPTIMAL_PATH_SET = False
@@ -70,12 +72,16 @@ def set_path_state_PATH_TWO(path_obj):  # <-- This one DOES NOT use failure prob
     # Given a path must then determine and set the state of the path
     if path_obj.state == STATE_UNKNOWN:
         if calculate_path_resources_PATH_TWO(path_obj):
-            if calculate_path_speed(path_obj, REQUEST_DELAY_THRESHOLD):
-                path_obj.state = BACKUP
-                PathObj.BACKUP_PATHS.append(path_obj)
+            if calculate_path_failure(path_obj, FAILURE_THRESHOLD):
+                if calculate_path_speed(path_obj, REQUEST_DELAY_THRESHOLD):
+                    path_obj.state = BACKUP
+                    PathObj.BACKUP_PATHS.append(path_obj)
+                else:
+                    path_obj.state = TURTLE
+                    print("PATH {} DELAY {} | PATH IS TOO SLOW!".format(path_obj.pathID, path_obj.DELAY))
             else:
-                path_obj.state = TURTLE
-                print("PATH {} DELAY {} | PATH IS TOO SLOW!".format(path_obj.pathID, path_obj.DELAY))
+                path_obj.state = FLUNK
+                print("PATH {} FAILURE {}% | FAILURE PROBABILITY IS TOO HIGH!".format(path_obj.pathID, path_obj.FAILURE_PROBABILITY))
         else:
             path_obj.state = POOR
             print("PATH {} DOES NOT HAVE ENOUGH RESOURCES!".format(path_obj.pathID))
@@ -277,8 +283,7 @@ def calculate_path_speed(path_obj, delay_threshold):
 
 
 def calculate_path_failure(path_obj, failure_threshold):
-    path_obj.set_failure_probability
-    failure_rate = path_obj.FAILURE_PROBABILITY
+    failure_rate = path_obj.return_failure_probability()
     if failure_rate <= failure_threshold:
         return True
     else:
@@ -290,76 +295,41 @@ def calculate_path_failure(path_obj, failure_threshold):
 def calculate_optimal_PATH_ONE():
     """
     Compares every single path that meets all the other specified criteria and finds
-    the shortest one.
+    the shortest one WITH the least failure probability.
     """
     if not OPTIMAL_PATH_SET:
-        current_best = PathObj.BACKUP_PATHS[0]
+        current_best_path = PathObj.BACKUP_PATHS[0]
 
-        for path_obj in PathObj.BACKUP_PATHS:
-            path_obj.set_failure_probability()
-            if path_obj.DELAY < current_best.DELAY:
-                current_best = path_obj
-            elif path_obj.DELAY == current_best.DELAY:
-                if path_obj.COST < current_best.COST:
-                    current_best = path_obj
+        for obj in PathObj.BACKUP_PATHS:
+            if obj.DELAY < current_best_path.DELAY:
+                current_best_path = obj
+            elif obj.DELAY == current_best_path.DELAY:
+                if obj.COST < current_best_path.COST:
+                    current_best_path = obj
 
-        current_best.state = 5
-        PathObj.OPTIMAL_PATH_SET = True
-
-    else:
-        reigning_best = PathObj.returnOptimalPath(PathObj.BACKUP_PATHS)
-
-        for path_obj in PathObj.BACKUP_PATHS:
-            path_obj.set_failure_probability()
-            if path_obj.DELAY < reigning_best.DELAY:
-                reigning_best = path_obj
-            elif path_obj.DELAY == reigning_best.DELAY:
-                if path_obj.COST < reigning_best.COST:
-                    reigning_best = path_obj
-
-        reigning_best.state = 5
+        current_best_path.state = 5
         PathObj.OPTIMAL_PATH_SET = True
 
 
-def calculate_optimal_PATH_TWO():
+def calculate_optimal_PATH_TWO(): # 47/100 51.349785688330044%/47.506267247894435%
     """
     Compares every single path that meets all the other specified criteria and finds
     the shortest one WITH the least failure probability.
     """
     if not OPTIMAL_PATH_SET:
-        current_best = PathObj.BACKUP_PATHS[0]
+        current_best_path = PathObj.BACKUP_PATHS[0]
 
-        for path_obj in PathObj.BACKUP_PATHS:
-            path_obj.set_failure_probability()
+        for obj in PathObj.BACKUP_PATHS:
+            if current_best_path.FAILURE_PROBABILITY < current_best_path.FAILURE_PROBABILITY:
+                current_best_path = obj
+            elif current_best_path.FAILURE_PROBABILITY == current_best_path.FAILURE_PROBABILITY:
+                if obj.COST < current_best_path.COST:
+                    current_best_path = obj
+                elif obj.COST == current_best_path.COST:
+                    if obj.DELAY < current_best_path.DELAY:
+                        current_best_path = obj
 
-            if path_obj.FAILURE_PROBABILITY < current_best.FAILURE_PROBABILITY:
-                current_best = path_obj
-            elif path_obj.FAILURE_PROBABILITY == current_best.FAILURE_PROBABILITY:
-                if path_obj.DELAY < current_best.DELAY:
-                    current_best = path_obj
-                elif path_obj.DELAY == current_best.DELAY:
-                    if path_obj.COST < current_best.COST:
-                        current_best = path_obj
-
-        current_best.state = 5
-        PathObj.OPTIMAL_PATH_SET = True
-
-    else:
-        reigning_best = PathObj.returnOptimalPath(PathObj.BACKUP_PATHS)
-
-        for path_obj in PathObj.BACKUP_PATHS:
-            path_obj.set_failure_probability()
-
-            if path_obj.FAILURE_PROBABILITY < reigning_best.FAILURE_PROBABILITY:
-                reigning_best = path_obj
-            elif path_obj.FAILURE_PROBABILITY == reigning_best.FAILURE_PROBABILITY:
-                if path_obj.DELAY < reigning_best.DELAY:
-                    reigning_best = path_obj
-                elif path_obj.DELAY == reigning_best.DELAY:
-                    if path_obj.COST < reigning_best.COST:
-                        reigning_best = path_obj
-
-        reigning_best.state = 5
+        current_best_path.state = 5
         PathObj.OPTIMAL_PATH_SET = True
 
 
@@ -423,7 +393,6 @@ def map_path_TWO(path_obj):
     NodeObj.StaticNodeResources_PATHTWO.append(node_avg / 20)
     NodeObj.StaticLinkResources_PATHTWO.append(link_avg / 30)
     print("PATH MAPPED")
-
 
 def RUN_PATH_ONE(req):
     for path in PathObj.current_request_paths_list:

@@ -39,7 +39,7 @@ def get_average_data_PATH_ONE():
             obj = req.PATH_ONE
             delays.append(obj.DELAY)
             costs.append(obj.COST)
-            fails.append(obj.FAILURE_PROBABILITY)
+            fails.append(obj.return_failure_probability())
             lens.append(len(obj.route))
         else:
             total_denied += 1
@@ -108,7 +108,7 @@ def get_average_data_PATH_TWO():
             obj = req.PATH_TWO
             delays.append(obj.DELAY)
             costs.append(obj.COST)
-            fails.append(obj.FAILURE_PROBABILITY)
+            fails.append(obj.return_failure_probability())
             lens.append(len(obj.route))
         else:
             total_denied += 1

@@ -422,9 +422,9 @@ if __name__ == '__main__':
 
     ############# CREATE OUTPUT DATA GRAPHS ##############
     create_figure_ONE()
-    create_figure_TWO()
-    create_figure_THREE()
-    create_figure_FOUR()
-    create_figure_FIVE(NodeObj.StaticNodeResources_PATHONE, NodeObj.StaticNodeResources_PATHTWO)
-    create_figure_SIX(NodeObj.StaticLinkResources_PATHONE, NodeObj.StaticLinkResources_PATHTWO)
+    # create_figure_TWO()
+    # create_figure_THREE()
+    # create_figure_FOUR()
+    # create_figure_FIVE(NodeObj.StaticNodeResources_PATHONE, NodeObj.StaticNodeResources_PATHTWO)
+    # create_figure_SIX(NodeObj.StaticLinkResources_PATHONE, NodeObj.StaticLinkResources_PATHTWO)
 

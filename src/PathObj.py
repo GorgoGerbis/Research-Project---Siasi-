@@ -120,6 +120,47 @@ class PathObj:
 
         self.FAILURE_PROBABILITY = failure_probability
 
+    def return_failure_probability(self):
+        """
+        We calculate the failure probability using the rule of succession formula
+        created by Pierre-Simon Laplace.
+
+        link: https://en.wikipedia.org/wiki/Rule_of_succession
+
+        :param self: PathObj being referenced
+        :return: failure_probability: a float representing the probability of failure
+        """
+        fused_path = self.create_fusion_obj_list(self.route)
+        link_temp = []
+        node_temp = []
+
+        overall_average = 0
+
+        for step in fused_path:
+            if type(step) == LinkObj:
+                current_fail = step.calculate_failure(step.linkSrc, step.linkDest)
+                link_temp.append(current_fail)
+            else:
+                current_fail = step.calculate_failure(step.nodeID)
+                node_temp.append(current_fail)
+
+        for step in link_temp:
+            overall_average += step
+
+        for step in node_temp:
+            overall_average += step
+
+        count = len(link_temp) + len(node_temp)
+
+        failure_probability = overall_average / count
+        failure_probability *= 100
+
+        if failure_probability < 0:
+            failure_probability *= -1
+
+        self.FAILURE_PROBABILITY = failure_probability
+        return failure_probability
+
 
     @staticmethod
     def create_fusion_obj_list(path):
