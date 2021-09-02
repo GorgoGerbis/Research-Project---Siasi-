@@ -130,7 +130,11 @@ def calculate_path_resources_PATH_ONE(path_obj):
             else:
                 current_node = step  # First we must determine if mapping is even possible
 
-                if current_node.status == 'O':
+                if current_node.failure_probability >= 0.55:
+                    NodeObj.AUTO_FAIL_PATH_TWO.append(current_node.nodeID)
+                    path_obj.state = POOR
+                    return False
+                elif current_node.status == 'O':
                     # print("MAPPING ON NODE {} IS NOT POSSIBLE NODE IS OFFLINE".format(current_node.nodeID))
                     NodeObj.AUTO_FAIL.append(current_node.nodeID)
                     path_obj.state = POOR
@@ -197,8 +201,13 @@ def calculate_path_resources_PATH_TWO(path_obj):
                 enough_bw = True
         else:
             current_node = step
+
+            if current_node.failure_probability >= 0.55:
+                NodeObj.AUTO_FAIL_PATH_TWO.append(current_node.nodeID)
+                path_obj.state = POOR
+                return False
             # Determining the status of a node and if it has failed
-            if current_node.get_status == 'O':
+            elif current_node.get_status == 'O':
                 # print("MAPPING ON NODE {} IS NOT POSSIBLE NODE IS OFFLINE".format(current_node.nodeID))
                 NodeObj.AUTO_FAIL_PATH_TWO.append(current_node.nodeID)
                 path_obj.state = POOR
