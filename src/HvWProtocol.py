@@ -38,6 +38,7 @@ Head vs Wall is the nickname I gave to this protocol. Works as follows.
 The networkx method 'all_simple_paths' uses a modified depth first search.
 """
 
+NODES_THAT_AUTO_FAIL = [5, 6, 13, 19]
 
 # Variables to set up graph for network
 GRAPH = nx.Graph()
@@ -98,19 +99,22 @@ def process_path_one():
 def process_path_two():
     for req in Request.STATIC_TOTAL_REQUEST_LIST:   # STEP ONE
         print("BEGUN PROCESSING REQUEST: {} Source: {} Destination {} Functions: {}\n".format(req.requestID, req.source, req.destination, req.requestedFunctions))
+        if req.source in NODES_THAT_AUTO_FAIL or req.destination in NODES_THAT_AUTO_FAIL:
+            req.requestStatus[1] = 2
+            continue
+        else:
+            count = 1  # Needs to be reset to 1 when a new request is being processed
+            current_request_data = [req.requestedFunctions, req.request_delay_threshold, req.requestedBW]
+            current_request_all_possible_paths = nx.all_simple_paths(GRAPH, req.source, req.destination)
 
-        count = 1  # Needs to be reset to 1 when a new request is being processed
-        current_request_data = [req.requestedFunctions, req.request_delay_threshold, req.requestedBW]
-        current_request_all_possible_paths = nx.all_simple_paths(GRAPH, req.source, req.destination)
+            for path in current_request_all_possible_paths:     # STEP TWO
+                if len(path) != 0:
+                    pathID = "R{}P{}".format(req.requestID, count)
+                    # ToDo should make a static list of all paths being processed for a single request
+                    PathObj(pathID, path, 0, current_request_data, [], 0, 0, 0, 2)
+                    count += 1
 
-        for path in current_request_all_possible_paths:     # STEP TWO
-            if len(path) != 0:
-                pathID = "R{}P{}".format(req.requestID, count)
-                # ToDo should make a static list of all paths being processed for a single request
-                PathObj(pathID, path, 0, current_request_data, [], 0, 0, 0, 2)
-                count += 1
-
-        RUN_PATH_TWO(req)
+            RUN_PATH_TWO(req)
 
 
 def create_figure_ONE():
@@ -422,9 +426,9 @@ if __name__ == '__main__':
 
     ############# CREATE OUTPUT DATA GRAPHS ##############
     create_figure_ONE()
-    # create_figure_TWO()
-    # create_figure_THREE()
-    # create_figure_FOUR()
-    # create_figure_FIVE(NodeObj.StaticNodeResources_PATHONE, NodeObj.StaticNodeResources_PATHTWO)
-    # create_figure_SIX(NodeObj.StaticLinkResources_PATHONE, NodeObj.StaticLinkResources_PATHTWO)
+    create_figure_TWO()
+    create_figure_THREE()
+    create_figure_FOUR()
+    create_figure_FIVE(NodeObj.StaticNodeResources_PATHONE, NodeObj.StaticNodeResources_PATHTWO)
+    create_figure_SIX(NodeObj.StaticLinkResources_PATHONE, NodeObj.StaticLinkResources_PATHTWO)
 

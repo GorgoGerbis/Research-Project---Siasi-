@@ -51,6 +51,15 @@ BACKUP = 4
 OPTIMAL = 5
 
 
+def check_fail(path_obj):
+    AUTO_FAIL = [5, 6, 13, 19]
+    for step in path_obj.route:
+        if step in AUTO_FAIL:
+            path_obj.state = POOR
+            return False
+    return True
+
+
 # @Todo need to remember to clear BACKUP_PATHS when finished processing request
 def set_path_state_PATH_ONE(path_obj):  # <-- This one DOES NOT use failure probability
     # Given a path must then determine and set the state of the path
@@ -130,11 +139,7 @@ def calculate_path_resources_PATH_ONE(path_obj):
             else:
                 current_node = step  # First we must determine if mapping is even possible
 
-                if current_node.failure_probability >= 0.55:
-                    NodeObj.AUTO_FAIL_PATH_TWO.append(current_node.nodeID)
-                    path_obj.state = POOR
-                    return False
-                elif current_node.status == 'O':
+                if current_node.status == 'O':
                     # print("MAPPING ON NODE {} IS NOT POSSIBLE NODE IS OFFLINE".format(current_node.nodeID))
                     NodeObj.AUTO_FAIL.append(current_node.nodeID)
                     path_obj.state = POOR
@@ -186,6 +191,7 @@ def calculate_path_resources_PATH_TWO(path_obj):
 
     funcs_mapped = []
     func_count = 0
+
 
     for step in fused_path:
         if all_mapped and enough_bw:

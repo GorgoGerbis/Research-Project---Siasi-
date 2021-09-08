@@ -9,6 +9,17 @@ REQUEST_ONGOING = 1
 REQUEST_DENIED = 2
 REQUEST_APPROVED = 3
 
+AUTO_FAIL = [5, 6, 13, 19]
+
+
+def fail_unavailable_paths():
+    for req in Request.STATIC_TOTAL_REQUEST_LIST:
+        if req.requestStatus[0] == REQUEST_APPROVED:
+            current_route = req.PATH_ONE.route
+            for node in current_route:
+                if node in AUTO_FAIL:
+                    req.requestStatus[0] = REQUEST_DENIED
+
 
 def get_average_data_PATH_ONE():
     delays = []
@@ -150,6 +161,7 @@ def get_average_data_PATH_TWO():
 
 
 def output_file_PATH_ONE():
+    fail_unavailable_paths()
     with open(GLOBAL_OUTPUT_FILE_PATH_ONE, 'w') as fp:
         main_header = "DATASET=TEST_A,TYPE=WITHOUT_FAULT_TOLERANCE,NODES=42,LINKS=63,REQUESTS=100\n"
         average_header = "REQUEST PASSED, REQUESTS FAILED, AVERAGE REQUEST DELAY, AVERAGE REQUEST COST, AVERAGE FAILURE PROBABILITY, AVERAGE LENGTH OF PATHS, MEAN NODE [CPU, RAM, PBS], MEAN LINK BANDWIDTH\n"
@@ -164,9 +176,13 @@ def output_file_PATH_ONE():
         for req in Request.STATIC_TOTAL_REQUEST_LIST:
             current_path = req.PATH_ONE
             if req.requestStatus[0] == REQUEST_APPROVED:
-                fp.write("APPROVED,{},{},{}%,{},{},{},{}\n".format(req.requestID, current_path.pathID, current_path.FAILURE_PROBABILITY, current_path.DELAY, current_path.COST, req.requestedFunctions, current_path.route))
+                fp.write("APPROVED,{},{},{}%,{},{},{},{}\n".format(req.requestID, current_path.pathID,
+                                                                   current_path.FAILURE_PROBABILITY, current_path.DELAY,
+                                                                   current_path.COST, req.requestedFunctions,
+                                                                   current_path.route))
             else:
-                fp.write("DENIED,{},NONE,NONE,0,0,{},src={}, dest={}\n".format(req.requestID, req.requestedFunctions, req.source, req.destination))
+                fp.write("DENIED,{},NONE,NONE,0,0,{},src={}, dest={}\n".format(req.requestID, req.requestedFunctions,
+                                                                               req.source, req.destination))
 
 
 def output_file_PATH_TWO():
