@@ -50,6 +50,7 @@ FLUNK = 3
 BACKUP = 4
 OPTIMAL = 5
 
+AUTO_FAIL = [5, 6, 13, 19]
 
 def check_fail(path_obj):
     AUTO_FAIL = [5, 6, 13, 19]
@@ -139,6 +140,9 @@ def calculate_path_resources_PATH_ONE(path_obj):
             else:
                 current_node = step  # First we must determine if mapping is even possible
 
+                # if current_node.nodeID in AUTO_FAIL:
+                #     path_obj.state = POOR
+                #     return False
                 if current_node.status == 'O':
                     # print("MAPPING ON NODE {} IS NOT POSSIBLE NODE IS OFFLINE".format(current_node.nodeID))
                     NodeObj.AUTO_FAIL.append(current_node.nodeID)

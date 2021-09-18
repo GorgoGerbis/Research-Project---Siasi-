@@ -68,6 +68,15 @@ def set_nodes():
             visited_nodes.append(current_node_id)
 
 
+def fail_unavailable_paths():
+    for req in Request.STATIC_TOTAL_REQUEST_LIST:
+        if req.requestStatus[0] == 3:
+            current_route = req.PATH_ONE.route
+            for node in current_route:
+                if node in NODES_THAT_AUTO_FAIL:
+                    req.requestStatus[0] = 2
+
+
 def create_regions():
     regionBounds = [[1, 25], [26, 50], [51, 75], [76, 100], [101, 25], [126, 150]]
     for i in range(5):
@@ -131,7 +140,11 @@ def create_figure_ONE():
     for req in Request.STATIC_TOTAL_REQUEST_LIST:
         obj = req.PATH_ONE
         if obj is not None:
-            path_one_delays.append(obj.DELAY)
+            for step in obj.route:
+                if step in NODES_THAT_AUTO_FAIL:
+                    continue
+                else:
+                    path_one_delays.append(obj.DELAY)
 
     count = 0
     total_delay_a = 0
@@ -154,11 +167,22 @@ def create_figure_ONE():
         current_delay = total_delay_b / cnt
         path_two_avg.append(current_delay)
 
-    plt.axis([0, 100, 0, 50])
-    plt.plot(path_one_delays, color='b', label="Conventional mapping")
-    plt.plot(path_one_avg, color='g', label="Conventional mapping averages")
-    plt.plot(path_two_delays, color='r', label="Failure-aware mapping")
-    plt.plot(path_two_avg, color='y', label="Failure-aware mapping averages")
+    plt.subplot(1, 2, 1)
+    plt.axis([1, 300, 1, 40])
+    plt.title("Conventional mapping")
+    plt.xlabel("Number of processed requests")
+    plt.ylabel("Average delay per request")
+    plt.plot(path_one_delays, color='g', label="Conventional mapping")
+    plt.plot(path_one_avg, color='b', label="Conventional mapping averages")
+    plt.legend()
+
+    plt.subplot(1, 2, 2)
+    plt.axis([1, 300, 1, 40])
+    plt.title("Failure-aware mapping")
+    plt.xlabel("Number of processed requests")
+    plt.ylabel("Average delay per request")
+    plt.plot(path_two_delays, color='y', label="Failure-aware mapping")
+    plt.plot(path_two_avg, color='r', label="Failure-aware mapping averages")
     plt.legend()
     plt.show()
 
@@ -200,11 +224,22 @@ def create_figure_TWO():
         current_cost = total_cost_a / cnt
         path_two_avg.append(current_cost)
 
-    plt.axis([0, 100, 0, 200])
-    plt.plot(path_one_costs, color='b', label="Conventional mapping")
-    plt.plot(path_one_avg, color='g', label="Conventional mapping averages")
-    plt.plot(path_two_costs, color='r', label="Failure-aware mapping")
-    plt.plot(path_two_avg, color='y', label="Failure-aware mapping averages")
+    plt.subplot(1, 2, 1)
+    plt.axis([1, 300, 1, 200])
+    plt.title("Conventional mapping")
+    plt.xlabel("Number of processed requests")
+    plt.ylabel("Average cost per request")
+    plt.plot(path_one_costs, color='g', label="Conventional mapping")
+    plt.plot(path_one_avg, color='b', label="Conventional mapping averages")
+    plt.legend()
+
+    plt.subplot(1, 2, 2)
+    plt.axis([1, 300, 1, 200])
+    plt.title("Failure-aware mapping")
+    plt.xlabel("Number of processed requests")
+    plt.ylabel("Average cost per request")
+    plt.plot(path_two_costs, color='y', label="Failure-aware mapping")
+    plt.plot(path_two_avg, color='r', label="Failure-aware mapping averages")
     plt.legend()
     plt.show()
 
@@ -224,7 +259,11 @@ def create_figure_THREE():
         obj = req.PATH_ONE
         total_processed_reqs += 1
         if obj is not None:
-            passed_requests += 1
+            for step in obj.route:
+                if step in NODES_THAT_AUTO_FAIL:
+                    denied_requests += 1
+                else:
+                    passed_requests += 1
         else:
             denied_requests += 1
 
@@ -245,14 +284,14 @@ def create_figure_THREE():
         total_avg_two.append(passed_requests)
 
     plt.subplot(1, 2, 1)
-    plt.axis([0, 100, 0, 100])
+    plt.axis([0, 300, 0, 300])
     plt.title("Conventional mapping")
     plt.xlabel("Number of processed requests")
     plt.ylabel("Number of successful requests")
     plt.plot(total_avg, color='b', label="Conventional mapping")
 
     plt.subplot(1, 2, 2)
-    plt.axis([0, 100, 0, 100])
+    plt.axis([0, 300, 0, 300])
     plt.title("Failure aware mapping")
     plt.xlabel("Number of processed requests")
     plt.ylabel("Number of successful requests")
@@ -398,6 +437,12 @@ if __name__ == '__main__':
     for op in PathObj.StaticOptimalPathsList:
         print(op)
 
+    fail_unavailable_paths()
+    for req in Request.STATIC_TOTAL_REQUEST_LIST:
+        obj = req.PATH_ONE
+        if obj is not None:
+            print(obj)
+
     print("STARTING CREATION OF OUTPUT FILES\n")
     CreateOutputData.output_file_PATH_ONE()
     print("CREATED PATH ONE OUTPUT FILES\n")
@@ -429,6 +474,6 @@ if __name__ == '__main__':
     create_figure_TWO()
     create_figure_THREE()
     create_figure_FOUR()
-    create_figure_FIVE(NodeObj.StaticNodeResources_PATHONE, NodeObj.StaticNodeResources_PATHTWO)
-    create_figure_SIX(NodeObj.StaticLinkResources_PATHONE, NodeObj.StaticLinkResources_PATHTWO)
+    # create_figure_FIVE(NodeObj.StaticNodeResources_PATHONE, NodeObj.StaticNodeResources_PATHTWO)
+    # create_figure_SIX(NodeObj.StaticLinkResources_PATHONE, NodeObj.StaticLinkResources_PATHTWO)
 
