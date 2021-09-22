@@ -16,6 +16,7 @@ RequestInputData = os.path.join(resourcesFolder, "RequestInputData.txt")
 GLOBAL_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "PATH_ONE_REQUESTS_OUTPUT.csv")
 GLOBAL_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "PATH_TWO_REQUESTS_OUTPUT.csv")
 
+# WILL DELETE THIS METHOD LATER
 
 GLOBAL_NODE_RESOURCES = [100, 100, 100]
 GLOBAL_LINK_BANDWIDTH = 1000 # 60
