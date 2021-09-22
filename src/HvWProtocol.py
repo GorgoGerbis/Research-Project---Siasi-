@@ -70,10 +70,10 @@ def set_nodes():
 
 def fail_unavailable_paths():
     for req in Request.STATIC_TOTAL_REQUEST_LIST:
-        if req.requestStatus[0] == 3:
-            current_route = req.PATH_ONE.route
-            for node in current_route:
-                if node in NODES_THAT_AUTO_FAIL:
+        obj = req.PATH_ONE
+        if obj is not None:
+            for step in obj.route:
+                if step in NODES_THAT_AUTO_FAIL:
                     req.requestStatus[0] = 2
 
 
@@ -140,11 +140,7 @@ def create_figure_ONE():
     for req in Request.STATIC_TOTAL_REQUEST_LIST:
         obj = req.PATH_ONE
         if obj is not None:
-            for step in obj.route:
-                if step in NODES_THAT_AUTO_FAIL:
-                    continue
-                else:
-                    path_one_delays.append(obj.DELAY)
+            path_one_delays.append(obj.DELAY)
 
     count = 0
     total_delay_a = 0
@@ -437,7 +433,7 @@ if __name__ == '__main__':
     for op in PathObj.StaticOptimalPathsList:
         print(op)
 
-    fail_unavailable_paths()
+    # fail_unavailable_paths()
     for req in Request.STATIC_TOTAL_REQUEST_LIST:
         obj = req.PATH_ONE
         if obj is not None:
@@ -470,6 +466,7 @@ if __name__ == '__main__':
     ##########################################################
 
     ############# CREATE OUTPUT DATA GRAPHS ##############
+    fail_unavailable_paths()
     create_figure_ONE()
     create_figure_TWO()
     create_figure_THREE()
