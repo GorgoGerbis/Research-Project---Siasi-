@@ -13,8 +13,8 @@ RequestInputData = os.path.join(resourcesFolder, "RequestInputData.txt")
 
 # OUTPUT FILE PATHS
 
-GLOBAL_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "PATH_ONE_REQUESTS_OUTPUT.csv")
-GLOBAL_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "PATH_TWO_REQUESTS_OUTPUT.csv")
+GLOBAL_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "PATH_ONE_OUTPUT_DATA.csv")
+GLOBAL_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "PATH_TWO_OUTPUT_DATA.csv")
 
 # WILL DELETE THIS METHOD LATER
 

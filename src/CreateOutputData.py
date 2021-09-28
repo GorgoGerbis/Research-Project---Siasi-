@@ -19,6 +19,7 @@ def fail_unavailable_paths():
             for node in current_route:
                 if node in AUTO_FAIL:
                     req.requestStatus[0] = REQUEST_DENIED
+                    req.PATH_ONE = None
 
 
 def get_average_data_PATH_ONE():
@@ -45,7 +46,7 @@ def get_average_data_PATH_ONE():
     bw = 0
 
     for req in Request.STATIC_TOTAL_REQUEST_LIST:
-        if req.requestStatus[0] == 3:
+        if req.requestStatus[0] == REQUEST_APPROVED:
             total_approved += 1
             obj = req.PATH_ONE
             delays.append(obj.DELAY)
@@ -114,7 +115,7 @@ def get_average_data_PATH_TWO():
     bw = 0
 
     for req in Request.STATIC_TOTAL_REQUEST_LIST:
-        if req.requestStatus[1] == 3:
+        if req.requestStatus[1] == REQUEST_APPROVED:
             total_approved += 1
             obj = req.PATH_TWO
             delays.append(obj.DELAY)
