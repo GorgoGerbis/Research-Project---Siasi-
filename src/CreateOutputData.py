@@ -151,7 +151,6 @@ def get_average_data_PATH_TWO():
     fail_average = fail / total_approved
     route_average = lngth / total_approved
 
-
     cpu = cpu / num_nodes
     ram = ram / num_nodes
     pbs = pbs / num_nodes

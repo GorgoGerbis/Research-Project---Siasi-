@@ -80,16 +80,6 @@ def fail_unavailable_paths():
                     req.requestStatus[0] = 2
 
 
-def create_regions():
-    regionBounds = [[1, 25], [26, 50], [51, 75], [76, 100], [101, 25], [126, 150]]
-    for i in range(5):
-        cnt = i+1
-        new_region = RegionObj(cnt, 'A', [regionBounds[i][0], regionBounds[i][1]], [], 0)
-
-    for node in NodeObj.StaticNodeList:
-        RegionObj.assign_region(node)
-
-
 def check_fail(s, d):
     l = [5, 6, 13, 19]
     for num in l:
@@ -151,51 +141,6 @@ def process_path_two():
 
             RUN_PATH_TWO(req)
 
-
-# def create_figure_ONE():
-#     path_one_delays = []
-#     path_two_delays = []
-#
-#     path_one_avg = []
-#     path_two_avg = []
-#
-#     for req in Request.STATIC_TOTAL_REQUEST_LIST:
-#         obj = req.PATH_ONE
-#         if obj is not None:
-#             path_one_delays.append(obj.DELAY)
-#
-#     count = 0
-#     total_delay_a = 0
-#     for delay in path_one_delays:
-#         count += 1
-#         total_delay_a += delay
-#         current_delay = total_delay_a / count
-#         path_one_avg.append(current_delay)
-#
-#     for req in Request.STATIC_TOTAL_REQUEST_LIST:
-#         obj = req.PATH_TWO
-#         if obj is not None:
-#             path_two_delays.append(obj.DELAY)
-#
-#     cnt = 0
-#     total_delay_b = 0
-#     for delay in path_two_delays:
-#         cnt += 1
-#         total_delay_b += delay
-#         current_delay = total_delay_b / cnt
-#         path_two_avg.append(current_delay)
-#
-#     plt.subplot(2, 1, 1)
-#     plt.title('FIGURE 1: Number of incoming requests vs. Average delay per request')
-#     plt.text(100, -5, 'Number of incoming requests processed', ha='center')
-#     plt.text(-25, 80, 'Average delay per request', va='center', rotation='vertical')
-#
-#     plt.plot(path_one_avg, '.-')
-#
-#     plt.subplot(2, 1, 2)
-#     plt.plot(path_two_avg, '.-')
-#
-#     plt.show()
 
 def create_figure_ONE():
     plt.title("FIGURE 1: Number of incoming requests vs. Average delay per request")
@@ -540,8 +485,8 @@ if __name__ == '__main__':
     fail_unavailable_paths()
     create_figure_ONE()
     create_figure_TWO()
-    create_figure_THREE()
-    create_figure_FOUR()
+    # create_figure_THREE()
+    # create_figure_FOUR()
     # create_figure_FIVE(NodeObj.StaticNodeResources_PATHONE, NodeObj.StaticNodeResources_PATHTWO)
     # create_figure_SIX(NodeObj.StaticLinkResources_PATHONE, NodeObj.StaticLinkResources_PATHTWO)
 

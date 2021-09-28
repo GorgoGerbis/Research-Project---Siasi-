@@ -434,6 +434,7 @@ def map_path_TWO(path_obj):
     NodeObj.StaticLinkResources_PATHTWO.append(link_avg / 30)
     print("PATH MAPPED")
 
+
 def RUN_PATH_ONE(req):
     for path in PathObj.current_request_paths_list:
         set_path_state_PATH_ONE(path)
