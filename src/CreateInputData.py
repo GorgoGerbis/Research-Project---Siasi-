@@ -141,9 +141,9 @@ if __name__ == '__main__':
     num_links = 30
     num_requests = 300
 
-    print("CREATING NEW INPUT DATA!\n")
-    print("TOTAL NODES: {} TOTAL LINKS: {} TOTAL REQUESTS: {}\n".format(num_nodes, num_links, num_requests))
-    createNodeInputData(num_nodes)
-    createLinkInputData_NETWORK_A(num_links, num_nodes)  # createLinkInputData(num_links, num_nodes)
+    # print("CREATING NEW INPUT DATA!\n")
+    # print("TOTAL NODES: {} TOTAL LINKS: {} TOTAL REQUESTS: {}\n".format(num_nodes, num_links, num_requests))
+    # createNodeInputData(num_nodes)
+    # createLinkInputData_NETWORK_A(num_links, num_nodes)  # createLinkInputData(num_links, num_nodes)
     createRequests(num_requests, num_nodes)
     print("FINISHED CREATING INPUT DATA\n")

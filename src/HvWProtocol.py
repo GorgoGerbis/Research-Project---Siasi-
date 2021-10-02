@@ -13,6 +13,7 @@ from src.ControlPanel import GLOBAL_REQUEST_DELAY_THRESHOLD
 # Need these for path finding and graphing
 import networkx as nx
 import matplotlib.pyplot as plt
+import numpy as np
 
 # Need these to process requests
 from src.ProcessPathing import RUN_PATH_ONE
@@ -261,54 +262,30 @@ def create_figure_THREE():
     plt.xlabel("Number of incoming requests")
     plt.ylabel("Success rates of requests")
 
-    total_avg = []
-    total_avg_two = []
-    total_processed_reqs = 0
-    passed_requests = 0
-    denied_requests = 0
+    conventional = np.array([])
+    fault_aware = np.array([])
+
+    conventional_passed = 0
+    fault_aware_passed = 0
+
+    y = list(range(1, 300))
 
     for req in Request.STATIC_TOTAL_REQUEST_LIST:
         obj = req.PATH_ONE
-        total_processed_reqs += 1
         if obj is not None:
-            for step in obj.route:
-                if step in NODES_THAT_AUTO_FAIL:
-                    denied_requests += 1
-                else:
-                    passed_requests += 1
-        else:
-            denied_requests += 1
-
-        total_avg.append(passed_requests)
-
-    total_processed_reqs = 0
-    passed_requests = 0
-    denied_requests = 0
+            conventional_passed += 1
+            conventional = np.append(conventional, conventional_passed)
 
     for req in Request.STATIC_TOTAL_REQUEST_LIST:
         obj = req.PATH_TWO
-        total_processed_reqs += 1
         if obj is not None:
-            passed_requests += 1
-        else:
-            denied_requests += 1
+            fault_aware_passed += 1
+            fault_aware = np.append(fault_aware, fault_aware_passed)
 
-        total_avg_two.append(passed_requests)
-
-    plt.subplot(1, 2, 1)
-    plt.axis([0, 300, 0, 300])
-    plt.title("Conventional mapping")
-    plt.xlabel("Number of processed requests")
-    plt.ylabel("Number of successful requests")
-    plt.plot(total_avg, color='b', label="Conventional mapping")
-
-    plt.subplot(1, 2, 2)
-    plt.axis([0, 300, 0, 300])
-    plt.title("Failure aware mapping")
-    plt.xlabel("Number of processed requests")
-    plt.ylabel("Number of successful requests")
-    plt.plot(total_avg_two, color='r', label="Failure-aware mapping")
-    plt.show()
+    fig, (ax1, ax2) = plt.subplots(2)
+    ax1.plot(conventional, y)
+    ax2.plot(fault_aware, y)
+    fig.show()
 
 
 def create_figure_FOUR():

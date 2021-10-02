@@ -9,12 +9,12 @@ outputFolder = os.path.join(baseFolder, "output")
 
 NodeInputData = os.path.join(resourcesFolder, "NodeInputData.csv")
 LinkInputData = os.path.join(resourcesFolder, "LinkInputData.csv")
-RequestInputData = os.path.join(resourcesFolder, "RequestInputData.txt")
+RequestInputData = os.path.join(resourcesFolder, "RequestInputData_300.txt")
 
 # OUTPUT FILE PATHS
 
-GLOBAL_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "PATH_ONE_OUTPUT_DATA.csv")
-GLOBAL_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "PATH_TWO_OUTPUT_DATA.csv")
+GLOBAL_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "PATH_ONE_OUTPUT_DATA_300.csv")
+GLOBAL_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "PATH_TWO_OUTPUT_DATA_300.csv")
 
 # WILL DELETE THIS METHOD LATER
 
