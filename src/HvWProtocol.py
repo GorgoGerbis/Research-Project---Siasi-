@@ -282,106 +282,13 @@ def create_figure_THREE():
             fault_aware_passed += 1
             fault_aware = np.append(fault_aware, fault_aware_passed)
 
-    fig, (ax1, ax2) = plt.subplots(2)
-    ax1.plot(conventional, y)
-    ax2.plot(fault_aware, y)
-    fig.show()
-
-
-def create_figure_FOUR():
-    plt.title("FIGURE 4: Number of incoming requests vs. Mean probability of failure")
-    plt.xlabel("Number of incoming requests")
-    plt.ylabel("Mean probability of failure")
-
-    path_one_fails = []
-    path_two_fails = []
-
-    path_one_avg= []
-    path_two_avg = []
-
-    path_one_approved = 0
-    path_two_approved = 0
-
-    for req in Request.STATIC_TOTAL_REQUEST_LIST:
-        if req.requestStatus[0] == 3:
-            path_one_approved += 1
-            obj = req.PATH_ONE
-            path_one_fails.append(obj.FAILURE_PROBABILITY)
-            path_one_avg.append(obj.FAILURE_PROBABILITY / path_one_approved)
-
-    for req in Request.STATIC_TOTAL_REQUEST_LIST:
-        if req.requestStatus[1] == 3:
-            path_two_approved += 1
-            obj = req.PATH_TWO
-            path_two_fails.append(obj.FAILURE_PROBABILITY)
-            path_two_avg.append(obj.FAILURE_PROBABILITY / path_two_approved)
-
-    plt.subplot(1, 2, 1)
-    plt.axis([0, 100, 0, 100])
-    plt.title("Failure aware mapping")
+    plt.subplots(2)
+    plt.axis([1, 300, 1, 200])
+    plt.title("Conventional mapping")
     plt.xlabel("Number of processed requests")
-    plt.ylabel("Probability of failure")
-    plt.plot(path_one_fails, color='b', label="Failure-aware mapping")
-    plt.plot(path_one_avg, color='g', label="Failure-aware mapping averages")
-
-    plt.subplot(1, 2, 2)
-    plt.axis([0, 100, 0, 100])
-    plt.title("Failure aware mapping")
-    plt.xlabel("Number of processed requests")
-    plt.ylabel("Probability of failure")
-    plt.plot(path_two_fails, color='r', label="Failure-aware mapping")
-    plt.plot(path_two_avg, color='y', label="Failure-aware mapping averages")
-    plt.show()
-
-
-def create_figure_FIVE(nodes_path_one, nodes_path_two):
-    plt.title("FIGURE 5: Number of incoming requests vs. Saturation of Nodes")
-    plt.xlabel("Number of incoming requests")
-    plt.ylabel("Average node resources remaining")
-
-    DIVISOR = GLOBAL_NODE_RESOURCES[0]
-
-    path_one_avg = []
-    path_two_avg = []
-
-    for n in nodes_path_one:
-        output = n / DIVISOR
-        output = output * 100
-        path_one_avg.append(output)
-
-    for n in nodes_path_two:
-        output = n / DIVISOR
-        output = output * 100
-        path_two_avg.append(output)
-
-    plt.axis([0, 100, 0, 100])
-    plt.plot(path_one_avg, color='b', label="Conventional mapping")
-    plt.plot(path_two_avg, color='r', label="Failure-aware mapping")
-    plt.legend()
-    plt.show()
-
-
-def create_figure_SIX(links_path_one, links_path_two):
-    plt.title("FIGURE 6: Number of incoming requests vs. Saturation of Links")
-    plt.xlabel("Number of incoming requests")
-    plt.ylabel("Average link bandwidth remaining")
-
-    path_one_avg = []
-    path_two_avg = []
-
-    for l in links_path_one:
-        output = l / GLOBAL_LINK_BANDWIDTH
-        output = output * 100
-        path_one_avg.append(output)
-
-    for l in links_path_two:
-        output = l / GLOBAL_LINK_BANDWIDTH
-        output = output * 100
-        path_two_avg.append(output)
-
-    plt.axis([0, 100, 0, 100])
-    plt.plot(path_one_avg, color='b', label="Conventional mapping")
-    plt.plot(path_two_avg, color='r', label="Failure-aware mapping")
+    plt.ylabel("Number of passed requests")
+    plt.plot(conventional, color='g', label="Conventional mapping")
+    plt.plot(fault_aware, color='b', label="Fault-aware mapping")
     plt.legend()
     plt.show()
 
@@ -462,8 +369,5 @@ if __name__ == '__main__':
     fail_unavailable_paths()
     create_figure_ONE()
     create_figure_TWO()
-    # create_figure_THREE()
-    # create_figure_FOUR()
-    # create_figure_FIVE(NodeObj.StaticNodeResources_PATHONE, NodeObj.StaticNodeResources_PATHTWO)
-    # create_figure_SIX(NodeObj.StaticLinkResources_PATHONE, NodeObj.StaticLinkResources_PATHTWO)
+#    create_figure_THREE()
 

@@ -52,6 +52,7 @@ OPTIMAL = 5
 
 AUTO_FAIL = [5, 6, 13, 19]
 
+
 def check_fail(path_obj):
     AUTO_FAIL = [5, 6, 13, 19]
     for step in path_obj.route:
@@ -350,27 +351,6 @@ def calculate_optimal_PATH_TWO(): # 47/100 51.349785688330044%/47.50626724789443
 
         current_best_path.state = 5
         PathObj.OPTIMAL_PATH_SET = True
-
-# def calculate_optimal_PATH_TWO(): # 47/100 51.349785688330044%/47.506267247894435%
-#     """
-#     Compares every single path that meets all the other specified criteria and finds
-#     the shortest one WITH the least failure probability.
-#     """
-#     if not OPTIMAL_PATH_SET:
-#         current_best_path = PathObj.BACKUP_PATHS[0]
-#
-#         for obj in PathObj.BACKUP_PATHS:
-#             if current_best_path.COST < current_best_path.COST:
-#                 current_best_path = obj
-#             elif current_best_path.COST == current_best_path.COST:
-#                 if obj.FAILURE_PROBABILITY < current_best_path.FAILURE_PROBABILITY:
-#                     current_best_path = obj
-#                 elif obj.FAILURE_PROBABILITY == current_best_path.FAILURE_PROBABILITY:
-#                     if obj.DELAY < current_best_path.DELAY:
-#                         current_best_path = obj
-#
-#         current_best_path.state = 5
-#         PathObj.OPTIMAL_PATH_SET = True
 
 
 def map_path_ONE(path_obj):
