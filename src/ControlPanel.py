@@ -5,6 +5,10 @@ baseFolder = r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-
 resourcesFolder = os.path.join(baseFolder, "resources")
 outputFolder = os.path.join(baseFolder, "output")
 
+
+SINGLE_MAPPING = 1
+MULTI_MAPPING = 2
+
 # INPUT FILE PATHS
 
 NodeInputData = os.path.join(resourcesFolder, "NodeInputData.csv")
@@ -13,8 +17,14 @@ RequestInputData = os.path.join(resourcesFolder, "RequestInputData_75.txt")
 
 # OUTPUT FILE PATHS
 
-GLOBAL_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "PATH_ONE_OUTPUT_DATA_75.csv")
-GLOBAL_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "PATH_TWO_OUTPUT_DATA_75.csv")
+# GLOBAL_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "PATH_ONE_OUTPUT_DATA_75.csv")
+# GLOBAL_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "PATH_TWO_OUTPUT_DATA_75.csv")
+
+GLOBAL_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "P1_OUTPUT_DATA_SINGLE_MAPPING_75.csv")
+GLOBAL_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "P2_OUTPUT_DATA_SINGLE_MAPPING_75.csv")
+
+# GLOBAL_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "P1_OUTPUT_DATA_MULTI_MAPPING_75.csv")
+# GLOBAL_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "P2_OUTPUT_DATA_MULTI_MAPPING_75.csv")
 
 # WILL DELETE THIS METHOD LATER
 
@@ -25,6 +35,4 @@ GLOBAL_REQUEST_DELAY_THRESHOLD = 120.5
 GlOBAL_FAILURE_THRESHOLD = 55.5
 GLOBAL_FAILURE_RATE = 0.15
 
-
-def INCREASE_FAILURE_RATE(r):
-    r += 0.1
+GLOBAL_PROTOCOL = 1

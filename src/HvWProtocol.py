@@ -1,8 +1,8 @@
+import ControlPanel
 from src import ProcessInputData
 from src.NodeObj import NodeObj
 from src.Request import Request
 from src.PathObj import PathObj
-from src.RegionObj import RegionObj
 import CreateOutputData
 from src.CreateOutputData import output_file_PATH_TWO
 
@@ -18,6 +18,8 @@ import numpy as np
 # Need these to process requests
 from src.ProcessPathing import RUN_PATH_ONE
 from src.ProcessPathing import RUN_PATH_TWO
+from src.SingleMapping import RUN_PATH_ONE_SINGLE_MAPPING
+from src.SingleMapping import RUN_PATH_TWO_SINGLE_MAPPING
 
 REQUEST_DELAY_THRESHOLD = GLOBAL_REQUEST_DELAY_THRESHOLD
 
@@ -141,6 +143,48 @@ def process_path_two():
                     count += 1
 
             RUN_PATH_TWO(req)
+
+
+def process_path_one_SINGLE_MAPPING():
+    for req in Request.STATIC_TOTAL_REQUEST_LIST:   # STEP ONE
+        print("BEGUN PROCESSING REQUEST: {} Source: {} Destination {} Functions: {}\n".format(req.requestID, req.source, req.destination, req.requestedFunctions))
+
+        count = 1  # Needs to be reset to 1 when a new request is being processed
+        current_request_data = [req.requestedFunctions, req.request_delay_threshold, req.requestedBW]
+        current_request_all_possible_paths = nx.all_simple_paths(GRAPH, req.source, req.destination)
+
+        for path in current_request_all_possible_paths:     # STEP TWO
+            pathID = "R{}P{}".format(req.requestID, count)
+            # ToDo should make a static list of all paths being processed for a single request
+            PathObj(pathID, path, 0, current_request_data, [], 0, 0, 0, 1)
+            count += 1
+
+        RUN_PATH_ONE_SINGLE_MAPPING(req)   # <--- Step 3, 4 and 5 starts here
+
+
+def process_path_two_SINGLE_MAPPING():
+    for req in Request.STATIC_TOTAL_REQUEST_LIST:   # STEP ONE
+        print("BEGUN PROCESSING REQUEST: {} Source: {} Destination {} Functions: {}\n".format(req.requestID, req.source, req.destination, req.requestedFunctions))
+        s = req.source
+        d = req.destination
+
+        if not check_fail(s, d):
+            req.requestStatus[1] = 2
+            req.PATH_ONE = None
+            print("Path_failed\n")
+        else:
+            count = 1  # Needs to be reset to 1 when a new request is being processed
+            current_request_data = [req.requestedFunctions, req.request_delay_threshold, req.requestedBW]
+            current_request_all_possible_paths = nx.all_simple_paths(GRAPH, req.source, req.destination)
+
+            for path in current_request_all_possible_paths:     # STEP TWO
+                if path_check_fail(path):
+                    pathID = "R{}P{}".format(req.requestID, count)
+                    # ToDo should make a static list of all paths being processed for a single request
+                    PathObj(pathID, path, 0, current_request_data, [], 0, 0, 0, 2)
+                    count += 1
+
+            RUN_PATH_TWO_SINGLE_MAPPING(req)
 
 
 def create_figure_ONE():
@@ -313,61 +357,121 @@ def find_isolated_nodes():
 
 
 if __name__ == '__main__':
-    print("Begin Processing requests using: 'Head vs. Wall' Protocol\n")
-    print("BEGIN PROCESSING INPUT DATA\n")
-    ProcessInputData.processAllInputData()
-    print("INPUT DATA PROCESSED\n")
+    if ControlPanel.GLOBAL_PROTOCOL == 1:
+        print("Begin Processing requests using: Single-Mapping Protocol\n")
+        print("BEGIN PROCESSING INPUT DATA\n")
+        ProcessInputData.processAllInputData()
+        print("INPUT DATA PROCESSED\n")
 
-    set_edges()
-    GRAPH.add_edges_from(edges)
+        set_edges()
+        GRAPH.add_edges_from(edges)
 
-    # Just commented out so I don't have to keep closing the window every time
-    nx.draw(GRAPH, with_labels=True, font_weight='bold')
-    plt.show()  # ToDo Need to figure out why I need this in order to stop the graph from disappearing
+        # Just commented out so I don't have to keep closing the window every time
+        nx.draw(GRAPH, with_labels=True, font_weight='bold')
+        plt.show()  # ToDo Need to figure out why I need this in order to stop the graph from disappearing
 
-    find_isolated_nodes()
+        find_isolated_nodes()
 
-    ########### SETUP IS NOW OVER WE CAN BEGIN PROCESSING ##############
-    process_path_one()
-    print("ALL DONE FINDING FIRST PATHS\n")
-    for op in PathObj.StaticOptimalPathsList:
-        print(op)
+        ########### SETUP IS NOW OVER WE CAN BEGIN PROCESSING ##############
+        process_path_one_SINGLE_MAPPING()
+        print("ALL DONE FINDING FIRST PATHS\n")
+        for op in PathObj.StaticOptimalPathsList:
+            print(op)
 
-    # fail_unavailable_paths()
-    for req in Request.STATIC_TOTAL_REQUEST_LIST:
-        obj = req.PATH_ONE
-        if obj is not None:
-            print(obj)
+        # fail_unavailable_paths()
+        for req in Request.STATIC_TOTAL_REQUEST_LIST:
+            obj = req.PATH_ONE
+            if obj is not None:
+                print(obj)
 
-    print("STARTING CREATION OF OUTPUT FILES\n")
-    CreateOutputData.output_file_PATH_ONE()
-    print("CREATED PATH ONE OUTPUT FILES\n")
-    #########################################################
+        print("STARTING CREATION OF OUTPUT FILES\n")
+        CreateOutputData.output_file_PATH_ONE()
+        print("CREATED PATH ONE OUTPUT FILES\n")
+        #########################################################
 
-    for link in NodeObj.StaticLinkList:
-        del link
-    NodeObj.StaticLinkList.clear()
+        for link in NodeObj.StaticLinkList:
+            del link
+        NodeObj.StaticLinkList.clear()
 
-    for node in NodeObj.StaticNodeList:
-        del node
-    NodeObj.StaticNodeList.clear()
+        for node in NodeObj.StaticNodeList:
+            del node
+        NodeObj.StaticNodeList.clear()
 
-    ProcessInputData.processInputDataNode(ProcessInputData.NodeInputData)
-    ProcessInputData.processInputDataLink(ProcessInputData.LinkInputData)
+        ProcessInputData.processInputDataNode(ProcessInputData.NodeInputData)
+        ProcessInputData.processInputDataLink(ProcessInputData.LinkInputData)
 
-    ############# BEGIN PROCESSING FOR PATH TWO ##############
-    process_path_two()
-    print("ALL DONE FINDING SECOND PATHS\n")
-    for op in PathObj.StaticOptimalPathsList:
-        print(op)
+        ############# BEGIN PROCESSING FOR PATH TWO ##############
+        process_path_two_SINGLE_MAPPING()
+        print("ALL DONE FINDING SECOND PATHS\n")
+        for op in PathObj.StaticOptimalPathsList:
+            print(op)
 
-    print("STARTING CREATION OF FAILURE PROBABILITY OUTPUT FILES\n")
-    output_file_PATH_TWO()
-    ##########################################################
+        print("STARTING CREATION OF FAILURE PROBABILITY OUTPUT FILES\n")
+        output_file_PATH_TWO()
+        ##########################################################
 
-    ############# CREATE OUTPUT DATA GRAPHS ##############
-    fail_unavailable_paths()
-    create_figure_ONE()
-    create_figure_TWO()
-#    create_figure_THREE()
+        ############# CREATE OUTPUT DATA GRAPHS ##############
+        fail_unavailable_paths()
+        create_figure_ONE()
+        create_figure_TWO()
+        #   create_figure_THREE()
+
+    elif ControlPanel.GLOBAL_PROTOCOL == 2:
+        print("Begin Processing requests using: 'Head vs. Wall' Protocol\n")
+        print("BEGIN PROCESSING INPUT DATA\n")
+        ProcessInputData.processAllInputData()
+        print("INPUT DATA PROCESSED\n")
+
+        set_edges()
+        GRAPH.add_edges_from(edges)
+
+        # Just commented out so I don't have to keep closing the window every time
+        nx.draw(GRAPH, with_labels=True, font_weight='bold')
+        plt.show()  # ToDo Need to figure out why I need this in order to stop the graph from disappearing
+
+        find_isolated_nodes()
+
+        ########### SETUP IS NOW OVER WE CAN BEGIN PROCESSING ##############
+        process_path_one()
+        print("ALL DONE FINDING FIRST PATHS\n")
+        for op in PathObj.StaticOptimalPathsList:
+            print(op)
+
+        # fail_unavailable_paths()
+        for req in Request.STATIC_TOTAL_REQUEST_LIST:
+            obj = req.PATH_ONE
+            if obj is not None:
+                print(obj)
+
+        print("STARTING CREATION OF OUTPUT FILES\n")
+        CreateOutputData.output_file_PATH_ONE()
+        print("CREATED PATH ONE OUTPUT FILES\n")
+        #########################################################
+
+        for link in NodeObj.StaticLinkList:
+            del link
+        NodeObj.StaticLinkList.clear()
+
+        for node in NodeObj.StaticNodeList:
+            del node
+        NodeObj.StaticNodeList.clear()
+
+        ProcessInputData.processInputDataNode(ProcessInputData.NodeInputData)
+        ProcessInputData.processInputDataLink(ProcessInputData.LinkInputData)
+
+        ############# BEGIN PROCESSING FOR PATH TWO ##############
+        process_path_two()
+        print("ALL DONE FINDING SECOND PATHS\n")
+        for op in PathObj.StaticOptimalPathsList:
+            print(op)
+
+        print("STARTING CREATION OF FAILURE PROBABILITY OUTPUT FILES\n")
+        output_file_PATH_TWO()
+        ##########################################################
+
+        ############# CREATE OUTPUT DATA GRAPHS ##############
+        fail_unavailable_paths()
+        create_figure_ONE()
+        create_figure_TWO()
+        #   create_figure_THREE()
 

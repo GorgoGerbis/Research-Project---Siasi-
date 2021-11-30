@@ -1,5 +1,4 @@
 from src.FuncObj import FuncObj
-from src.RegionObj import RegionObj
 from src.ControlPanel import GLOBAL_NODE_RESOURCES
 from src.ControlPanel import GLOBAL_REQUEST_DELAY_THRESHOLD
 import random
