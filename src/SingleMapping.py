@@ -126,7 +126,7 @@ def calculate_path_resources_PATH_ONE(path_obj):
     for step in fused_path:
         if all_mapped and enough_bw:
             return True
-        if type(step) == LinkObj:
+        if type(step) == LinkObj:   # If its a link
             # print("Link ID: {} Src: {} Dest: {}".format(step.linkID, step.linkSrc, step.linkDest))
             check_bw = step.check_enough_resources(requested_bandwidth)
             if not check_bw:
@@ -134,7 +134,7 @@ def calculate_path_resources_PATH_ONE(path_obj):
                 return False
             elif step.linkID == end_link.linkID:
                 enough_bw = True
-        else:
+        else:   # if its a node
             if all_mapped:
                 continue
             else:
@@ -152,18 +152,20 @@ def calculate_path_resources_PATH_ONE(path_obj):
                         all_mapped = True
                         continue
                     else:
-                        current_func = funcs_to_map[0]
-                        mappable = current_node.check_enough_resources(current_func)
+                        current_mappable_functions = current_node.how_many_functions_mappable(funcs_to_map)  # LOOK AT THIS
 
-                        if not mappable and step.nodeID == end_node.nodeID and len(funcs_to_map) > 0:
+                        if current_mappable_functions == [] and step.nodeID == end_node.nodeID and len(funcs_to_map) > 0:
                             path_obj.state = POOR
                             return False
-                        elif mappable:
-                            funcs_mapped.append(current_func)
-                            path_obj.MAPPING_LOCATION.append([current_node, current_func])
-                            funcs_to_map.pop(0)
-                            func_count += 1
+                        elif current_mappable_functions == []:
+                            continue
                         else:
+                            for i in range(len(current_mappable_functions)):
+                                f = current_mappable_functions[i]
+                                funcs_mapped.append(current_mappable_functions[i])
+                                path_obj.MAPPING_LOCATION.append([current_node, f])
+                                funcs_to_map.pop(0)
+                                func_count += 1
                             continue
 
 
@@ -191,7 +193,6 @@ def calculate_path_resources_PATH_TWO(path_obj):
 
     funcs_mapped = []
     func_count = 0
-
 
     for step in fused_path:
         if all_mapped and enough_bw:
@@ -226,18 +227,21 @@ def calculate_path_resources_PATH_TWO(path_obj):
                     all_mapped = True
                     continue
                 else:
-                    current_func = funcs_to_map[0]
-                    mappable = current_node.check_enough_resources(current_func)
+                    current_mappable_functions = current_node.how_many_functions_mappable(funcs_to_map)  # LOOK AT THIS
 
-                    if not mappable and step.nodeID == end_node.nodeID and len(funcs_to_map) > 0:
+                    if current_mappable_functions == [] and step.nodeID == end_node.nodeID and len(funcs_to_map) > 0:
                         path_obj.state = POOR
                         return False
-                    elif mappable:
-                        funcs_mapped.append(current_func)
-                        path_obj.MAPPING_LOCATION.append([current_node, current_func])
-                        funcs_to_map.pop(0)
-                        func_count += 1
+                    elif not current_mappable_functions:
+                        continue
                     else:
+                        for i in range(len(current_mappable_functions)):
+                            f = current_mappable_functions[i]
+                            print(f)
+                            funcs_mapped.append(current_mappable_functions[i])
+                            path_obj.MAPPING_LOCATION.append([current_node, f])
+                            funcs_to_map.pop(0)
+                            func_count += 1
                         continue
 
 
@@ -278,10 +282,8 @@ def calculate_path_speed(path_obj, delay_threshold):
     # @ToDo remember that when a function is mapped to a node the delay for that node is: processingDelay + (processingDelay x num_funcs_mapped)
     for mapping_location in mapping_list:
         used_node = mapping_location[0]
-        funcs = mapping_location[1]
-
-        for f in funcs:
-            path_obj.DELAY += used_node.processingDelay
+        func = mapping_location[1]
+        path_obj.DELAY += used_node.processingDelay
 
     for step in fused_list:
         if type(step) == LinkObj:
@@ -326,7 +328,7 @@ def calculate_optimal_PATH_ONE():
         PathObj.OPTIMAL_PATH_SET = True
 
 
-def calculate_optimal_PATH_TWO(): # 47/100 51.349785688330044%/47.506267247894435%
+def calculate_optimal_PATH_TWO():
     """
     Compares every single path that meets all the other specified criteria and finds
     the shortest one WITH the least failure probability.

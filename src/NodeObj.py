@@ -116,6 +116,7 @@ class NodeObj:
 
     def how_many_functions_mappable(self, func_list):
         mappable_funcs = []
+        num_mappable = 0
 
         t_cpu = 0
         t_ram = 0
@@ -133,6 +134,7 @@ class NodeObj:
                 t_ram += temp_func.value[1]
                 t_bw += temp_func.value[2]
                 mappable_funcs.append(temp_func)
+                num_mappable += 1
             else:
                 return mappable_funcs
 
@@ -144,7 +146,8 @@ class NodeObj:
         self.nodeResources[2] = int(self.nodeResources[2]) - bw
 
     def map_function_obj(self, f):
-        func = FuncObj.retrieve_function_value(f)
+        # func = FuncObj.retrieve_function_value(f)
+        func = f
         self.nodeResources[0] = int(self.nodeResources[0]) - func.value[0]
         self.nodeResources[1] = int(self.nodeResources[1]) - func.value[1]
         self.nodeResources[2] = int(self.nodeResources[2]) - func.value[2]
@@ -223,10 +226,6 @@ class NodeObj:
     def print_resources(node):
         output = [node.nodeID, node.nodeResources[0], node.nodeResources[1], node.nodeResources[2]]
         return output
-
-    @staticmethod
-    def adjust_saturation_rate(node):
-        RegionObj.adjust_saturation_rate(node)
 
     def __str__(self):
         string = "Node ID: {} Node Position: {} Node Status: {} Node Resources: {} Processing Delay: {} Node cost: {} Failure probability: {}".format(

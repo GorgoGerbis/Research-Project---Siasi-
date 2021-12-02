@@ -6,22 +6,22 @@ resourcesFolder = os.path.join(baseFolder, "resources")
 outputFolder = os.path.join(baseFolder, "output")
 
 
-SINGLE_MAPPING = 1
-MULTI_MAPPING = 2
+SINGLE_MAPPING = 1 # Mapping every single one possible to one function
+MULTI_MAPPING = 2 # One at a time
 
 # INPUT FILE PATHS
 
 NodeInputData = os.path.join(resourcesFolder, "NodeInputData.csv")
 LinkInputData = os.path.join(resourcesFolder, "LinkInputData.csv")
-RequestInputData = os.path.join(resourcesFolder, "RequestInputData_75.txt")
+RequestInputData = os.path.join(resourcesFolder, "RequestInputData_25.txt")
 
 # OUTPUT FILE PATHS
 
 # GLOBAL_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "PATH_ONE_OUTPUT_DATA_75.csv")
 # GLOBAL_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "PATH_TWO_OUTPUT_DATA_75.csv")
 
-GLOBAL_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "P1_OUTPUT_DATA_SINGLE_MAPPING_75.csv")
-GLOBAL_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "P2_OUTPUT_DATA_SINGLE_MAPPING_75.csv")
+GLOBAL_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "P1_OUTPUT_DATA_SINGLE_MAPPING_25.csv")
+GLOBAL_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "P2_OUTPUT_DATA_SINGLE_MAPPING_25.csv")
 
 # GLOBAL_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "P1_OUTPUT_DATA_MULTI_MAPPING_75.csv")
 # GLOBAL_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "P2_OUTPUT_DATA_MULTI_MAPPING_75.csv")
