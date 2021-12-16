@@ -168,7 +168,7 @@ def process_path_two_SINGLE_MAPPING():
         s = req.source
         d = req.destination
 
-        if not check_fail(s, d):
+        if not check_fail(s, d):    # Pruning to make the dataset smaller
             req.requestStatus[1] = 2
             req.PATH_ONE = None
             print("Path_failed\n")
@@ -407,7 +407,7 @@ if __name__ == '__main__':
             print(op)
 
         print("STARTING CREATION OF FAILURE PROBABILITY OUTPUT FILES\n")
-        output_file_PATH_TWO()
+        CreateOutputData.output_file_PATH_TWO()
         ##########################################################
 
         ############# CREATE OUTPUT DATA GRAPHS ##############

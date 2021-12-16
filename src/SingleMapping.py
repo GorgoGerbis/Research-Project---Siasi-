@@ -415,7 +415,7 @@ def map_path_TWO(path_obj):
 def RUN_PATH_ONE_SINGLE_MAPPING(req):
     for path in PathObj.current_request_paths_list:
         set_path_state_PATH_ONE(path)
-        if path.state <= 3:
+        if path.state < 3:
             del path
 
     if len(PathObj.BACKUP_PATHS) == 0:
@@ -441,7 +441,7 @@ def RUN_PATH_ONE_SINGLE_MAPPING(req):
 def RUN_PATH_TWO_SINGLE_MAPPING(req):
     for path in PathObj.current_request_paths_list:
         set_path_state_PATH_TWO(path)
-        if path.state <= 3:
+        if path.state != 5:     # need to reconsider why I need these two lines
             del path
 
     if len(PathObj.BACKUP_PATHS) == 0:
