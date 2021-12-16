@@ -54,7 +54,9 @@ AUTO_FAIL = [5, 6, 13, 19]
 
 
 def check_fail(path_obj):
-    AUTO_FAIL = [5, 6, 13, 19]
+
+    # AUTO_FAIL = [5, 6, 13, 19]
+
     for step in path_obj.route:
         if step in AUTO_FAIL:
             path_obj.state = POOR

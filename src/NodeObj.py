@@ -147,7 +147,11 @@ class NodeObj:
 
     def map_function_obj(self, f):
         # func = FuncObj.retrieve_function_value(f)
-        func = f
+        if type(f) != FuncObj:
+            func = FuncObj.retrieve_function_value(f)
+        else:
+            func = f
+
         self.nodeResources[0] = int(self.nodeResources[0]) - func.value[0]
         self.nodeResources[1] = int(self.nodeResources[1]) - func.value[1]
         self.nodeResources[2] = int(self.nodeResources[2]) - func.value[2]
