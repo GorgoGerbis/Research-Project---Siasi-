@@ -287,7 +287,7 @@ def calculate_path_failure(path_obj, failure_threshold):
 def calculate_optimal_PATH_ONE():
     """
     Compares every single path that meets all the other specified criteria and finds
-    the shortest one WITH the least failure probability.
+    the shortest one WITHOUT the least failure probability.
     """
     if not OPTIMAL_PATH_SET:
         current_best_path = PathObj.BACKUP_PATHS[0]

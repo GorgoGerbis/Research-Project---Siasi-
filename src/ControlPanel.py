@@ -13,15 +13,15 @@ MULTI_MAPPING = 2 # Mapping one function at a time on multiple different nodes
 
 NodeInputData = os.path.join(resourcesFolder, "NodeInputData.csv")
 LinkInputData = os.path.join(resourcesFolder, "LinkInputData.csv")
-RequestInputData = os.path.join(resourcesFolder, "RequestInputData_800.txt")
+RequestInputData = os.path.join(resourcesFolder, "RequestInputData_300.txt")
 
 # OUTPUT FILE PATHS
 
-# GLOBAL_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "SINGLE_PATH_ONE_OUTPUT_DATA_800.csv")
-# GLOBAL_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "SINGLE_PATH_TWO_OUTPUT_DATA_800.csv")
+GLOBAL_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "MULTI_PATH_ONE_OUTPUT_DATA_300_diff.csv")
+GLOBAL_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "MULTI_PATH_TWO_OUTPUT_DATA_300_diff.csv")
 
-GLOBAL_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "MULTI_PATH_ONE_OUTPUT_DATA_800.csv")
-GLOBAL_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "MULTI_PATH_TWO_OUTPUT_DATA_800.csv")
+# GLOBAL_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "MULTI_PATH_ONE_OUTPUT_DATA_500.csv")
+# GLOBAL_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "MULTI_PATH_TWO_OUTPUT_DATA_500.csv")
 
 # WILL DELETE THIS METHOD LATER
 

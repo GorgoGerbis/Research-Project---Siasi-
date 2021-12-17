@@ -2,6 +2,36 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 
+all_fps = [r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-\output\MULTI_PATH_ONE_OUTPUT_DATA_25.csv",
+           r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-\output\MULTI_PATH_TWO_OUTPUT_DATA_25.csv",
+           r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-\output\MULTI_PATH_ONE_OUTPUT_DATA_50.csv",
+           r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-\output\MULTI_PATH_TWO_OUTPUT_DATA_50.csv",
+           r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-\output\MULTI_PATH_ONE_OUTPUT_DATA_75.csv",
+           r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-\output\MULTI_PATH_TWO_OUTPUT_DATA_75.csv",
+           r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-\output\MULTI_PATH_ONE_OUTPUT_DATA_100.csv",
+           r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-\output\MULTI_PATH_TWO_OUTPUT_DATA_100.csv",
+           r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-\output\MULTI_PATH_ONE_OUTPUT_DATA_200.csv",
+           r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-\output\MULTI_PATH_TWO_OUTPUT_DATA_200.csv",
+           r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-\output\MULTI_PATH_ONE_OUTPUT_DATA_300.csv",
+           r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-\output\MULTI_PATH_TWO_OUTPUT_DATA_300.csv",
+           r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-\output\MULTI_PATH_ONE_OUTPUT_DATA_500.csv",
+           r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-\output\MULTI_PATH_TWO_OUTPUT_DATA_500.csv",
+
+           r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-\output\SINGLE_PATH_ONE_OUTPUT_DATA_25.csv",
+           r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-\output\SINGLE_PATH_TWO_OUTPUT_DATA_25.csv",
+           r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-\output\SINGLE_PATH_ONE_OUTPUT_DATA_50.csv",
+           r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-\output\SINGLE_PATH_TWO_OUTPUT_DATA_50.csv",
+           r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-\output\SINGLE_PATH_ONE_OUTPUT_DATA_75.csv",
+           r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-\output\SINGLE_PATH_TWO_OUTPUT_DATA_75.csv",
+           r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-\output\SINGLE_PATH_ONE_OUTPUT_DATA_100.csv",
+           r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-\output\SINGLE_PATH_TWO_OUTPUT_DATA_100.csv",
+           r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-\output\SINGLE_PATH_ONE_OUTPUT_DATA_200.csv",
+           r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-\output\SINGLE_PATH_TWO_OUTPUT_DATA_200.csv",
+           r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-\output\SINGLE_PATH_ONE_OUTPUT_DATA_300.csv",
+           r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-\output\SINGLE_PATH_TWO_OUTPUT_DATA_300.csv",
+           r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-\output\SINGLE_PATH_ONE_OUTPUT_DATA_500.csv",
+           r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-\output\SINGLE_PATH_TWO_OUTPUT_DATA_500.csv"]
+
 baseFolder = r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-"
 resourcesFolder = os.path.join(baseFolder, "resources")
 outputFolder = os.path.join(baseFolder, "output")
@@ -102,6 +132,20 @@ if __name__ == '__main__':
     multi_pathOne_costs = [44, 44.64, 44.44, 45.61, 46.28, 47.69, 46.78]
     multi_pathTwo_costs = [44, 45.31, 47.0, 46.69, 50.72, 54.01, 54.42]
 
+    count = sum(multi_pathOne_failure_percentages)
+    cnt = sum(multi_pathTwo_failure_percentages)
+
+    dst = sum(multi_pathOne_costs)
+    d = sum(multi_pathTwo_costs)
+    x = d + dst
+
+    print("multi path one overall: " + str(count/700) + " SCORE: " + str(count))
+    print("multi path two overall: " + str(cnt / 700) + " SCORE: " + str(cnt))
+
+    print("MULTI MAPPING SCHEME AVERAGES: " + str(x / 14) + "TOTAL COST: " + str(x))
+    print("multi path one cummulative avg. cost: " + str(dst / 7) + " TOTAL MB: " + str(dst))
+    print("multi path two cummulative avg. cost: " + str(d / 7) + " SCORE: " + str(d))
+
     create_bar_graph(multi_pathOne_failure_percentages, multi_pathTwo_failure_percentages)
     create_bar_graph_delays(multi_pathOne_delays, multi_pathTwo_delays)
     create_bar_graph_costs(multi_pathOne_costs, multi_pathTwo_costs)
@@ -115,7 +159,25 @@ if __name__ == '__main__':
     single_pathOne_costs = [37, 33.12, 34.51, 34.15, 36.53, 38.73, 37.2]
     single_pathTwo_costs = [37, 33.52, 35.22, 34.83, 36.97, 40.78, 40.13]
 
+    count = sum(single_pathOne_failure_percentages)
+    cnt = sum(single_pathTwo_failure_percentages)
+
+    cst = sum(single_pathOne_costs)
+    c = sum(single_pathTwo_costs)
+    y = c + cst
+
+    print("single path one overall: " + str(count / 700) + " SCORE: " + str(count))
+    print("single path two overall: " + str(cnt / 700) + " SCORE: " + str(cnt))
+
+    print("SINGLE MAPPING SCHEME AVERAGES: " + str(y / 14) + "TOTAL COST: " + str(y))
+    print("single path one cummulative avg. cost: " + str(cst / 7) + " TOTAL MB: " + str(cst))
+    print("single path two cummulative avg. cost: " + str(c / 7) + " SCORE: " + str(c))
+
     create_bar_graph(single_pathOne_failure_percentages, single_pathTwo_failure_percentages)
     create_bar_graph_delays(single_pathOne_delays, single_pathTwo_delays)
     create_bar_graph_costs(single_pathOne_costs, single_pathTwo_costs)
     ##################################################################################
+
+    print("\n")
+    print("Fault aware single(scheme 1) costs & multi(scheme 2) costs | Path Two Cummulative Avgs. = " + str((c + d)/14))
+    print("NON Fault aware single(scheme 1) costs & multi(scheme 2) costs | Path Two Cummulative Avgs. = " + str((cst + dst)/14))

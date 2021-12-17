@@ -161,7 +161,7 @@ def get_average_data_PATH_TWO():
 
 
 def output_file_PATH_ONE():
-    fail_unavailable_paths()
+    fail_unavailable_paths() # This will fail all paths that have a failed node in its route
     with open(GLOBAL_OUTPUT_FILE_PATH_ONE, 'w') as fp:
         main_header = "DATASET=TEST_A,TYPE=WITHOUT_FAULT_TOLERANCE,NODES=42,LINKS=63,REQUESTS=100\n"
         average_header = "REQUEST PASSED, REQUESTS FAILED, AVERAGE REQUEST DELAY, AVERAGE REQUEST COST, AVERAGE FAILURE PROBABILITY, AVERAGE LENGTH OF PATHS, MEAN NODE [CPU, RAM, PBS], MEAN LINK BANDWIDTH\n"
