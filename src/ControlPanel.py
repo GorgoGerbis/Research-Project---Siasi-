@@ -13,15 +13,15 @@ MULTI_MAPPING = 2 # Mapping one function at a time on multiple different nodes
 
 NodeInputData = os.path.join(resourcesFolder, "NodeInputData.csv")
 LinkInputData = os.path.join(resourcesFolder, "LinkInputData.csv")
-RequestInputData = os.path.join(resourcesFolder, "RequestInputData_500.txt")
+RequestInputData = os.path.join(resourcesFolder, "RequestInputData_800.txt")
 
 # OUTPUT FILE PATHS
 
-GLOBAL_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "SINGLE_PATH_ONE_OUTPUT_DATA_500.csv")
-GLOBAL_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "SINGLE_PATH_TWO_OUTPUT_DATA_500.csv")
+# GLOBAL_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "SINGLE_PATH_ONE_OUTPUT_DATA_800.csv")
+# GLOBAL_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "SINGLE_PATH_TWO_OUTPUT_DATA_800.csv")
 
-# GLOBAL_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "MULTI_PATH_ONE_OUTPUT_DATA_500.csv")
-# GLOBAL_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "MULTI_PATH_TWO_OUTPUT_DATA_500.csv")
+GLOBAL_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "MULTI_PATH_ONE_OUTPUT_DATA_800.csv")
+GLOBAL_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "MULTI_PATH_TWO_OUTPUT_DATA_800.csv")
 
 # WILL DELETE THIS METHOD LATER
 
@@ -32,4 +32,4 @@ GLOBAL_REQUEST_DELAY_THRESHOLD = 120.5
 GlOBAL_FAILURE_THRESHOLD = 55.5
 GLOBAL_FAILURE_RATE = 0.15
 
-GLOBAL_PROTOCOL = 1
+GLOBAL_PROTOCOL = 2
