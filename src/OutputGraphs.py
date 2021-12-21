@@ -123,6 +123,8 @@ def create_bar_graph_costs(path_one_data, path_two_data):
 
 
 if __name__ == '__main__':
+    for f in all_fps:
+        process_input_data(f)
     ################### Updated as of 12/16/2021 # numbers from datasets: 25, 50, 75, 100, 200, 300, 500 ##############################
     multi_pathOne_failure_percentages = [40, 56, 48, 52, 39, 26, 16.8]
     multi_pathTwo_failure_percentages = [40, 64, 60, 59, 65.5, 54, 38.2]
@@ -151,14 +153,24 @@ if __name__ == '__main__':
     create_bar_graph_delays(multi_pathOne_delays, multi_pathTwo_delays)
     create_bar_graph_costs(multi_pathOne_costs, multi_pathTwo_costs)
     ##################################################################################
-    single_pathOne_failure_percentages = [40, 64, 54.6, 59, 62, 41, 23.6]
-    single_pathTwo_failure_percentages = [40, 68, 60, 62, 68.5, 57, 37.4]
+    # 12/17/21
+    # single_pathOne_failure_percentages = [40, 64, 54.6, 59, 62, 41, 23.6]
+    # single_pathTwo_failure_percentages = [40, 68, 60, 62, 68.5, 57, 37.4]
+    #
+    # single_pathOne_delays = [8.07, 7.9, 8.03, 7.91, 8.23, 8.43, 8.15]
+    # single_pathTwo_delays = [8.07, 7.89, 8.11, 8.05, 8.31, 8.81, 8.59]
+    #
+    # single_pathOne_costs = [37, 33.12, 34.51, 34.15, 36.53, 38.73, 37.2]
+    # single_pathTwo_costs = [37, 33.52, 35.22, 34.83, 36.97, 40.78, 40.13]
 
-    single_pathOne_delays = [8.07, 7.9, 8.03, 7.91, 8.23, 8.43, 8.15]
-    single_pathTwo_delays = [8.07, 7.89, 8.11, 8.05, 8.31, 8.81, 8.59]
+    single_pathOne_failure_percentages = [40, 64, 54.6, 59, 62, 41, 23.6]
+    single_pathTwo_failure_percentages = []
+
+    single_pathOne_delays = [8.07, 7.9, 8.0, 7.91, 8.23, 8.43, 8.15]
+    single_pathTwo_delays = []
 
     single_pathOne_costs = [37, 33.12, 34.51, 34.15, 36.53, 38.73, 37.2]
-    single_pathTwo_costs = [37, 33.52, 35.22, 34.83, 36.97, 40.78, 40.13]
+    single_pathTwo_costs = []
 
     count = sum(single_pathOne_failure_percentages)
     cnt = sum(single_pathTwo_failure_percentages)

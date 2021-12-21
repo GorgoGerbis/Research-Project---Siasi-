@@ -35,7 +35,7 @@ def processInputDataNode(filePath):
             status = currentElements[3]
             processingDelay = 1
             cost = int(currentElements[5])
-            resources = [50, 50, 50]
+            resources = [100, 100, 100]
 
             failure = float(currentElements[6].strip('\n'))
 
