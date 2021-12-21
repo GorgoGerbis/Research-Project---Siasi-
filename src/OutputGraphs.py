@@ -43,9 +43,11 @@ def process_input_data(filePath):
         fp.readline()
         avg = fp.readline()
         averages = avg.split(',')
-        for cnt, line in enumerate(fp):
-            print("Line {}: {}".format(cnt, line))
-            currentElements = line.split(';')
+        avg_delay = averages[2]
+        avg_cost = averages[3]
+        avg_fail = averages[4]
+
+        print("DELAY: {} COST: {} FAIL: {}\n".format(avg_delay, avg_cost, avg_fail))
 
 
 def create_bar_graph(path_one_data, path_two_data):
@@ -121,7 +123,6 @@ def create_bar_graph_costs(path_one_data, path_two_data):
 
 
 if __name__ == '__main__':
-
     ################### Updated as of 12/16/2021 # numbers from datasets: 25, 50, 75, 100, 200, 300, 500 ##############################
     multi_pathOne_failure_percentages = [40, 56, 48, 52, 39, 26, 16.8]
     multi_pathTwo_failure_percentages = [40, 64, 60, 59, 65.5, 54, 38.2]
