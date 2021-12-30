@@ -37,8 +37,10 @@ resourcesFolder = os.path.join(baseFolder, "resources")
 outputFolder = os.path.join(baseFolder, "output")
 
 
-def process_input_data(filePath):
+def process_input_data(filePath, count):
     with open(filePath) as fp:
+        count += 1
+        name = "MULTI then SINGLE " + str(count)
         fp.readline()
         fp.readline()
         avg = fp.readline()
@@ -47,7 +49,8 @@ def process_input_data(filePath):
         avg_cost = averages[3]
         avg_fail = averages[4]
 
-        print("DELAY: {} COST: {} FAIL: {}\n".format(avg_delay, avg_cost, avg_fail))
+        print("FILEPATH: {} DELAY: {} COST: {} FAIL: {}\n".format(name, avg_delay, avg_cost, avg_fail))
+        fp.close()
 
 
 def create_bar_graph(path_one_data, path_two_data):
@@ -55,7 +58,7 @@ def create_bar_graph(path_one_data, path_two_data):
     ind = np.arange(N)
     width = 0.35
     ax1 = plt.bar(ind, path_one_data, width, label='Conventional Scheme')
-    ax2 = plt.bar(ind + width, path_two_data, width, label='Fault-Aware Scheme')
+    ax2 = plt.bar(np.add(ind, width), path_two_data, width, label='Fault-Aware Scheme')
     plt.ylabel('Successful Requests')
     plt.title('Request success rates: Conventional mapping Vs. Fault-Aware mapping')
 
@@ -79,7 +82,8 @@ def create_bar_graph_delays(path_one_data, path_two_data):
     ind = np.arange(N)
     width = 0.35
     ax1 = plt.bar(ind, path_one_data, width, label='Conventional Scheme')
-    ax2 = plt.bar(ind + width, path_two_data, width, label='Fault-Aware Scheme')
+    exo = ind + width
+    ax2 = plt.bar(exo, path_two_data, width, label='Fault-Aware Scheme')
     plt.ylabel('Average request delay')
     plt.title('Average request delay: Conventional mapping Vs. Fault-Aware mapping')
 
@@ -123,8 +127,10 @@ def create_bar_graph_costs(path_one_data, path_two_data):
 
 
 if __name__ == '__main__':
+    count = 0
     for f in all_fps:
-        process_input_data(f)
+        count += 1
+        process_input_data(f, count)
     ################### Updated as of 12/16/2021 # numbers from datasets: 25, 50, 75, 100, 200, 300, 500 ##############################
     multi_pathOne_failure_percentages = [40, 56, 48, 52, 39, 26, 16.8]
     multi_pathTwo_failure_percentages = [40, 64, 60, 59, 65.5, 54, 38.2]
