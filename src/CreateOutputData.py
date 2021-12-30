@@ -11,7 +11,7 @@ REQUEST_APPROVED = 3
 
 AUTO_FAIL = [5, 6, 13, 19]
 
-
+#@ToDo Nvm it works as intended
 def fail_unavailable_paths():
     for req in Request.STATIC_TOTAL_REQUEST_LIST:
         if req.requestStatus[0] == REQUEST_APPROVED:
