@@ -85,9 +85,7 @@ def process_input_data(filePath, c):
         avg_cost = averages[3]
         avg_fail = averages[4]
 
-        print("{} | num passed = {} | avg delay = {} | avg cost = {} | avg fail prob = {}\n".format(name, num_passed,
-                                                                                                    avg_delay, avg_cost,
-                                                                                                    avg_fail))
+        #print("{} | num passed = {} | avg delay = {} | avg cost = {} | avg fail prob = {}\n".format(name, num_passed, avg_delay, avg_cost, avg_fail))
         fp.close()
         return int(num_passed) / num_reqs[c], float(avg_delay), float(avg_cost)
 
@@ -174,22 +172,22 @@ if __name__ == '__main__':
 
         zap += 1
 
-    print("Dataset 5 single mapping percents passed: {}\n".format(single_p1_passed))
-    print("Dataset 5 single mapping percents passed: {}\n".format(single_p2_passed))
+    print("two_single_p1_passed = {}\n".format(single_p1_passed))
+    print("two_single_p2_passed = {}\n".format(single_p2_passed))
 
-    print("Dataset 5 single mapping avg delays: {}\n".format(single_p1_delays))
-    print("Dataset 5 single mapping avg delays: {}\n".format(single_p2_delays))
+    print("two_single_p1_delays = {}\n".format(single_p1_delays))
+    print("two_single_p2_delays = {}\n".format(single_p2_delays))
 
-    print("Dataset 5 single mapping avg costs: {}\n".format(single_p1_costs))
-    print("Dataset 5 single mapping avg costs: {}\n".format(single_p2_costs))
+    print("two_single_p1_costs = {}\n".format(single_p1_costs))
+    print("two_single_p2_costs = {}\n".format(single_p2_costs))
 
     print("----------------------------------------------------------------------\n")
 
-    print("Dataset 5 multi mapping percents passed: {}\n".format(multi_p1_passed))
-    print("Dataset 5 multi mapping percents passed: {}\n".format(multi_p2_passed))
+    print("two_multi_p1_passed = {}\n".format(multi_p1_passed))
+    print("two_multi_p2_passed = {}\n".format(multi_p2_passed))
 
-    print("Dataset 5 multi mapping avg delays: {}\n".format(multi_p1_delays))
-    print("Dataset 5 multi mapping avg delays: {}\n".format(multi_p2_delays))
+    print("two_multi_p1_delays = {}\n".format(multi_p1_delays))
+    print("two_multi_p2_delays = {}\n".format(multi_p2_delays))
 
-    print("Dataset 5 multi mapping avg costs: {}\n".format(multi_p1_costs))
-    print("Dataset 5 multi mapping avg costs: {}\n".format(multi_p2_costs))
+    print("two_multi_p1_costs = {}\n".format(multi_p1_costs))
+    print("two_multi_p2_costs = {}\n".format(multi_p2_costs))
