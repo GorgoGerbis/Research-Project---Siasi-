@@ -90,30 +90,6 @@ def process_input_data(filePath, c):
         return int(num_passed) / num_reqs[c], float(avg_delay), float(avg_cost)
 
 
-# def create_output_data(filePath, lists):
-#     with open(GLOBAL_OUTPUT_FILE_PATH_ONE, 'w') as fp:
-#         main_header = "DATASET=TEST_A,TYPE=WITHOUT_FAULT_TOLERANCE,NODES=42,LINKS=63,REQUESTS=100\n"
-#         average_header = "REQUEST PASSED, REQUESTS FAILED, AVERAGE REQUEST DELAY, AVERAGE REQUEST COST, AVERAGE FAILURE PROBABILITY, AVERAGE LENGTH OF PATHS, MEAN NODE [CPU, RAM, PBS], MEAN LINK BANDWIDTH\n"
-#         p, f, avd, avc, FAIL, route, resources, bw = get_average_data_PATH_ONE()
-#         avg = "{},{},{},{},{}%,{},{},{}\n".format(p, f, avd, avc, FAIL, route, resources, bw)
-#         request_header = "REQUEST STATUS,REQUEST ID,PATH ID,FAILURE PROBABILITY,DELAY,COST,FUNCTIONS,PATH\n"
-#         fp.write(main_header)
-#         fp.write(average_header)
-#         fp.write(avg)
-#         fp.write(request_header)
-#
-#         for req in Request.STATIC_TOTAL_REQUEST_LIST:
-#             current_path = req.PATH_ONE
-#             if req.requestStatus[0] == REQUEST_APPROVED:
-#                 fp.write("APPROVED,{},{},{}%,{},{},{},{}\n".format(req.requestID, current_path.pathID,
-#                                                                    current_path.FAILURE_PROBABILITY, current_path.DELAY,
-#                                                                    current_path.COST, req.requestedFunctions,
-#                                                                    current_path.route))
-#             else:
-#                 fp.write("DENIED,{},NONE,NONE,0,0,{},src={}, dest={}\n".format(req.requestID, req.requestedFunctions,
-#                                                                                req.source, req.destination))
-
-
 if __name__ == '__main__':
     single_p1_passed = []
     single_p2_passed = []
