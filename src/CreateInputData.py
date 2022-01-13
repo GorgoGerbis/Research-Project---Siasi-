@@ -61,27 +61,27 @@ def createLinkInputData_NETWORK_A(number_of_links, num_nodes):
             fp.write(linkLine)
 
 
-# def createLinkInputData_ORIGINAL(number_of_links, num_nodes):
-#     temp_list = []
-#
-#     with open(LinkInputData, 'w') as fp:
-#         heading = "Link ID;Source;Destination;Bandwidth;EdgeDelay;EdgeCost;PercentFailure\n"
-#         fp.write(heading)
-#
-#         link_list = create_pair(number_of_links, num_nodes, temp_list)
-#
-#         for i, duo in enumerate(link_list):
-#             linkID = i + 1
-#             src = link_list[i][0]
-#             dest = link_list[i][1]
-#
-#             bw = GLOBAL_LINK_BANDWIDTH
-#             ed = random.randint(3, 6) / 10  # Dividing to make them decimals
-#             ec = 5
-#             link_failure = random.randint(1, 20) / 100  # Dividing to make them decimals
-#
-#             linkLine = "{};{};{};{};{};{};{}\n".format(linkID, src, dest, bw, ed, ec, link_failure)
-#             fp.write(linkLine)
+def createLinkInputData_ORIGINAL(number_of_links, num_nodes):
+    temp_list = []
+
+    with open(LinkInputData, 'w') as fp:
+        heading = "Link ID;Source;Destination;Bandwidth;EdgeDelay;EdgeCost;PercentFailure\n"
+        fp.write(heading)
+
+        link_list = create_pair(number_of_links, num_nodes, temp_list)
+
+        for i, duo in enumerate(link_list):
+            linkID = i + 1
+            src = link_list[i][0]
+            dest = link_list[i][1]
+
+            bw = GLOBAL_LINK_BANDWIDTH
+            ed = random.randint(3, 6) / 10  # Dividing to make them decimals
+            ec = 5
+            link_failure = random.randint(1, 20) / 100  # Dividing to make them decimals
+
+            linkLine = "{};{};{};{};{};{};{}\n".format(linkID, src, dest, bw, ed, ec, link_failure)
+            fp.write(linkLine)
 
 
 def createRequests(number_of_requests, number_of_nodes):
@@ -139,7 +139,7 @@ def not_the_same(num_nodes):
 if __name__ == '__main__':
     num_nodes = 20
     num_links = 30
-    num_requests = 500
+    num_requests = 1000
 
     # print("CREATING NEW INPUT DATA!\n")
     # print("TOTAL NODES: {} TOTAL LINKS: {} TOTAL REQUESTS: {}\n".format(num_nodes, num_links, num_requests))

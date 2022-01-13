@@ -26,7 +26,7 @@ def average_data(one, two, three, four, five):
     output = []
     for i in range(7):
         current = one[i] + two[i] + three[i] + four[i] + five[i]
-        current = current / 7
+        current = current / 5
         output.append(current)
 
     return output
