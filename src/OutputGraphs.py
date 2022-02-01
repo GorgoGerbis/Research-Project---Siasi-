@@ -11,8 +11,8 @@ single_pathTwo_passed_avgs = [60.0, 62.4, 60.7, 59.4, 63.1, 57.4, 35.1]
 # single_pathOne_passed_avgs = [40.0, 40.85, 40.35, 38.42, 41.0, 28.45, 16.8, 14.87, 11.78]
 # single_pathTwo_passed_avgs = [42.85, 44.57, 43.41, 42.42, 45.07, 41.04, 25.08, 22.77, 17.82]
 
-multi_pathOne_passed_avgs = [52.0, 50.4, 49.8, 47.6, 37.0, 25.9, 15.0]
-multi_pathTwo_passed_avgs = [59.2, 60.4, 59.4, 57.6, 60.7, 54.1, 36.5]
+multi_pathOne_passed_avgs = [52.0, 50.4, 49.84666666666667, 47.6, 37.0, 25.979333333333336, 15.080000000000002]
+multi_pathTwo_passed_avgs = [59.2, 60.4, 59.45333333333333, 57.6, 60.7, 54.126, 36.52]
 # multi_pathOne_passed_avgs = [37.14, 36.0, 35.6, 34.0, 26.42, 18.54, 10.77, 10.02, 09.42]
 # multi_pathTwo_passed_avgs = [42.28, 43.14, 42.45, 41.14, 43.35, 38.66, 26.08, 23.67, 18.82]
 
@@ -48,19 +48,19 @@ def create_bar_graph_COMBO_PASSED(path_one_data_single, path_two_data_single, pa
 
     for bar in ax1:
         height = bar.get_height()
-        plt.text(x=bar.get_x() + bar.get_width() / 2, y=height + .10, s="{}%".format(height), ha='center')
+        plt.text(x=bar.get_x() + bar.get_width() / 2, y=height + .10, s="{:.2f}%".format(height), ha='center')
 
     for bar in ax2:
         height = bar.get_height()
-        plt.text(x=bar.get_x() + bar.get_width() / 2, y=height + .10, s="{}%".format(height), ha='center')
+        plt.text(x=bar.get_x() + bar.get_width() / 2, y=height + .10, s="{:.2f}%".format(height), ha='center')
 
     for bar in ax3:
         height = bar.get_height()
-        plt.text(x=bar.get_x() + bar.get_width() / 2, y=height + .10, s="{}%".format(height), ha='center')
+        plt.text(x=bar.get_x() + bar.get_width() / 2, y=height + .10, s="{:.2f}%".format(height), ha='center')
 
     for bar in ax4:
         height = bar.get_height()
-        plt.text(x=bar.get_x() + bar.get_width() / 2, y=height + .10, s="{}%".format(height), ha='center')
+        plt.text(x=bar.get_x() + bar.get_width() / 2, y=height + .10, s="{:.2f}%".format(height), ha='center')
 
     plt.show()
 
