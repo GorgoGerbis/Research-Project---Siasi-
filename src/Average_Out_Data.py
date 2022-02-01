@@ -8,8 +8,6 @@ outputFolder = os.path.join(baseFolder, "output")
 
 
 def extract_lists(input_files, line_num):
-    # l1, l2, l3, l4, l5 = [], [], [], [], []
-    # new_lists = [l1, l2, l3, l4, l5]
     output = []
     super_count = 0
 
@@ -33,11 +31,10 @@ def extract_lists(input_files, line_num):
     return output
 
 
-def average_lists(l1, l2, l3, l4, l5):
+def average_lists(V, W, X, Y, Z):
     output = []
-    i = 0
-    for i in range(len(l1)-1):
-        a, b, c, d, e = l1[i], l2[i], l3[i], l4[i], l5[i]
+    for i in range(7):
+        a, b, c, d, e = V[i], W[i], X[i], Y[i], Z[i]
         temp = a + b + c + d + e
         temp = temp / 5
         output.append(temp)
@@ -48,8 +45,8 @@ def average_lists(l1, l2, l3, l4, l5):
 if __name__ == '__main__':
     # Path One Single Mapping Costs
     input_files = [os.path.join(outputFolder, "Dataset 1 results.txt"), os.path.join(outputFolder, "Dataset 2 results.txt"), os.path.join(outputFolder, "Dataset 3 results.txt"), os.path.join(outputFolder, "Dataset 4 results.txt"), os.path.join(outputFolder, "Dataset 5 results.txt")]
-    l1, l2, l3, l4, l5 = extract_lists(input_files, 4)
-    l6, l7, l8, l9, l10 = extract_lists(input_files, 5)
+    l1, l2, l3, l4, l5 = extract_lists(input_files, 18)
+    l6, l7, l8, l9, l10 = extract_lists(input_files, 19)
     output_average_costs = average_lists(l1, l2, l3, l4, l5)
     output_average_costs_two = average_lists(l6, l7, l8, l9, l10)
 
