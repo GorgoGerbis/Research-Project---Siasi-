@@ -79,24 +79,24 @@ def create_bar_graph_COMBO_DELAYS(path_one_data_single, path_two_data_single, pa
     plt.title('Average Request Delays: Conventional mapping Vs. Fault-Aware mapping')
 
     plt.xticks(ind + width+0.1, ('25 REQ', '50 REQ', '75 REQ', '100 REQ', '200 REQ', '300 REQ', '500 REQ'))
-    plt.ylim([0, 15])
+    plt.ylim([0, 20])
     plt.legend(loc='best')
 
     for bar in ax1:
         height = bar.get_height()
-        plt.text(x=bar.get_x() + bar.get_width() / 2, y=height + .10, s="{}%".format(height), ha='center')
+        plt.text(x=bar.get_x() + bar.get_width() / 2, y=height + .10, s="{:.2f}".format(height), ha='center')
 
     for bar in ax2:
         height = bar.get_height()
-        plt.text(x=bar.get_x() + bar.get_width() / 2, y=height + .10, s="{}%".format(height), ha='center')
+        plt.text(x=bar.get_x() + bar.get_width() / 2, y=height + .10, s="{:.2f}".format(height), ha='center')
 
     for bar in ax3:
         height = bar.get_height()
-        plt.text(x=bar.get_x() + bar.get_width() / 2, y=height + .10, s="{}%".format(height), ha='center')
+        plt.text(x=bar.get_x() + bar.get_width() / 2, y=height + .10, s="{:.2f}".format(height), ha='center')
 
     for bar in ax4:
         height = bar.get_height()
-        plt.text(x=bar.get_x() + bar.get_width() / 2, y=height + .10, s="{}%".format(height), ha='center')
+        plt.text(x=bar.get_x() + bar.get_width() / 2, y=height + .10, s="{:.2f}".format(height), ha='center')
 
     plt.show()
 
@@ -115,24 +115,24 @@ def create_bar_graph_COMBO_COSTS(path_one_data_single, path_two_data_single, pat
     plt.title('Average Request Costs: Conventional mapping Vs. Fault-Aware mapping')
 
     plt.xticks(ind + width+0.1, ('25 REQ', '50 REQ', '75 REQ', '100 REQ', '200 REQ', '300 REQ', '500 REQ'))
-    plt.ylim([0, 60])
+    plt.ylim([0, 70])
     plt.legend(loc='best')
 
     for bar in ax1:
         height = bar.get_height()
-        plt.text(x=bar.get_x() + bar.get_width() / 2, y=height + .10, s="{}%".format(height), ha='center')
+        plt.text(x=bar.get_x() + bar.get_width() / 2, y=height + .10, s="{:.2f}".format(height), ha='center')
 
     for bar in ax2:
         height = bar.get_height()
-        plt.text(x=bar.get_x() + bar.get_width() / 2, y=height + .10, s="{}%".format(height), ha='center')
+        plt.text(x=bar.get_x() + bar.get_width() / 2, y=height + .10, s="{:.2f}".format(height), ha='center')
 
     for bar in ax3:
         height = bar.get_height()
-        plt.text(x=bar.get_x() + bar.get_width() / 2, y=height + .10, s="{}%".format(height), ha='center')
+        plt.text(x=bar.get_x() + bar.get_width() / 2, y=height + .10, s="{:.2f}".format(height), ha='center')
 
     for bar in ax4:
         height = bar.get_height()
-        plt.text(x=bar.get_x() + bar.get_width() / 2, y=height + .10, s="{}%".format(height), ha='center')
+        plt.text(x=bar.get_x() + bar.get_width() / 2, y=height + .10, s="{:.2f}".format(height), ha='center')
 
     plt.show()
 
