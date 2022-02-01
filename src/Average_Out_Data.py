@@ -15,7 +15,7 @@ def extract_lists(input_files, line_num):
 
     for filePath in input_files:
         with open(filePath) as fp:
-            for i in range(line_num-2):
+            for i in range(line_num-1):
                 fp.readline()  # <-- This is so that it skips the first line
             line = fp.readline()
             line = line.split('=')
@@ -48,6 +48,10 @@ def average_lists(l1, l2, l3, l4, l5):
 if __name__ == '__main__':
     # Path One Single Mapping Costs
     input_files = [os.path.join(outputFolder, "Dataset 1 results.txt"), os.path.join(outputFolder, "Dataset 2 results.txt"), os.path.join(outputFolder, "Dataset 3 results.txt"), os.path.join(outputFolder, "Dataset 4 results.txt"), os.path.join(outputFolder, "Dataset 5 results.txt")]
-    l1, l2, l3, l4, l5 = extract_lists(input_files, 8)
+    l1, l2, l3, l4, l5 = extract_lists(input_files, 4)
+    l6, l7, l8, l9, l10 = extract_lists(input_files, 5)
     output_average_costs = average_lists(l1, l2, l3, l4, l5)
-    print("TOTAL AVERAGES FOR SINGLE MAPPING PATH TWO: {}\n".format(output_average_costs))
+    output_average_costs_two = average_lists(l6, l7, l8, l9, l10)
+
+    print("TOTAL AVERAGES FOR SINGLE MAPPING PATH ONE: {}\n".format(output_average_costs))
+    print("TOTAL AVERAGES FOR SINGLE MAPPING PATH TWO: {}\n".format(output_average_costs_two))
