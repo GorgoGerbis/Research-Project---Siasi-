@@ -6,17 +6,32 @@ baseFolder = r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-
 resourcesFolder = os.path.join(baseFolder, "resources")
 outputFolder = os.path.join(baseFolder, "output")
 
+
 def extract_lists(input_files, line_num):
-    l1, l2, l3, l4, l5 = [], [], [], [], []
+    # l1, l2, l3, l4, l5 = [], [], [], [], []
+    # new_lists = [l1, l2, l3, l4, l5]
+    output = []
+    super_count = 0
 
     for filePath in input_files:
         with open(filePath) as fp:
             for i in range(line_num-2):
                 fp.readline()  # <-- This is so that it skips the first line
             line = fp.readline()
-            line = line.split('[]')
-            print("HERE ---> {}".format(line))
-    return l1, l2, l3, l4, l5
+            line = line.split('=')
+            new_data = line[1]
+            new_data = new_data[2:-2]
+            new_data = new_data.split(',')
+            new_list_final = []
+            for val in new_data:
+                new_list_final.append(float(val))
+            output.append(new_list_final)
+            print("HERE ---> {}".format(new_list_final))
+            super_count += 1
+
+    print("OUTPUT: {}\n".format(output))
+    return output
+
 
 def average_lists(l1, l2, l3, l4, l5):
     output = []
@@ -35,4 +50,4 @@ if __name__ == '__main__':
     input_files = [os.path.join(outputFolder, "Dataset 1 results.txt"), os.path.join(outputFolder, "Dataset 2 results.txt"), os.path.join(outputFolder, "Dataset 3 results.txt"), os.path.join(outputFolder, "Dataset 4 results.txt"), os.path.join(outputFolder, "Dataset 5 results.txt")]
     l1, l2, l3, l4, l5 = extract_lists(input_files, 8)
     output_average_costs = average_lists(l1, l2, l3, l4, l5)
-    print("TOTAL AVERAGES FOR SINGLE MAPPING PATH ONE: {}\n".format(output_average_costs))
+    print("TOTAL AVERAGES FOR SINGLE MAPPING PATH TWO: {}\n".format(output_average_costs))
