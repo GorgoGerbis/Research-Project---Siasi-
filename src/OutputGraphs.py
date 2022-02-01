@@ -76,7 +76,7 @@ def create_bar_graph_COMBO_DELAYS(path_one_data_single, path_two_data_single, pa
     ax4 = plt.bar(np.add(ind+0.4, width), path_two_data_multi, width, label='Multi Fault-Aware Scheme')
 
     plt.ylabel('Request Delays')
-    plt.title('Average Request Delays: Conventional mapping Vs. Fault-Aware mapping')
+    plt.title('Average request delays: Conventional mapping Vs. Fault-Aware mapping')
 
     plt.xticks(ind + width+0.1, ('25 REQ', '50 REQ', '75 REQ', '100 REQ', '200 REQ', '300 REQ', '500 REQ'))
     plt.ylim([0, 20])
@@ -112,7 +112,7 @@ def create_bar_graph_COMBO_COSTS(path_one_data_single, path_two_data_single, pat
     ax4 = plt.bar(np.add(ind+0.4, width), path_two_data_multi, width, label='Multi Fault-Aware Scheme')
 
     plt.ylabel('Request Costs')
-    plt.title('Average Request Costs: Conventional mapping Vs. Fault-Aware mapping')
+    plt.title('Average request costs: Conventional mapping Vs. Fault-Aware mapping')
 
     plt.xticks(ind + width+0.1, ('25 REQ', '50 REQ', '75 REQ', '100 REQ', '200 REQ', '300 REQ', '500 REQ'))
     plt.ylim([0, 70])
