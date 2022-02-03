@@ -187,156 +187,6 @@ def process_path_two_SINGLE_MAPPING():
             RUN_PATH_TWO_SINGLE_MAPPING(req)
 
 
-def create_figure_ONE():
-    plt.title("FIGURE 1: Number of incoming requests vs. Average delay per request")
-    plt.xlabel("Number of incoming requests")
-    plt.ylabel("Average delay per request")
-
-    path_one_delays = []
-    path_two_delays = []
-
-    path_one_avg = []
-    path_two_avg = []
-
-    for req in Request.STATIC_TOTAL_REQUEST_LIST:
-        obj = req.PATH_ONE
-        if obj is not None:
-            path_one_delays.append(obj.DELAY)
-
-    count = 0
-    total_delay_a = 0
-    for delay in path_one_delays:
-        count += 1
-        total_delay_a += delay
-        current_delay = total_delay_a / count
-        path_one_avg.append(current_delay)
-
-    for req in Request.STATIC_TOTAL_REQUEST_LIST:
-        obj = req.PATH_TWO
-        if obj is not None:
-            path_two_delays.append(obj.DELAY)
-
-    cnt = 0
-    total_delay_b = 0
-    for delay in path_two_delays:
-        cnt += 1
-        total_delay_b += delay
-        current_delay = total_delay_b / cnt
-        path_two_avg.append(current_delay)
-
-    plt.subplot(1, 2, 1)
-    plt.axis([1, 300, 1, 40])
-    plt.title("Conventional mapping")
-    plt.xlabel("Number of processed requests")
-    plt.ylabel("Average delay per request")
-    plt.plot(path_one_delays, color='g', label="Conventional mapping")
-    plt.plot(path_one_avg, color='b', label="Conventional mapping averages")
-    plt.legend()
-
-    plt.subplot(1, 2, 2)
-    plt.axis([1, 300, 1, 40])
-    plt.title("Failure-aware mapping")
-    plt.xlabel("Number of processed requests")
-    plt.ylabel("Average delay per request")
-    plt.plot(path_two_delays, color='y', label="Failure-aware mapping")
-    plt.plot(path_two_avg, color='r', label="Failure-aware mapping averages")
-    plt.legend()
-    plt.show()
-
-
-def create_figure_TWO():
-    plt.title("FIGURE 2: Number of incoming requests vs. Average cost per request")
-    plt.xlabel("Number of incoming requests")
-    plt.ylabel("Average cost per request")
-
-    path_one_costs = []
-    path_two_costs = []
-
-    path_one_avg = []
-    path_two_avg = []
-
-    for req in Request.STATIC_TOTAL_REQUEST_LIST:
-        obj = req.PATH_ONE
-        if obj is not None:
-            path_one_costs.append(obj.COST)
-
-    count = 0
-    total_cost_a = 0
-    for cost in path_one_costs:
-        count += 1
-        total_cost_a += cost
-        current_cost = total_cost_a / count
-        path_one_avg.append(current_cost)
-
-    for req in Request.STATIC_TOTAL_REQUEST_LIST:
-        obj = req.PATH_TWO
-        if obj is not None:
-            path_two_costs.append(obj.COST)
-
-    cnt = 0
-    total_cost_a = 0
-    for cost in path_two_costs:
-        cnt += 1
-        total_cost_a += cost
-        current_cost = total_cost_a / cnt
-        path_two_avg.append(current_cost)
-
-    plt.subplot(1, 2, 1)
-    plt.axis([1, 300, 1, 200])
-    plt.title("Conventional mapping")
-    plt.xlabel("Number of processed requests")
-    plt.ylabel("Average cost per request")
-    plt.plot(path_one_costs, color='g', label="Conventional mapping")
-    plt.plot(path_one_avg, color='b', label="Conventional mapping averages")
-    plt.legend()
-
-    plt.subplot(1, 2, 2)
-    plt.axis([1, 300, 1, 200])
-    plt.title("Failure-aware mapping")
-    plt.xlabel("Number of processed requests")
-    plt.ylabel("Average cost per request")
-    plt.plot(path_two_costs, color='y', label="Failure-aware mapping")
-    plt.plot(path_two_avg, color='r', label="Failure-aware mapping averages")
-    plt.legend()
-    plt.show()
-
-
-def create_figure_THREE():
-    plt.title("FIGURE 3: Number of incoming requests vs. Success Rate of requests")
-    plt.xlabel("Number of incoming requests")
-    plt.ylabel("Success rates of requests")
-
-    conventional = np.array([])
-    fault_aware = np.array([])
-
-    conventional_passed = 0
-    fault_aware_passed = 0
-
-    y = list(range(1, 300))
-
-    for req in Request.STATIC_TOTAL_REQUEST_LIST:
-        obj = req.PATH_ONE
-        if obj is not None:
-            conventional_passed += 1
-            conventional = np.append(conventional, conventional_passed)
-
-    for req in Request.STATIC_TOTAL_REQUEST_LIST:
-        obj = req.PATH_TWO
-        if obj is not None:
-            fault_aware_passed += 1
-            fault_aware = np.append(fault_aware, fault_aware_passed)
-
-    plt.subplots(2)
-    plt.axis([1, 300, 1, 200])
-    plt.title("Conventional mapping")
-    plt.xlabel("Number of processed requests")
-    plt.ylabel("Number of passed requests")
-    plt.plot(conventional, color='g', label="Conventional mapping")
-    plt.plot(fault_aware, color='b', label="Fault-aware mapping")
-    plt.legend()
-    plt.show()
-
-
 def find_isolated_nodes():
     frick = []
     frack = []
@@ -367,22 +217,13 @@ if __name__ == '__main__':
         GRAPH.add_edges_from(edges)
 
         # Just commented out so I don't have to keep closing the window every time
-        nx.draw(GRAPH, with_labels=True, font_weight='bold')
-        plt.show()  # ToDo Need to figure out why I need this in order to stop the graph from disappearing
+        # nx.draw(GRAPH, with_labels=True, font_weight='bold')
+        # plt.show()
 
         find_isolated_nodes()
 
         ########### SETUP IS NOW OVER WE CAN BEGIN PROCESSING ##############
         process_path_one_SINGLE_MAPPING()
-        print("ALL DONE FINDING FIRST PATHS\n")
-        for op in PathObj.StaticOptimalPathsList:
-            print(op)
-
-        # fail_unavailable_paths()
-        for req in Request.STATIC_TOTAL_REQUEST_LIST:
-            obj = req.PATH_ONE
-            if obj is not None:
-                print(obj)
 
         print("STARTING CREATION OF OUTPUT FILES\n")
         CreateOutputData.output_file_PATH_ONE()
@@ -402,19 +243,9 @@ if __name__ == '__main__':
 
         ############# BEGIN PROCESSING FOR PATH TWO ##############
         process_path_two_SINGLE_MAPPING()
-        print("ALL DONE FINDING SECOND PATHS\n")
-        for op in PathObj.StaticOptimalPathsList:
-            print(op)
 
         print("STARTING CREATION OF FAILURE PROBABILITY OUTPUT FILES\n")
         CreateOutputData.output_file_PATH_TWO()
-        ##########################################################
-
-        ############# CREATE OUTPUT DATA GRAPHS ##############
-        fail_unavailable_paths()
-        create_figure_ONE()
-        create_figure_TWO()
-        #   create_figure_THREE()
 
     elif ControlPanel.GLOBAL_PROTOCOL == 2:
         print("Begin Processing requests using: 'Head vs. Wall' Protocol\n")
@@ -437,7 +268,6 @@ if __name__ == '__main__':
         for op in PathObj.StaticOptimalPathsList:
             print(op)
 
-        # fail_unavailable_paths()
         for req in Request.STATIC_TOTAL_REQUEST_LIST:
             obj = req.PATH_ONE
             if obj is not None:
@@ -467,11 +297,3 @@ if __name__ == '__main__':
 
         print("STARTING CREATION OF FAILURE PROBABILITY OUTPUT FILES\n")
         output_file_PATH_TWO()
-        ##########################################################
-
-        ############# CREATE OUTPUT DATA GRAPHS ##############
-        fail_unavailable_paths()
-        create_figure_ONE()
-        create_figure_TWO()
-        #   create_figure_THREE()
-
