@@ -2,6 +2,10 @@ from src.Request import Request
 from src.ControlPanel import GLOBAL_OUTPUT_FILE_PATH_ONE
 from src.ControlPanel import GLOBAL_OUTPUT_FILE_PATH_TWO
 
+#NEW FILE
+from src.ControlPanel import OUTPUT_SET_ONE_A
+from src.ControlPanel import OUTPUT_SET_ONE_B
+
 from src.NodeObj import NodeObj
 
 REQUEST_NEEDS_CALCULATING = 0
@@ -13,7 +17,6 @@ AUTO_FAIL = [5, 6, 13, 19]
 
 
 #@Nvm it works as intended, Path one type paths will map on failed nodes and just be failed after while type two will avoid failed nodes completely.
-
 def fail_unavailable_paths():
     for req in Request.STATIC_TOTAL_REQUEST_LIST:
         if req.requestStatus[0] == REQUEST_APPROVED:
@@ -23,8 +26,13 @@ def fail_unavailable_paths():
                     req.requestStatus[0] = REQUEST_DENIED
                     req.PATH_ONE = None
 
+########################################### NEW STUFF #################################################################
 
-def get_average_data_PATH_ONE():
+
+def NEW_get_average_data_PATH_ONE(num_range):
+    # NEW LISTS
+    temp_req_list = []
+
     delays = []
     costs = []
     fails = []
@@ -47,7 +55,12 @@ def get_average_data_PATH_ONE():
 
     bw = 0
 
-    for req in Request.STATIC_TOTAL_REQUEST_LIST:
+    for i in range(num_range):
+        i += 1
+        current_req = Request.return_request(i)
+        temp_req_list.append(current_req)
+
+    for req in temp_req_list:
         if req.requestStatus[0] == REQUEST_APPROVED:
             total_approved += 1
             obj = req.PATH_ONE
@@ -93,7 +106,10 @@ def get_average_data_PATH_ONE():
     return total_approved, total_denied, delay_average, cost_average, fail_average, route_average, [cpu, ram, pbs], bw
 
 
-def get_average_data_PATH_TWO():
+def NEW_get_average_data_PATH_TWO(num_range):
+    # NEW LISTS
+    temp_req_list = []
+
     delays = []
     costs = []
     fails = []
@@ -116,7 +132,12 @@ def get_average_data_PATH_TWO():
 
     bw = 0
 
-    for req in Request.STATIC_TOTAL_REQUEST_LIST:
+    for i in range(num_range):
+        i += 1
+        current_req = Request.return_request(i)
+        temp_req_list.append(current_req)
+
+    for req in temp_req_list:
         if req.requestStatus[1] == REQUEST_APPROVED:
             total_approved += 1
             obj = req.PATH_TWO
@@ -159,15 +180,18 @@ def get_average_data_PATH_TWO():
 
     bw = bw / num_links
 
+    # print("".format(total_approved, total_denied, delay_average, cost_average, fail_average, route_average, [cpu, ram, pbs], bw))
     return total_approved, total_denied, delay_average, cost_average, fail_average, route_average, [cpu, ram, pbs], bw
 
 
-def output_file_PATH_ONE():
+def NEW_output_file_PATH_ONE(FILE_NAME, num_range):
+    temp_reqs = []
+
     fail_unavailable_paths() # This will fail all paths that have a failed node in its route
-    with open(GLOBAL_OUTPUT_FILE_PATH_ONE, 'w') as fp:
+    with open(FILE_NAME, 'w') as fp:
         main_header = "DATASET=TEST_A,TYPE=WITHOUT_FAULT_TOLERANCE,NODES=42,LINKS=63,REQUESTS=100\n"
         average_header = "REQUEST PASSED, REQUESTS FAILED, AVERAGE REQUEST DELAY, AVERAGE REQUEST COST, AVERAGE FAILURE PROBABILITY, AVERAGE LENGTH OF PATHS, MEAN NODE [CPU, RAM, PBS], MEAN LINK BANDWIDTH\n"
-        p, f, avd, avc, FAIL, route, resources, bw = get_average_data_PATH_ONE()
+        p, f, avd, avc, FAIL, route, resources, bw = NEW_get_average_data_PATH_ONE(num_range)
         avg = "{},{},{},{},{}%,{},{},{}\n".format(p, f, avd, avc, FAIL, route, resources, bw)
         request_header = "REQUEST STATUS,REQUEST ID,PATH ID,FAILURE PROBABILITY,DELAY,COST,FUNCTIONS,PATH\n"
         fp.write(main_header)
@@ -175,7 +199,12 @@ def output_file_PATH_ONE():
         fp.write(avg)
         fp.write(request_header)
 
-        for req in Request.STATIC_TOTAL_REQUEST_LIST:
+        for i in range(num_range):
+            i += 1
+            current = Request.return_request(i)
+            temp_reqs.append(current)
+
+        for req in temp_reqs:
             current_path = req.PATH_ONE
             if req.requestStatus[0] == REQUEST_APPROVED:
                 fp.write("APPROVED,{},{},{}%,{},{},{},{}\n".format(req.requestID, current_path.pathID,
@@ -187,11 +216,13 @@ def output_file_PATH_ONE():
                                                                                req.source, req.destination))
 
 
-def output_file_PATH_TWO():
-    with open(GLOBAL_OUTPUT_FILE_PATH_TWO, 'w') as fp:
-        main_header = "DATASET=TEST_A,TYPE=WITH_FAULT_TOLERANCE,NODES=42,LINKS=63,REQUESTS=100\n"
+def NEW_output_file_PATH_TWO(FILE_NAME, num_range):
+    temp_reqs = []
+
+    with open(FILE_NAME, 'w') as fp:
+        main_header = "DATASET=0-25,TYPE=WITH_FAULT_TOLERANCE,NODES=42,LINKS=63,REQUESTS=100\n"
         average_header = "REQUEST PASSED, REQUESTS FAILED, AVERAGE REQUEST DELAY, AVERAGE REQUEST COST, AVERAGE FAILURE PROBABILITY, AVERAGE LENGTH OF PATHS, MEAN NODE [CPU, RAM, PBS], MEAN LINK BANDWIDTH\n"
-        p, f, avd, avc, FAIL, route, resources, bw = get_average_data_PATH_TWO()
+        p, f, avd, avc, FAIL, route, resources, bw = NEW_get_average_data_PATH_TWO(num_range)
         avg = "{},{},{},{},{}%,{},{},{}\n".format(p, f, avd, avc, FAIL, route, resources, bw)
         request_header = "REQUEST STATUS,REQUEST ID,PATH ID,FAILURE PROBABILITY,DELAY,COST,FUNCTIONS,PATH\n"
         fp.write(main_header)
@@ -199,7 +230,12 @@ def output_file_PATH_TWO():
         fp.write(avg)
         fp.write(request_header)
 
-        for req in Request.STATIC_TOTAL_REQUEST_LIST:
+        for i in range(num_range):
+            i += 1
+            current = Request.return_request(i)
+            temp_reqs.append(current)
+
+        for req in temp_reqs:
             current_path = req.PATH_TWO
             if req.requestStatus[1] == REQUEST_APPROVED:
                 fp.write("APPROVED,{},{},{}%,{},{},{},{}\n".format(req.requestID, current_path.pathID, current_path.FAILURE_PROBABILITY, current_path.DELAY, current_path.COST, req.requestedFunctions, current_path.route))

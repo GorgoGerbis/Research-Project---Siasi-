@@ -4,10 +4,7 @@ from src.NodeObj import NodeObj
 from src.Request import Request
 from src.PathObj import PathObj
 import CreateOutputData
-from src.CreateOutputData import output_file_PATH_TWO
 
-from src.ControlPanel import GLOBAL_NODE_RESOURCES
-from src.ControlPanel import GLOBAL_LINK_BANDWIDTH
 from src.ControlPanel import GLOBAL_REQUEST_DELAY_THRESHOLD
 
 # Need these for path finding and graphing
@@ -20,6 +17,13 @@ from src.ProcessPathing import RUN_PATH_ONE
 from src.ProcessPathing import RUN_PATH_TWO
 from src.SingleMapping import RUN_PATH_ONE_SINGLE_MAPPING
 from src.SingleMapping import RUN_PATH_TWO_SINGLE_MAPPING
+
+######################## NEW SHIT I MADE ################
+import os
+baseFolder = r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-"
+resourcesFolder = os.path.join(baseFolder, "resources")
+outputFolder = os.path.join(baseFolder, "output")
+####################################################
 
 REQUEST_DELAY_THRESHOLD = GLOBAL_REQUEST_DELAY_THRESHOLD
 
@@ -41,7 +45,7 @@ Head vs Wall is the nickname I gave to this protocol. Works as follows.
 The networkx method 'all_simple_paths' uses a modified depth first search.
 """
 
-NODES_THAT_AUTO_FAIL = [5, 6, 13, 19]
+NODES_THAT_AUTO_FAIL = [5, 6, 13, 19] # [5, 6, 13, 19]
 
 PASSED_REQUESTS_ONE = []
 PASSED_REQUESTS_TWO = []
@@ -217,8 +221,8 @@ if __name__ == '__main__':
         GRAPH.add_edges_from(edges)
 
         # Just commented out so I don't have to keep closing the window every time
-        # nx.draw(GRAPH, with_labels=True, font_weight='bold')
-        # plt.show()
+        nx.draw(GRAPH, with_labels=True, font_weight='bold')
+        plt.show()
 
         find_isolated_nodes()
 
@@ -226,7 +230,16 @@ if __name__ == '__main__':
         process_path_one_SINGLE_MAPPING()
 
         print("STARTING CREATION OF OUTPUT FILES\n")
-        CreateOutputData.output_file_PATH_ONE()
+        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_SINGLE_PATH_ONE_OUTPUT_DATA_25.csv"), 25)
+        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_SINGLE_PATH_ONE_OUTPUT_DATA_50.csv"), 50)
+        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_SINGLE_PATH_ONE_OUTPUT_DATA_100.csv"), 100)
+        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_SINGLE_PATH_ONE_OUTPUT_DATA_200.csv"), 200)
+        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_SINGLE_PATH_ONE_OUTPUT_DATA_300.csv"), 300)
+        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_SINGLE_PATH_ONE_OUTPUT_DATA_400.csv"), 400)
+        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_SINGLE_PATH_ONE_OUTPUT_DATA_500.csv"), 500)
+        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_SINGLE_PATH_ONE_OUTPUT_DATA_600.csv"), 600)
+        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_SINGLE_PATH_ONE_OUTPUT_DATA_700.csv"), 700)
+        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_SINGLE_PATH_ONE_OUTPUT_DATA_800.csv"), 800)
         print("CREATED PATH ONE OUTPUT FILES\n")
         #########################################################
 
@@ -245,7 +258,17 @@ if __name__ == '__main__':
         process_path_two_SINGLE_MAPPING()
 
         print("STARTING CREATION OF FAILURE PROBABILITY OUTPUT FILES\n")
-        CreateOutputData.output_file_PATH_TWO()
+        # CreateOutputData.output_file_PATH_TWO()
+        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_SINGLE_PATH_TWO_OUTPUT_DATA_25.csv"), 25)
+        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_SINGLE_PATH_TWO_OUTPUT_DATA_50.csv"), 50)
+        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_SINGLE_PATH_TWO_OUTPUT_DATA_100.csv"), 100)
+        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_SINGLE_PATH_TWO_OUTPUT_DATA_200.csv"), 200)
+        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_SINGLE_PATH_TWO_OUTPUT_DATA_300.csv"), 300)
+        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_SINGLE_PATH_TWO_OUTPUT_DATA_400.csv"), 400)
+        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_SINGLE_PATH_TWO_OUTPUT_DATA_500.csv"), 500)
+        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_SINGLE_PATH_TWO_OUTPUT_DATA_600.csv"), 600)
+        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_SINGLE_PATH_TWO_OUTPUT_DATA_700.csv"), 700)
+        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_SINGLE_PATH_TWO_OUTPUT_DATA_800.csv"), 800)
 
     elif ControlPanel.GLOBAL_PROTOCOL == 2:
         print("Begin Processing requests using: 'Head vs. Wall' Protocol\n")
@@ -274,7 +297,17 @@ if __name__ == '__main__':
                 print(obj)
 
         print("STARTING CREATION OF OUTPUT FILES\n")
-        CreateOutputData.output_file_PATH_ONE()
+        # CreateOutputData.output_file_PATH_ONE()
+        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_MULTI_PATH_ONE_OUTPUT_DATA_25.csv"), 25)
+        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_MULTI_PATH_ONE_OUTPUT_DATA_50.csv"), 50)
+        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_MULTI_PATH_ONE_OUTPUT_DATA_100.csv"), 100)
+        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_MULTI_PATH_ONE_OUTPUT_DATA_200.csv"), 200)
+        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_MULTI_PATH_ONE_OUTPUT_DATA_300.csv"), 300)
+        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_MULTI_PATH_ONE_OUTPUT_DATA_400.csv"), 400)
+        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_MULTI_PATH_ONE_OUTPUT_DATA_500.csv"), 500)
+        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_MULTI_PATH_ONE_OUTPUT_DATA_600.csv"), 600)
+        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_MULTI_PATH_ONE_OUTPUT_DATA_700.csv"), 700)
+        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_MULTI_PATH_ONE_OUTPUT_DATA_800.csv"), 800)
         print("CREATED PATH ONE OUTPUT FILES\n")
         #########################################################
 
@@ -296,4 +329,13 @@ if __name__ == '__main__':
             print(op)
 
         print("STARTING CREATION OF FAILURE PROBABILITY OUTPUT FILES\n")
-        output_file_PATH_TWO()
+        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_MULTI_PATH_TWO_OUTPUT_DATA_25.csv"), 25)
+        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_MULTI_PATH_TWO_OUTPUT_DATA_50.csv"), 50)
+        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_MULTI_PATH_TWO_OUTPUT_DATA_100.csv"), 100)
+        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_MULTI_PATH_TWO_OUTPUT_DATA_200.csv"), 200)
+        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_MULTI_PATH_TWO_OUTPUT_DATA_300.csv"), 300)
+        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_MULTI_PATH_TWO_OUTPUT_DATA_400.csv"), 400)
+        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_MULTI_PATH_TWO_OUTPUT_DATA_500.csv"), 500)
+        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_MULTI_PATH_TWO_OUTPUT_DATA_600.csv"), 600)
+        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_MULTI_PATH_TWO_OUTPUT_DATA_700.csv"), 700)
+        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_MULTI_PATH_TWO_OUTPUT_DATA_800.csv"), 800)

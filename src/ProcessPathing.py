@@ -8,7 +8,6 @@ from ControlPanel import GLOBAL_REQUEST_DELAY_THRESHOLD
 from ControlPanel import GlOBAL_FAILURE_THRESHOLD
 from ControlPanel import GLOBAL_FAILURE_RATE
 
-
 FAIL_RATE = GLOBAL_FAILURE_RATE
 REQUEST_DELAY_THRESHOLD = GLOBAL_REQUEST_DELAY_THRESHOLD
 FAILURE_THRESHOLD = GlOBAL_FAILURE_THRESHOLD
@@ -22,7 +21,7 @@ FLUNK = 3
 BACKUP = 4
 OPTIMAL = 5
 
-AUTO_FAIL = [5, 6, 13, 19]
+AUTO_FAIL = [] # [5, 6, 13, 19]
 
 
 def check_fail(path_obj):
@@ -51,7 +50,7 @@ def set_path_state_PATH_ONE(path_obj):  # <-- This one DOES NOT use failure prob
 
 
 # @Todo need to remember to clear BACKUP_PATHS when finished processing request
-def set_path_state_PATH_TWO(path_obj):  # <-- This one DOES NOT use failure probability
+def set_path_state_PATH_TWO(path_obj):  # <-- This one DOES use failure probability
     # Given a path must then determine and set the state of the path
     if path_obj.state == STATE_UNKNOWN:
         if calculate_path_resources_PATH_TWO(path_obj):
@@ -169,7 +168,6 @@ def calculate_path_resources_PATH_TWO(path_obj):
     funcs_mapped = []
     func_count = 0
 
-
     for step in fused_path:
         if all_mapped and enough_bw:
             return True
@@ -190,7 +188,7 @@ def calculate_path_resources_PATH_TWO(path_obj):
                 path_obj.state = POOR
                 return False
             # Determining the status of a node and if it has failed
-            elif current_node.get_status == 'O':
+            elif current_node.status == 'O':
                 # print("MAPPING ON NODE {} IS NOT POSSIBLE NODE IS OFFLINE".format(current_node.nodeID))
                 NodeObj.AUTO_FAIL_PATH_TWO.append(current_node.nodeID)
                 path_obj.state = POOR
@@ -303,7 +301,7 @@ def calculate_optimal_PATH_ONE():
         PathObj.OPTIMAL_PATH_SET = True
 
 
-def calculate_optimal_PATH_TWO(): # 47/100 51.349785688330044%/47.506267247894435%
+def calculate_optimal_PATH_TWO():
     """
     Compares every single path that meets all the other specified criteria and finds
     the shortest one WITH the least failure probability.

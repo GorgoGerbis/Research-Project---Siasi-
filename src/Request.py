@@ -6,6 +6,9 @@ class Request:
     STATIC_APPROVED_REQUEST_LIST = []
     STATIC_DENIED_REQUEST_LIST = []
 
+    #NEW LIST
+    STATIC_REQUEST_SETS = [] # Request objects 1-25, 26-50, 51-100, 101-200 etc...
+
     # @ToDo Request states that I might honestly delete bc they're unused at the moment
     REQUEST_NEEDS_CALCULATING = 0
     REQUEST_ONGOING = 1
@@ -33,7 +36,7 @@ class Request:
     @staticmethod
     def return_request(reqID):
         for req in Request.STATIC_TOTAL_REQUEST_LIST:
-            if req.RequestID == reqID:
+            if req.requestID == reqID:
                 return req
 
     def __str__(self):
