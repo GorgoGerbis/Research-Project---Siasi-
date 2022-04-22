@@ -2,7 +2,7 @@ from src.NodeObj import NodeObj
 from src.FuncObj import FuncObj
 from src.LinkObj import LinkObj
 from src.Request import Request
-from src.ControlPanel import GLOBAL_REQUEST_DELAY_THRESHOLD
+from src.CONSTANTS import GLOBAL_REQUEST_DELAY_THRESHOLD
 """
 @author: Jackson Walker
 Path resources: [CPU, RAM, Physical buffer size]

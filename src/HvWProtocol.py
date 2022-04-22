@@ -1,18 +1,16 @@
-import ControlPanel
+import CONSTANTS
 from src import ProcessInputData
 from src.NodeObj import NodeObj
 from src.Request import Request
 from src.PathObj import PathObj
 import CreateOutputData
 
-from src.ControlPanel import GLOBAL_REQUEST_DELAY_THRESHOLD
+from src.CONSTANTS import GLOBAL_REQUEST_DELAY_THRESHOLD
 
 # Need these for path finding and graphing
 import networkx as nx
 import matplotlib.pyplot as plt
 import numpy as np
-
-
 
 # Need these to process requests
 from src.ProcessPathing import RUN_PATH_ONE
@@ -22,7 +20,8 @@ from src.SingleMapping import RUN_PATH_TWO_SINGLE_MAPPING
 
 ######################## NEW SHIT I MADE ################
 import os
-baseFolder = r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-"
+# baseFolder = r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-"
+baseFolder = r"C:\Users\jacks\OneDrive\Desktop\Siasi Research\Research-Project---Siasi-"
 resourcesFolder = os.path.join(baseFolder, "resources")
 outputFolder = os.path.join(baseFolder, "output")
 ####################################################
@@ -47,7 +46,7 @@ Head vs Wall is the nickname I gave to this protocol. Works as follows.
 The networkx method 'all_simple_paths' uses a modified depth first search.
 """
 
-NODES_THAT_AUTO_FAIL = [5, 6, 13, 19] # [5, 6, 13, 19]
+NODES_THAT_AUTO_FAIL = []   # [5, 6, 13, 19]
 
 PASSED_REQUESTS_ONE = []
 PASSED_REQUESTS_TWO = []
@@ -213,20 +212,21 @@ def find_isolated_nodes():
 
 
 if __name__ == '__main__':
-    if ControlPanel.GLOBAL_PROTOCOL == 1:
+    print("BEGIN PROCESSING INPUT DATA\n")
+    ProcessInputData.processAllInputData()
+    print("INPUT DATA PROCESSED\n")
+
+    set_edges()
+    GRAPH.add_edges_from(edges)
+
+    # Just commented out so I don't have to keep closing the window every time
+    nx.draw(GRAPH, with_labels=True, font_weight='bold')
+    plt.show()
+
+    find_isolated_nodes()
+
+    if CONSTANTS.GLOBAL_PROTOCOL == 1:
         print("Begin Processing requests using: Single-Mapping Protocol\n")
-        print("BEGIN PROCESSING INPUT DATA\n")
-        ProcessInputData.processAllInputData()
-        print("INPUT DATA PROCESSED\n")
-
-        set_edges()
-        GRAPH.add_edges_from(edges)
-
-        # Just commented out so I don't have to keep closing the window every time
-        nx.draw(GRAPH, with_labels=True, font_weight='bold')
-        plt.show()
-
-        find_isolated_nodes()
 
         ########### SETUP IS NOW OVER WE CAN BEGIN PROCESSING ##############
         process_path_one_SINGLE_MAPPING()
@@ -239,9 +239,9 @@ if __name__ == '__main__':
         CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_SINGLE_PATH_ONE_OUTPUT_DATA_300.csv"), 300)
         CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_SINGLE_PATH_ONE_OUTPUT_DATA_400.csv"), 400)
         CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_SINGLE_PATH_ONE_OUTPUT_DATA_500.csv"), 500)
-        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_SINGLE_PATH_ONE_OUTPUT_DATA_600.csv"), 600)
-        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_SINGLE_PATH_ONE_OUTPUT_DATA_700.csv"), 700)
-        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_SINGLE_PATH_ONE_OUTPUT_DATA_800.csv"), 800)
+        # CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_SINGLE_PATH_ONE_OUTPUT_DATA_600.csv"), 600)
+        # CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_SINGLE_PATH_ONE_OUTPUT_DATA_700.csv"), 700)
+        # CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_SINGLE_PATH_ONE_OUTPUT_DATA_800.csv"), 800)
         print("CREATED PATH ONE OUTPUT FILES\n")
         #########################################################
 
@@ -268,24 +268,12 @@ if __name__ == '__main__':
         CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_SINGLE_PATH_TWO_OUTPUT_DATA_300.csv"), 300)
         CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_SINGLE_PATH_TWO_OUTPUT_DATA_400.csv"), 400)
         CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_SINGLE_PATH_TWO_OUTPUT_DATA_500.csv"), 500)
-        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_SINGLE_PATH_TWO_OUTPUT_DATA_600.csv"), 600)
-        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_SINGLE_PATH_TWO_OUTPUT_DATA_700.csv"), 700)
-        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_SINGLE_PATH_TWO_OUTPUT_DATA_800.csv"), 800)
+        # CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_SINGLE_PATH_TWO_OUTPUT_DATA_600.csv"), 600)
+        # CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_SINGLE_PATH_TWO_OUTPUT_DATA_700.csv"), 700)
+        # CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_SINGLE_PATH_TWO_OUTPUT_DATA_800.csv"), 800)
 
-    elif ControlPanel.GLOBAL_PROTOCOL == 2:
+    elif CONSTANTS.GLOBAL_PROTOCOL == 2:
         print("Begin Processing requests using: 'Head vs. Wall' Protocol\n")
-        print("BEGIN PROCESSING INPUT DATA\n")
-        ProcessInputData.processAllInputData()
-        print("INPUT DATA PROCESSED\n")
-
-        set_edges()
-        GRAPH.add_edges_from(edges)
-
-        # Just commented out so I don't have to keep closing the window every time
-        nx.draw(GRAPH, with_labels=True, font_weight='bold')
-        plt.show()  # ToDo Need to figure out why I need this in order to stop the graph from disappearing
-
-        find_isolated_nodes()
 
         ########### SETUP IS NOW OVER WE CAN BEGIN PROCESSING ##############
         process_path_one()
@@ -307,9 +295,9 @@ if __name__ == '__main__':
         CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_MULTI_PATH_ONE_OUTPUT_DATA_300.csv"), 300)
         CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_MULTI_PATH_ONE_OUTPUT_DATA_400.csv"), 400)
         CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_MULTI_PATH_ONE_OUTPUT_DATA_500.csv"), 500)
-        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_MULTI_PATH_ONE_OUTPUT_DATA_600.csv"), 600)
-        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_MULTI_PATH_ONE_OUTPUT_DATA_700.csv"), 700)
-        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_MULTI_PATH_ONE_OUTPUT_DATA_800.csv"), 800)
+        # CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_MULTI_PATH_ONE_OUTPUT_DATA_600.csv"), 600)
+        # CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_MULTI_PATH_ONE_OUTPUT_DATA_700.csv"), 700)
+        # CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_MULTI_PATH_ONE_OUTPUT_DATA_800.csv"), 800)
         print("CREATED PATH ONE OUTPUT FILES\n")
         #########################################################
 
@@ -338,6 +326,6 @@ if __name__ == '__main__':
         CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_MULTI_PATH_TWO_OUTPUT_DATA_300.csv"), 300)
         CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_MULTI_PATH_TWO_OUTPUT_DATA_400.csv"), 400)
         CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_MULTI_PATH_TWO_OUTPUT_DATA_500.csv"), 500)
-        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_MULTI_PATH_TWO_OUTPUT_DATA_600.csv"), 600)
-        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_MULTI_PATH_TWO_OUTPUT_DATA_700.csv"), 700)
-        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_MULTI_PATH_TWO_OUTPUT_DATA_800.csv"), 800)
+        # CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_MULTI_PATH_TWO_OUTPUT_DATA_600.csv"), 600)
+        # CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_MULTI_PATH_TWO_OUTPUT_DATA_700.csv"), 700)
+        # CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_MULTI_PATH_TWO_OUTPUT_DATA_800.csv"), 800)

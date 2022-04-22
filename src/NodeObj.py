@@ -1,6 +1,6 @@
 from src.FuncObj import FuncObj
-from src.ControlPanel import GLOBAL_NODE_RESOURCES
-from src.ControlPanel import GLOBAL_REQUEST_DELAY_THRESHOLD
+from src.CONSTANTS import GLOBAL_NODE_RESOURCES
+from src.CONSTANTS import GLOBAL_REQUEST_DELAY_THRESHOLD
 import random
 
 """

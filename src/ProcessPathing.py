@@ -4,9 +4,9 @@ from src.FuncObj import FuncObj
 from src.LinkObj import LinkObj
 from src.Request import Request
 
-from ControlPanel import GLOBAL_REQUEST_DELAY_THRESHOLD
-from ControlPanel import GlOBAL_FAILURE_THRESHOLD
-from ControlPanel import GLOBAL_FAILURE_RATE
+from CONSTANTS import GLOBAL_REQUEST_DELAY_THRESHOLD
+from CONSTANTS import GlOBAL_FAILURE_THRESHOLD
+from CONSTANTS import GLOBAL_FAILURE_RATE
 
 FAIL_RATE = GLOBAL_FAILURE_RATE
 REQUEST_DELAY_THRESHOLD = GLOBAL_REQUEST_DELAY_THRESHOLD
@@ -21,11 +21,9 @@ FLUNK = 3
 BACKUP = 4
 OPTIMAL = 5
 
-AUTO_FAIL = [] # [5, 6, 13, 19]
-
 
 def check_fail(path_obj):
-    AUTO_FAIL = [5, 6, 13, 19]
+    AUTO_FAIL = [] # [5, 6, 13, 19]
     for step in path_obj.route:
         if step in AUTO_FAIL:
             path_obj.state = POOR

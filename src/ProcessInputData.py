@@ -4,11 +4,11 @@ from src.NodeObj import NodeObj
 from src.LinkObj import LinkObj
 from src.Request import Request
 
-from src.ControlPanel import GLOBAL_REQUEST_DELAY_THRESHOLD
+from src.CONSTANTS import GLOBAL_REQUEST_DELAY_THRESHOLD
 
-from src.ControlPanel import NodeInputData
-from src.ControlPanel import LinkInputData
-from src.ControlPanel import RequestInputData
+from src.CONSTANTS import NodeInputData
+from src.CONSTANTS import LinkInputData
+from src.CONSTANTS import RequestInputData
 
 REQUESTS_FAILED = []
 REQUESTS_PASSED = []

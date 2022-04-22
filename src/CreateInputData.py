@@ -3,13 +3,13 @@ import random
 from src.NodeObj import NodeObj
 from src.FuncObj import FuncObj
 
-from src.ControlPanel import NodeInputData
-from src.ControlPanel import LinkInputData
-from src.ControlPanel import RequestInputData
+from src.CONSTANTS import NodeInputData
+from src.CONSTANTS import LinkInputData
+from src.CONSTANTS import RequestInputData
 
-from src.ControlPanel import GLOBAL_NODE_RESOURCES
-from src.ControlPanel import GLOBAL_LINK_BANDWIDTH
-from src.ControlPanel import GLOBAL_REQUEST_DELAY_THRESHOLD
+from src.CONSTANTS import GLOBAL_NODE_RESOURCES
+from src.CONSTANTS import GLOBAL_LINK_BANDWIDTH
+from src.CONSTANTS import GLOBAL_REQUEST_DELAY_THRESHOLD
 baseFolder = r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-"
 resourcesFolder = os.path.join(baseFolder, "resources")
 # NodeInputData = os.path.join(resourcesFolder, "NodeInputData.csv")

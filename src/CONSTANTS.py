@@ -1,7 +1,9 @@
 import os
 # This script just controls globally used variables so I don't have to change them everywhere
 # Resources
-baseFolder = r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-"
+# baseFolder = r"C:\Users\jacks\OneDrive\Desktop\Siasi Research\Research-Project---Siasi-"
+baseFolder = r"C:\Users\jacks\OneDrive\Desktop\Siasi Research\Research-Project---Siasi-"
+
 resourcesFolder = os.path.join(baseFolder, "resources")
 outputFolder = os.path.join(baseFolder, "output")
 
@@ -24,8 +26,8 @@ GLOBAL_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "MULTI_PATH_ONE_OUTPUT_
 GLOBAL_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "MULTI_PATH_TWO_OUTPUT_DATA_25.csv")
 
 ######### NEW STUFF ################
-OUTPUT_SET_ONE_A = os.path.join(outputFolder, "NEW_MULTI_PATH_ONE_OUTPUT_DATA_25.csv")
-OUTPUT_SET_ONE_B = os.path.join(outputFolder, "NEW_MULTI_PATH_TWO_OUTPUT_DATA_25.csv")
+OUTPUT_SET_ONE_A = os.path.join(outputFolder, "NEW_SINGLE_PATH_ONE_OUTPUT_DATA_25.csv")
+OUTPUT_SET_ONE_B = os.path.join(outputFolder, "NEW_SINGLE_PATH_TWO_OUTPUT_DATA_25.csv")
 ####################################
 
 # WILL DELETE THIS METHOD LATER
@@ -38,3 +40,6 @@ GlOBAL_FAILURE_THRESHOLD = 55.5
 GLOBAL_FAILURE_RATE = 0.15
 
 GLOBAL_PROTOCOL = 1
+
+############## NEW TERMINAL STUFF #################
+INITIAL_TERMINAL_RESOURCES = 100

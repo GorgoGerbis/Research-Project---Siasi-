@@ -4,9 +4,9 @@ from src.FuncObj import FuncObj
 from src.LinkObj import LinkObj
 from src.Request import Request
 
-from ControlPanel import GLOBAL_REQUEST_DELAY_THRESHOLD
-from ControlPanel import GlOBAL_FAILURE_THRESHOLD
-from ControlPanel import GLOBAL_FAILURE_RATE
+from CONSTANTS import GLOBAL_REQUEST_DELAY_THRESHOLD
+from CONSTANTS import GlOBAL_FAILURE_THRESHOLD
+from CONSTANTS import GLOBAL_FAILURE_RATE
 
 """
 @author: Jackson Walker

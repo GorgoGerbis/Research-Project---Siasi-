@@ -1,10 +1,10 @@
 from src.Request import Request
-from src.ControlPanel import GLOBAL_OUTPUT_FILE_PATH_ONE
-from src.ControlPanel import GLOBAL_OUTPUT_FILE_PATH_TWO
+from src.CONSTANTS import GLOBAL_OUTPUT_FILE_PATH_ONE
+from src.CONSTANTS import GLOBAL_OUTPUT_FILE_PATH_TWO
 
 #NEW FILE
-from src.ControlPanel import OUTPUT_SET_ONE_A
-from src.ControlPanel import OUTPUT_SET_ONE_B
+from src.CONSTANTS import OUTPUT_SET_ONE_A
+from src.CONSTANTS import OUTPUT_SET_ONE_B
 
 from src.NodeObj import NodeObj
 
@@ -13,7 +13,7 @@ REQUEST_ONGOING = 1
 REQUEST_DENIED = 2
 REQUEST_APPROVED = 3
 
-AUTO_FAIL = [5, 6, 13, 19]
+AUTO_FAIL = []# [5, 6, 13, 19]
 
 
 #@Nvm it works as intended, Path one type paths will map on failed nodes and just be failed after while type two will avoid failed nodes completely.
