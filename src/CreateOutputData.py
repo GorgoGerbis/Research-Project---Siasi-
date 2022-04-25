@@ -15,7 +15,6 @@ REQUEST_APPROVED = 3
 
 AUTO_FAIL = []# [5, 6, 13, 19]
 
-
 #@Nvm it works as intended, Path one type paths will map on failed nodes and just be failed after while type two will avoid failed nodes completely.
 def fail_unavailable_paths():
     for req in Request.STATIC_TOTAL_REQUEST_LIST:
