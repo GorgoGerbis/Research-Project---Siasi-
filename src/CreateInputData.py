@@ -21,18 +21,18 @@ def createNodeInputData(number_of_nodes):
     status = ["A", "I", "R", "O"]  # Status of the node
 
     with open(NodeInputData, 'w') as fp:
-        heading = "NodeId;Status;Resources[Memory, CPU];ProcessingDelay;NodeCost;PercentFailure\n"
+        heading = "NodeId;Status;Resources[CPU, MEM(RAM)];ProcessingDelay;NodeCost;PercentFailure\n"
         fp.write(heading)
 
         for cnt in range(number_of_nodes):
             nodeID = cnt + 1  # Ensures we have the correct number for the node
             stat = status[0]
-            resources = [64, 50]    # <-- Based on paper 2 [64gb mem, 50 cpu] # GLOBAL_NODE_RESOURCES  # [100, 100, 100] == [CPU, RAM, Physical Buffer size]
+            resources = GLOBAL_NODE_RESOURCES    # <-- Based on paper 2 [50 cpu, 64gb mem] # GLOBAL_NODE_RESOURCES  # [100, 100, 100] == [CPU, RAM, Physical Buffer size]
             processing_delay = random.randint(1, 10) / 10    # <-- 1 ms
             nodeCost = random.randint(5, 10) / 10
 
             # @ToDo Need to come up with ideal failure solution
-            pf = random.randint(1, 100) / 100  # Dividing to make them decimals
+            pf = random.randint(1, 75) / 100  # Dividing to make them decimals
 
             nodeLine = "{};{};{};{};{};{}\n".format(nodeID, stat, resources, processing_delay, nodeCost, pf)
             fp.write(nodeLine)

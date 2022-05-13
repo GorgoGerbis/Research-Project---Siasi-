@@ -85,19 +85,35 @@ def set_path_state_PATH_TWO(path_obj):  # <-- This one DOES NOT use failure prob
     # Given a path must then determine and set the state of the path
     if path_obj.state == STATE_UNKNOWN:
         if calculate_path_resources_PATH_TWO(path_obj):
-            if calculate_path_failure(path_obj, FAILURE_THRESHOLD):
-                if calculate_path_speed(path_obj, REQUEST_DELAY_THRESHOLD):
-                    path_obj.state = BACKUP
-                    PathObj.BACKUP_PATHS.append(path_obj)
-                else:
-                    path_obj.state = TURTLE
-                    print("PATH {} DELAY {} | PATH IS TOO SLOW!".format(path_obj.pathID, path_obj.DELAY))
+            if calculate_path_speed(path_obj, REQUEST_DELAY_THRESHOLD):
+                path_obj.state = BACKUP
+                PathObj.BACKUP_PATHS.append(path_obj)
             else:
-                path_obj.state = FLUNK
-                print("PATH {} FAILURE {}% | FAILURE PROBABILITY IS TOO HIGH!".format(path_obj.pathID, path_obj.FAILURE_PROBABILITY))
+                path_obj.state = TURTLE
+                print("PATH {} DELAY {} | PATH IS TOO SLOW!".format(path_obj.pathID, path_obj.DELAY))
         else:
             path_obj.state = POOR
             print("PATH {} DOES NOT HAVE ENOUGH RESOURCES!".format(path_obj.pathID))
+
+
+# @Todo need to remember to clear BACKUP_PATHS when finished processing request
+# def set_path_state_PATH_TWO(path_obj):  # <-- This one DOES NOT use failure probability
+#     # Given a path must then determine and set the state of the path
+#     if path_obj.state == STATE_UNKNOWN:
+#         if calculate_path_resources_PATH_TWO(path_obj):
+#             if calculate_path_failure(path_obj, FAILURE_THRESHOLD):
+#                 if calculate_path_speed(path_obj, REQUEST_DELAY_THRESHOLD):
+#                     path_obj.state = BACKUP
+#                     PathObj.BACKUP_PATHS.append(path_obj)
+#                 else:
+#                     path_obj.state = TURTLE
+#                     print("PATH {} DELAY {} | PATH IS TOO SLOW!".format(path_obj.pathID, path_obj.DELAY))
+#             else:
+#                 path_obj.state = FLUNK
+#                 print("PATH {} FAILURE {}% | FAILURE PROBABILITY IS TOO HIGH!".format(path_obj.pathID, path_obj.FAILURE_PROBABILITY))
+#         else:
+#             path_obj.state = POOR
+#             print("PATH {} DOES NOT HAVE ENOUGH RESOURCES!".format(path_obj.pathID))
 
 
 def calculate_path_resources_PATH_ONE(path_obj):
@@ -211,7 +227,7 @@ def calculate_path_resources_PATH_TWO(path_obj):
         else:
             current_node = step
 
-            if current_node.failure_probability >= 0.55:
+            if current_node.failure_probability >= GlOBAL_FAILURE_THRESHOLD:
                 NodeObj.AUTO_FAIL_PATH_TWO.append(current_node.nodeID)
                 path_obj.state = POOR
                 return False
@@ -378,8 +394,8 @@ def map_path_ONE(path_obj):
     for link in NodeObj.StaticLinkList:
         link_avg += link.linkBW
 
-    NodeObj.StaticNodeResources_PATHONE.append(node_avg / 20)
-    NodeObj.StaticLinkResources_PATHONE.append(link_avg / 30)
+    NodeObj.StaticNodeResources_PATHONE.append(node_avg / 16)
+    NodeObj.StaticLinkResources_PATHONE.append(link_avg / 24)
     print("PATH MAPPED")
 
 
@@ -409,8 +425,8 @@ def map_path_TWO(path_obj):
     for link in NodeObj.StaticLinkList:
         link_avg += link.linkBW
 
-    NodeObj.StaticNodeResources_PATHTWO.append(node_avg / 20)
-    NodeObj.StaticLinkResources_PATHTWO.append(link_avg / 30)
+    NodeObj.StaticNodeResources_PATHTWO.append(node_avg / 16)
+    NodeObj.StaticLinkResources_PATHTWO.append(link_avg / 24)
     print("PATH MAPPED")
 
 

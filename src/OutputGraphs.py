@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 # plt.rcParams.update({'font.size':15}) @todo need to play with this @todo I forgot what this is for?
 
-baseFolder = r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-"
+baseFolder = r"C:\Users\jacks\OneDrive\Desktop\Siasi Research\Research-Project---Siasi-"
 resourcesFolder = os.path.join(baseFolder, "resources")
 outputFolder = os.path.join(baseFolder, "output")
 
@@ -147,7 +147,65 @@ def create_bar_graph_COMBO_COSTS(path_one_data_single, path_two_data_single, pat
     plt.show()
 
 
+def gather_data(single, multi):
+    output_single = []
+    output_multi = []
+
+    with open(single) as sp:
+        sp.readline()
+        sp.readline()
+        sp.readline()
+        sp.readline()
+
+        count = 0
+        num_passed = 0
+
+        for line in sp:
+            currentElements = line.split(',')
+            temp = currentElements[0]
+            count += 1
+            if temp == "APPROVED":
+                num_passed += 1
+            if count == 10:
+                output_single.append(num_passed)
+                count = 0
+
+    with open(multi) as mp:
+        mp.readline()
+        mp.readline()
+        mp.readline()
+        mp.readline()
+
+        cnt = 0
+        n_passed = 0
+
+        for ln in mp:
+            elements = ln.split(',')
+            toke = elements[0]
+            cnt += 1
+            if toke == "APPROVED":
+                n_passed += 1
+            if cnt == 10:
+                output_multi.append(n_passed)
+                cnt = 0
+
+    return output_single, output_multi
+
+
+def create_line_graph_passed(single, multi):
+    x = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+    plt.plot(x, single)
+    plt.plot(x, multi)
+    plt.show()
+
+
+def run_output_graphs():
+    single, multi = gather_data(os.path.join(outputFolder, "SINGLE_PATH_TWO_OUTPUT_DATA_100.csv"), os.path.join(outputFolder, "MULTI_PATH_TWO_OUTPUT_DATA_100.csv"))
+    create_line_graph_passed(single, multi)
+
+
 if __name__ == '__main__':
-    create_bar_graph_COMBO_PASSED(single_pathOne_passed_avgs, single_pathTwo_passed_avgs, multi_pathOne_passed_avgs, multi_pathTwo_passed_avgs)
-    create_bar_graph_COMBO_DELAYS(single_pathOne_delays_avgs, single_pathTwo_delays_avgs, multi_pathOne_delays_avgs, multi_pathTwo_delays_avgs)
-    create_bar_graph_COMBO_COSTS(single_pathOne_costs_avgs, single_pathTwo_costs_avgs, multi_pathOne_costs_avgs, multi_pathTwo_costs_avgs)
+    run_output_graphs()
+    # create_bar_graph_COMBO_PASSED(single_pathOne_passed_avgs, single_pathTwo_passed_avgs, multi_pathOne_passed_avgs, multi_pathTwo_passed_avgs)
+    # create_bar_graph_COMBO_DELAYS(single_pathOne_delays_avgs, single_pathTwo_delays_avgs, multi_pathOne_delays_avgs, multi_pathTwo_delays_avgs)
+    # create_bar_graph_COMBO_COSTS(single_pathOne_costs_avgs, single_pathTwo_costs_avgs, multi_pathOne_costs_avgs, multi_pathTwo_costs_avgs)

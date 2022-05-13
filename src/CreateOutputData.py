@@ -1,4 +1,5 @@
 from src.Request import Request
+from src.CONSTANTS import GlOBAL_FAILURE_THRESHOLD
 from src.CONSTANTS import GLOBAL_OUTPUT_FILE_PATH_ONE
 from src.CONSTANTS import GLOBAL_OUTPUT_FILE_PATH_TWO
 
@@ -12,14 +13,24 @@ REQUEST_APPROVED = 3
 AUTO_FAIL = []# [5, 6, 13, 19]
 
 #@Nvm it works as intended, Path one type paths will map on failed nodes and just be failed after while type two will avoid failed nodes completely.
+# def fail_unavailable_paths():
+#     for req in Request.STATIC_TOTAL_REQUEST_LIST:
+#         if req.requestStatus[0] == REQUEST_APPROVED:
+#             current_route = req.PATH_ONE.route
+#             for node in current_route:
+#                 if node in AUTO_FAIL:
+#                     req.requestStatus[0] = REQUEST_DENIED
+#                     req.PATH_ONE = None
+
+
 def fail_unavailable_paths():
     for req in Request.STATIC_TOTAL_REQUEST_LIST:
         if req.requestStatus[0] == REQUEST_APPROVED:
-            current_route = req.PATH_ONE.route
-            for node in current_route:
-                if node in AUTO_FAIL:
-                    req.requestStatus[0] = REQUEST_DENIED
-                    req.PATH_ONE = None
+            current = req.PATH_ONE.FAILURE_PROBABILITY
+            if current >= GlOBAL_FAILURE_THRESHOLD:
+                req.requestStatus[0] = REQUEST_DENIED
+                req.PATH_ONE = None
+
 
 ########################################### NEW STUFF #################################################################
 

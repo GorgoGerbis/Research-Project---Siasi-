@@ -3,6 +3,7 @@ from src import ProcessInputData
 from src.NodeObj import NodeObj
 from src.Request import Request
 from src.PathObj import PathObj
+from src.OutputGraphs import run_output_graphs
 import CreateOutputData
 
 from src.CONSTANTS import GLOBAL_REQUEST_DELAY_THRESHOLD
@@ -13,8 +14,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Need these to process requests
-from src.ProcessPathing import RUN_PATH_ONE
-from src.ProcessPathing import RUN_PATH_TWO
+from src.MultiMapping import RUN_PATH_ONE
+from src.MultiMapping import RUN_PATH_TWO
 from src.SingleMapping import RUN_PATH_ONE_SINGLE_MAPPING
 from src.SingleMapping import RUN_PATH_TWO_SINGLE_MAPPING
 
@@ -232,7 +233,7 @@ if __name__ == '__main__':
         process_path_one_SINGLE_MAPPING()
 
         print("STARTING CREATION OF OUTPUT FILES\n")
-        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_SINGLE_PATH_ONE_OUTPUT_DATA_25.csv"), 100)
+        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "SINGLE_PATH_ONE_OUTPUT_DATA_100.csv"), 100)
         print("CREATED PATH ONE OUTPUT FILES\n")
         #########################################################
 
@@ -252,7 +253,7 @@ if __name__ == '__main__':
 
         print("STARTING CREATION OF FAILURE PROBABILITY OUTPUT FILES\n")
         # CreateOutputData.output_file_PATH_TWO()
-        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_SINGLE_PATH_TWO_OUTPUT_DATA_25.csv"), 100)
+        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "SINGLE_PATH_TWO_OUTPUT_DATA_100.csv"), 100)
 
     elif CONSTANTS.GLOBAL_PROTOCOL == 2:
         print("Begin Processing requests using: 'Head vs. Wall' Protocol\n")
@@ -270,7 +271,7 @@ if __name__ == '__main__':
 
         print("STARTING CREATION OF OUTPUT FILES\n")
         # CreateOutputData.output_file_PATH_ONE()
-        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_MULTI_PATH_ONE_OUTPUT_DATA_25.csv"), 100)
+        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "MULTI_PATH_ONE_OUTPUT_DATA_100.csv"), 100)
         print("CREATED PATH ONE OUTPUT FILES\n")
         #########################################################
 
@@ -292,4 +293,7 @@ if __name__ == '__main__':
             print(op)
 
         print("STARTING CREATION OF FAILURE PROBABILITY OUTPUT FILES\n")
-        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_MULTI_PATH_TWO_OUTPUT_DATA_25.csv"), 100)
+        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "MULTI_PATH_TWO_OUTPUT_DATA_100.csv"), 100)
+
+    print("CREATING LINE GRAPHS WITH AVAILABLE DATA")
+    run_output_graphs()
