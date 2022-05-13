@@ -26,12 +26,11 @@ class FuncObj(Enum):
     y = RAM usage
     z = Bandwidth taken
     """
-    F1 = [1, 1, 1]
-    F2 = [2, 2, 2]
-    F3 = [3, 3, 3]
-    F4 = [4, 4, 4]
-    F5 = [5, 5, 5]
-    F6 = [6, 6, 6]
+    F1 = [1, 1, 2]
+    F2 = [2, 2, 4]
+    F3 = [3, 3, 6]
+    F4 = [4, 4, 8]
+    F5 = [5, 5, 10]
 
     @enumproperty
     def RANDOM(cls):

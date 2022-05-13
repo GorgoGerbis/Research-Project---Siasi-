@@ -10,41 +10,38 @@ from src.CONSTANTS import RequestInputData
 from src.CONSTANTS import GLOBAL_NODE_RESOURCES
 from src.CONSTANTS import GLOBAL_LINK_BANDWIDTH
 from src.CONSTANTS import GLOBAL_REQUEST_DELAY_THRESHOLD
-baseFolder = r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-"
+baseFolder = r"C:\Users\jacks\OneDrive\Desktop\Siasi Research\Research-Project---Siasi-"
 resourcesFolder = os.path.join(baseFolder, "resources")
-# NodeInputData = os.path.join(resourcesFolder, "NodeInputData.csv")
+
+#NEW STUFF
+csv_data = os.path.join(resourcesFolder, "model2.csv")
 
 
 def createNodeInputData(number_of_nodes):
     status = ["A", "I", "R", "O"]  # Status of the node
 
     with open(NodeInputData, 'w') as fp:
-        heading = "NodeId;latitude;Longitude;Status;Resources[CPU Memory Physical Buffer Size];ProcessingDelay;NodeCost;PercentFailure\n"
+        heading = "NodeId;Status;Resources[Memory, CPU];ProcessingDelay;NodeCost;PercentFailure\n"
         fp.write(heading)
 
         for cnt in range(number_of_nodes):
             nodeID = cnt + 1  # Ensures we have the correct number for the node
-            lat = random.randint(60, 940)
-            long = random.randint(60, 940)
             stat = status[0]
-            resources = GLOBAL_NODE_RESOURCES  # [100, 100, 100] == [CPU, RAM, Physical Buffer size]
-            processing_delay = 1
-            nodeCost = 5
+            resources = [64, 50]    # <-- Based on paper 2 [64gb mem, 50 cpu] # GLOBAL_NODE_RESOURCES  # [100, 100, 100] == [CPU, RAM, Physical Buffer size]
+            processing_delay = random.randint(1, 10) / 10    # <-- 1 ms
+            nodeCost = random.randint(5, 10) / 10
+
+            # @ToDo Need to come up with ideal failure solution
             pf = random.randint(1, 100) / 100  # Dividing to make them decimals
 
-            nodeLine = "{};{};{};{};{};{};{};{}\n".format(nodeID, lat, long, stat, resources, processing_delay, nodeCost, pf)
+            nodeLine = "{};{};{};{};{};{}\n".format(nodeID, stat, resources, processing_delay, nodeCost, pf)
             fp.write(nodeLine)
 
 
-def createLinkInputData(number_of_links, num_nodes):
-    duos = []
-    duos = create_pair(number_of_links, num_nodes, duos)
-
+def createLinkInputData(duos):
     with open(LinkInputData, 'w') as fp:
-        heading = "Link ID;Bandwidth;Source;Destination\n"
+        heading = "Link ID;Source;Destination;Bandwidth;EdgeDelay;EdgeCost;failure probability\n"
         fp.write(heading)
-
-        # link_list = create_pair(number_of_links, num_nodes, temp_list)
 
         for i, duo in enumerate(duos):
             linkID = i + 1
@@ -52,9 +49,11 @@ def createLinkInputData(number_of_links, num_nodes):
             dest = duos[i][1]
 
             bw = GLOBAL_LINK_BANDWIDTH
-            ed = random.randint(3, 6) / 10  # Dividing to make them decimals
-            ec = 5
-            link_failure = random.randint(1, 100) / 100  # Dividing to make them decimals
+            ed = random.randint(75, 300) / 100      # Dividing to make them decimals
+            ec = 1.5    # Based off of paper 2 averages
+
+            # @ToDo Need to come up with ideal failure solution
+            link_failure = random.randint(1, 100) / 100     # Dividing to make them decimals
 
             linkLine = "{};{};{};{};{};{};{}\n".format(linkID, src, dest, bw, ed, ec, link_failure)
             fp.write(linkLine)
@@ -62,63 +61,81 @@ def createLinkInputData(number_of_links, num_nodes):
 
 def createRequests(number_of_requests, number_of_nodes):
     with open(RequestInputData, 'w') as fp:
-        heading = "requestID;source;destination;RequestResources;RequestedBandwidth\n"
+        heading = "requestID;source;destination;Requested VNFs;Requested Bandwidth\n"
         fp.write(heading)
 
         for cnt in range(number_of_requests):
-            reqID = cnt + 1  # Ensures we have the correct number for the node
+            reqID = cnt + 1  # Ensures we have the correct number for the request
 
-            src, dest = not_the_same(number_of_nodes)
+            src, dst = HELPER_check_redundancy(number_of_nodes)
 
-            if dest == src:
-                dest = random.randint(1, number_of_nodes)
-
-            requested_num_func = random.randint(1, 6)  # Random amount of functions
-            requestedBW = 5  # @ToDo Maybe we should be adjusting this to match their num_funcs
+            requested_num_func = 3  # random.randint(1, 6)  # Random amount of functions
             outputFunctions = []  # The random list of functions
+            requestedBW = 0 # @ToDo Maybe we should be adjusting this to match their num_funcs
 
             for i in range(requested_num_func):
-                if i <= requested_num_func:
+                while True:
                     current_func = FuncObj.RANDOM
-                    current_func = current_func.name
-                    if current_func not in outputFunctions:
-                        outputFunctions.append(current_func)
-                i += 1
+                    name = current_func.name
+                    temp = current_func.value
+                    if name not in outputFunctions:
+                        outputFunctions.append(name)
+                        requestedBW += temp[2]
+                        i += 1
+                        break
 
-            requestLine = "{};{};{};{};{}\n".format(reqID, src, dest, outputFunctions, requestedBW)
+            requestLine = "{};{};{};{};{}\n".format(reqID, src, dst, outputFunctions, requestedBW)
             fp.write(requestLine)
 
 
-def create_pair(num_links, num_nodes, output):
-    while len(output) < num_links:
-        src = random.randint(1, num_nodes)
-        dest = random.randint(1, num_nodes)
-        temp = [src, dest]
-        if temp not in output:
-            output.append(temp)
+def HELPER_import_csv_data(filepath):
+    output = []
+    with open(filepath) as fp:
+        fp.readline()  # <-- This is so that it skips the first line
+        for cnt, line in enumerate(fp):
+            if (line == "\n") or (line == ""):
+                continue
+            else:
+                line = line.strip('\n')
+                currentElements = line.split(',')
+                currentElements.pop(0)  # <--- remove first item in currentElements
+                currentElements = list(map(int, currentElements))     # <--- Convert str -> int
 
+                for i, row in enumerate(currentElements):
+                    duo = []
+                    if row == 1:
+                        duo.append(cnt+1)
+                        duo.append(i+1)
+                        print("NODE: D{}, ADJACENT NODES:{}".format(cnt + 1, duo))
+
+                        x = duo[0]
+                        y = duo[1]
+                        if [x, y] not in output and [y, x] not in output:
+                            output.append(duo)
     return output
 
 
-def not_the_same(num_nodes):
-    con = True
-    while con:
+def HELPER_check_redundancy(num_nodes):
+    while True:
         src = random.randint(1, num_nodes)
-        dest = random.randint(1, num_nodes)
+        dst = random.randint(1, num_nodes)
 
-        if src != dest:
-            con = False
-            return src, dest
+        if src == dst:
+            continue
+        else:
+            return src, dst
 
 
 if __name__ == '__main__':
-    num_nodes = 20
-    num_links = 30
-    num_requests = 800
+    num_nodes = 16
+    num_links = 24
+    num_requests = 100
+
+    adj_duos = HELPER_import_csv_data(csv_data)
 
     print("CREATING NEW INPUT DATA!\n")
     print("TOTAL NODES: {} TOTAL LINKS: {} TOTAL REQUESTS: {}\n".format(num_nodes, num_links, num_requests))
-    # createNodeInputData(num_nodes)
-    # createLinkInputData(num_links, num_nodes)  # createLinkInputData(num_links, num_nodes)
+    createNodeInputData(num_nodes)
+    createLinkInputData(adj_duos)
     createRequests(num_requests, num_nodes)
     print("FINISHED CREATING INPUT DATA\n")

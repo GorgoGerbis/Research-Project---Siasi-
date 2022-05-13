@@ -232,16 +232,7 @@ if __name__ == '__main__':
         process_path_one_SINGLE_MAPPING()
 
         print("STARTING CREATION OF OUTPUT FILES\n")
-        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_SINGLE_PATH_ONE_OUTPUT_DATA_25.csv"), 25)
-        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_SINGLE_PATH_ONE_OUTPUT_DATA_50.csv"), 50)
-        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_SINGLE_PATH_ONE_OUTPUT_DATA_100.csv"), 100)
-        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_SINGLE_PATH_ONE_OUTPUT_DATA_200.csv"), 200)
-        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_SINGLE_PATH_ONE_OUTPUT_DATA_300.csv"), 300)
-        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_SINGLE_PATH_ONE_OUTPUT_DATA_400.csv"), 400)
-        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_SINGLE_PATH_ONE_OUTPUT_DATA_500.csv"), 500)
-        # CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_SINGLE_PATH_ONE_OUTPUT_DATA_600.csv"), 600)
-        # CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_SINGLE_PATH_ONE_OUTPUT_DATA_700.csv"), 700)
-        # CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_SINGLE_PATH_ONE_OUTPUT_DATA_800.csv"), 800)
+        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_SINGLE_PATH_ONE_OUTPUT_DATA_25.csv"), 100)
         print("CREATED PATH ONE OUTPUT FILES\n")
         #########################################################
 
@@ -261,16 +252,7 @@ if __name__ == '__main__':
 
         print("STARTING CREATION OF FAILURE PROBABILITY OUTPUT FILES\n")
         # CreateOutputData.output_file_PATH_TWO()
-        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_SINGLE_PATH_TWO_OUTPUT_DATA_25.csv"), 25)
-        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_SINGLE_PATH_TWO_OUTPUT_DATA_50.csv"), 50)
-        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_SINGLE_PATH_TWO_OUTPUT_DATA_100.csv"), 100)
-        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_SINGLE_PATH_TWO_OUTPUT_DATA_200.csv"), 200)
-        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_SINGLE_PATH_TWO_OUTPUT_DATA_300.csv"), 300)
-        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_SINGLE_PATH_TWO_OUTPUT_DATA_400.csv"), 400)
-        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_SINGLE_PATH_TWO_OUTPUT_DATA_500.csv"), 500)
-        # CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_SINGLE_PATH_TWO_OUTPUT_DATA_600.csv"), 600)
-        # CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_SINGLE_PATH_TWO_OUTPUT_DATA_700.csv"), 700)
-        # CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_SINGLE_PATH_TWO_OUTPUT_DATA_800.csv"), 800)
+        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_SINGLE_PATH_TWO_OUTPUT_DATA_25.csv"), 100)
 
     elif CONSTANTS.GLOBAL_PROTOCOL == 2:
         print("Begin Processing requests using: 'Head vs. Wall' Protocol\n")
@@ -288,16 +270,7 @@ if __name__ == '__main__':
 
         print("STARTING CREATION OF OUTPUT FILES\n")
         # CreateOutputData.output_file_PATH_ONE()
-        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_MULTI_PATH_ONE_OUTPUT_DATA_25.csv"), 25)
-        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_MULTI_PATH_ONE_OUTPUT_DATA_50.csv"), 50)
-        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_MULTI_PATH_ONE_OUTPUT_DATA_100.csv"), 100)
-        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_MULTI_PATH_ONE_OUTPUT_DATA_200.csv"), 200)
-        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_MULTI_PATH_ONE_OUTPUT_DATA_300.csv"), 300)
-        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_MULTI_PATH_ONE_OUTPUT_DATA_400.csv"), 400)
-        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_MULTI_PATH_ONE_OUTPUT_DATA_500.csv"), 500)
-        # CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_MULTI_PATH_ONE_OUTPUT_DATA_600.csv"), 600)
-        # CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_MULTI_PATH_ONE_OUTPUT_DATA_700.csv"), 700)
-        # CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_MULTI_PATH_ONE_OUTPUT_DATA_800.csv"), 800)
+        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "NEW_MULTI_PATH_ONE_OUTPUT_DATA_25.csv"), 100)
         print("CREATED PATH ONE OUTPUT FILES\n")
         #########################################################
 
@@ -319,13 +292,4 @@ if __name__ == '__main__':
             print(op)
 
         print("STARTING CREATION OF FAILURE PROBABILITY OUTPUT FILES\n")
-        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_MULTI_PATH_TWO_OUTPUT_DATA_25.csv"), 25)
-        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_MULTI_PATH_TWO_OUTPUT_DATA_50.csv"), 50)
-        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_MULTI_PATH_TWO_OUTPUT_DATA_100.csv"), 100)
-        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_MULTI_PATH_TWO_OUTPUT_DATA_200.csv"), 200)
-        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_MULTI_PATH_TWO_OUTPUT_DATA_300.csv"), 300)
-        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_MULTI_PATH_TWO_OUTPUT_DATA_400.csv"), 400)
-        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_MULTI_PATH_TWO_OUTPUT_DATA_500.csv"), 500)
-        # CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_MULTI_PATH_TWO_OUTPUT_DATA_600.csv"), 600)
-        # CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_MULTI_PATH_TWO_OUTPUT_DATA_700.csv"), 700)
-        # CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_MULTI_PATH_TWO_OUTPUT_DATA_800.csv"), 800)
+        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "NEW_MULTI_PATH_TWO_OUTPUT_DATA_25.csv"), 100)

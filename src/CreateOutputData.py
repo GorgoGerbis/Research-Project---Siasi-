@@ -2,10 +2,6 @@ from src.Request import Request
 from src.CONSTANTS import GLOBAL_OUTPUT_FILE_PATH_ONE
 from src.CONSTANTS import GLOBAL_OUTPUT_FILE_PATH_TWO
 
-#NEW FILE
-from src.CONSTANTS import OUTPUT_SET_ONE_A
-from src.CONSTANTS import OUTPUT_SET_ONE_B
-
 from src.NodeObj import NodeObj
 
 REQUEST_NEEDS_CALCULATING = 0
@@ -50,7 +46,6 @@ def NEW_get_average_data_PATH_ONE(num_range):
 
     cpu = 0
     ram = 0
-    pbs = 0
 
     bw = 0
 
@@ -74,7 +69,6 @@ def NEW_get_average_data_PATH_ONE(num_range):
         n = node.nodeResources
         cpu += n[0]
         ram += n[1]
-        pbs += n[2]
 
     for lnk in NodeObj.StaticLinkList:
         bw += lnk.linkBW
@@ -98,11 +92,10 @@ def NEW_get_average_data_PATH_ONE(num_range):
 
     cpu = cpu / num_nodes
     ram = ram / num_nodes
-    pbs = pbs / num_nodes
 
     bw = bw / num_links
 
-    return total_approved, total_denied, delay_average, cost_average, fail_average, route_average, [cpu, ram, pbs], bw
+    return total_approved, total_denied, delay_average, cost_average, fail_average, route_average, [cpu, ram], bw
 
 
 def NEW_get_average_data_PATH_TWO(num_range):
@@ -127,7 +120,6 @@ def NEW_get_average_data_PATH_TWO(num_range):
 
     cpu = 0
     ram = 0
-    pbs = 0
 
     bw = 0
 
@@ -151,7 +143,6 @@ def NEW_get_average_data_PATH_TWO(num_range):
         n = node.nodeResources
         cpu += n[0]
         ram += n[1]
-        pbs += n[2]
 
     for lnk in NodeObj.StaticLinkList:
         bw += lnk.linkBW
@@ -175,12 +166,11 @@ def NEW_get_average_data_PATH_TWO(num_range):
 
     cpu = cpu / num_nodes
     ram = ram / num_nodes
-    pbs = pbs / num_nodes
 
     bw = bw / num_links
 
     # print("".format(total_approved, total_denied, delay_average, cost_average, fail_average, route_average, [cpu, ram, pbs], bw))
-    return total_approved, total_denied, delay_average, cost_average, fail_average, route_average, [cpu, ram, pbs], bw
+    return total_approved, total_denied, delay_average, cost_average, fail_average, route_average, [cpu, ram], bw
 
 
 def NEW_output_file_PATH_ONE(FILE_NAME, num_range):

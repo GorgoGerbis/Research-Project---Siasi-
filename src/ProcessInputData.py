@@ -23,24 +23,18 @@ def processInputDataNode(filePath):
             currentElements = line.split(';')
 
             # This is so the resources are seperated into a list
-            temp_resources = currentElements.pop(4)
+            temp_resources = currentElements.pop(2)
             temp_resources = temp_resources.strip('][').split(', ')
-            resources = []
-
-            for i in temp_resources:
-                resources.append(int(i))
+            resources = list(map(int, temp_resources))
 
             id = int(currentElements[0])
-            position = [int(currentElements[1]), int(currentElements[2])]
-            status = currentElements[3]
-            processingDelay = 1
-            cost = int(currentElements[5])
-            resources = [100, 100, 100]
-
-            failure = float(currentElements[6].strip('\n'))
+            status = currentElements[1]
+            processingDelay = float(currentElements[2])
+            cost = float(currentElements[3])
+            failure = float(currentElements[4].strip('\n'))
 
             # NodeObj.StaticNodeResources.append([id, resources])   # @ToDo remember to change this as well so the nodes are properly reset
-            current_node = NodeObj(id, position, status, resources, processingDelay, cost, failure)
+            current_node = NodeObj(id, status, resources, processingDelay, cost, failure)
             print(current_node)
 
 
@@ -53,13 +47,13 @@ def processInputDataLink(filePath):
             currentElements = line.split(';')
 
             linkID = int(currentElements[0])
+            status = "A"
             source = int(currentElements[1])
             destination = int(currentElements[2])
-            bandwidth = 1000 # 60
+            bandwidth = int(currentElements[3])
             edgeDelay = float(currentElements[4])
-            edgeCost = int(currentElements[5])
+            edgeCost = float(currentElements[5])
             failure_probability = float(currentElements[6].strip('\n'))
-            status = "A"
 
             # NodeObj.StaticLinkResources.append([linkID, bandwidth])
             current_link = LinkObj(linkID, status, source, destination, bandwidth, edgeDelay, edgeCost, failure_probability)

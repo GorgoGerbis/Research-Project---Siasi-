@@ -22,18 +22,18 @@ RequestInputData = os.path.join(resourcesFolder, "RequestInputData.txt")
 # GLOBAL_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "SINGLE_PATH_ONE_OUTPUT_DATA_25.csv")
 # GLOBAL_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "SINGLE_PATH_TWO_OUTPUT_DATA_25.csv")
 
-GLOBAL_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "MULTI_PATH_ONE_OUTPUT_DATA_25.csv")
-GLOBAL_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "MULTI_PATH_TWO_OUTPUT_DATA_25.csv")
+GLOBAL_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "MULTI_PATH_ONE_OUTPUT_DATA_100.csv")
+GLOBAL_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "MULTI_PATH_TWO_OUTPUT_DATA_100.csv")
 
 ######### NEW STUFF ################
-OUTPUT_SET_ONE_A = os.path.join(outputFolder, "NEW_SINGLE_PATH_ONE_OUTPUT_DATA_25.csv")
-OUTPUT_SET_ONE_B = os.path.join(outputFolder, "NEW_SINGLE_PATH_TWO_OUTPUT_DATA_25.csv")
+# OUTPUT_SET_ONE_A = os.path.join(outputFolder, "NEW_SINGLE_PATH_ONE_OUTPUT_DATA_25.csv")
+# OUTPUT_SET_ONE_B = os.path.join(outputFolder, "NEW_SINGLE_PATH_TWO_OUTPUT_DATA_25.csv")
 ####################################
 
 # WILL DELETE THIS METHOD LATER
 
 GLOBAL_NODE_RESOURCES = [100, 100, 100]
-GLOBAL_LINK_BANDWIDTH = 1000
+GLOBAL_LINK_BANDWIDTH = 100
 
 GLOBAL_REQUEST_DELAY_THRESHOLD = 120.5
 GlOBAL_FAILURE_THRESHOLD = 55.5

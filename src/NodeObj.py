@@ -8,7 +8,7 @@ import random
 """
 
 # ToDo Need to make a method returning these values so only need to edit FuncObj.py when adding a new function.
-FUNCTION_COSTS = [[1, 1, 1], [2, 2, 2], [3, 3, 3], [4, 4, 4], [5, 5, 5], [6, 6, 6]]
+FUNCTION_COSTS = [[1, 1, 2], [2, 2, 4], [3, 3, 6], [4, 4, 8], [5, 5, 10]]
 
 # ToDo need to adjust this
 NODE_RESOURCES = GLOBAL_NODE_RESOURCES
@@ -36,9 +36,8 @@ class NodeObj:
     AVAILABLE = "A"
     RELAY = "R"
 
-    def __init__(self, nodeID, nodePosition, status, nodeResources, processingDelay, nodeCost, failure_probability):
+    def __init__(self, nodeID, status, nodeResources, processingDelay, nodeCost, failure_probability):
         self.nodeID = nodeID
-        self.nodePosition = nodePosition
         self.status = status
         self.nodeCost = nodeCost
         self.processingDelay = processingDelay
@@ -85,7 +84,6 @@ class NodeObj:
 
     def get_tethers(self):
         output = []
-
         for link in NodeObj.StaticLinkList:
             if (link.linkDest == self.nodeID) or (link.linkSrc == self.nodeID):
                 output.append(link)
@@ -93,23 +91,13 @@ class NodeObj:
         return output
 
     def compareCPU(self, cpu):
-        # Returns True if you have enough resources
         if self.nodeResources[0] >= cpu:
-            # print("{} >= {}".format(self.nodeResources[0], cpu))
             return True
         else:
             return False
 
     def compareRAM(self, ram):
         if self.nodeResources[1] >= ram:
-            # print("{} >= {}".format(self.nodeResources[1], ram))
-            return True
-        else:
-            return False
-
-    def compareBW(self, bw):
-        if self.nodeResources[2] >= bw:
-            # print("{} >= {}".format(self.nodeResources[2], bw))
             return True
         else:
             return False
@@ -120,19 +108,16 @@ class NodeObj:
 
         t_cpu = 0
         t_ram = 0
-        t_bw = 0
 
         for f in func_list:
             temp_func = FuncObj.retrieve_function_value(f)  # Retrieves the current requested function
             # Current func requirements
             c_cpu = temp_func.value[0] + t_cpu
             c_ram = temp_func.value[1] + t_ram
-            c_bw = temp_func.value[2] + t_bw
 
-            if self.HELPER_check_enough_resources(c_cpu, c_ram, c_bw):
+            if self.HELPER_check_enough_resources(c_cpu, c_ram):
                 t_cpu += temp_func.value[0]
                 t_ram += temp_func.value[1]
-                t_bw += temp_func.value[2]
                 mappable_funcs.append(temp_func)
                 num_mappable += 1
             else:
@@ -140,10 +125,9 @@ class NodeObj:
 
         return mappable_funcs
 
-    def map_function(self, cpu, ram, bw):
+    def map_function(self, cpu, ram):
         self.nodeResources[0] = int(self.nodeResources[0]) - cpu
         self.nodeResources[1] = int(self.nodeResources[1]) - ram
-        self.nodeResources[2] = int(self.nodeResources[2]) - bw
 
     def map_function_obj(self, f):
         # func = FuncObj.retrieve_function_value(f)
@@ -154,10 +138,9 @@ class NodeObj:
 
         self.nodeResources[0] = int(self.nodeResources[0]) - func.value[0]
         self.nodeResources[1] = int(self.nodeResources[1]) - func.value[1]
-        self.nodeResources[2] = int(self.nodeResources[2]) - func.value[2]
 
-    def HELPER_check_enough_resources(self, c, r, b):
-        if self.compareCPU(c) and self.compareRAM(r) and self.compareBW(b):
+    def HELPER_check_enough_resources(self, c, r):
+        if self.compareCPU(c) and self.compareRAM(r):
             # self.map_function(c, r, b) #ToDo <----DONT FORGET TO COMMENT THIS LINE OUT OR EVERYTHING IS GOING TO BE MAPPED.
             # print("NODE {} DOES HAVE SUFFICIENT RESOURCES TO MAP FUNCTION {}\n".format(self.nodeID, func))
             return True
@@ -167,8 +150,8 @@ class NodeObj:
 
     def check_enough_resources(self, f):
         func = FuncObj.retrieve_function_value(f)
-        c, r, b = func.value[0], func.value[1], func.value[2]
-        if self.compareCPU(c) and self.compareRAM(r) and self.compareBW(b):
+        c, r= func.value[0], func.value[1]
+        if self.compareCPU(c) and self.compareRAM(r):
             return True
         else:
             # print("NODE {} DOES NOT HAVE SUFFICIENT RESOURCES TO MAP FUNCTION {}\n".format(self.nodeID, func))
@@ -189,9 +172,8 @@ class NodeObj:
         for func in costs:
             c = func[0]
             r = func[1]
-            b = func[2]
 
-            if self.HELPER_check_enough_resources(c, r, b):
+            if self.HELPER_check_enough_resources(c, r):
                 mappable += 1
 
         if mappable > 0:
@@ -228,11 +210,10 @@ class NodeObj:
 
     @staticmethod
     def print_resources(node):
-        output = [node.nodeID, node.nodeResources[0], node.nodeResources[1], node.nodeResources[2]]
+        output = [node.nodeID, node.nodeResources[0], node.nodeResources[1]]
         return output
 
     def __str__(self):
-        string = "Node ID: {} Node Position: {} Node Status: {} Node Resources: {} Processing Delay: {} Node cost: {} Failure probability: {}".format(
-            self.nodeID, (self.nodePosition[0], self.nodePosition[1]), self.status, self.nodeResources,
-            self.processingDelay, self.nodeCost, self.failure_probability)
+        string = "Node ID: {} Node Status: {} Node Resources: {} Processing Delay: {} Node cost: {} Failure probability: {}".format(
+            self.nodeID, self.status, self.nodeResources, self.processingDelay, self.nodeCost, self.failure_probability)
         return string
