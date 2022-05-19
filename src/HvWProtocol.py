@@ -7,6 +7,8 @@ from src.OutputGraphs import run_output_graphs
 import CreateOutputData
 
 from src.CONSTANTS import GLOBAL_REQUEST_DELAY_THRESHOLD
+from src.CONSTANTS import GLOBAL_OUTPUT_FILE_PATH_ONE
+from src.CONSTANTS import GLOBAL_OUTPUT_FILE_PATH_TWO
 
 # Need these for path finding and graphing
 import networkx as nx
@@ -233,7 +235,7 @@ if __name__ == '__main__':
         process_path_one_SINGLE_MAPPING()
 
         print("STARTING CREATION OF OUTPUT FILES\n")
-        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "SINGLE_PATH_ONE_OUTPUT_DATA_100.csv"), 100)
+        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, GLOBAL_OUTPUT_FILE_PATH_ONE), 100)
         print("CREATED PATH ONE OUTPUT FILES\n")
         #########################################################
 
@@ -253,7 +255,7 @@ if __name__ == '__main__':
 
         print("STARTING CREATION OF FAILURE PROBABILITY OUTPUT FILES\n")
         # CreateOutputData.output_file_PATH_TWO()
-        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "SINGLE_PATH_TWO_OUTPUT_DATA_100.csv"), 100)
+        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, GLOBAL_OUTPUT_FILE_PATH_TWO), 100)
 
     elif CONSTANTS.GLOBAL_PROTOCOL == 2:
         print("Begin Processing requests using: 'Head vs. Wall' Protocol\n")
@@ -271,7 +273,7 @@ if __name__ == '__main__':
 
         print("STARTING CREATION OF OUTPUT FILES\n")
         # CreateOutputData.output_file_PATH_ONE()
-        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, "MULTI_PATH_ONE_OUTPUT_DATA_100.csv"), 100)
+        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, GLOBAL_OUTPUT_FILE_PATH_ONE), 100)
         print("CREATED PATH ONE OUTPUT FILES\n")
         #########################################################
 
@@ -293,7 +295,7 @@ if __name__ == '__main__':
             print(op)
 
         print("STARTING CREATION OF FAILURE PROBABILITY OUTPUT FILES\n")
-        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, "MULTI_PATH_TWO_OUTPUT_DATA_100.csv"), 100)
+        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, GLOBAL_OUTPUT_FILE_PATH_TWO), 100)
 
     print("CREATING LINE GRAPHS WITH AVAILABLE DATA")
     run_output_graphs()
