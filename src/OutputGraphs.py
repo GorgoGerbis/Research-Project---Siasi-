@@ -94,6 +94,7 @@ def NEW_graph():
 
     plt.show()
 
+
 def gather_data(single, multi):
     output_single = []
     output_multi = []

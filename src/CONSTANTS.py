@@ -8,8 +8,8 @@ resourcesFolder = os.path.join(baseFolder, "resources")
 outputFolder = os.path.join(baseFolder, "output")
 
 
-SINGLE_MAPPING = 1 # Mapping all/as many as possible on the first node in the route
-MULTI_MAPPING = 2 # Mapping one function at a time on multiple different nodes
+SINGLE_MAPPING = 1  # Mapping all/as many as possible on the first node in the route
+MULTI_MAPPING = 2   # Mapping one function at a time on multiple different nodes
 
 # INPUT FILE PATHS
 

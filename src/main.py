@@ -49,11 +49,6 @@ Head vs Wall is the nickname I gave to this protocol. Works as follows.
 The networkx method 'all_simple_paths' uses a modified depth first search.
 """
 
-NODES_THAT_AUTO_FAIL = []   # [5, 6, 13, 19]
-
-PASSED_REQUESTS_ONE = []
-PASSED_REQUESTS_TWO = []
-
 # Variables to set up graph for network
 GRAPH = nx.Graph()
 edges = []
@@ -82,16 +77,7 @@ def set_nodes():
             visited_nodes.append(current_node_id)
 
 
-def fail_unavailable_paths():
-    for req in Request.STATIC_TOTAL_REQUEST_LIST:
-        obj = req.PATH_ONE
-        if obj is not None:
-            for step in obj.route:
-                if step in NODES_THAT_AUTO_FAIL:
-                    req.requestStatus[0] = 2
-
-
-def check_fail(s, d):
+def check_fail(s, d):   # @ToDo need to reimplement this in a smarter way
     l = [5, 6, 13, 19]
     for num in l:
         if num == s:
@@ -102,7 +88,7 @@ def check_fail(s, d):
             return True
 
 
-def path_check_fail(path):
+def path_check_fail(path):  # @ToDo need to reimplement this in a smarter way
     l = [5, 6, 13, 19]
     for step in path:
         if step in l:
@@ -111,7 +97,7 @@ def path_check_fail(path):
     return True
 
 
-def process_path_one():
+def process_path_one_MULTI_MAPPING():
     for req in Request.STATIC_TOTAL_REQUEST_LIST:   # STEP ONE
         print("BEGUN PROCESSING REQUEST: {} Source: {} Destination {} Functions: {}\n".format(req.requestID, req.source, req.destination, req.requestedFunctions))
 
@@ -128,13 +114,13 @@ def process_path_one():
         RUN_PATH_ONE(req)   # <--- Step 3, 4 and 5 starts here
 
 
-def process_path_two():
+def process_path_two_MULTI_MAPPING():
     for req in Request.STATIC_TOTAL_REQUEST_LIST:   # STEP ONE
         print("BEGUN PROCESSING REQUEST: {} Source: {} Destination {} Functions: {}\n".format(req.requestID, req.source, req.destination, req.requestedFunctions))
         s = req.source
         d = req.destination
 
-        if not check_fail(s, d):
+        if not check_fail(s, d):    # @ToDo need to reimplement this in a smarter way
             req.requestStatus[1] = 2
             req.PATH_ONE = None
             print("Path_failed\n")
@@ -176,7 +162,7 @@ def process_path_two_SINGLE_MAPPING():
         s = req.source
         d = req.destination
 
-        if not check_fail(s, d):    # Pruning to make the dataset smaller
+        if not check_fail(s, d):    # @ToDo need to reimplement this in a smarter way
             req.requestStatus[1] = 2
             req.PATH_ONE = None
             print("Path_failed\n")
@@ -261,7 +247,7 @@ if __name__ == '__main__':
         print("Begin Processing requests using: 'Head vs. Wall' Protocol\n")
 
         ########### SETUP IS NOW OVER WE CAN BEGIN PROCESSING ##############
-        process_path_one()
+        process_path_one_MULTI_MAPPING()
         print("ALL DONE FINDING FIRST PATHS\n")
         for op in PathObj.StaticOptimalPathsList:
             print(op)
@@ -289,7 +275,7 @@ if __name__ == '__main__':
         ProcessInputData.processInputDataLink(ProcessInputData.LinkInputData)
 
         ############# BEGIN PROCESSING FOR PATH TWO ##############
-        process_path_two()
+        process_path_two_MULTI_MAPPING()
         print("ALL DONE FINDING SECOND PATHS\n")
         for op in PathObj.StaticOptimalPathsList:
             print(op)
