@@ -127,15 +127,15 @@ def HELPER_check_redundancy(num_nodes):
 
 
 if __name__ == '__main__':
-    num_nodes = 16
-    num_links = 24
-    num_requests = 100
+    num_nodes = 7
+    num_links = 8
+    num_requests = 25
 
     adj_duos = HELPER_import_csv_data(csv_data)
 
     print("CREATING NEW INPUT DATA!\n")
     print("TOTAL NODES: {} TOTAL LINKS: {} TOTAL REQUESTS: {}\n".format(num_nodes, num_links, num_requests))
-    createNodeInputData(num_nodes)
-    createLinkInputData(adj_duos)
+    # createNodeInputData(num_nodes)
+    # createLinkInputData(adj_duos)
     createRequests(num_requests, num_nodes)
     print("FINISHED CREATING INPUT DATA\n")

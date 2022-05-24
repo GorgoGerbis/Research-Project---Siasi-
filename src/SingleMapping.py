@@ -50,19 +50,6 @@ FLUNK = 3
 BACKUP = 4
 OPTIMAL = 5
 
-AUTO_FAIL = [5, 6, 13, 19]
-
-
-def check_fail(path_obj):
-
-    # AUTO_FAIL = [5, 6, 13, 19]
-
-    for step in path_obj.route:
-        if step in AUTO_FAIL:
-            path_obj.state = POOR
-            return False
-    return True
-
 
 # @Todo need to remember to clear BACKUP_PATHS when finished processing request
 def set_path_state_PATH_ONE(path_obj):  # <-- This one DOES NOT use failure probability
@@ -94,26 +81,6 @@ def set_path_state_PATH_TWO(path_obj):  # <-- This one DOES NOT use failure prob
         else:
             path_obj.state = POOR
             print("PATH {} DOES NOT HAVE ENOUGH RESOURCES!".format(path_obj.pathID))
-
-
-# @Todo need to remember to clear BACKUP_PATHS when finished processing request
-# def set_path_state_PATH_TWO(path_obj):  # <-- This one DOES NOT use failure probability
-#     # Given a path must then determine and set the state of the path
-#     if path_obj.state == STATE_UNKNOWN:
-#         if calculate_path_resources_PATH_TWO(path_obj):
-#             if calculate_path_failure(path_obj, FAILURE_THRESHOLD):
-#                 if calculate_path_speed(path_obj, REQUEST_DELAY_THRESHOLD):
-#                     path_obj.state = BACKUP
-#                     PathObj.BACKUP_PATHS.append(path_obj)
-#                 else:
-#                     path_obj.state = TURTLE
-#                     print("PATH {} DELAY {} | PATH IS TOO SLOW!".format(path_obj.pathID, path_obj.DELAY))
-#             else:
-#                 path_obj.state = FLUNK
-#                 print("PATH {} FAILURE {}% | FAILURE PROBABILITY IS TOO HIGH!".format(path_obj.pathID, path_obj.FAILURE_PROBABILITY))
-#         else:
-#             path_obj.state = POOR
-#             print("PATH {} DOES NOT HAVE ENOUGH RESOURCES!".format(path_obj.pathID))
 
 
 def calculate_path_resources_PATH_ONE(path_obj):

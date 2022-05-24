@@ -7,7 +7,7 @@ layout = [
     [sg.Text('Mapping Protocol'), sg.Spin(['Single-Mapping', 'Multi-Mapping'])],
     [sg.Button('RUN SIMULATION', key='-START-'), sg.Button('SHOW RESULTS', key='-SHOW-')],
     [sg.Text('Number to convert: '), sg.Input(key='-X-'), sg.Text(key='-OUTPUT-')]
-] # Each list is its own row
+] # Each list is its own row!
 
 window = sg.Window('FOG simulator', layout)   # WAITS FOR INPUT AND LOOKS FOR ANY KIND OF EVENT/RETURN VALUE
 # ONCE WE ADD INPUT ITS GOING TO RETURN PAST THIS LINE

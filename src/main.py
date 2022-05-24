@@ -13,7 +13,6 @@ from src.CONSTANTS import GLOBAL_OUTPUT_FILE_PATH_TWO
 # Need these for path finding and graphing
 import networkx as nx
 import matplotlib.pyplot as plt
-import numpy as np
 
 # Need these to process requests
 from src.MultiMapping import RUN_PATH_ONE
@@ -216,14 +215,11 @@ if __name__ == '__main__':
 
     if CONSTANTS.GLOBAL_PROTOCOL == 1:
         print("Begin Processing requests using: Single-Mapping Protocol\n")
-
-        ########### SETUP IS NOW OVER WE CAN BEGIN PROCESSING ##############
         process_path_one_SINGLE_MAPPING()
 
         print("STARTING CREATION OF OUTPUT FILES\n")
-        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, GLOBAL_OUTPUT_FILE_PATH_ONE), 100)
+        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, GLOBAL_OUTPUT_FILE_PATH_ONE), 100, 7, 8)
         print("CREATED PATH ONE OUTPUT FILES\n")
-        #########################################################
 
         for link in NodeObj.StaticLinkList:
             del link
@@ -240,8 +236,7 @@ if __name__ == '__main__':
         process_path_two_SINGLE_MAPPING()
 
         print("STARTING CREATION OF FAILURE PROBABILITY OUTPUT FILES\n")
-        # CreateOutputData.output_file_PATH_TWO()
-        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, GLOBAL_OUTPUT_FILE_PATH_TWO), 100)
+        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, GLOBAL_OUTPUT_FILE_PATH_TWO), 100, 7, 8)
 
     elif CONSTANTS.GLOBAL_PROTOCOL == 2:
         print("Begin Processing requests using: 'Head vs. Wall' Protocol\n")
@@ -259,7 +254,7 @@ if __name__ == '__main__':
 
         print("STARTING CREATION OF OUTPUT FILES\n")
         # CreateOutputData.output_file_PATH_ONE()
-        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, GLOBAL_OUTPUT_FILE_PATH_ONE), 100)
+        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, GLOBAL_OUTPUT_FILE_PATH_ONE), 100, 7, 8)
         print("CREATED PATH ONE OUTPUT FILES\n")
         #########################################################
 
@@ -281,7 +276,7 @@ if __name__ == '__main__':
             print(op)
 
         print("STARTING CREATION OF FAILURE PROBABILITY OUTPUT FILES\n")
-        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, GLOBAL_OUTPUT_FILE_PATH_TWO), 100)
+        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, GLOBAL_OUTPUT_FILE_PATH_TWO), 100, 7, 8)
 
     print("CREATING LINE GRAPHS WITH AVAILABLE DATA")
     run_output_graphs()

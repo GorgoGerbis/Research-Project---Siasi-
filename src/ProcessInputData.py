@@ -10,10 +10,6 @@ from src.CONSTANTS import NodeInputData
 from src.CONSTANTS import LinkInputData
 from src.CONSTANTS import RequestInputData
 
-REQUESTS_FAILED = []
-REQUESTS_PASSED = []
-REQUESTS = []
-
 
 def processInputDataNode(filePath):
     with open(filePath) as fp:

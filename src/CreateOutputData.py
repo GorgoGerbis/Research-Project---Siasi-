@@ -35,7 +35,7 @@ def fail_unavailable_paths():
 ########################################### NEW STUFF #################################################################
 
 
-def NEW_get_average_data_PATH_ONE(num_range):
+def NEW_get_average_data_PATH_ONE(num_reqs, num_nodes, num_links):
     # NEW LISTS
     temp_req_list = []
 
@@ -52,15 +52,12 @@ def NEW_get_average_data_PATH_ONE(num_range):
     fail = 0
     lngth = 0
 
-    num_nodes = 20
-    num_links = 30
-
     cpu = 0
     ram = 0
 
     bw = 0
 
-    for i in range(num_range):
+    for i in range(num_reqs):
         i += 1
         current_req = Request.return_request(i)
         temp_req_list.append(current_req)
@@ -109,7 +106,7 @@ def NEW_get_average_data_PATH_ONE(num_range):
     return total_approved, total_denied, delay_average, cost_average, fail_average, route_average, [cpu, ram], bw
 
 
-def NEW_get_average_data_PATH_TWO(num_range):
+def NEW_get_average_data_PATH_TWO(num_reqs, num_nodes, num_links):
     # NEW LISTS
     temp_req_list = []
 
@@ -126,15 +123,12 @@ def NEW_get_average_data_PATH_TWO(num_range):
     fail = 0
     lngth = 0
 
-    num_nodes = 20
-    num_links = 30
-
     cpu = 0
     ram = 0
 
     bw = 0
 
-    for i in range(num_range):
+    for i in range(num_reqs):
         i += 1
         current_req = Request.return_request(i)
         temp_req_list.append(current_req)
@@ -184,14 +178,14 @@ def NEW_get_average_data_PATH_TWO(num_range):
     return total_approved, total_denied, delay_average, cost_average, fail_average, route_average, [cpu, ram], bw
 
 
-def NEW_output_file_PATH_ONE(FILE_NAME, num_range):
+def NEW_output_file_PATH_ONE(FILE_NAME, num_reqs, num_nodes, num_links):
     temp_reqs = []
 
     fail_unavailable_paths() # This will fail all paths that have a failed node in its route
     with open(FILE_NAME, 'w') as fp:
         main_header = "DATASET=TEST_A,TYPE=WITHOUT_FAULT_TOLERANCE,NODES=42,LINKS=63,REQUESTS=100\n"
         average_header = "REQUEST PASSED, REQUESTS FAILED, AVERAGE REQUEST DELAY, AVERAGE REQUEST COST, AVERAGE FAILURE PROBABILITY, AVERAGE LENGTH OF PATHS, MEAN NODE [CPU, RAM, PBS], MEAN LINK BANDWIDTH\n"
-        p, f, avd, avc, FAIL, route, resources, bw = NEW_get_average_data_PATH_ONE(num_range)
+        p, f, avd, avc, FAIL, route, resources, bw = NEW_get_average_data_PATH_ONE(num_reqs)
         avg = "{},{},{},{},{}%,{},{},{}\n".format(p, f, avd, avc, FAIL, route, resources, bw)
         request_header = "REQUEST STATUS,REQUEST ID,PATH ID,FAILURE PROBABILITY,DELAY,COST,FUNCTIONS,PATH\n"
         fp.write(main_header)
@@ -199,7 +193,7 @@ def NEW_output_file_PATH_ONE(FILE_NAME, num_range):
         fp.write(avg)
         fp.write(request_header)
 
-        for i in range(num_range):
+        for i in range(num_reqs):
             i += 1
             current = Request.return_request(i)
             temp_reqs.append(current)
@@ -216,13 +210,13 @@ def NEW_output_file_PATH_ONE(FILE_NAME, num_range):
                                                                                req.source, req.destination))
 
 
-def NEW_output_file_PATH_TWO(FILE_NAME, num_range):
+def NEW_output_file_PATH_TWO(FILE_NAME, num_reqs, num_nodes, num_links):
     temp_reqs = []
 
     with open(FILE_NAME, 'w') as fp:
         main_header = "DATASET=0-25,TYPE=WITH_FAULT_TOLERANCE,NODES=42,LINKS=63,REQUESTS=100\n"
         average_header = "REQUEST PASSED, REQUESTS FAILED, AVERAGE REQUEST DELAY, AVERAGE REQUEST COST, AVERAGE FAILURE PROBABILITY, AVERAGE LENGTH OF PATHS, MEAN NODE [CPU, RAM, PBS], MEAN LINK BANDWIDTH\n"
-        p, f, avd, avc, FAIL, route, resources, bw = NEW_get_average_data_PATH_TWO(num_range)
+        p, f, avd, avc, FAIL, route, resources, bw = NEW_get_average_data_PATH_TWO(num_reqs)
         avg = "{},{},{},{},{}%,{},{},{}\n".format(p, f, avd, avc, FAIL, route, resources, bw)
         request_header = "REQUEST STATUS,REQUEST ID,PATH ID,FAILURE PROBABILITY,DELAY,COST,FUNCTIONS,PATH\n"
         fp.write(main_header)
@@ -230,7 +224,7 @@ def NEW_output_file_PATH_TWO(FILE_NAME, num_range):
         fp.write(avg)
         fp.write(request_header)
 
-        for i in range(num_range):
+        for i in range(num_reqs):
             i += 1
             current = Request.return_request(i)
             temp_reqs.append(current)
