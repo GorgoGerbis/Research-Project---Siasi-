@@ -1,6 +1,6 @@
 from src.NodeObj import NodeObj
 from src.PathObj import PathObj
-from src.FuncObj import FuncObj
+from src.VNFObj import VNFObj
 from src.LinkObj import LinkObj
 from src.Request import Request
 
@@ -67,14 +67,17 @@ def set_path_state_PATH_ONE(path_obj):  # <-- This one DOES NOT use failure prob
             print("PATH {} DOES NOT HAVE ENOUGH RESOURCES!".format(path_obj.pathID))
 
 
-# @Todo need to remember to clear BACKUP_PATHS when finished processing request
-def set_path_state_PATH_TWO(path_obj):  # <-- This one DOES NOT use failure probability
+def set_path_state_PATH_TWO(path_obj):  # <-- This one DOES use failure probability
     # Given a path must then determine and set the state of the path
     if path_obj.state == STATE_UNKNOWN:
         if calculate_path_resources_PATH_TWO(path_obj):
             if calculate_path_speed(path_obj, REQUEST_DELAY_THRESHOLD):
-                path_obj.state = BACKUP
-                PathObj.BACKUP_PATHS.append(path_obj)
+                if calculate_path_failure(path_obj, GlOBAL_FAILURE_THRESHOLD):
+                    path_obj.state = BACKUP
+                    PathObj.BACKUP_PATHS.append(path_obj)
+                else:
+                    path_obj.state = FLUNK
+                    print("PATH {} FAIL {} | PATH FAILURE PROBABILITY TOO HIGH!".format(path_obj.pathID, path_obj.FAILURE_PROBABILITY))
             else:
                 path_obj.state = TURTLE
                 print("PATH {} DELAY {} | PATH IS TOO SLOW!".format(path_obj.pathID, path_obj.DELAY))
@@ -325,10 +328,10 @@ def calculate_optimal_PATH_TWO():
             if current_best_path.FAILURE_PROBABILITY < current_best_path.FAILURE_PROBABILITY:
                 current_best_path = obj
             elif current_best_path.FAILURE_PROBABILITY == current_best_path.FAILURE_PROBABILITY:
-                if obj.COST < current_best_path.COST:
+                if obj.DELAY < current_best_path.DELAY:
                     current_best_path = obj
-                elif obj.COST == current_best_path.COST:
-                    if obj.DELAY < current_best_path.DELAY:
+                elif obj.DELAY == current_best_path.DELAY:
+                    if obj.COST < current_best_path.COST:
                         current_best_path = obj
 
         current_best_path.state = 5
@@ -361,8 +364,8 @@ def map_path_ONE(path_obj):
     for link in NodeObj.StaticLinkList:
         link_avg += link.linkBW
 
-    NodeObj.StaticNodeResources_PATHONE.append(node_avg / 16)
-    NodeObj.StaticLinkResources_PATHONE.append(link_avg / 24)
+    NodeObj.StaticNodeResources_PATHONE.append(node_avg / 7)
+    NodeObj.StaticLinkResources_PATHONE.append(link_avg / 8)
     print("PATH MAPPED")
 
 
@@ -392,8 +395,8 @@ def map_path_TWO(path_obj):
     for link in NodeObj.StaticLinkList:
         link_avg += link.linkBW
 
-    NodeObj.StaticNodeResources_PATHTWO.append(node_avg / 16)
-    NodeObj.StaticLinkResources_PATHTWO.append(link_avg / 24)
+    NodeObj.StaticNodeResources_PATHTWO.append(node_avg / 7)
+    NodeObj.StaticLinkResources_PATHTWO.append(link_avg / 8)
     print("PATH MAPPED")
 
 

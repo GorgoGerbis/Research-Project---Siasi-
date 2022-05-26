@@ -1,4 +1,4 @@
-from src.FuncObj import FuncObj
+from src.VNFObj import VNFObj
 from src.CONSTANTS import GLOBAL_NODE_RESOURCES, INITIAL_TERMINAL_RESOURCES
 from src.CONSTANTS import GLOBAL_REQUEST_DELAY_THRESHOLD
 import random
@@ -7,7 +7,7 @@ import random
 @author: Jackson Walker
 """
 
-# ToDo Need to make a method returning these values so only need to edit FuncObj.py when adding a new function.
+# ToDo Need to make a method returning these values so only need to edit VNFObj.py when adding a new function.
 FUNCTION_COSTS = [[1, 1, 1], [2, 2, 2], [3, 3, 3], [4, 4, 4], [5, 5, 5], [6, 6, 6]]
 
 # ToDo need to adjust this

@@ -1,7 +1,7 @@
 import os
 import random
 from src.NodeObj import NodeObj
-from src.FuncObj import FuncObj
+from src.VNFObj import VNFObj
 
 from src.CONSTANTS import NodeInputData
 from src.CONSTANTS import LinkInputData
@@ -75,7 +75,7 @@ def createRequests(number_of_requests, number_of_nodes):
 
             for i in range(requested_num_func):
                 while True:
-                    current_func = FuncObj.RANDOM
+                    current_func = VNFObj.RANDOM
                     name = current_func.name
                     temp = current_func.value
                     if name not in outputFunctions:

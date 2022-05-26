@@ -1,5 +1,5 @@
 from src.NodeObj import NodeObj
-from src.FuncObj import FuncObj
+from src.VNFObj import VNFObj
 from src.LinkObj import LinkObj
 from src.Request import Request
 from src.CONSTANTS import GLOBAL_REQUEST_DELAY_THRESHOLD
@@ -91,34 +91,28 @@ class PathObj:
         :return: failure_probability: a float representing the probability of failure
         """
         fused_path = self.create_fusion_obj_list(self.route)
-        link_temp = []
         node_temp = []
 
         overall_average = 0
+        node_count = 0
 
         for step in fused_path:
-            if type(step) == LinkObj:
-                current_fail = step.calculate_failure(step.linkSrc, step.linkDest)
-                link_temp.append(current_fail)
-            else:
+            if type(step) == NodeObj:
                 current_fail = step.calculate_failure(step.nodeID)
+                node_count += 1
                 node_temp.append(current_fail)
-
-        for step in link_temp:
-            overall_average += step
 
         for step in node_temp:
             overall_average += step
 
-        count = len(link_temp) + len(node_temp)
+        node_failure_probability = overall_average / node_count
+        node_failure_probability *= 100
 
-        failure_probability = overall_average / count
-        failure_probability *= 100
+        if node_failure_probability < 0:
+            node_failure_probability *= -1
 
-        if failure_probability < 0:
-            failure_probability *= -1
-
-        self.FAILURE_PROBABILITY = failure_probability
+        self.FAILURE_PROBABILITY = node_failure_probability
+        return node_failure_probability
 
     def return_failure_probability(self):
         """
@@ -131,35 +125,29 @@ class PathObj:
         :return: failure_probability: a float representing the probability of failure
         """
         fused_path = self.create_fusion_obj_list(self.route)
-        link_temp = []
         node_temp = []
 
         overall_average = 0
+        node_count = 0
 
         for step in fused_path:
-            if type(step) == LinkObj:
-                current_fail = step.calculate_failure(step.linkSrc, step.linkDest)
-                link_temp.append(current_fail)
-            else:
+            if type(step) == NodeObj:
                 current_fail = step.calculate_failure(step.nodeID)
+                node_count += 1
                 node_temp.append(current_fail)
-
-        for step in link_temp:
-            overall_average += step
 
         for step in node_temp:
             overall_average += step
 
-        count = len(link_temp) + len(node_temp)
 
-        failure_probability = overall_average / count
-        failure_probability *= 100
+        node_failure_probability = overall_average / node_count
+        node_failure_probability *= 100
 
-        if failure_probability < 0:
-            failure_probability *= -1
+        if node_failure_probability < 0:
+            node_failure_probability *= -1
 
-        self.FAILURE_PROBABILITY = failure_probability
-        return failure_probability
+        self.FAILURE_PROBABILITY = node_failure_probability
+        return node_failure_probability
 
 
     @staticmethod

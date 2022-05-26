@@ -1,6 +1,6 @@
 from src.NodeObj import NodeObj
 from src.PathObj import PathObj
-from src.FuncObj import FuncObj
+from src.VNFObj import VNFObj
 from src.LinkObj import LinkObj
 from src.Request import Request
 
@@ -22,15 +22,6 @@ BACKUP = 4
 OPTIMAL = 5
 
 
-def check_fail(path_obj):
-    AUTO_FAIL = [] # [5, 6, 13, 19]
-    for step in path_obj.route:
-        if step in AUTO_FAIL:
-            path_obj.state = POOR
-            return False
-    return True
-
-
 # @Todo need to remember to clear BACKUP_PATHS when finished processing request
 def set_path_state_PATH_ONE(path_obj):  # <-- This one DOES NOT use failure probability
     # Given a path must then determine and set the state of the path
@@ -48,13 +39,17 @@ def set_path_state_PATH_ONE(path_obj):  # <-- This one DOES NOT use failure prob
 
 
 # @Todo need to remember to clear BACKUP_PATHS when finished processing request
-def set_path_state_PATH_TWO(path_obj):  # <-- This one DOES NOT use failure probability
+def set_path_state_PATH_TWO(path_obj):  # <-- This one DOES use failure probability
     # Given a path must then determine and set the state of the path
     if path_obj.state == STATE_UNKNOWN:
         if calculate_path_resources_PATH_TWO(path_obj):
             if calculate_path_speed(path_obj, REQUEST_DELAY_THRESHOLD):
-                path_obj.state = BACKUP
-                PathObj.BACKUP_PATHS.append(path_obj)
+                if calculate_path_failure(path_obj, GlOBAL_FAILURE_THRESHOLD):
+                    path_obj.state = BACKUP
+                    PathObj.BACKUP_PATHS.append(path_obj)
+                else:
+                    path_obj.state = FLUNK
+                    print("PATH {} FAIL {} | PATH FAILURE PROBABILITY TOO HIGH!".format(path_obj.pathID, path_obj.FAILURE_PROBABILITY))
             else:
                 path_obj.state = TURTLE
                 print("PATH {} DELAY {} | PATH IS TOO SLOW!".format(path_obj.pathID, path_obj.DELAY))
@@ -63,38 +58,7 @@ def set_path_state_PATH_TWO(path_obj):  # <-- This one DOES NOT use failure prob
             print("PATH {} DOES NOT HAVE ENOUGH RESOURCES!".format(path_obj.pathID))
 
 
-# # @Todo need to remember to clear BACKUP_PATHS when finished processing request
-# def set_path_state_PATH_TWO(path_obj):  # <-- This one DOES use failure probability
-#     # Given a path must then determine and set the state of the path
-#     if path_obj.state == STATE_UNKNOWN:
-#         if calculate_path_resources_PATH_TWO(path_obj):
-#             if calculate_path_failure(path_obj, FAILURE_THRESHOLD):
-#                 if calculate_path_speed(path_obj, REQUEST_DELAY_THRESHOLD):
-#                     path_obj.state = BACKUP
-#                     PathObj.BACKUP_PATHS.append(path_obj)
-#                 else:
-#                     path_obj.state = TURTLE
-#                     print("PATH {} DELAY {} | PATH IS TOO SLOW!".format(path_obj.pathID, path_obj.DELAY))
-#             else:
-#                 path_obj.state = FLUNK
-#                 print("PATH {} FAILURE {}% | FAILURE PROBABILITY IS TOO HIGH!".format(path_obj.pathID, path_obj.FAILURE_PROBABILITY))
-#         else:
-#             path_obj.state = POOR
-#             print("PATH {} DOES NOT HAVE ENOUGH RESOURCES!".format(path_obj.pathID))
-
-
 def calculate_path_resources_PATH_ONE(path_obj):
-    """
-    We can exit the loop and return something when we either:
-    1) Know that the path DOES have enough resources, return True.
-    2) Know that for whatever reason our functions CANNOT be mapped to the nodes on the path, return False.
-
-    RETURN TRUE: Path has proven that it is able to map every function.
-    RETURN FALSE: Destination has been reached before all functions have been mapped.
-
-    :param path_obj: an object of the PathObj class
-    :return: Boolean
-    """
     fused_path = PathObj.create_fusion_obj_list(path_obj.route)
     req_info = path_obj.REQ_INFO
     funcs_to_map = req_info[0].copy()  # ToDo need to be COPYING LISTS OTHERWISE WE ARE DIRECTLY REFERENCING THEM!
@@ -112,13 +76,11 @@ def calculate_path_resources_PATH_ONE(path_obj):
         if all_mapped and enough_bw:
             return True
         if type(step) == LinkObj:
-            # print("Link ID: {} Src: {} Dest: {}".format(step.linkID, step.linkSrc, step.linkDest))
-            # NOTE: In HvW Protocol if a link doesnt have enough BW the path fails
-            check_bw = step.check_enough_resources(requested_bandwidth)
+            check_bw = step.check_enough_resources(requested_bandwidth)     # NOTE: In HvW Protocol if a link doesnt have enough BW the path fails
             if not check_bw:
                 path_obj.state = POOR
                 return False
-            elif step.linkID == end_link.linkID:
+            elif step.linkID == end_link.linkID:    # Can probably just skip this shit
                 enough_bw = True
         else:
             if all_mapped:
@@ -126,10 +88,7 @@ def calculate_path_resources_PATH_ONE(path_obj):
             else:
                 current_node = step  # First we must determine if mapping is even possible
 
-                # if current_node.nodeID in AUTO_FAIL:
-                #     path_obj.state = POOR
-                #     return False
-                if current_node.status == 'O':
+                if current_node.status == 'O':  # Check if node is offline
                     # print("MAPPING ON NODE {} IS NOT POSSIBLE NODE IS OFFLINE".format(current_node.nodeID))
                     NodeObj.AUTO_FAIL.append(current_node.nodeID)
                     path_obj.state = POOR
@@ -137,7 +96,6 @@ def calculate_path_resources_PATH_ONE(path_obj):
                 elif current_node.status == 'R':
                     continue
                 else:  # Next we need to determine if a node has enough resources for mapping and how many it can handle
-
                     if len(funcs_to_map) == 0:
                         all_mapped = True
                         continue
@@ -186,9 +144,7 @@ def calculate_path_resources_PATH_TWO(path_obj):
         if all_mapped and enough_bw:
             return True
         if type(step) == LinkObj:
-            # print("Link ID: {} Src: {} Dest: {}".format(step.linkID, step.linkSrc, step.linkDest))
-            # NOTE: In HvW Protocol if a link doesnt have enough BW the path fails
-            check_bw = step.check_enough_resources(requested_bandwidth)
+            check_bw = step.check_enough_resources(requested_bandwidth)     # NOTE: In HvW Protocol if a link doesnt have enough BW the path fails
             if not check_bw:
                 path_obj.state = POOR
                 return False
@@ -197,12 +153,12 @@ def calculate_path_resources_PATH_TWO(path_obj):
         else:
             current_node = step
 
-            if current_node.failure_probability >= GlOBAL_FAILURE_THRESHOLD:
-                NodeObj.AUTO_FAIL_PATH_TWO.append(current_node.nodeID)
-                path_obj.state = POOR
-                return False
+            # if current_node.failure_probability >= GlOBAL_FAILURE_THRESHOLD:
+            #     NodeObj.AUTO_FAIL_PATH_TWO.append(current_node.nodeID)
+            #     path_obj.state = POOR
+            #     return False
             # Determining the status of a node and if it has failed
-            elif current_node.status == 'O':
+            if current_node.status == 'O':
                 # print("MAPPING ON NODE {} IS NOT POSSIBLE NODE IS OFFLINE".format(current_node.nodeID))
                 NodeObj.AUTO_FAIL_PATH_TWO.append(current_node.nodeID)
                 path_obj.state = POOR
@@ -327,10 +283,10 @@ def calculate_optimal_PATH_TWO():
             if current_best_path.FAILURE_PROBABILITY < current_best_path.FAILURE_PROBABILITY:
                 current_best_path = obj
             elif current_best_path.FAILURE_PROBABILITY == current_best_path.FAILURE_PROBABILITY:
-                if obj.COST < current_best_path.COST:
+                if obj.DELAY < current_best_path.DELAY:
                     current_best_path = obj
-                elif obj.COST == current_best_path.COST:
-                    if obj.DELAY < current_best_path.DELAY:
+                elif obj.DELAY == current_best_path.DELAY:
+                    if obj.COST < current_best_path.COST:
                         current_best_path = obj
 
         current_best_path.state = 5

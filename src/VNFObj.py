@@ -19,18 +19,18 @@ class enumproperty(object):
         raise AttributeError("can't delete pseudo-member %r" % self.name)
 
 
-class FuncObj(Enum):
+class VNFObj(Enum):
     """
     Enum functions [x, y, z]
     x = CPU usage
     y = RAM usage
     z = Bandwidth taken
     """
-    F1 = [1, 1, 2]
-    F2 = [2, 2, 4]
-    F3 = [3, 3, 6]
-    F4 = [4, 4, 8]
-    F5 = [5, 5, 10]
+    F1 = [1, 1, 0.15]
+    F2 = [2, 2, 0.25]
+    F3 = [3, 3, 0.35]
+    F4 = [4, 4, 0.45]
+    F5 = [5, 5, 0.55]
 
     @enumproperty
     def RANDOM(cls):
@@ -41,17 +41,17 @@ class FuncObj(Enum):
     @staticmethod
     def retrieve_function_value(c):
         if c == 'F1' or c == "F1":
-            return FuncObj.F1
+            return VNFObj.F1
         elif c == 'F2' or c == "F2":
-            return FuncObj.F2
+            return VNFObj.F2
         elif c == 'F3' or c == "F3":
-            return FuncObj.F3
+            return VNFObj.F3
         elif c == 'F4' or c == "F4":
-            return FuncObj.F4
+            return VNFObj.F4
         elif c == 'F5' or c == "F5":
-            return FuncObj.F5
+            return VNFObj.F5
         elif c == 'F6' or c == "F6":
-            return FuncObj.F6
+            return VNFObj.F6
         else:
             raise AttributeError("Function {} does not exist!".format(c))
 

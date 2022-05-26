@@ -76,26 +76,6 @@ def set_nodes():
             visited_nodes.append(current_node_id)
 
 
-def check_fail(s, d):   # @ToDo need to reimplement this in a smarter way
-    l = [5, 6, 13, 19]
-    for num in l:
-        if num == s:
-            return False
-        elif num == d:
-            return False
-        else:
-            return True
-
-
-def path_check_fail(path):  # @ToDo need to reimplement this in a smarter way
-    l = [5, 6, 13, 19]
-    for step in path:
-        if step in l:
-            return False
-
-    return True
-
-
 def process_path_one_MULTI_MAPPING():
     for req in Request.STATIC_TOTAL_REQUEST_LIST:   # STEP ONE
         print("BEGUN PROCESSING REQUEST: {} Source: {} Destination {} Functions: {}\n".format(req.requestID, req.source, req.destination, req.requestedFunctions))
@@ -119,23 +99,17 @@ def process_path_two_MULTI_MAPPING():
         s = req.source
         d = req.destination
 
-        if not check_fail(s, d):    # @ToDo need to reimplement this in a smarter way
-            req.requestStatus[1] = 2
-            req.PATH_ONE = None
-            print("Path_failed\n")
-        else:
-            count = 1  # Needs to be reset to 1 when a new request is being processed
-            current_request_data = [req.requestedFunctions, req.request_delay_threshold, req.requestedBW]
-            current_request_all_possible_paths = nx.all_simple_paths(GRAPH, req.source, req.destination)
+        count = 1  # Needs to be reset to 1 when a new request is being processed
+        current_request_data = [req.requestedFunctions, req.request_delay_threshold, req.requestedBW]
+        current_request_all_possible_paths = nx.all_simple_paths(GRAPH, req.source, req.destination)
 
-            for path in current_request_all_possible_paths:     # STEP TWO
-                if path_check_fail(path):
-                    pathID = "R{}P{}".format(req.requestID, count)
-                    # ToDo should make a static list of all paths being processed for a single request
-                    PathObj(pathID, path, 0, current_request_data, [], 0, 0, 0, 2)
-                    count += 1
+        for path in current_request_all_possible_paths:     # STEP TWO
+            pathID = "R{}P{}".format(req.requestID, count)
+            # ToDo should make a static list of all paths being processed for a single request
+            PathObj(pathID, path, 0, current_request_data, [], 0, 0, 0, 2)
+            count += 1
 
-            RUN_PATH_TWO(req)
+        RUN_PATH_TWO(req)
 
 
 def process_path_one_SINGLE_MAPPING():
@@ -161,23 +135,17 @@ def process_path_two_SINGLE_MAPPING():
         s = req.source
         d = req.destination
 
-        if not check_fail(s, d):    # @ToDo need to reimplement this in a smarter way
-            req.requestStatus[1] = 2
-            req.PATH_ONE = None
-            print("Path_failed\n")
-        else:
-            count = 1  # Needs to be reset to 1 when a new request is being processed
-            current_request_data = [req.requestedFunctions, req.request_delay_threshold, req.requestedBW]
-            current_request_all_possible_paths = nx.all_simple_paths(GRAPH, req.source, req.destination)
+        count = 1  # Needs to be reset to 1 when a new request is being processed
+        current_request_data = [req.requestedFunctions, req.request_delay_threshold, req.requestedBW]
+        current_request_all_possible_paths = nx.all_simple_paths(GRAPH, req.source, req.destination)
 
-            for path in current_request_all_possible_paths:     # STEP TWO
-                if path_check_fail(path):
-                    pathID = "R{}P{}".format(req.requestID, count)
-                    # ToDo should make a static list of all paths being processed for a single request
-                    PathObj(pathID, path, 0, current_request_data, [], 0, 0, 0, 2)
-                    count += 1
+        for path in current_request_all_possible_paths:     # STEP TWO
+            pathID = "R{}P{}".format(req.requestID, count)
+            # ToDo should make a static list of all paths being processed for a single request
+            PathObj(pathID, path, 0, current_request_data, [], 0, 0, 0, 2)
+            count += 1
 
-            RUN_PATH_TWO_SINGLE_MAPPING(req)
+        RUN_PATH_TWO_SINGLE_MAPPING(req)
 
 
 def find_isolated_nodes():
@@ -207,7 +175,6 @@ if __name__ == '__main__':
     set_edges()
     GRAPH.add_edges_from(edges)
 
-    # Just commented out so I don't have to keep closing the window every time
     nx.draw(GRAPH, with_labels=True, font_weight='bold')
     plt.show()
 
@@ -218,7 +185,7 @@ if __name__ == '__main__':
         process_path_one_SINGLE_MAPPING()
 
         print("STARTING CREATION OF OUTPUT FILES\n")
-        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, GLOBAL_OUTPUT_FILE_PATH_ONE), 100, 7, 8)
+        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, GLOBAL_OUTPUT_FILE_PATH_ONE), 25, 7, 8)
         print("CREATED PATH ONE OUTPUT FILES\n")
 
         for link in NodeObj.StaticLinkList:
@@ -236,7 +203,7 @@ if __name__ == '__main__':
         process_path_two_SINGLE_MAPPING()
 
         print("STARTING CREATION OF FAILURE PROBABILITY OUTPUT FILES\n")
-        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, GLOBAL_OUTPUT_FILE_PATH_TWO), 100, 7, 8)
+        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, GLOBAL_OUTPUT_FILE_PATH_TWO), 25, 7, 8)
 
     elif CONSTANTS.GLOBAL_PROTOCOL == 2:
         print("Begin Processing requests using: 'Head vs. Wall' Protocol\n")
@@ -254,7 +221,7 @@ if __name__ == '__main__':
 
         print("STARTING CREATION OF OUTPUT FILES\n")
         # CreateOutputData.output_file_PATH_ONE()
-        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, GLOBAL_OUTPUT_FILE_PATH_ONE), 100, 7, 8)
+        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, GLOBAL_OUTPUT_FILE_PATH_ONE), 25, 7, 8)
         print("CREATED PATH ONE OUTPUT FILES\n")
         #########################################################
 
@@ -276,7 +243,7 @@ if __name__ == '__main__':
             print(op)
 
         print("STARTING CREATION OF FAILURE PROBABILITY OUTPUT FILES\n")
-        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, GLOBAL_OUTPUT_FILE_PATH_TWO), 100, 7, 8)
+        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, GLOBAL_OUTPUT_FILE_PATH_TWO), 25, 7, 8)
 
     print("CREATING LINE GRAPHS WITH AVAILABLE DATA")
     run_output_graphs()

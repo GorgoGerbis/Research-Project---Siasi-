@@ -1,4 +1,4 @@
-from src.FuncObj import FuncObj
+from src.VNFObj import VNFObj
 from src.CONSTANTS import GLOBAL_NODE_RESOURCES
 from src.CONSTANTS import GLOBAL_REQUEST_DELAY_THRESHOLD
 import random
@@ -7,7 +7,7 @@ import random
 @author: Jackson Walker
 """
 
-# ToDo Need to make a method returning these values so only need to edit FuncObj.py when adding a new function.
+# ToDo Need to make a method returning these values so only need to edit VNFObj.py when adding a new function.
 FUNCTION_COSTS = [[1, 1, 2], [2, 2, 4], [3, 3, 6], [4, 4, 8], [5, 5, 10]]
 
 # ToDo need to adjust this
@@ -109,7 +109,7 @@ class NodeObj:
         t_ram = 0
 
         for f in func_list:
-            temp_func = FuncObj.retrieve_function_value(f)  # Retrieves the current requested function
+            temp_func = VNFObj.retrieve_function_value(f)  # Retrieves the current requested function
             # Current func requirements
             c_cpu = temp_func.value[0] + t_cpu
             c_ram = temp_func.value[1] + t_ram
@@ -130,8 +130,8 @@ class NodeObj:
 
     def map_function_obj(self, f):
         # func = FuncObj.retrieve_function_value(f)
-        if type(f) != FuncObj:
-            func = FuncObj.retrieve_function_value(f)
+        if type(f) != VNFObj:
+            func = VNFObj.retrieve_function_value(f)
         else:
             func = f
 
@@ -148,7 +148,7 @@ class NodeObj:
             return False
 
     def check_enough_resources(self, f):
-        func = FuncObj.retrieve_function_value(f)
+        func = VNFObj.retrieve_function_value(f)
         c, r= func.value[0], func.value[1]
         if self.compareCPU(c) and self.compareRAM(r):
             return True
