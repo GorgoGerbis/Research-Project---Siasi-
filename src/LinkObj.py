@@ -28,15 +28,6 @@ class LinkObj(NodeObj):  # <-- This means its a subclass of NodeObj right?
                 self.linkBW = GLOBAL_LINK_BANDWIDTH
                 self.linkStatus = 'A'
 
-    def showLinkSourceID(self):
-        return self.linkSrc
-
-    def compareBW(self, bw):
-        if self.linkBW >= bw:
-            return True
-        else:
-            return False
-
     def map_request(self, bw):
         self.linkBW = int(self.linkBW) - bw
 

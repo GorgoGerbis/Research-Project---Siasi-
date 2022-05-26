@@ -45,6 +45,18 @@ class NodeObj:
 
         NodeObj.StaticNodeList.append(self)  # <-- APPENDS CURRENT NODE TO STATIC LIST OF ALL NODES
 
+#################################################################################################
+    def can_map(self, vnfObj): # <---- @ToDo made to replace check_mappable!
+        cpu = vnfObj[0]
+        ram = vnfObj[1]
+
+        if self.compareCPU(cpu) and self.compareRAM(ram):
+            return True
+        else:
+            return False
+
+#################################################################################################
+
     def reset_node(self):
         for pair in NodeObj.StaticNodeResources:
             if self.nodeID == pair[0]:
@@ -89,7 +101,7 @@ class NodeObj:
 
         return output
 
-    def compareCPU(self, cpu):
+    def compareCPU(self, cpu): # Return True if we have enough resources
         if self.nodeResources[0] >= cpu:
             return True
         else:

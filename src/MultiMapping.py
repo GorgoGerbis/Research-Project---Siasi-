@@ -2,7 +2,7 @@ from src.NodeObj import NodeObj
 from src.PathObj import PathObj
 from src.VNFObj import VNFObj
 from src.LinkObj import LinkObj
-from src.Request import Request
+from src.RequestObj import RequestObj
 
 from CONSTANTS import GLOBAL_REQUEST_DELAY_THRESHOLD
 from CONSTANTS import GlOBAL_FAILURE_THRESHOLD
@@ -23,10 +23,10 @@ OPTIMAL = 5
 
 
 # @Todo need to remember to clear BACKUP_PATHS when finished processing request
-def set_path_state_PATH_ONE(path_obj):  # <-- This one DOES NOT use failure probability
+def set_path_state_PATH_ONE(path_obj, req_bw, req_VNFs):  # <-- This one DOES NOT use failure probability
     # Given a path must then determine and set the state of the path
     if path_obj.state == STATE_UNKNOWN:
-        if calculate_path_resources_PATH_ONE(path_obj):
+        if calculate_path_resources_PATH_ONE(path_obj, req_bw, req_VNFs):
             if calculate_path_speed(path_obj, REQUEST_DELAY_THRESHOLD):
                 path_obj.state = BACKUP
                 PathObj.BACKUP_PATHS.append(path_obj)
@@ -57,63 +57,89 @@ def set_path_state_PATH_TWO(path_obj):  # <-- This one DOES use failure probabil
             path_obj.state = POOR
             print("PATH {} DOES NOT HAVE ENOUGH RESOURCES!".format(path_obj.pathID))
 
+#######################################################################################################################
 
-def calculate_path_resources_PATH_ONE(path_obj):
-    fused_path = PathObj.create_fusion_obj_list(path_obj.route)
-    req_info = path_obj.REQ_INFO
-    funcs_to_map = req_info[0].copy()  # ToDo need to be COPYING LISTS OTHERWISE WE ARE DIRECTLY REFERENCING THEM!
-    requested_bandwidth = int(req_info[2])
-    end_node = fused_path[-1]
-    end_link = fused_path[-2]
 
-    enough_bw = False
-    all_mapped = False
+def calculate_path_resources_PATH_ONE(path_obj, req_bw, req_vnfs):
+    req_path_objs = PathObj.create_fusion_obj_list(path_obj.route)
+    funcs_to_map = [VNFObj.retrieve_function_value(x) for x in req_vnfs]
+    src = req_path_objs[0]
+    dest = req_path_objs[-1]
 
-    funcs_mapped = []
-    func_count = 0
+    flag = []   # Variable that checks to see why a certain path wont work...
 
-    for step in fused_path:
-        if all_mapped and enough_bw:
-            return True
-        if type(step) == LinkObj:
-            check_bw = step.check_enough_resources(requested_bandwidth)     # NOTE: In HvW Protocol if a link doesnt have enough BW the path fails
-            if not check_bw:
-                path_obj.state = POOR
-                return False
-            elif step.linkID == end_link.linkID:    # Can probably just skip this shit
-                enough_bw = True
-        else:
-            if all_mapped:
-                continue
-            else:
-                current_node = step  # First we must determine if mapping is even possible
+    for obj in req_path_objs:
+        if type(obj) == LinkObj:
+            if not obj.check_enough_resources(req_bw):  # <--- Checks if the link has enough resources
+                banner = "PATH{} LINK {} DID NOT HAVE ENOUGH BANDWIDTH!".format(path_obj.pathID, obj.linkID)
+                flag.append(banner)
+                print(banner)
+        if type(obj) == NodeObj:
+            # <-- Need to check if nodes have enough resources
+            # First, try to map one VNF per node in route
+            #           If we cannot, go back and try to map
+            #           multiple VNFs per node....
+            if obj.can_map(funcs_to_map[0]):
+                return
 
-                if current_node.status == 'O':  # Check if node is offline
-                    # print("MAPPING ON NODE {} IS NOT POSSIBLE NODE IS OFFLINE".format(current_node.nodeID))
-                    NodeObj.AUTO_FAIL.append(current_node.nodeID)
-                    path_obj.state = POOR
-                    return False
-                elif current_node.status == 'R':
-                    continue
-                else:  # Next we need to determine if a node has enough resources for mapping and how many it can handle
-                    if len(funcs_to_map) == 0:
-                        all_mapped = True
-                        continue
-                    else:
-                        current_func = funcs_to_map[0]
-                        mappable = current_node.check_enough_resources(current_func)
+# def calculate_path_resources_PATH_ONE(path_obj):
+#     fused_path = PathObj.create_fusion_obj_list(path_obj.route)
+#     req_info = path_obj.REQ_INFO
+#     funcs_to_map = req_info[0].copy()  # ToDo need to be COPYING LISTS OTHERWISE WE ARE DIRECTLY REFERENCING THEM!
+#     requested_bandwidth = int(req_info[2])
+#     end_node = fused_path[-1]
+#     end_link = fused_path[-2]
+#
+#     enough_bw = False
+#     all_mapped = False
+#
+#     funcs_mapped = []
+#     func_count = 0
+#
+#     for step in fused_path:
+#         if all_mapped and enough_bw:
+#             return True
+#         if type(step) == LinkObj:
+#             check_bw = step.check_enough_resources(requested_bandwidth)     # NOTE: In HvW Protocol if a link doesnt have enough BW the path fails
+#             if not check_bw:
+#                 path_obj.state = POOR
+#                 return False
+#             elif step.linkID == end_link.linkID:    # Can probably just skip this shit
+#                 enough_bw = True
+#         else:
+#             if all_mapped:
+#                 continue
+#             else:
+#                 current_node = step  # First we must determine if mapping is even possible
+#
+#                 if current_node.status == 'O':  # Check if node is offline
+#                     # print("MAPPING ON NODE {} IS NOT POSSIBLE NODE IS OFFLINE".format(current_node.nodeID))
+#                     NodeObj.AUTO_FAIL.append(current_node.nodeID)
+#                     path_obj.state = POOR
+#                     return False
+#                 elif current_node.status == 'R':
+#                     continue
+#                 else:  # Next we need to determine if a node has enough resources for mapping and how many it can handle
+#                     if len(funcs_to_map) == 0:
+#                         all_mapped = True
+#                         continue
+#                     else:
+#                         current_func = funcs_to_map[0]
+#                         mappable = current_node.check_enough_resources(current_func)
+#
+#                         if not mappable and step.nodeID == end_node.nodeID and len(funcs_to_map) > 0:
+#                             path_obj.state = POOR
+#                             return False
+#                         elif mappable:
+#                             funcs_mapped.append(current_func)
+#                             path_obj.MAPPING_LOCATION.append([current_node, current_func])
+#                             funcs_to_map.pop(0)
+#                             func_count += 1
+#                         else:
+#                             continue
 
-                        if not mappable and step.nodeID == end_node.nodeID and len(funcs_to_map) > 0:
-                            path_obj.state = POOR
-                            return False
-                        elif mappable:
-                            funcs_mapped.append(current_func)
-                            path_obj.MAPPING_LOCATION.append([current_node, current_func])
-                            funcs_to_map.pop(0)
-                            func_count += 1
-                        else:
-                            continue
 
+#######################################################################################################################
 
 def calculate_path_resources_PATH_TWO(path_obj):
     """
@@ -358,18 +384,21 @@ def map_path_TWO(path_obj):
 
 
 def RUN_PATH_ONE(req):
+    req_bw = req.requestedBW
+    req_VNFs = req.requestedFunctions
+
     for path in PathObj.current_request_paths_list:
-        set_path_state_PATH_ONE(path)
+        set_path_state_PATH_ONE(path, req_bw, req_VNFs)
         if path.state <= 3:
             del path
 
     if len(PathObj.BACKUP_PATHS) == 0:
         req.requestStatus[0] = 2   # Fail current request if no paths
-        Request.STATIC_DENIED_REQUEST_LIST.append(req)
+        RequestObj.STATIC_DENIED_REQUEST_LIST.append(req)
 
     else:
         req.requestStatus[0] = 3
-        Request.STATIC_APPROVED_REQUEST_LIST.append(req)
+        RequestObj.STATIC_APPROVED_REQUEST_LIST.append(req)
 
         calculate_optimal_PATH_ONE()
         optimal_path = PathObj.returnOptimalPath(PathObj.BACKUP_PATHS)
@@ -391,11 +420,11 @@ def RUN_PATH_TWO(req):
 
     if len(PathObj.BACKUP_PATHS) == 0:
         req.requestStatus[1] = 2  # Fail current request if no paths
-        Request.STATIC_DENIED_REQUEST_LIST.append(req)
+        RequestObj.STATIC_DENIED_REQUEST_LIST.append(req)
 
     else:
         req.requestStatus[1] = 3
-        Request.STATIC_APPROVED_REQUEST_LIST.append(req)
+        RequestObj.STATIC_APPROVED_REQUEST_LIST.append(req)
 
         calculate_optimal_PATH_TWO()
         optimal_path = PathObj.returnOptimalPath(PathObj.BACKUP_PATHS)

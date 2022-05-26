@@ -24,13 +24,13 @@ class VNFObj(Enum):
     Enum functions [x, y, z]
     x = CPU usage
     y = RAM usage
-    z = Bandwidth taken
+    z = Failure Threshold
     """
-    F1 = [1, 1, 0.15]
-    F2 = [2, 2, 0.25]
-    F3 = [3, 3, 0.35]
-    F4 = [4, 4, 0.45]
-    F5 = [5, 5, 0.55]
+    F1 = [1, 1, 0.85]
+    F2 = [2, 2, 0.75]
+    F3 = [3, 3, 0.65]
+    F4 = [4, 4, 0.55]
+    F5 = [5, 5, 0.45]
 
     @enumproperty
     def RANDOM(cls):
@@ -56,6 +56,6 @@ class VNFObj(Enum):
             raise AttributeError("Function {} does not exist!".format(c))
 
     def __str__(self):
-        return "Function {} | CPU Usage: {} | RAM Usage: {} | BW Usage: {}".format(self.name, self.value[0], self.value[1], self.value[2])
+        return "Function {} | CPU Usage: {} | RAM Usage: {} | Failure threshold: {}".format(self.name, self.value[0], self.value[1], self.value[2])
 
     #######################################################################

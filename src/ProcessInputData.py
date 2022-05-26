@@ -2,7 +2,7 @@ import os
 import random
 from src.NodeObj import NodeObj
 from src.LinkObj import LinkObj
-from src.Request import Request
+from src.RequestObj import RequestObj
 
 from src.CONSTANTS import GLOBAL_REQUEST_DELAY_THRESHOLD
 
@@ -83,9 +83,9 @@ def processInputDataRequests(filePath):
                     t = i.strip(" ' ' ")
                     requestedFunctions.append(t)
 
-                current_request = Request(requestNum, srcNode, destNode, requestedFunctions, requestedBW, request_status, request_delay_threshold, None, None)
+                current_request = RequestObj(requestNum, srcNode, destNode, requestedFunctions, requestedBW, request_status, request_delay_threshold, None, None)
 
-                Request.STATIC_TOTAL_REQUEST_LIST.append(current_request)
+                RequestObj.STATIC_TOTAL_REQUEST_LIST.append(current_request)
                 print("Request: {} has been created.".format(requestNum))
 
         print("All requests have been created.")

@@ -2,7 +2,7 @@ from src.NodeObj import NodeObj
 from src.PathObj import PathObj
 from src.VNFObj import VNFObj
 from src.LinkObj import LinkObj
-from src.Request import Request
+from src.RequestObj import RequestObj
 
 from CONSTANTS import GLOBAL_REQUEST_DELAY_THRESHOLD
 from CONSTANTS import GlOBAL_FAILURE_THRESHOLD
@@ -408,11 +408,11 @@ def RUN_PATH_ONE_SINGLE_MAPPING(req):
 
     if len(PathObj.BACKUP_PATHS) == 0:
         req.requestStatus[0] = 2   # Fail current request if no paths
-        Request.STATIC_DENIED_REQUEST_LIST.append(req)
+        RequestObj.STATIC_DENIED_REQUEST_LIST.append(req)
 
     else:
         req.requestStatus[0] = 3
-        Request.STATIC_APPROVED_REQUEST_LIST.append(req)
+        RequestObj.STATIC_APPROVED_REQUEST_LIST.append(req)
 
         calculate_optimal_PATH_ONE()
         optimal_path = PathObj.returnOptimalPath(PathObj.BACKUP_PATHS)
@@ -434,11 +434,11 @@ def RUN_PATH_TWO_SINGLE_MAPPING(req):
 
     if len(PathObj.BACKUP_PATHS) == 0:
         req.requestStatus[1] = 2  # Fail current request if no paths
-        Request.STATIC_DENIED_REQUEST_LIST.append(req)
+        RequestObj.STATIC_DENIED_REQUEST_LIST.append(req)
 
     else:
         req.requestStatus[1] = 3
-        Request.STATIC_APPROVED_REQUEST_LIST.append(req)
+        RequestObj.STATIC_APPROVED_REQUEST_LIST.append(req)
 
         calculate_optimal_PATH_TWO()
         optimal_path = PathObj.returnOptimalPath(PathObj.BACKUP_PATHS)

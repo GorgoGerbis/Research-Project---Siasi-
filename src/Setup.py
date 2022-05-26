@@ -12,7 +12,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 
 from src.NodeObj import NodeObj
-from src.Request import Request
+from src.RequestObj import RequestObj
 from src.PathObj import PathObj
 
 #@ToDo NEED A LIVE STATUS AND UPDATE OF CURRENT REQUEST BEING PROCESSED

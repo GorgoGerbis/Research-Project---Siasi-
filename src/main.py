@@ -1,7 +1,7 @@
 import CONSTANTS
 from src import ProcessInputData
 from src.NodeObj import NodeObj
-from src.Request import Request
+from src.RequestObj import RequestObj
 from src.PathObj import PathObj
 from src.OutputGraphs import run_output_graphs
 import CreateOutputData
@@ -77,7 +77,7 @@ def set_nodes():
 
 
 def process_path_one_MULTI_MAPPING():
-    for req in Request.STATIC_TOTAL_REQUEST_LIST:   # STEP ONE
+    for req in RequestObj.STATIC_TOTAL_REQUEST_LIST:   # STEP ONE
         print("BEGUN PROCESSING REQUEST: {} Source: {} Destination {} Functions: {}\n".format(req.requestID, req.source, req.destination, req.requestedFunctions))
 
         count = 1  # Needs to be reset to 1 when a new request is being processed
@@ -94,7 +94,7 @@ def process_path_one_MULTI_MAPPING():
 
 
 def process_path_two_MULTI_MAPPING():
-    for req in Request.STATIC_TOTAL_REQUEST_LIST:   # STEP ONE
+    for req in RequestObj.STATIC_TOTAL_REQUEST_LIST:   # STEP ONE
         print("BEGUN PROCESSING REQUEST: {} Source: {} Destination {} Functions: {}\n".format(req.requestID, req.source, req.destination, req.requestedFunctions))
         s = req.source
         d = req.destination
@@ -113,7 +113,7 @@ def process_path_two_MULTI_MAPPING():
 
 
 def process_path_one_SINGLE_MAPPING():
-    for req in Request.STATIC_TOTAL_REQUEST_LIST:   # STEP ONE
+    for req in RequestObj.STATIC_TOTAL_REQUEST_LIST:   # STEP ONE
         print("BEGUN PROCESSING REQUEST: {} Source: {} Destination {} Functions: {}\n".format(req.requestID, req.source, req.destination, req.requestedFunctions))
 
         count = 1  # Needs to be reset to 1 when a new request is being processed
@@ -130,7 +130,7 @@ def process_path_one_SINGLE_MAPPING():
 
 
 def process_path_two_SINGLE_MAPPING():
-    for req in Request.STATIC_TOTAL_REQUEST_LIST:   # STEP ONE
+    for req in RequestObj.STATIC_TOTAL_REQUEST_LIST:   # STEP ONE
         print("BEGUN PROCESSING REQUEST: {} Source: {} Destination {} Functions: {}\n".format(req.requestID, req.source, req.destination, req.requestedFunctions))
         s = req.source
         d = req.destination
@@ -214,7 +214,7 @@ if __name__ == '__main__':
         for op in PathObj.StaticOptimalPathsList:
             print(op)
 
-        for req in Request.STATIC_TOTAL_REQUEST_LIST:
+        for req in RequestObj.STATIC_TOTAL_REQUEST_LIST:
             obj = req.PATH_ONE
             if obj is not None:
                 print(obj)

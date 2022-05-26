@@ -1,7 +1,7 @@
 from src.NodeObj import NodeObj
 from src.VNFObj import VNFObj
 from src.LinkObj import LinkObj
-from src.Request import Request
+from src.RequestObj import RequestObj
 from src.CONSTANTS import GLOBAL_REQUEST_DELAY_THRESHOLD
 """
 @author: Jackson Walker

@@ -1,5 +1,5 @@
 
-class Request:
+class RequestObj:
 
     # Static lists keeping track of all incoming requests
     STATIC_TOTAL_REQUEST_LIST = []
@@ -35,7 +35,7 @@ class Request:
 
     @staticmethod
     def return_request(reqID):
-        for req in Request.STATIC_TOTAL_REQUEST_LIST:
+        for req in RequestObj.STATIC_TOTAL_REQUEST_LIST:
             if req.requestID == reqID:
                 return req
 

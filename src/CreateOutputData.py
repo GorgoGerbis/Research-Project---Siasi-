@@ -1,4 +1,4 @@
-from src.Request import Request
+from src.RequestObj import RequestObj
 from src.CONSTANTS import GlOBAL_FAILURE_THRESHOLD
 from src.CONSTANTS import GLOBAL_OUTPUT_FILE_PATH_ONE
 from src.CONSTANTS import GLOBAL_OUTPUT_FILE_PATH_TWO
@@ -24,7 +24,7 @@ AUTO_FAIL = []# [5, 6, 13, 19]
 
 
 def fail_unavailable_paths():
-    for req in Request.STATIC_TOTAL_REQUEST_LIST:
+    for req in RequestObj.STATIC_TOTAL_REQUEST_LIST:
         if req.requestStatus[0] == REQUEST_APPROVED:
             current = req.PATH_ONE.FAILURE_PROBABILITY
             if current >= GlOBAL_FAILURE_THRESHOLD:
@@ -59,7 +59,7 @@ def NEW_get_average_data_PATH_ONE(num_reqs, num_nodes, num_links):
 
     for i in range(num_reqs):
         i += 1
-        current_req = Request.return_request(i)
+        current_req = RequestObj.return_request(i)
         temp_req_list.append(current_req)
 
     for req in temp_req_list:
@@ -130,7 +130,7 @@ def NEW_get_average_data_PATH_TWO(num_reqs, num_nodes, num_links):
 
     for i in range(num_reqs):
         i += 1
-        current_req = Request.return_request(i)
+        current_req = RequestObj.return_request(i)
         temp_req_list.append(current_req)
 
     for req in temp_req_list:
@@ -195,7 +195,7 @@ def NEW_output_file_PATH_ONE(FILE_NAME, num_reqs, num_nodes, num_links):
 
         for i in range(num_reqs):
             i += 1
-            current = Request.return_request(i)
+            current = RequestObj.return_request(i)
             temp_reqs.append(current)
 
         for req in temp_reqs:
@@ -226,7 +226,7 @@ def NEW_output_file_PATH_TWO(FILE_NAME, num_reqs, num_nodes, num_links):
 
         for i in range(num_reqs):
             i += 1
-            current = Request.return_request(i)
+            current = RequestObj.return_request(i)
             temp_reqs.append(current)
 
         for req in temp_reqs:
