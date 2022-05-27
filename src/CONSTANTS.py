@@ -19,11 +19,11 @@ RequestInputData = os.path.join(resourcesFolder, "RequestInputData.txt")
 
 # OUTPUT FILE PATHS
 
-# GLOBAL_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "SINGLE_PATH_ONE_OUTPUT_DATA_25.csv")
-# GLOBAL_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "SINGLE_PATH_TWO_OUTPUT_DATA_25.csv")
+GLOBAL_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "SINGLE_PATH_ONE_OUTPUT_DATA_25.csv")
+GLOBAL_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "SINGLE_PATH_TWO_OUTPUT_DATA_25.csv")
 
-GLOBAL_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "MULTI_PATH_ONE_OUTPUT_DATA_25.csv")
-GLOBAL_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "MULTI_PATH_TWO_OUTPUT_DATA_25.csv")
+# GLOBAL_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "MULTI_PATH_ONE_OUTPUT_DATA_25.csv")
+# GLOBAL_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "MULTI_PATH_TWO_OUTPUT_DATA_25.csv")
 
 ######### NEW STUFF ################
 # OUTPUT_SET_ONE_A = os.path.join(outputFolder, "NEW_SINGLE_PATH_ONE_OUTPUT_DATA_25.csv")
@@ -40,7 +40,7 @@ GlOBAL_FAILURE_THRESHOLD = 55.5
 GLOBAL_FAILURE_RATE = 0.15
 
 ###### 1 == SINGLE MAPPING, 2 == MULTI-MAPPING
-GLOBAL_PROTOCOL = 2
+GLOBAL_PROTOCOL = 1
 
 ############## NEW TERMINAL STUFF #################
 INITIAL_TERMINAL_RESOURCES = 100
