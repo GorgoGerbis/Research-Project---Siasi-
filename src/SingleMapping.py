@@ -87,6 +87,19 @@ def set_path_state_PATH_TWO(path_obj, req_bw, req_vnfs):  # <-- This one DOES us
 
 
 def calculate_path_resources(path_obj, req_bw, req_vnfs):
+    """
+    Determines if given path has enough resources to satisfy request needs.
+        1) Will determine if links in path will meet bandwidth requirements
+        2) Will determine if nodes have enough resourcs to map all requested functions
+
+        NOTE: DOES NOT FIND OPTIMAL MAPPING LOCATIONS, SIMPLY DETERMINES IF NODES IN PATH HAVE ENOUGH RESOURCES
+              TO MAP EACH FUNCTION AT LEAST ONCE.
+
+    :param path_obj: object holding specific path data
+    :param req_bw: The bandwidth needed for this request
+    :param req_vnfs: The VNFs needed for this request
+    :return: True if path meets resources requirements, False if not.
+    """
     req_path_objs = PathObj.create_fusion_obj_list(path_obj.route)
     funcs_to_map = [VNFObj.retrieve_function_value(x) for x in req_vnfs]
 
