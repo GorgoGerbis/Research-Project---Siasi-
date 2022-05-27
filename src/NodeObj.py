@@ -46,6 +46,7 @@ class NodeObj:
         NodeObj.StaticNodeList.append(self)  # <-- APPENDS CURRENT NODE TO STATIC LIST OF ALL NODES
 
 #################################################################################################
+
     def can_map(self, vnfObj): # <---- @ToDo made to replace check_mappable!
         cpu = vnfObj[0]
         ram = vnfObj[1]

@@ -26,7 +26,7 @@ OPTIMAL = 5
 def set_path_state_PATH_ONE(path_obj, req_bw, req_VNFs):  # <-- This one DOES NOT use failure probability
     # Given a path must then determine and set the state of the path
     if path_obj.state == STATE_UNKNOWN:
-        if calculate_path_resources_PATH_ONE(path_obj, req_bw, req_VNFs):
+        if calculate_path_resources(path_obj, req_bw, req_VNFs):    # if calculate_path_resources_PATH_ONE(path_obj, req_bw, req_VNFs):
             if calculate_path_speed(path_obj, REQUEST_DELAY_THRESHOLD):
                 path_obj.state = BACKUP
                 PathObj.BACKUP_PATHS.append(path_obj)
@@ -39,10 +39,10 @@ def set_path_state_PATH_ONE(path_obj, req_bw, req_VNFs):  # <-- This one DOES NO
 
 
 # @Todo need to remember to clear BACKUP_PATHS when finished processing request
-def set_path_state_PATH_TWO(path_obj):  # <-- This one DOES use failure probability
+def set_path_state_PATH_TWO(path_obj, req_bw, req_VNFs):  # <-- This one DOES use failure probability
     # Given a path must then determine and set the state of the path
     if path_obj.state == STATE_UNKNOWN:
-        if calculate_path_resources_PATH_TWO(path_obj):
+        if calculate_path_resources(path_obj, req_bw, req_VNFs):    # if calculate_path_resources_PATH_TWO(path_obj):
             if calculate_path_speed(path_obj, REQUEST_DELAY_THRESHOLD):
                 if calculate_path_failure(path_obj, GlOBAL_FAILURE_THRESHOLD):
                     path_obj.state = BACKUP
@@ -60,28 +60,52 @@ def set_path_state_PATH_TWO(path_obj):  # <-- This one DOES use failure probabil
 #######################################################################################################################
 
 
-def calculate_path_resources_PATH_ONE(path_obj, req_bw, req_vnfs):
+def calculate_path_resources(path_obj, req_bw, req_vnfs):
     req_path_objs = PathObj.create_fusion_obj_list(path_obj.route)
     funcs_to_map = [VNFObj.retrieve_function_value(x) for x in req_vnfs]
-    src = req_path_objs[0]
-    dest = req_path_objs[-1]
 
-    flag = []   # Variable that checks to see why a certain path wont work...
+    nodes = []  # list of nodes
 
     for obj in req_path_objs:
         if type(obj) == LinkObj:
-            if not obj.check_enough_resources(req_bw):  # <--- Checks if the link has enough resources
+            if not obj.check_enough_resources(req_bw):
                 banner = "PATH{} LINK {} DID NOT HAVE ENOUGH BANDWIDTH!".format(path_obj.pathID, obj.linkID)
-                flag.append(banner)
                 print(banner)
-        if type(obj) == NodeObj:
-            # <-- Need to check if nodes have enough resources
-            # First, try to map one VNF per node in route
-            #           If we cannot, go back and try to map
-            #           multiple VNFs per node....
-            if obj.can_map(funcs_to_map[0]):
-                return
+                return False
+        else:
+            nodes.append((obj, []))
 
+    for count, lst in enumerate(nodes):  # Determines which nodes we can map
+        node = lst[0]
+        funcs = lst[1]
+        for f in funcs_to_map:  # Fills up funcs with functions we can map to this node
+            if node.can_map(f.value):
+                funcs.append(f)
+
+        if len(funcs) == 0:  # If we cant map anything we remove it from the list
+            nodes.pop(count)
+
+    if len(nodes) == 0:
+        banner = "PATH{} DID NOT HAVE ENOUGH RESOURCES TO MAP ANYWHERE PATH FAILS".format(path_obj.pathID)
+        print(banner)
+        return False
+    else:
+        for count, lst in enumerate(nodes):  # Now find out if we can map all the VNFs on this route
+            node = lst[0]
+            funcs = lst[1]
+            for i, f in enumerate(funcs_to_map):  # Fills up funcs with functions we can map to this node
+                if node.can_map(f.value):
+                    funcs_to_map.pop(i)
+
+        if len(funcs_to_map) == 0:
+            return True
+        else:
+            banner = "PATH{} COULD NOT FIND LOCATION TO MAP {}".format(path_obj.pathID, funcs_to_map)
+            print(banner)
+            return False
+
+
+#######################################################################################################################
 # def calculate_path_resources_PATH_ONE(path_obj):
 #     fused_path = PathObj.create_fusion_obj_list(path_obj.route)
 #     req_info = path_obj.REQ_INFO
@@ -413,8 +437,11 @@ def RUN_PATH_ONE(req):
 
 
 def RUN_PATH_TWO(req):
+    req_bw = req.requestedBW
+    req_VNFs = req.requestedFunctions
+
     for path in PathObj.current_request_paths_list:
-        set_path_state_PATH_TWO(path)
+        set_path_state_PATH_TWO(path, req_bw, req_VNFs)
         if path.state <= 3:
             del path
 
