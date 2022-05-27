@@ -1,13 +1,3 @@
-from src.NodeObj import NodeObj
-from src.PathObj import PathObj
-from src.VNFObj import VNFObj
-from src.LinkObj import LinkObj
-from src.RequestObj import RequestObj
-
-from CONSTANTS import GLOBAL_REQUEST_DELAY_THRESHOLD
-from CONSTANTS import GlOBAL_FAILURE_THRESHOLD
-from CONSTANTS import GLOBAL_FAILURE_RATE
-
 """
 @author: Jackson Walker
 Path resources: [CPU, RAM, Physical buffer size]
@@ -36,8 +26,15 @@ TURTLE = Meets all criteria for success EXCEPT, delay threshold.
 POOR = Path is traversable but does not have enough resources.
 STATE_UNKNOWN = The state of the path has yet to be determined.
 """
+from src.NodeObj import NodeObj
+from src.PathObj import PathObj
+from src.VNFObj import VNFObj
+from src.LinkObj import LinkObj
+from src.RequestObj import RequestObj
 
-FAIL_RATE = GLOBAL_FAILURE_RATE
+from CONSTANTS import GLOBAL_REQUEST_DELAY_THRESHOLD
+from CONSTANTS import GlOBAL_FAILURE_THRESHOLD
+
 REQUEST_DELAY_THRESHOLD = GLOBAL_REQUEST_DELAY_THRESHOLD
 FAILURE_THRESHOLD = GlOBAL_FAILURE_THRESHOLD
 OPTIMAL_PATH_SET = False

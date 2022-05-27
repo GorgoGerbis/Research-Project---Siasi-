@@ -1,3 +1,20 @@
+"""
+"Head vs Wall" Protocol or HvWProtocol
+author: Jackson Walker
+
+Head vs Wall is the nickname I gave to this protocol. Works as follows.
+
+1) Takes in request and begins processing.
+2) Gather every single possible traversable path from point a to b and turn
+    them into PathObj objects.
+3) Begin the process of combing through each path separating the ones
+   that meet the required criteria for success and those that don't.
+4) Successful paths are then put into a list of backup paths.
+5) Sort through BACKUP_PATHS and find the most optimum path.
+6) Map that path to the network.
+
+The networkx method 'all_simple_paths' uses a modified depth first search.
+"""
 import CONSTANTS
 from src import ProcessInputData
 from src.NodeObj import NodeObj
@@ -7,8 +24,10 @@ from src.OutputGraphs import run_output_graphs
 import CreateOutputData
 
 from src.CONSTANTS import GLOBAL_REQUEST_DELAY_THRESHOLD
-from src.CONSTANTS import GLOBAL_OUTPUT_FILE_PATH_ONE
-from src.CONSTANTS import GLOBAL_OUTPUT_FILE_PATH_TWO
+from src.CONSTANTS import GLOBAL_SINGLE_OUTPUT_FILE_PATH_ONE
+from src.CONSTANTS import GLOBAL_SINGLE_OUTPUT_FILE_PATH_TWO
+from src.CONSTANTS import GLOBAL_MULTI_OUTPUT_FILE_PATH_ONE
+from src.CONSTANTS import GLOBAL_MULTI_OUTPUT_FILE_PATH_TWO
 
 # Need these for path finding and graphing
 import networkx as nx
@@ -29,24 +48,6 @@ outputFolder = os.path.join(baseFolder, "output")
 ####################################################
 
 REQUEST_DELAY_THRESHOLD = GLOBAL_REQUEST_DELAY_THRESHOLD
-
-"""
-"Head vs Wall" Protocol or HvWProtocol
-author: Jackson Walker
-
-Head vs Wall is the nickname I gave to this protocol. Works as follows.
-
-1) Takes in request and begins processing.
-2) Gather every single possible traversable path from point a to b and turn
-    them into PathObj objects.
-3) Begin the process of combing through each path separating the ones 
-   that meet the required criteria for success and those that don't.
-4) Successful paths are then put into a list of backup paths.
-5) Sort through BACKUP_PATHS and find the most optimum path.
-6) Map that path to the network.
-
-The networkx method 'all_simple_paths' uses a modified depth first search.
-"""
 
 # Variables to set up graph for network
 GRAPH = nx.Graph()
@@ -185,7 +186,7 @@ if __name__ == '__main__':
         process_path_one_SINGLE_MAPPING()
 
         print("STARTING CREATION OF OUTPUT FILES\n")
-        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, GLOBAL_OUTPUT_FILE_PATH_ONE), 25, 7, 8)
+        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, GLOBAL_SINGLE_OUTPUT_FILE_PATH_ONE), 25, 7, 8)
         print("CREATED PATH ONE OUTPUT FILES\n")
 
         for link in NodeObj.StaticLinkList:
@@ -203,7 +204,7 @@ if __name__ == '__main__':
         process_path_two_SINGLE_MAPPING()
 
         print("STARTING CREATION OF FAILURE PROBABILITY OUTPUT FILES\n")
-        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, GLOBAL_OUTPUT_FILE_PATH_TWO), 25, 7, 8)
+        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, GLOBAL_SINGLE_OUTPUT_FILE_PATH_TWO), 25, 7, 8)
 
     elif CONSTANTS.GLOBAL_PROTOCOL == 2:
         print("Begin Processing requests using: 'Head vs. Wall' Protocol\n")
@@ -221,7 +222,7 @@ if __name__ == '__main__':
 
         print("STARTING CREATION OF OUTPUT FILES\n")
         # CreateOutputData.output_file_PATH_ONE()
-        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, GLOBAL_OUTPUT_FILE_PATH_ONE), 25, 7, 8)
+        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, GLOBAL_MULTI_OUTPUT_FILE_PATH_ONE), 25, 7, 8)
         print("CREATED PATH ONE OUTPUT FILES\n")
         #########################################################
 
@@ -243,7 +244,7 @@ if __name__ == '__main__':
             print(op)
 
         print("STARTING CREATION OF FAILURE PROBABILITY OUTPUT FILES\n")
-        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, GLOBAL_OUTPUT_FILE_PATH_TWO), 25, 7, 8)
+        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, GLOBAL_MULTI_OUTPUT_FILE_PATH_TWO), 25, 7, 8)
 
     print("CREATING LINE GRAPHS WITH AVAILABLE DATA")
     run_output_graphs()

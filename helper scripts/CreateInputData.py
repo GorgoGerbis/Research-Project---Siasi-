@@ -1,20 +1,16 @@
 import os
 import random
-from src.NodeObj import NodeObj
+
+from src import CONSTANTS
 from src.VNFObj import VNFObj
 
 from src.CONSTANTS import NodeInputData
 from src.CONSTANTS import LinkInputData
 from src.CONSTANTS import RequestInputData
 
-from src.CONSTANTS import GLOBAL_NODE_RESOURCES
-from src.CONSTANTS import GLOBAL_LINK_BANDWIDTH
-from src.CONSTANTS import GLOBAL_REQUEST_DELAY_THRESHOLD
-baseFolder = r"C:\Users\jacks\OneDrive\Desktop\Siasi Research\Research-Project---Siasi-"
-resourcesFolder = os.path.join(baseFolder, "resources")
-
-#NEW STUFF
-csv_data = os.path.join(resourcesFolder, "model2.csv")
+from src.CONSTANTS import CREATE_NUM_NODES as NUM_NODES
+from src.CONSTANTS import CREATE_NUM_LINKS as NUM_LINKS
+from src.CONSTANTS import CREATE_NUM_REQUESTS as NUM_REQS
 
 
 def createNodeInputData(number_of_nodes):
@@ -27,13 +23,10 @@ def createNodeInputData(number_of_nodes):
         for cnt in range(number_of_nodes):
             nodeID = cnt + 1  # Ensures we have the correct number for the node
             stat = status[0]
-            resources = GLOBAL_NODE_RESOURCES    # <-- Based on paper 2 [50 cpu, 64gb mem] # GLOBAL_NODE_RESOURCES  # [100, 100, 100] == [CPU, RAM, Physical Buffer size]
-            processing_delay = random.randint(1, 10) / 10    # <-- 1 ms
-            nodeCost = random.randint(5, 10) / 10
-
-            # @ToDo Need to come up with ideal failure solution
-            pf = random.randint(1, 75) / 100  # Dividing to make them decimals
-
+            resources = CONSTANTS.node_resources
+            processing_delay = CONSTANTS.get_processing_delay()
+            nodeCost = CONSTANTS.get_node_cost()  # random.randint(5, 10) / 10
+            pf = CONSTANTS.get_node_fail()  # random.randint(1, 75) / 100  # Dividing to make them decimals
             nodeLine = "{};{};{};{};{};{}\n".format(nodeID, stat, resources, processing_delay, nodeCost, pf)
             fp.write(nodeLine)
 
@@ -47,14 +40,10 @@ def createLinkInputData(duos):
             linkID = i + 1
             src = duos[i][0]
             dest = duos[i][1]
-
-            bw = GLOBAL_LINK_BANDWIDTH
-            ed = random.randint(75, 300) / 100      # Dividing to make them decimals
-            ec = 1.5    # Based off of paper 2 averages
-
-            # @ToDo Need to come up with ideal failure solution
-            link_failure = random.randint(1, 100) / 100     # Dividing to make them decimals
-
+            bw = CONSTANTS.link_bandwidth
+            ed = CONSTANTS.get_edge_delay()
+            ec = CONSTANTS.get_edge_cost()
+            link_failure = CONSTANTS.get_link_fail()
             linkLine = "{};{};{};{};{};{};{}\n".format(linkID, src, dest, bw, ed, ec, link_failure)
             fp.write(linkLine)
 
@@ -66,12 +55,10 @@ def createRequests(number_of_requests, number_of_nodes):
 
         for cnt in range(number_of_requests):
             reqID = cnt + 1  # Ensures we have the correct number for the request
-
             src, dst = HELPER_check_redundancy(number_of_nodes)
-
-            requested_num_func = 3  # random.randint(1, 6)  # Random amount of functions
+            requested_num_func = CONSTANTS.get_VNFs() # random.randint(1, 6)  # Random amount of functions
             outputFunctions = []  # The random list of functions
-            requestedBW = 0 # @ToDo Maybe we should be adjusting this to match their num_funcs
+            requestedBW = CONSTANTS.get_reqBW()
 
             for i in range(requested_num_func):
                 while True:
@@ -99,13 +86,13 @@ def HELPER_import_csv_data(filepath):
                 line = line.strip('\n')
                 currentElements = line.split(',')
                 currentElements.pop(0)  # <--- remove first item in currentElements
-                currentElements = list(map(int, currentElements))     # <--- Convert str -> int
+                currentElements = list(map(int, currentElements))  # <--- Convert str -> int
 
                 for i, row in enumerate(currentElements):
                     duo = []
                     if row == 1:
-                        duo.append(cnt+1)
-                        duo.append(i+1)
+                        duo.append(cnt + 1)
+                        duo.append(i + 1)
                         print("NODE: D{}, ADJACENT NODES:{}".format(cnt + 1, duo))
 
                         x = duo[0]
@@ -127,15 +114,11 @@ def HELPER_check_redundancy(num_nodes):
 
 
 if __name__ == '__main__':
-    num_nodes = 7
-    num_links = 8
-    num_requests = 25
-
-    adj_duos = HELPER_import_csv_data(csv_data)
-
+    csv_fp = os.path.join(r"C:\Users\jacks\OneDrive\Desktop\Siasi Research\Research-Project---Siasi-\resources\Small Topology", "Small_TOP_Matrix.csv")
+    adj_duos = HELPER_import_csv_data(csv_fp)
     print("CREATING NEW INPUT DATA!\n")
-    print("TOTAL NODES: {} TOTAL LINKS: {} TOTAL REQUESTS: {}\n".format(num_nodes, num_links, num_requests))
-    # createNodeInputData(num_nodes)
-    # createLinkInputData(adj_duos)
-    createRequests(num_requests, num_nodes)
+    print("TOTAL NODES: {} TOTAL LINKS: {} TOTAL REQUESTS: {}\n".format(NUM_NODES, NUM_LINKS, NUM_REQS))
+    createNodeInputData(NUM_NODES)
+    createLinkInputData(adj_duos)
+    createRequests(NUM_REQS, NUM_NODES)
     print("FINISHED CREATING INPUT DATA\n")
