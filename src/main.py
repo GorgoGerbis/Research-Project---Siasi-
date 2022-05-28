@@ -29,6 +29,10 @@ from src.CONSTANTS import GLOBAL_SINGLE_OUTPUT_FILE_PATH_TWO
 from src.CONSTANTS import GLOBAL_MULTI_OUTPUT_FILE_PATH_ONE
 from src.CONSTANTS import GLOBAL_MULTI_OUTPUT_FILE_PATH_TWO
 
+from src.CONSTANTS import CREATE_NUM_NODES
+from src.CONSTANTS import CREATE_NUM_LINKS
+from src.CONSTANTS import CREATE_NUM_REQUESTS
+
 # Need these for path finding and graphing
 import networkx as nx
 import matplotlib.pyplot as plt
@@ -39,13 +43,6 @@ from src.MultiMapping import RUN_PATH_TWO
 from src.SingleMapping import RUN_PATH_ONE_SINGLE_MAPPING
 from src.SingleMapping import RUN_PATH_TWO_SINGLE_MAPPING
 
-######################## NEW SHIT I MADE ################
-import os
-# baseFolder = r"C:\Users\jacks\Desktop\Research Project\Research-Project---Siasi-"
-baseFolder = r"C:\Users\jacks\OneDrive\Desktop\Siasi Research\Research-Project---Siasi-"
-resourcesFolder = os.path.join(baseFolder, "resources")
-outputFolder = os.path.join(baseFolder, "output")
-####################################################
 
 REQUEST_DELAY_THRESHOLD = GLOBAL_REQUEST_DELAY_THRESHOLD
 
@@ -186,7 +183,7 @@ if __name__ == '__main__':
         process_path_one_SINGLE_MAPPING()
 
         print("STARTING CREATION OF OUTPUT FILES\n")
-        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, GLOBAL_SINGLE_OUTPUT_FILE_PATH_ONE), 25, 7, 8)
+        CreateOutputData.output_file_PATH_ONE(GLOBAL_SINGLE_OUTPUT_FILE_PATH_ONE, CREATE_NUM_REQUESTS, CREATE_NUM_NODES, CREATE_NUM_LINKS)
         print("CREATED PATH ONE OUTPUT FILES\n")
 
         for link in NodeObj.StaticLinkList:
@@ -204,7 +201,7 @@ if __name__ == '__main__':
         process_path_two_SINGLE_MAPPING()
 
         print("STARTING CREATION OF FAILURE PROBABILITY OUTPUT FILES\n")
-        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, GLOBAL_SINGLE_OUTPUT_FILE_PATH_TWO), 25, 7, 8)
+        CreateOutputData.output_file_PATH_TWO(GLOBAL_SINGLE_OUTPUT_FILE_PATH_TWO, CREATE_NUM_REQUESTS, CREATE_NUM_NODES, CREATE_NUM_LINKS)
 
     elif CONSTANTS.GLOBAL_PROTOCOL == 2:
         print("Begin Processing requests using: 'Head vs. Wall' Protocol\n")
@@ -222,7 +219,7 @@ if __name__ == '__main__':
 
         print("STARTING CREATION OF OUTPUT FILES\n")
         # CreateOutputData.output_file_PATH_ONE()
-        CreateOutputData.NEW_output_file_PATH_ONE(os.path.join(outputFolder, GLOBAL_MULTI_OUTPUT_FILE_PATH_ONE), 25, 7, 8)
+        CreateOutputData.output_file_PATH_ONE(GLOBAL_MULTI_OUTPUT_FILE_PATH_ONE, CREATE_NUM_REQUESTS, CREATE_NUM_NODES, CREATE_NUM_LINKS)
         print("CREATED PATH ONE OUTPUT FILES\n")
         #########################################################
 
@@ -244,7 +241,7 @@ if __name__ == '__main__':
             print(op)
 
         print("STARTING CREATION OF FAILURE PROBABILITY OUTPUT FILES\n")
-        CreateOutputData.NEW_output_file_PATH_TWO(os.path.join(outputFolder, GLOBAL_MULTI_OUTPUT_FILE_PATH_TWO), 25, 7, 8)
+        CreateOutputData.output_file_PATH_TWO(GLOBAL_MULTI_OUTPUT_FILE_PATH_TWO, CREATE_NUM_REQUESTS, CREATE_NUM_NODES, CREATE_NUM_LINKS)
 
     print("CREATING LINE GRAPHS WITH AVAILABLE DATA")
     run_output_graphs()

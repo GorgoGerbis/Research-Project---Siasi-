@@ -1,8 +1,7 @@
 from src.NodeObj import NodeObj
-from src.VNFObj import VNFObj
 from src.LinkObj import LinkObj
-from src.RequestObj import RequestObj
 from src.CONSTANTS import GLOBAL_REQUEST_DELAY_THRESHOLD
+
 """
 @author: Jackson Walker
 Path resources: [CPU, RAM, Physical buffer size]
@@ -80,6 +79,19 @@ class PathObj:
         PathObj.StaticPathsList.append(self)
         PathObj.current_request_paths_list.append(self)
 
+    def determine_optimal_mapping_location(self, node_options, vnfs, protocol):
+        temp = vnfs.copy()
+        left, right = 0, len(node_options) - 1
+        output = []
+
+        if protocol == 1:  # SINGLE MAPPING
+            return
+        if protocol == 2:
+            while (len(temp) != 0):
+                if temp[0] in node_options[left][1]:
+                    output.append(node_options[left][0])
+                    temp.pop(left)
+
     def set_failure_probability(self):
         """
         We calculate the failure probability using the rule of succession formula
@@ -91,7 +103,6 @@ class PathObj:
         :return: failure_probability: a float representing the probability of failure
         """
         fused_path = self.create_fusion_obj_list(self.route)
-        node_temp = []
 
         overall_average = 0
         node_count = 0
@@ -100,10 +111,7 @@ class PathObj:
             if type(step) == NodeObj:
                 current_fail = step.calculate_failure(step.nodeID)
                 node_count += 1
-                node_temp.append(current_fail)
-
-        for step in node_temp:
-            overall_average += step
+                overall_average += current_fail
 
         node_failure_probability = overall_average / node_count
         node_failure_probability *= 100
@@ -115,40 +123,8 @@ class PathObj:
         return node_failure_probability
 
     def return_failure_probability(self):
-        """
-        We calculate the failure probability using the rule of succession formula
-        created by Pierre-Simon Laplace.
-
-        link: https://en.wikipedia.org/wiki/Rule_of_succession
-
-        :param self: PathObj being referenced
-        :return: failure_probability: a float representing the probability of failure
-        """
-        fused_path = self.create_fusion_obj_list(self.route)
-        node_temp = []
-
-        overall_average = 0
-        node_count = 0
-
-        for step in fused_path:
-            if type(step) == NodeObj:
-                current_fail = step.calculate_failure(step.nodeID)
-                node_count += 1
-                node_temp.append(current_fail)
-
-        for step in node_temp:
-            overall_average += step
-
-
-        node_failure_probability = overall_average / node_count
-        node_failure_probability *= 100
-
-        if node_failure_probability < 0:
-            node_failure_probability *= -1
-
-        self.FAILURE_PROBABILITY = node_failure_probability
+        node_failure_probability = self.set_failure_probability()
         return node_failure_probability
-
 
     @staticmethod
     def create_fusion_obj_list(path):
@@ -168,7 +144,6 @@ class PathObj:
             if len(links_to_get) != 0:
                 link = links_to_get.pop(0)
                 output_list.append(link)
-
         return output_list
 
     @staticmethod
@@ -187,7 +162,3 @@ class PathObj:
         return "Path ID: {} FAILURE PROBABILITY = {}% Route: {} State: {} REQ_FUNCTIONS: {} REQ_DELAY_THRESHOLD = {} PATH DELAY: {} PATH COST: {}\n".format(
             self.pathID, self.FAILURE_PROBABILITY, self.route, self.state, self.REQ_INFO[0], self.REQ_INFO[1],
             self.DELAY, self.COST)
-        # if self.PATH_TYPE != 2:
-        #     return "Path ID: {} Route: {} State: {} REQ_FUNCTIONS: {} REQ_DELAY_THRESHOLD = {} PATH DELAY: {} PATH COST: {}\n".format(self.pathID, self.route, self.state, self.REQ_INFO[0], self.REQ_INFO[1], self.DELAY, self.COST)
-        # else:
-        #     return "Path ID: {} FAILURE PROBABILITY = {}% Route: {} State: {} REQ_FUNCTIONS: {} REQ_DELAY_THRESHOLD = {} PATH DELAY: {} PATH COST: {}\n".format(self.pathID, self.FAILURE_PROBABILITY, self.route, self.state, self.REQ_INFO[0], self.REQ_INFO[1], self.DELAY, self.COST)

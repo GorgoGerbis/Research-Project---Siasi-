@@ -1,5 +1,5 @@
 from src.VNFObj import VNFObj
-from src.CONSTANTS import GLOBAL_NODE_RESOURCES
+from src.CONSTANTS import node_resources as GLOBAL_NODE_RESOURCES
 from src.CONSTANTS import GLOBAL_REQUEST_DELAY_THRESHOLD
 import random
 

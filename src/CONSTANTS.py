@@ -16,9 +16,9 @@ resourcesFolder = os.path.join(baseFolder, "resources")
 outputFolder = os.path.join(baseFolder, "output")
 
 # INPUT FILE PATHS
-NodeInputData = os.path.join(resourcesFolder, "NEW_NodeInputData.csv")
-LinkInputData = os.path.join(resourcesFolder, "NEW_LinkInputData.csv")
-RequestInputData = os.path.join(resourcesFolder, "NEW_RequestInputData_25.txt")
+NodeInputData = os.path.join(resourcesFolder, "NodeInputData.csv")
+LinkInputData = os.path.join(resourcesFolder, "LinkInputData.csv")
+RequestInputData = os.path.join(resourcesFolder, "RequestInputData_25.txt")
 
 # OUTPUT FILE PATHS
 GLOBAL_SINGLE_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "SINGLE_PATH_ONE_OUTPUT_DATA_25.csv")
@@ -44,8 +44,8 @@ node_resources = [50, 64]  # [50, 64] <--> [CPU, MEMORY(RAM)]
 link_bandwidth = 1000
 
 # For CreateInputData script
-CREATE_NUM_NODES = 16
-CREATE_NUM_LINKS = 24
+CREATE_NUM_NODES = 7
+CREATE_NUM_LINKS = 8
 CREATE_NUM_REQUESTS = 25
 
 

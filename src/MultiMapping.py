@@ -4,11 +4,10 @@ from src.VNFObj import VNFObj
 from src.LinkObj import LinkObj
 from src.RequestObj import RequestObj
 
-from CONSTANTS import GLOBAL_REQUEST_DELAY_THRESHOLD
-from CONSTANTS import GlOBAL_FAILURE_THRESHOLD
+from CONSTANTS import GLOBAL_REQUEST_DELAY_THRESHOLD as REQUEST_DELAY_THRESHOLD
+from CONSTANTS import GlOBAL_FAILURE_THRESHOLD as FAILURE_THRESHOLD
+from CONSTANTS import CREATE_NUM_NODES, CREATE_NUM_LINKS, CREATE_NUM_REQUESTS
 
-REQUEST_DELAY_THRESHOLD = GLOBAL_REQUEST_DELAY_THRESHOLD
-FAILURE_THRESHOLD = GlOBAL_FAILURE_THRESHOLD
 OPTIMAL_PATH_SET = False
 
 # Path Object States
@@ -42,7 +41,7 @@ def set_path_state_PATH_TWO(path_obj, req_bw, req_VNFs):  # <-- This one DOES us
     if path_obj.state == STATE_UNKNOWN:
         if calculate_path_resources(path_obj, req_bw, req_VNFs):    # if calculate_path_resources_PATH_TWO(path_obj):
             if calculate_path_speed(path_obj, REQUEST_DELAY_THRESHOLD):
-                if calculate_path_failure(path_obj, GlOBAL_FAILURE_THRESHOLD):
+                if calculate_path_failure(path_obj, FAILURE_THRESHOLD):
                     path_obj.state = BACKUP
                     PathObj.BACKUP_PATHS.append(path_obj)
                 else:
@@ -54,8 +53,6 @@ def set_path_state_PATH_TWO(path_obj, req_bw, req_VNFs):  # <-- This one DOES us
         else:
             path_obj.state = POOR
             print("PATH {} DOES NOT HAVE ENOUGH RESOURCES!".format(path_obj.pathID))
-
-#######################################################################################################################
 
 
 def calculate_path_resources(path_obj, req_bw, req_vnfs):
@@ -103,20 +100,17 @@ def calculate_path_resources(path_obj, req_bw, req_vnfs):
     else:
         for count, lst in enumerate(nodes):  # Now find out if we can map all the VNFs on this route
             node = lst[0]
-            funcs = lst[1]
             for i, f in enumerate(funcs_to_map):  # Fills up funcs with functions we can map to this node
                 if node.can_map(f.value):
                     funcs_to_map.pop(i)
 
         if len(funcs_to_map) == 0:
+            PathObj.determine_optimal_mapping_location(nodes, req_vnfs, 2)
             return True
         else:
             banner = "PATH{} COULD NOT FIND LOCATION TO MAP {}".format(path_obj.pathID, funcs_to_map)
             print(banner)
             return False
-
-
-#######################################################################################################################
 
 
 def calculate_path_speed(path_obj, delay_threshold):
@@ -226,12 +220,12 @@ def calculate_optimal_PATH_TWO():
         PathObj.OPTIMAL_PATH_SET = True
 
 
-def map_path_ONE(path_obj):
+################## ToDo need to adjust these guys #################
+def map_path(path_obj, req_bw):
     if path_obj.state == OPTIMAL:  # Checks to make sure we are mapping the optimal path
         print("MAPPING PATH {}\n".format(path_obj.pathID))
         fused_list = PathObj.create_fusion_obj_list(path_obj.route)
         mapping_list = path_obj.MAPPING_LOCATION
-        requested_bandwidth = int(path_obj.REQ_INFO[2])
 
         for mapping_location in mapping_list:
             node_used = mapping_location[0]
@@ -241,7 +235,7 @@ def map_path_ONE(path_obj):
         for element in fused_list:
             if type(element) == LinkObj:
                 link = element
-                link.map_request(requested_bandwidth)
+                link.map_request(req_bw)
 
     node_avg = 0
     link_avg = 0
@@ -252,42 +246,10 @@ def map_path_ONE(path_obj):
     for link in NodeObj.StaticLinkList:
         link_avg += link.linkBW
 
-    #   @ToDo need to make these match network topology
-    NodeObj.StaticNodeResources_PATHONE.append(node_avg / 16)
-    NodeObj.StaticLinkResources_PATHONE.append(link_avg / 24)
+    NodeObj.StaticNodeResources_PATHONE.append(node_avg / CREATE_NUM_NODES)
+    NodeObj.StaticLinkResources_PATHONE.append(link_avg / CREATE_NUM_LINKS)
     print("PATH MAPPED")
-
-
-def map_path_TWO(path_obj):
-    if path_obj.state == OPTIMAL:  # Checks to make sure we are mapping the optimal path
-        print("MAPPING PATH {}\n".format(path_obj.pathID))
-        fused_list = PathObj.create_fusion_obj_list(path_obj.route)
-        mapping_list = path_obj.MAPPING_LOCATION
-        requested_bandwidth = int(path_obj.REQ_INFO[2])
-
-        for mapping_location in mapping_list:
-            node_used = mapping_location[0]
-            func = mapping_location[1]
-            node_used.map_function_obj(func)
-
-        for element in fused_list:
-            if type(element) == LinkObj:
-                link = element
-                link.map_request(requested_bandwidth)
-
-    node_avg = 0
-    link_avg = 0
-
-    for node in NodeObj.StaticNodeList:
-        node_avg += node.nodeResources[0]
-
-    for link in NodeObj.StaticLinkList:
-        link_avg += link.linkBW
-
-    #   @ToDo need to make these match network topology
-    NodeObj.StaticNodeResources_PATHTWO.append(node_avg / 16)
-    NodeObj.StaticLinkResources_PATHTWO.append(link_avg / 24)
-    print("PATH MAPPED")
+################## ToDo need to adjust these guys #################
 
 
 def RUN_PATH_ONE(req):
@@ -310,7 +272,7 @@ def RUN_PATH_ONE(req):
         calculate_optimal_PATH_ONE()
         optimal_path = PathObj.returnOptimalPath(PathObj.BACKUP_PATHS)
         PathObj.StaticOptimalPathsList.append(optimal_path)
-        map_path_ONE(optimal_path)
+        map_path(optimal_path, req_bw)
         req.PATH_ONE = optimal_path
 
     # Data cleanup process
@@ -339,7 +301,7 @@ def RUN_PATH_TWO(req):
         calculate_optimal_PATH_TWO()
         optimal_path = PathObj.returnOptimalPath(PathObj.BACKUP_PATHS)
         PathObj.StaticOptimalPathsList.append(optimal_path)
-        map_path_TWO(optimal_path)
+        map_path(optimal_path, req_bw)
         req.PATH_TWO = optimal_path
 
     # Data cleanup process
