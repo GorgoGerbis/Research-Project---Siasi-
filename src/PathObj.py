@@ -1,3 +1,4 @@
+from src.VNFObj import VNFObj
 from src.NodeObj import NodeObj
 from src.LinkObj import LinkObj
 from src.CONSTANTS import GLOBAL_REQUEST_DELAY_THRESHOLD
@@ -78,6 +79,69 @@ class PathObj:
 
         PathObj.StaticPathsList.append(self)
         PathObj.current_request_paths_list.append(self)
+
+    ########################## @ToDo NEW STUFF 05/30/22 #############################
+    def check_path_link_bandwidth(self):
+        """
+        :param req_bw:
+        :param path:
+        :return: Return True if links have enough bandwidth for request....
+        """
+        path = self.route
+        req_bw = self.REQ_INFO[2]
+
+        for i in range(len(path) - 1):
+            src = path[i]
+            dest = path[i + 1]
+            link = LinkObj.returnLink(src, dest)
+
+            if not link.check_enough_resources(req_bw):
+                banner = "PATH{} LINK {} DID NOT HAVE ENOUGH BANDWIDTH!".format(self.pathID, link.linkID)
+                print(banner)
+                return False
+            i += 1
+
+        return True
+
+
+    def check_path_node_resources(self, req_vnfs):
+        possible_mapping_locations = self.determine_possible_mapping_locations(req_vnfs)
+        funcs_to_map = req_vnfs.copy()
+
+        for duo in possible_mapping_locations:
+            vnf = duo[0]
+            mappable_nodes = duo[1]
+
+            if len(funcs_to_map) == 0:
+                break
+
+            if vnf in funcs_to_map and len(mappable_nodes) != 0:
+                funcs_to_map.remove(vnf)
+
+        if len(funcs_to_map) == 0:
+            return True
+        else:
+            return False
+
+
+    def determine_possible_mapping_locations(self, req_vnfs):
+        output = []
+        for f in req_vnfs:
+            temp = []
+            func = VNFObj.retrieve_function_value(f)
+            for n in self.route:
+                node = NodeObj.returnNode(n)
+                if node.can_map(func.value):
+                    temp.append(node.nodeID)
+            output.append([func, temp])
+        return output
+
+
+    def determine_mapping_location_single(self, req_vnfs):
+        possible_mapping_locations = self.determine_possible_mapping_locations(req_vnfs)
+        funcs_to_map = req_vnfs.copy()
+
+    #################################################################################
 
     def determine_optimal_mapping_location(self, node_options, vnfs, protocol):
         temp = vnfs.copy()

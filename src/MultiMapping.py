@@ -55,11 +55,11 @@ def set_path_state_PATH_TWO(path_obj, req_bw, req_VNFs):  # <-- This one DOES us
             print("PATH {} DOES NOT HAVE ENOUGH RESOURCES!".format(path_obj.pathID))
 
 
-def calculate_path_resources(path_obj, req_bw, req_vnfs):
+def calculate_path_resources(path_obj, req_bw, req_vnfs):  # <-- MULTI-MAPPING
     """
     Determines if given path has enough resources to satisfy request needs.
         1) Will determine if links in path will meet bandwidth requirements
-        2) Will determine if nodes have enough resourcs to map all requested functions
+        2) Will determine if nodes have enough resourcs to map ALL requested functions
 
         NOTE: DOES NOT FIND OPTIMAL MAPPING LOCATIONS, SIMPLY DETERMINES IF NODES IN PATH HAVE ENOUGH RESOURCES
               TO MAP EACH FUNCTION AT LEAST ONCE.
@@ -69,48 +69,84 @@ def calculate_path_resources(path_obj, req_bw, req_vnfs):
     :param req_vnfs: The VNFs needed for this request
     :return: True if path meets resources requirements, False if not.
     """
-    req_path_objs = PathObj.create_fusion_obj_list(path_obj.route)
-    funcs_to_map = [VNFObj.retrieve_function_value(x) for x in req_vnfs]
+    funcs_to_map = [VNFObj.retrieve_function_value(e) for e in req_vnfs]
 
     nodes = []  # list of nodes
 
-    for obj in req_path_objs:
-        if type(obj) == LinkObj:
-            if not obj.check_enough_resources(req_bw):
-                banner = "PATH{} LINK {} DID NOT HAVE ENOUGH BANDWIDTH!".format(path_obj.pathID, obj.linkID)
-                print(banner)
-                return False
-        else:
-            nodes.append((obj, []))
-
-    for count, lst in enumerate(nodes):  # Determines which nodes we can map
-        node = lst[0]
-        funcs = lst[1]
-        for f in funcs_to_map:  # Fills up funcs with functions we can map to this node
-            if node.can_map(f.value):
-                funcs.append(f)
-
-        if len(funcs) == 0:  # If we cant map anything we remove it from the list
-            nodes.pop(count)
-
-    if len(nodes) == 0:
-        banner = "PATH{} DID NOT HAVE ENOUGH RESOURCES TO MAP ANYWHERE PATH FAILS".format(path_obj.pathID)
-        print(banner)
+    if not path_obj.check_path_link_bandwidth():  # <-- Do the links have enough bandwidth?
+        print("PATH:{} NOT ENOUGH LINK BANDWIDTH\n".format(path_obj.pathID))
         return False
-    else:
-        for count, lst in enumerate(nodes):  # Now find out if we can map all the VNFs on this route
-            node = lst[0]
-            for i, f in enumerate(funcs_to_map):  # Fills up funcs with functions we can map to this node
-                if node.can_map(f.value):
-                    funcs_to_map.pop(i)
 
-        if len(funcs_to_map) == 0:
-            PathObj.determine_optimal_mapping_location(nodes, req_vnfs, 2)
-            return True
-        else:
-            banner = "PATH{} COULD NOT FIND LOCATION TO MAP {}".format(path_obj.pathID, funcs_to_map)
-            print(banner)
-            return False
+    if not path_obj.check_path_node_resources(req_vnfs):  # <-- Can we map each VNF once?
+        print("PATH:{} NOT ENOUGH RESOURCES\n".format(path_obj.pathID))
+        return False
+
+
+# def calculate_path_resources(path_obj, req_bw, req_vnfs):
+#     """
+#     Determines if given path has enough resources to satisfy request needs.
+#         1) Will determine if links in path will meet bandwidth requirements
+#         2) Will determine if nodes have enough resourcs to map ALL requested functions
+#
+#         NOTE: DOES NOT FIND OPTIMAL MAPPING LOCATIONS, SIMPLY DETERMINES IF NODES IN PATH HAVE ENOUGH RESOURCES
+#               TO MAP EACH FUNCTION AT LEAST ONCE.
+#
+#     :param path_obj: object holding specific path data
+#     :param req_bw: The bandwidth needed for this request
+#     :param req_vnfs: The VNFs needed for this request
+#     :return: True if path meets resources requirements, False if not.
+#     """
+#     req_path_objs = PathObj.create_fusion_obj_list(path_obj.route)
+#     funcs_to_map = [VNFObj.retrieve_function_value(x) for x in req_vnfs]
+#
+#     nodes = []  # list of nodes
+#
+#     for obj in req_path_objs:
+#         if type(obj) == LinkObj:
+#             if not obj.check_enough_resources(req_bw):
+#                 banner = "PATH{} LINK {} DID NOT HAVE ENOUGH BANDWIDTH!".format(path_obj.pathID, obj.linkID)
+#                 print(banner)
+#                 return False
+#         else:   # @ToDo what if I am requesting [f1, f2, f6] and I only have 6, 6
+#             mappable_at_once = obj.what_can_node_map_at_once(funcs_to_map)
+#             nodes.append((obj, mappable_at_once))
+#
+#     for count, lst in enumerate(nodes):  # Determines which nodes we can map
+#         node = lst[0]
+#         mappable = node.what_can_node_map_at_once(funcs_to_map)
+#         nodes[count][1] = mappable
+#
+#         if len(mappable) == 0:  # If we cant map anything we remove it from the list
+#             nodes.pop(count)
+#
+#     # for count, lst in enumerate(nodes):  # Determines which nodes we can map
+#     #     node = lst[0]
+#     #     funcs = lst[1]
+#     #     for f in funcs_to_map:  # Fills up funcs with functions we can map to this node
+#     #         if node.can_map(f.value):
+#     #             funcs.append(f)
+#     #
+#     #     if len(funcs) == 0:  # If we cant map anything we remove it from the list
+#     #         nodes.pop(count)
+#
+#     if len(nodes) == 0:
+#         banner = "PATH{} DID NOT HAVE ENOUGH RESOURCES TO MAP ANYWHERE PATH FAILS".format(path_obj.pathID)
+#         print(banner)
+#         return False
+#     else:
+#         for count, lst in enumerate(nodes):  # Now find out if we can map all the VNFs on this route
+#             node = lst[0]
+#             for i, f in enumerate(funcs_to_map):  # Fills up funcs with functions we can map to this node
+#                 if node.can_map(f.value):
+#                     funcs_to_map.pop(i)
+#
+#         if len(funcs_to_map) == 0:
+#             PathObj.determine_optimal_mapping_location(nodes, req_vnfs, 2)
+#             return True
+#         else:
+#             banner = "PATH{} COULD NOT FIND LOCATION TO MAP {}".format(path_obj.pathID, funcs_to_map)
+#             print(banner)
+#             return False
 
 
 def calculate_path_speed(path_obj, delay_threshold):

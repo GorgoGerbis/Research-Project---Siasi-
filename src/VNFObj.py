@@ -55,6 +55,7 @@ class VNFObj(Enum):
         else:
             raise AttributeError("Function {} does not exist!".format(c))
 
+
     def __str__(self):
         return "Function {} | CPU Usage: {} | RAM Usage: {} | Failure threshold: {}".format(self.name, self.value[0], self.value[1], self.value[2])
 

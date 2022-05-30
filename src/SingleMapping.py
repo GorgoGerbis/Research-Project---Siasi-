@@ -85,7 +85,7 @@ def calculate_path_resources(path_obj, req_bw, req_vnfs):
     """
     Determines if given path has enough resources to satisfy request needs.
         1) Will determine if links in path will meet bandwidth requirements
-        2) Will determine if nodes have enough resourcs to map all requested functions
+        2) Will determine if nodes have enough resourcs to map ALL requested functions
 
         NOTE: DOES NOT FIND OPTIMAL MAPPING LOCATIONS, SIMPLY DETERMINES IF NODES IN PATH HAVE ENOUGH RESOURCES
               TO MAP EACH FUNCTION AT LEAST ONCE.

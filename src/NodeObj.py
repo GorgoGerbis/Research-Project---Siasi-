@@ -56,6 +56,33 @@ class NodeObj:
         else:
             return False
 
+    def what_can_node_map_at_once(self, vnfs=None):     # <--- Allows me to overload this
+        """
+        Will return the VNFs that can all be mapped at once to this particular node.
+        :param vnfs: optional argument, if not specifying the VNFs to check then simply check all VNF types.
+        :return: List of all VNFs you can map
+        """
+        mappable_at_once = []
+
+        cpu = self.nodeResources[0]
+        ram = self.nodeResources[1]
+
+        total_req_cpu = 0
+        total_req_ram = 0
+
+        if vnfs is None:
+            all_possible_vnfs = [e.value for e in VNFObj]
+        else:
+            all_possible_vnfs = vnfs.copy()
+
+        for f in all_possible_vnfs:
+            total_req_cpu += f.value[0]
+            total_req_ram += f.value[1]
+            if (total_req_cpu <= cpu) and (total_req_ram <= ram):
+                mappable_at_once.append(f)
+
+        return mappable_at_once
+
 #################################################################################################
 
     def reset_node(self):
