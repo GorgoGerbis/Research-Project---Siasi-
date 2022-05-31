@@ -102,8 +102,6 @@ class PathObj:
 
         return True
 
-    ########################## @ToDo NEW STUFF 05/30/22 #############################
-
     def check_path_node_resources(self, req_vnfs):
         """
         Determines if the path has enough resources to map each requested VNF.
@@ -145,12 +143,16 @@ class PathObj:
             output.append([func, temp])
         return output
 
-
     def determine_mapping_location_single(self, req_vnfs):
+        """
+        Tries to map as many nodes to the first node in a path as possible.
+        :param req_vnfs:
+        :return: The mapping location
+        """
         funcs_to_map = [VNFObj.retrieve_function_value(x) for x in req_vnfs]
         nodes = [NodeObj.returnNode(x) for x in self.route]
-        i = 0
         mapping_locations = []
+        i = 0
 
         while len(funcs_to_map) != 0:
             if i >= len(nodes):
@@ -166,42 +168,38 @@ class PathObj:
             mapping_locations.append([current_node, temp])
             i += 1
 
-        return mapping_locations
-
+        return mapping_locations    # <-- [ [Node, [F1: [1, 1, 0.85], F2: [2, 2, 0.75], F4: [4, 4, 0.55]>]] ]
 
     def determine_mapping_location_multi(self, req_vnfs):
+        """
+        Going to try to map the biggest VNFs first with the multimapping scheme.
+        :param req_vnfs:
+        :return:
+        """
         funcs_to_map = [VNFObj.retrieve_function_value(x) for x in req_vnfs]
-        nodes = [NodeObj.returnNode(y) for y in self.route]
-
+        nodes = [NodeObj.returnNode(x) for x in self.route]
+        mapping_locations = []
         i = 0
 
-        mapping_locations = []
-        mapped_nodes = []
-
         while len(funcs_to_map) != 0:
-            if i > len(nodes) - 1:
+            if i >= len(nodes):
                 i = 0
-            cn = nodes[i]
-            current_func = funcs_to_map[0]
+            temp = []
+            current_node = nodes[i]
+            mappable_here = current_node.what_can_node_map_at_once(funcs_to_map[::-1])
+            for f in mappable_here:
+                if f in funcs_to_map:
+                    funcs_to_map.remove(f)
+                    temp.append(f)
+                    mapping_locations.append([current_node, f])
+                    break
 
-            if cn not in mapped_nodes:
-                if cn.can_map(current_func.value()):
-                    mapping_locations.append([cn, current_func])
-                    funcs_to_map.remove(current_func)
-                    mapped_nodes.append(cn)
-            else:
-                multiple_funcs_for_one_node = cn.what_can_node_map_at_once(funcs_to_map)
-                for f in multiple_funcs_for_one_node:
-                    if f in funcs_to_map:
-                        funcs_to_map.remove(f)
-                        mapping_locations.append([cn, f])
-
+                # mapping_locations.append([current_node, f])
             i += 1
 
-        return mapping_locations
+        return mapping_locations  # <-- [ [Node, [F1: [1, 1, 0.85], F2: [2, 2, 0.75], F4: [4, 4, 0.55]>]] ]
 
-    #################################################################################
-
+######################### @ToDo ###############################################
     def determine_optimal_mapping_location(self, node_options, vnfs, protocol):
         temp = vnfs.copy()
         left, right = 0, len(node_options) - 1
@@ -214,6 +212,7 @@ class PathObj:
                 if temp[0] in node_options[left][1]:
                     output.append(node_options[left][0])
                     temp.pop(left)
+######################### @ToDo ###############################################
 
     def set_failure_probability(self):
         """

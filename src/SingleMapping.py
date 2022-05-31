@@ -47,10 +47,11 @@ OPTIMAL = 5
 
 
 # @Todo need to remember to clear BACKUP_PATHS when finished processing request
-def set_path_state_PATH_ONE(path_obj, req_vnfs):  # <-- This one DOES NOT use failure probability
+def set_path_state_PATH_ONE(path_obj, req_VNFs):  # <-- This one DOES NOT use failure probability
     # Given a path must then determine and set the state of the path
     if path_obj.state == STATE_UNKNOWN:
-        if calculate_path_resources(path_obj, req_vnfs):
+        if calculate_path_resources(path_obj, req_VNFs):
+            path_obj.MAPPING_LOCATION = path_obj.determine_mapping_location_single(req_VNFs)
             if calculate_path_speed(path_obj, REQUEST_DELAY_THRESHOLD):
                 path_obj.state = BACKUP
                 PathObj.BACKUP_PATHS.append(path_obj)
@@ -62,10 +63,11 @@ def set_path_state_PATH_ONE(path_obj, req_vnfs):  # <-- This one DOES NOT use fa
             print("PATH {} DOES NOT HAVE ENOUGH RESOURCES!".format(path_obj.pathID))
 
 
-def set_path_state_PATH_TWO(path_obj, req_vnfs):  # <-- This one DOES use failure probability
+def set_path_state_PATH_TWO(path_obj, req_VNFs):  # <-- This one DOES use failure probability
     # Given a path must then determine and set the state of the path
     if path_obj.state == STATE_UNKNOWN:
-        if calculate_path_resources(path_obj, req_vnfs):
+        if calculate_path_resources(path_obj, req_VNFs):
+            path_obj.MAPPING_LOCATION = path_obj.determine_mapping_location_single(req_VNFs)
             if calculate_path_speed(path_obj, REQUEST_DELAY_THRESHOLD):
                 if calculate_path_failure(path_obj, FAILURE_THRESHOLD):
                     path_obj.state = BACKUP
