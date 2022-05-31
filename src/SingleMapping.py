@@ -104,41 +104,9 @@ def calculate_path_resources(path_obj, req_vnfs):  # <-- MULTI-MAPPING
         return False
 
     return True
-    # output = path_obj.determine_mapping_location_single(req_vnfs)
-    # print(output)
 
 
 def calculate_path_speed(path_obj, delay_threshold):
-    """
-    Method that is responsible for predicting and calculating the time it would take for a request to be
-    processed on a particular path. This method also calculates and sets the values of DELAY and COST for
-    each PathObj.
-
-    At this stage every path being processed through this function and beyond meets at least the minimum
-    requirements for resources and node mapping.
-
-    RETURN TRUE: Path has proven that it is able to fully process its request within the delay threshold.
-    RETURN FALSE: Path is unable to process its request without exceeding the delay threshold.
-
-    1) Need to retrieve needed data from all nodes with mapped functions
-    2) Need to retrieve needed data from all links being used
-    3) Just have to add it up and make sure its within the threshold
-
-    Things that need to be calculated:
-    PATH_COST = node_cost + link_cost
-    PATH_DELAY = node_processing_delay + link_edge_delay
-
-    PATH_DELAY <= delay_threshold
-
-    1) Link EdgeDelay
-    2) Link EdgeCost
-    3) Node Processing Delay for nodes with functions mapped to them
-    4) Node cost
-
-    :param path_obj: an object of the PathObj class
-    :param delay_threshold: The numerical value representing the window of time to fulfill a request before failure.
-    :return: Boolean
-    """
     mapping_locations = path_obj.determine_mapping_location_single(path_obj.REQ_INFO[0])
     fused_list = PathObj.create_fusion_obj_list(path_obj.route)
     mapping_list = path_obj.MAPPING_LOCATION

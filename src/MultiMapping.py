@@ -23,7 +23,7 @@ OPTIMAL = 5
 def set_path_state_PATH_ONE(path_obj, req_VNFs):  # <-- This one DOES NOT use failure probability
     # Given a path must then determine and set the state of the path
     if path_obj.state == STATE_UNKNOWN:
-        if calculate_path_resources(path_obj, req_VNFs):    # if calculate_path_resources_PATH_ONE(path_obj, req_bw, req_VNFs):
+        if calculate_path_resources(path_obj, req_VNFs):
             if calculate_path_speed(path_obj, REQUEST_DELAY_THRESHOLD):
                 path_obj.state = BACKUP
                 PathObj.BACKUP_PATHS.append(path_obj)
@@ -39,7 +39,7 @@ def set_path_state_PATH_ONE(path_obj, req_VNFs):  # <-- This one DOES NOT use fa
 def set_path_state_PATH_TWO(path_obj, req_VNFs):  # <-- This one DOES use failure probability
     # Given a path must then determine and set the state of the path
     if path_obj.state == STATE_UNKNOWN:
-        if calculate_path_resources(path_obj, req_VNFs):    # if calculate_path_resources_PATH_TWO(path_obj):
+        if calculate_path_resources(path_obj, req_VNFs):
             if calculate_path_speed(path_obj, REQUEST_DELAY_THRESHOLD):
                 if calculate_path_failure(path_obj, FAILURE_THRESHOLD):
                     path_obj.state = BACKUP
@@ -77,43 +77,10 @@ def calculate_path_resources(path_obj, req_vnfs):  # <-- MULTI-MAPPING
         print("PATH:{} NOT ENOUGH RESOURCES\n".format(path_obj.pathID))
         return False
 
-    # return True
-
-    output = path_obj.determine_mapping_location_multi(req_vnfs)
-    print(output)
+    return True
 
 
 def calculate_path_speed(path_obj, delay_threshold):
-    """
-    Method that is responsible for predicting and calculating the time it would take for a request to be
-    processed on a particular path. This method also calculates and sets the values of DELAY and COST for
-    each PathObj.
-
-    At this stage every path being processed through this function and beyond meets at least the minimum
-    requirements for resources and node mapping.
-
-    RETURN TRUE: Path has proven that it is able to fully process its request within the delay threshold.
-    RETURN FALSE: Path is unable to process its request without exceeding the delay threshold.
-
-    1) Need to retrieve needed data from all nodes with mapped functions
-    2) Need to retrieve needed data from all links being used
-    3) Just have to add it up and make sure its within the threshold
-
-    Things that need to be calculated:
-    PATH_COST = node_cost + link_cost
-    PATH_DELAY = node_processing_delay + link_edge_delay
-
-    PATH_DELAY <= delay_threshold
-
-    1) Link EdgeDelay
-    2) Link EdgeCost
-    3) Node Processing Delay for nodes with functions mapped to them
-    4) Node cost
-
-    :param path_obj: an object of the PathObj class
-    :param delay_threshold: The numerical value representing the window of time to fulfill a request before failure.
-    :return: Boolean
-    """
     fused_list = PathObj.create_fusion_obj_list(path_obj.route)
     mapping_list = path_obj.MAPPING_LOCATION
 

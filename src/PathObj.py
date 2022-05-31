@@ -80,7 +80,6 @@ class PathObj:
         PathObj.StaticPathsList.append(self)
         PathObj.current_request_paths_list.append(self)
 
-    ########################## @ToDo NEW STUFF 05/30/22 #############################
     def check_path_link_bandwidth(self):
         """
         :param req_bw:
@@ -103,8 +102,14 @@ class PathObj:
 
         return True
 
+    ########################## @ToDo NEW STUFF 05/30/22 #############################
 
     def check_path_node_resources(self, req_vnfs):
+        """
+        Determines if the path has enough resources to map each requested VNF.
+        :param req_vnfs:
+        :return:
+        """
         possible_mapping_locations = self.determine_possible_mapping_locations(req_vnfs)
         funcs_to_map = [VNFObj.retrieve_function_value(x) for x in req_vnfs]
 
@@ -123,8 +128,12 @@ class PathObj:
         else:
             return False
 
-
     def determine_possible_mapping_locations(self, req_vnfs):
+        """
+        Finds each node that is capable of processing each VNF.
+        :param req_vnfs: The requested VNF functions.
+        :return:
+        """
         output = []
         for f in req_vnfs:
             temp = []
@@ -170,7 +179,7 @@ class PathObj:
         mapped_nodes = []
 
         while len(funcs_to_map) != 0:
-            if i > len(nodes)-1:
+            if i > len(nodes) - 1:
                 i = 0
             cn = nodes[i]
             current_func = funcs_to_map[0]
