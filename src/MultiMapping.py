@@ -20,10 +20,10 @@ OPTIMAL = 5
 
 
 # @Todo need to remember to clear BACKUP_PATHS when finished processing request
-def set_path_state_PATH_ONE(path_obj, req_bw, req_VNFs):  # <-- This one DOES NOT use failure probability
+def set_path_state_PATH_ONE(path_obj, req_VNFs):  # <-- This one DOES NOT use failure probability
     # Given a path must then determine and set the state of the path
     if path_obj.state == STATE_UNKNOWN:
-        if calculate_path_resources(path_obj, req_bw, req_VNFs):    # if calculate_path_resources_PATH_ONE(path_obj, req_bw, req_VNFs):
+        if calculate_path_resources(path_obj, req_VNFs):    # if calculate_path_resources_PATH_ONE(path_obj, req_bw, req_VNFs):
             if calculate_path_speed(path_obj, REQUEST_DELAY_THRESHOLD):
                 path_obj.state = BACKUP
                 PathObj.BACKUP_PATHS.append(path_obj)
@@ -36,10 +36,10 @@ def set_path_state_PATH_ONE(path_obj, req_bw, req_VNFs):  # <-- This one DOES NO
 
 
 # @Todo need to remember to clear BACKUP_PATHS when finished processing request
-def set_path_state_PATH_TWO(path_obj, req_bw, req_VNFs):  # <-- This one DOES use failure probability
+def set_path_state_PATH_TWO(path_obj, req_VNFs):  # <-- This one DOES use failure probability
     # Given a path must then determine and set the state of the path
     if path_obj.state == STATE_UNKNOWN:
-        if calculate_path_resources(path_obj, req_bw, req_VNFs):    # if calculate_path_resources_PATH_TWO(path_obj):
+        if calculate_path_resources(path_obj, req_VNFs):    # if calculate_path_resources_PATH_TWO(path_obj):
             if calculate_path_speed(path_obj, REQUEST_DELAY_THRESHOLD):
                 if calculate_path_failure(path_obj, FAILURE_THRESHOLD):
                     path_obj.state = BACKUP
@@ -55,7 +55,7 @@ def set_path_state_PATH_TWO(path_obj, req_bw, req_VNFs):  # <-- This one DOES us
             print("PATH {} DOES NOT HAVE ENOUGH RESOURCES!".format(path_obj.pathID))
 
 
-def calculate_path_resources(path_obj, req_bw, req_vnfs):  # <-- MULTI-MAPPING
+def calculate_path_resources(path_obj, req_vnfs):  # <-- MULTI-MAPPING
     """
     Determines if given path has enough resources to satisfy request needs.
         1) Will determine if links in path will meet bandwidth requirements
@@ -69,10 +69,6 @@ def calculate_path_resources(path_obj, req_bw, req_vnfs):  # <-- MULTI-MAPPING
     :param req_vnfs: The VNFs needed for this request
     :return: True if path meets resources requirements, False if not.
     """
-    funcs_to_map = [VNFObj.retrieve_function_value(e) for e in req_vnfs]
-
-    nodes = []  # list of nodes
-
     if not path_obj.check_path_link_bandwidth():  # <-- Do the links have enough bandwidth?
         print("PATH:{} NOT ENOUGH LINK BANDWIDTH\n".format(path_obj.pathID))
         return False
@@ -81,72 +77,10 @@ def calculate_path_resources(path_obj, req_bw, req_vnfs):  # <-- MULTI-MAPPING
         print("PATH:{} NOT ENOUGH RESOURCES\n".format(path_obj.pathID))
         return False
 
+    # return True
 
-# def calculate_path_resources(path_obj, req_bw, req_vnfs):
-#     """
-#     Determines if given path has enough resources to satisfy request needs.
-#         1) Will determine if links in path will meet bandwidth requirements
-#         2) Will determine if nodes have enough resourcs to map ALL requested functions
-#
-#         NOTE: DOES NOT FIND OPTIMAL MAPPING LOCATIONS, SIMPLY DETERMINES IF NODES IN PATH HAVE ENOUGH RESOURCES
-#               TO MAP EACH FUNCTION AT LEAST ONCE.
-#
-#     :param path_obj: object holding specific path data
-#     :param req_bw: The bandwidth needed for this request
-#     :param req_vnfs: The VNFs needed for this request
-#     :return: True if path meets resources requirements, False if not.
-#     """
-#     req_path_objs = PathObj.create_fusion_obj_list(path_obj.route)
-#     funcs_to_map = [VNFObj.retrieve_function_value(x) for x in req_vnfs]
-#
-#     nodes = []  # list of nodes
-#
-#     for obj in req_path_objs:
-#         if type(obj) == LinkObj:
-#             if not obj.check_enough_resources(req_bw):
-#                 banner = "PATH{} LINK {} DID NOT HAVE ENOUGH BANDWIDTH!".format(path_obj.pathID, obj.linkID)
-#                 print(banner)
-#                 return False
-#         else:   # @ToDo what if I am requesting [f1, f2, f6] and I only have 6, 6
-#             mappable_at_once = obj.what_can_node_map_at_once(funcs_to_map)
-#             nodes.append((obj, mappable_at_once))
-#
-#     for count, lst in enumerate(nodes):  # Determines which nodes we can map
-#         node = lst[0]
-#         mappable = node.what_can_node_map_at_once(funcs_to_map)
-#         nodes[count][1] = mappable
-#
-#         if len(mappable) == 0:  # If we cant map anything we remove it from the list
-#             nodes.pop(count)
-#
-#     # for count, lst in enumerate(nodes):  # Determines which nodes we can map
-#     #     node = lst[0]
-#     #     funcs = lst[1]
-#     #     for f in funcs_to_map:  # Fills up funcs with functions we can map to this node
-#     #         if node.can_map(f.value):
-#     #             funcs.append(f)
-#     #
-#     #     if len(funcs) == 0:  # If we cant map anything we remove it from the list
-#     #         nodes.pop(count)
-#
-#     if len(nodes) == 0:
-#         banner = "PATH{} DID NOT HAVE ENOUGH RESOURCES TO MAP ANYWHERE PATH FAILS".format(path_obj.pathID)
-#         print(banner)
-#         return False
-#     else:
-#         for count, lst in enumerate(nodes):  # Now find out if we can map all the VNFs on this route
-#             node = lst[0]
-#             for i, f in enumerate(funcs_to_map):  # Fills up funcs with functions we can map to this node
-#                 if node.can_map(f.value):
-#                     funcs_to_map.pop(i)
-#
-#         if len(funcs_to_map) == 0:
-#             PathObj.determine_optimal_mapping_location(nodes, req_vnfs, 2)
-#             return True
-#         else:
-#             banner = "PATH{} COULD NOT FIND LOCATION TO MAP {}".format(path_obj.pathID, funcs_to_map)
-#             print(banner)
-#             return False
+    output = path_obj.determine_mapping_location_multi(req_vnfs)
+    print(output)
 
 
 def calculate_path_speed(path_obj, delay_threshold):
@@ -293,7 +227,7 @@ def RUN_PATH_ONE(req):
     req_VNFs = req.requestedFunctions
 
     for path in PathObj.current_request_paths_list:
-        set_path_state_PATH_ONE(path, req_bw, req_VNFs)
+        set_path_state_PATH_ONE(path, req_VNFs)
         if path.state <= 3:
             del path
 
@@ -322,7 +256,7 @@ def RUN_PATH_TWO(req):
     req_VNFs = req.requestedFunctions
 
     for path in PathObj.current_request_paths_list:
-        set_path_state_PATH_TWO(path, req_bw, req_VNFs)
+        set_path_state_PATH_TWO(path, req_VNFs)
         if path.state <= 3:
             del path
 

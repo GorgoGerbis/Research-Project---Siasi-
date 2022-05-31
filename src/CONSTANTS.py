@@ -33,7 +33,7 @@ GLOBAL_MULTI_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "MULTI_PATH_TWO_O
 SINGLE_MAPPING = 1  # Mapping all/as many as possible on the first node in the route
 MULTI_MAPPING = 2  # Mapping one function at a time on multiple different nodes
 
-GLOBAL_PROTOCOL = 2
+GLOBAL_PROTOCOL = 1
 
 ############## NEW TERMINAL STUFF #################
 # @ToDo need to check that these randomly generated values are different each time they are called

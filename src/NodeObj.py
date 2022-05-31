@@ -47,7 +47,7 @@ class NodeObj:
 
 #################################################################################################
 
-    def can_map(self, vnfObj): # <---- @ToDo made to replace check_mappable!
+    def can_map(self, vnfObj):  # <---- @ToDo made to replace check_mappable!
         cpu = vnfObj[0]
         ram = vnfObj[1]
 

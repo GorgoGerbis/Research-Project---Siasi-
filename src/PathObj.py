@@ -106,7 +106,7 @@ class PathObj:
 
     def check_path_node_resources(self, req_vnfs):
         possible_mapping_locations = self.determine_possible_mapping_locations(req_vnfs)
-        funcs_to_map = req_vnfs.copy()
+        funcs_to_map = [VNFObj.retrieve_function_value(x) for x in req_vnfs]
 
         for duo in possible_mapping_locations:
             vnf = duo[0]
@@ -138,8 +138,58 @@ class PathObj:
 
 
     def determine_mapping_location_single(self, req_vnfs):
-        possible_mapping_locations = self.determine_possible_mapping_locations(req_vnfs)
-        funcs_to_map = req_vnfs.copy()
+        funcs_to_map = [VNFObj.retrieve_function_value(x) for x in req_vnfs]
+        nodes = [NodeObj.returnNode(x) for x in self.route]
+        i = 0
+        mapping_locations = []
+
+        while len(funcs_to_map) != 0:
+            if i >= len(nodes):
+                i = 0
+            temp = []
+            current_node = nodes[i]
+            mappable_here = current_node.what_can_node_map_at_once(funcs_to_map)
+            for f in mappable_here:
+                if f in funcs_to_map:
+                    funcs_to_map.remove(f)
+                    temp.append(f)
+
+            mapping_locations.append([current_node, temp])
+            i += 1
+
+        return mapping_locations
+
+
+    def determine_mapping_location_multi(self, req_vnfs):
+        funcs_to_map = [VNFObj.retrieve_function_value(x) for x in req_vnfs]
+        nodes = [NodeObj.returnNode(y) for y in self.route]
+
+        i = 0
+
+        mapping_locations = []
+        mapped_nodes = []
+
+        while len(funcs_to_map) != 0:
+            if i > len(nodes)-1:
+                i = 0
+            cn = nodes[i]
+            current_func = funcs_to_map[0]
+
+            if cn not in mapped_nodes:
+                if cn.can_map(current_func.value()):
+                    mapping_locations.append([cn, current_func])
+                    funcs_to_map.remove(current_func)
+                    mapped_nodes.append(cn)
+            else:
+                multiple_funcs_for_one_node = cn.what_can_node_map_at_once(funcs_to_map)
+                for f in multiple_funcs_for_one_node:
+                    if f in funcs_to_map:
+                        funcs_to_map.remove(f)
+                        mapping_locations.append([cn, f])
+
+            i += 1
+
+        return mapping_locations
 
     #################################################################################
 
