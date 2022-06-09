@@ -74,6 +74,25 @@ def set_nodes():
             visited_nodes.append(current_node_id)
 
 
+def find_isolated_nodes():
+    frick = []
+    frack = []
+
+    output = []
+
+    for n in NodeObj.StaticNodeList:
+        frick.append(n.nodeID)
+
+    for n in GRAPH:
+        frack.append(n)
+
+    for n in frick:
+        if n not in frack:
+            output.append(n)
+
+    print("The following nodes are not accessible: {}\n".format(output))
+
+
 def process_path_one_MULTI_MAPPING():
     for req in RequestObj.STATIC_TOTAL_REQUEST_LIST:   # STEP ONE
         print("BEGUN PROCESSING REQUEST: {} Source: {} Destination {} Functions: {}\n".format(req.requestID, req.source, req.destination, req.requestedFunctions))
@@ -146,25 +165,6 @@ def process_path_two_SINGLE_MAPPING():
         RUN_PATH_TWO_SINGLE_MAPPING(req)
 
 
-def find_isolated_nodes():
-    frick = []
-    frack = []
-
-    output = []
-
-    for n in NodeObj.StaticNodeList:
-        frick.append(n.nodeID)
-
-    for n in GRAPH:
-        frack.append(n)
-
-    for n in frick:
-        if n not in frack:
-            output.append(n)
-
-    print("The following nodes are not accessible: {}\n".format(output))
-
-
 if __name__ == '__main__':
     print("BEGIN PROCESSING INPUT DATA\n")
     ProcessInputData.processAllInputData()
@@ -173,8 +173,8 @@ if __name__ == '__main__':
     set_edges()
     GRAPH.add_edges_from(edges)
 
-    nx.draw(GRAPH, with_labels=True, font_weight='bold')
-    plt.show()
+    # nx.draw(GRAPH, with_labels=True, font_weight='bold')
+    # plt.show()
 
     find_isolated_nodes()
 
@@ -186,62 +186,57 @@ if __name__ == '__main__':
         CreateOutputData.output_file_PATH_ONE(GLOBAL_SINGLE_OUTPUT_FILE_PATH_ONE, CREATE_NUM_REQUESTS, CREATE_NUM_NODES, CREATE_NUM_LINKS)
         print("CREATED PATH ONE OUTPUT FILES\n")
 
-        for link in NodeObj.StaticLinkList:
-            del link
-        NodeObj.StaticLinkList.clear()
-
-        for node in NodeObj.StaticNodeList:
-            del node
-        NodeObj.StaticNodeList.clear()
-
-        ProcessInputData.processInputDataNode(ProcessInputData.NodeInputData)
-        ProcessInputData.processInputDataLink(ProcessInputData.LinkInputData)
-
-        ############# BEGIN PROCESSING FOR PATH TWO ##############
+    if CONSTANTS.GLOBAL_PROTOCOL == 2:
+        print("Begin Processing requests using: Single-Mapping Protocol\n")
         process_path_two_SINGLE_MAPPING()
 
-        print("STARTING CREATION OF FAILURE PROBABILITY OUTPUT FILES\n")
-        CreateOutputData.output_file_PATH_TWO(GLOBAL_SINGLE_OUTPUT_FILE_PATH_TWO, CREATE_NUM_REQUESTS, CREATE_NUM_NODES, CREATE_NUM_LINKS)
+        print("STARTING CREATION OF OUTPUT FILES\n")
+        CreateOutputData.output_file_PATH_TWO(GLOBAL_SINGLE_OUTPUT_FILE_PATH_TWO, CREATE_NUM_REQUESTS, CREATE_NUM_NODES,
+                                              CREATE_NUM_LINKS)
+        print("CREATED PATH ONE OUTPUT FILES\n")
 
-    elif CONSTANTS.GLOBAL_PROTOCOL == 2:
+        # for link in NodeObj.StaticLinkList:
+        #     del link
+        # NodeObj.StaticLinkList.clear()
+        #
+        # for node in NodeObj.StaticNodeList:
+        #     del node
+        # NodeObj.StaticNodeList.clear()
+        #
+        # ProcessInputData.processInputDataNode(ProcessInputData.NodeInputData)
+        # ProcessInputData.processInputDataLink(ProcessInputData.LinkInputData)
+        #
+        # ############# BEGIN PROCESSING FOR PATH TWO ##############
+        # process_path_two_SINGLE_MAPPING()
+        #
+        # print("STARTING CREATION OF FAILURE PROBABILITY OUTPUT FILES\n")
+        # CreateOutputData.output_file_PATH_TWO(GLOBAL_SINGLE_OUTPUT_FILE_PATH_TWO, CREATE_NUM_REQUESTS, CREATE_NUM_NODES, CREATE_NUM_LINKS)
+
+    if CONSTANTS.GLOBAL_PROTOCOL == 3:
         print("Begin Processing requests using: 'Head vs. Wall' Protocol\n")
-
-        ########### SETUP IS NOW OVER WE CAN BEGIN PROCESSING ##############
         process_path_one_MULTI_MAPPING()
         print("ALL DONE FINDING FIRST PATHS\n")
-        for op in PathObj.StaticOptimalPathsList:
-            print(op)
-
-        for req in RequestObj.STATIC_TOTAL_REQUEST_LIST:
-            obj = req.PATH_ONE
-            if obj is not None:
-                print(obj)
-
         print("STARTING CREATION OF OUTPUT FILES\n")
-        # CreateOutputData.output_file_PATH_ONE()
         CreateOutputData.output_file_PATH_ONE(GLOBAL_MULTI_OUTPUT_FILE_PATH_ONE, CREATE_NUM_REQUESTS, CREATE_NUM_NODES, CREATE_NUM_LINKS)
         print("CREATED PATH ONE OUTPUT FILES\n")
-        #########################################################
 
-        for link in NodeObj.StaticLinkList:
-            del link
-        NodeObj.StaticLinkList.clear()
-
-        for node in NodeObj.StaticNodeList:
-            del node
-        NodeObj.StaticNodeList.clear()
-
-        ProcessInputData.processInputDataNode(ProcessInputData.NodeInputData)
-        ProcessInputData.processInputDataLink(ProcessInputData.LinkInputData)
+        # for link in NodeObj.StaticLinkList:
+        #     del link
+        # NodeObj.StaticLinkList.clear()
+        #
+        # for node in NodeObj.StaticNodeList:
+        #     del node
+        # NodeObj.StaticNodeList.clear()
+        #
+        # ProcessInputData.processInputDataNode(ProcessInputData.NodeInputData)
+        # ProcessInputData.processInputDataLink(ProcessInputData.LinkInputData)
 
         ############# BEGIN PROCESSING FOR PATH TWO ##############
+    if CONSTANTS.GLOBAL_PROTOCOL == 4:
         process_path_two_MULTI_MAPPING()
         print("ALL DONE FINDING SECOND PATHS\n")
-        for op in PathObj.StaticOptimalPathsList:
-            print(op)
-
         print("STARTING CREATION OF FAILURE PROBABILITY OUTPUT FILES\n")
         CreateOutputData.output_file_PATH_TWO(GLOBAL_MULTI_OUTPUT_FILE_PATH_TWO, CREATE_NUM_REQUESTS, CREATE_NUM_NODES, CREATE_NUM_LINKS)
 
-    print("CREATING LINE GRAPHS WITH AVAILABLE DATA")
-    run_output_graphs()
+    # print("CREATING LINE GRAPHS WITH AVAILABLE DATA")
+    # run_output_graphs()

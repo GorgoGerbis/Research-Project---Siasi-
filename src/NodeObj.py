@@ -102,15 +102,6 @@ class NodeObj:
                 neighbors.append(n)
         return neighbors
 
-    def get_status(self):  # ToDo need to figure out when and how often the status of a node is checked
-        if self.check_isolated():
-            self.status = "O"
-            NodeObj.AUTO_FAIL.append(self.nodeID)
-        elif self.check_mappable():
-            self.status = "A"
-        else:
-            self.status = "R"
-
     def check_isolated(self):
         tethers = self.get_tethers()
         count = 0
@@ -178,15 +169,6 @@ class NodeObj:
         self.nodeResources[0] = int(self.nodeResources[0]) - func.value[0]
         self.nodeResources[1] = int(self.nodeResources[1]) - func.value[1]
 
-    def HELPER_check_enough_resources(self, c, r):
-        if self.compareCPU(c) and self.compareRAM(r):
-            # self.map_function(c, r, b) #ToDo <----DONT FORGET TO COMMENT THIS LINE OUT OR EVERYTHING IS GOING TO BE MAPPED.
-            # print("NODE {} DOES HAVE SUFFICIENT RESOURCES TO MAP FUNCTION {}\n".format(self.nodeID, func))
-            return True
-        else:
-            # print("NODE {} DOES NOT HAVE SUFFICIENT RESOURCES TO MAP FUNCTION {}\n".format(self.nodeID, func))
-            return False
-
     def check_enough_resources(self, f):
         func = VNFObj.retrieve_function_value(f)
         c, r= func.value[0], func.value[1]
@@ -194,30 +176,6 @@ class NodeObj:
             return True
         else:
             # print("NODE {} DOES NOT HAVE SUFFICIENT RESOURCES TO MAP FUNCTION {}\n".format(self.nodeID, func))
-            return False
-
-    def check_mappable(self):
-        """
-        Purpose of this method is to see if a particular
-        node has enough resources to map any functions.
-        Checks the given nodes available resources and then
-        compares them to the cost of each function.
-
-        :return: True if mapping is still possible and False if not.
-        """
-        costs = FUNCTION_COSTS
-        mappable = 0
-
-        for func in costs:
-            c = func[0]
-            r = func[1]
-
-            if self.HELPER_check_enough_resources(c, r):
-                mappable += 1
-
-        if mappable > 0:
-            return True
-        else:
             return False
 
     def check_region(self, x, y):

@@ -109,15 +109,15 @@ def calculate_path_resources(path_obj, req_vnfs):  # <-- MULTI-MAPPING
 
 
 def calculate_path_speed(path_obj, delay_threshold):
-    mapping_locations = path_obj.determine_mapping_location_single(path_obj.REQ_INFO[0])
     fused_list = PathObj.create_fusion_obj_list(path_obj.route)
     mapping_list = path_obj.MAPPING_LOCATION
 
     # @ToDo remember that when a function is mapped to a node the delay for that node is: processingDelay + (processingDelay x num_funcs_mapped)
-    for element in mapping_locations:
-        used_node = element[0]
-        funcs = element[1]
-        path_obj.DELAY += used_node.processingDelay
+    for elements in mapping_list:
+        used_node = elements[0]
+        funcs = elements[1]
+        for f in funcs:
+            path_obj.DELAY += used_node.processingDelay
 
     for step in fused_list:
         if type(step) == LinkObj:
@@ -171,9 +171,9 @@ def calculate_optimal_PATH_TWO():
         current_best_path = PathObj.BACKUP_PATHS[0]
 
         for obj in PathObj.BACKUP_PATHS:
-            if current_best_path.FAILURE_PROBABILITY < current_best_path.FAILURE_PROBABILITY:
+            if obj.FAILURE_PROBABILITY < current_best_path.FAILURE_PROBABILITY:
                 current_best_path = obj
-            elif current_best_path.FAILURE_PROBABILITY == current_best_path.FAILURE_PROBABILITY:
+            elif obj.FAILURE_PROBABILITY == current_best_path.FAILURE_PROBABILITY:
                 if obj.DELAY < current_best_path.DELAY:
                     current_best_path = obj
                 elif obj.DELAY == current_best_path.DELAY:
@@ -190,10 +190,11 @@ def map_path(path_obj, req_bw):
         fused_list = PathObj.create_fusion_obj_list(path_obj.route)
         mapping_list = path_obj.MAPPING_LOCATION
 
-        for mapping_location in mapping_list:
-            node_used = mapping_location[0]
-            func = mapping_location[1]
-            node_used.map_function_obj(func)
+        for element in mapping_list:
+            node_used = element[0]
+            funcs = element[1]
+            for f in funcs:
+                node_used.map_function_obj(f)
 
         for element in fused_list:
             if type(element) == LinkObj:
@@ -211,7 +212,7 @@ def map_path(path_obj, req_bw):
 
     NodeObj.StaticNodeResources_PATHONE.append(node_avg / CREATE_NUM_NODES)
     NodeObj.StaticLinkResources_PATHONE.append(link_avg / CREATE_NUM_LINKS)
-    print("PATH MAPPED")
+    print("PATH {} MAPPED".format(path_obj.pathID))
 
 
 def RUN_PATH_ONE_SINGLE_MAPPING(req):

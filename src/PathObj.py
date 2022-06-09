@@ -199,21 +199,6 @@ class PathObj:
 
         return mapping_locations  # <-- [ [Node, [F1: [1, 1, 0.85], F2: [2, 2, 0.75], F4: [4, 4, 0.55]>]] ]
 
-######################### @ToDo ###############################################
-    def determine_optimal_mapping_location(self, node_options, vnfs, protocol):
-        temp = vnfs.copy()
-        left, right = 0, len(node_options) - 1
-        output = []
-
-        if protocol == 1:  # SINGLE MAPPING
-            return
-        if protocol == 2:
-            while (len(temp) != 0):
-                if temp[0] in node_options[left][1]:
-                    output.append(node_options[left][0])
-                    temp.pop(left)
-######################### @ToDo ###############################################
-
     def set_failure_probability(self):
         """
         We calculate the failure probability using the rule of succession formula

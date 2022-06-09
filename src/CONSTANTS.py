@@ -30,17 +30,19 @@ GLOBAL_MULTI_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "MULTI_PATH_TWO_O
 
 
 ###### 1 == SINGLE MAPPING, 2 == MULTI-MAPPING
-SINGLE_MAPPING = 1  # Mapping all/as many as possible on the first node in the route
-MULTI_MAPPING = 2  # Mapping one function at a time on multiple different nodes
+SINGLE_MAPPING_PATH_ONE = 1  # Mapping all/as many as possible on the first node in the route
+SINGLE_MAPPING_PATH_TWO = 2
+MULTI_MAPPING_PATH_ONE = 3  # Mapping one function at a time on multiple different nodes
+MULTI_MAPPING_PATH_TWO = 4  # Mapping one function at a time on multiple different nodes
 
-GLOBAL_PROTOCOL = 2
+GLOBAL_PROTOCOL = 4
 
 ############## NEW TERMINAL STUFF #################
 # @ToDo need to check that these randomly generated values are different each time they are called
 GLOBAL_REQUEST_DELAY_THRESHOLD = 120
 GlOBAL_FAILURE_THRESHOLD = 55.5
 
-node_resources = [50, 64]  # [50, 64] <--> [CPU, MEMORY(RAM)]
+node_resources = [1000, 1000]  # [50, 64] <--> [CPU, MEMORY(RAM)]
 link_bandwidth = 1000
 
 # For CreateInputData script
