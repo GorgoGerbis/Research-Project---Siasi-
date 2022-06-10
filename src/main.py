@@ -38,10 +38,10 @@ import networkx as nx
 import matplotlib.pyplot as plt
 
 # Need these to process requests
-from src.MultiMapping import RUN_PATH_ONE
-from src.MultiMapping import RUN_PATH_TWO
-from src.SingleMapping import RUN_PATH_ONE_SINGLE_MAPPING
-from src.SingleMapping import RUN_PATH_TWO_SINGLE_MAPPING
+from src.SINGLE_MAPPING import RUN_PATH_ONE as RUN_PATH_ONE_MULTI_MAPPING
+from src.SINGLE_MAPPING import RUN_PATH_TWO as RUN_PATH_TWO_MULTI_MAPPING
+from src.MULTI_MAPPING import RUN_PATH_ONE as RUN_PATH_ONE_SINGLE_MAPPING
+from src.MULTI_MAPPING import RUN_PATH_TWO as RUN_PATH_TWO_SINGLE_MAPPING
 
 
 REQUEST_DELAY_THRESHOLD = GLOBAL_REQUEST_DELAY_THRESHOLD
@@ -107,7 +107,7 @@ def process_path_one_MULTI_MAPPING():
             PathObj(pathID, path, 0, current_request_data, [], 0, 0, 0, 1)
             count += 1
 
-        RUN_PATH_ONE(req)   # <--- Step 3, 4 and 5 starts here
+        RUN_PATH_ONE_MULTI_MAPPING(req)   # <--- Step 3, 4 and 5 starts here
 
 
 def process_path_two_MULTI_MAPPING():
@@ -126,7 +126,7 @@ def process_path_two_MULTI_MAPPING():
             PathObj(pathID, path, 0, current_request_data, [], 0, 0, 0, 2)
             count += 1
 
-        RUN_PATH_TWO(req)
+        RUN_PATH_TWO_MULTI_MAPPING(req)
 
 
 def process_path_one_SINGLE_MAPPING():

@@ -143,7 +143,7 @@ class PathObj:
             output.append([func, temp])
         return output
 
-    def determine_mapping_location_single(self, req_vnfs):
+    def determine_mapping_location_multi(self, req_vnfs):   # @ToDo need to fix this to MAP IN ORDER ALWAYS
         """
         Tries to map as many nodes to the first node in a path as possible.
         :param req_vnfs:
@@ -170,9 +170,9 @@ class PathObj:
 
         return mapping_locations    # <-- [ [Node, [F1: [1, 1, 0.85], F2: [2, 2, 0.75], F4: [4, 4, 0.55]>]] ]
 
-    def determine_mapping_location_multi(self, req_vnfs):
+    def determine_mapping_location_single(self, req_vnfs):  # @ToDo need to fix this to MAP IN ORDER ALWAYS
         """
-        Going to try to map the biggest VNFs first with the multimapping scheme.
+        Going to try to map the biggest VNFs first with the multi-mapping scheme.
         :param req_vnfs:
         :return:
         """

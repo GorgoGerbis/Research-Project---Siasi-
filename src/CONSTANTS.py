@@ -35,7 +35,7 @@ SINGLE_MAPPING_PATH_TWO = 2
 MULTI_MAPPING_PATH_ONE = 3  # Mapping one function at a time on multiple different nodes
 MULTI_MAPPING_PATH_TWO = 4  # Mapping one function at a time on multiple different nodes
 
-GLOBAL_PROTOCOL = 4
+GLOBAL_PROTOCOL = 3
 
 ############## NEW TERMINAL STUFF #################
 # @ToDo need to check that these randomly generated values are different each time they are called

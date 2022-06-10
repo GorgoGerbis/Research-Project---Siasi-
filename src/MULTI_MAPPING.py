@@ -215,7 +215,7 @@ def map_path(path_obj, req_bw):
     print("PATH {} MAPPED".format(path_obj.pathID))
 
 
-def RUN_PATH_ONE_SINGLE_MAPPING(req):
+def RUN_PATH_ONE(req):
     req_bw = req.requestedBW
     req_VNFs = req.requestedFunctions
 
@@ -244,7 +244,7 @@ def RUN_PATH_ONE_SINGLE_MAPPING(req):
     PathObj.current_path_failures.clear()
 
 
-def RUN_PATH_TWO_SINGLE_MAPPING(req):
+def RUN_PATH_TWO(req):
     req_bw = req.requestedBW
     req_VNFs = req.requestedFunctions
 
