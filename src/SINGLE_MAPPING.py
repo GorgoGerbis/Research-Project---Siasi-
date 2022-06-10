@@ -24,7 +24,7 @@ def set_path_state_PATH_ONE(path_obj, req_VNFs):  # <-- This one DOES NOT use fa
     # Given a path must then determine and set the state of the path
     if path_obj.state == STATE_UNKNOWN:
         if calculate_path_resources(path_obj, req_VNFs):
-            path_obj.MAPPING_LOCATION = path_obj.determine_mapping_location_multi(req_VNFs)
+            path_obj.MAPPING_LOCATION = path_obj.determine_mapping_location_single(req_VNFs)
             if calculate_path_speed(path_obj, REQUEST_DELAY_THRESHOLD):
                 path_obj.state = BACKUP
                 PathObj.BACKUP_PATHS.append(path_obj)
@@ -41,7 +41,7 @@ def set_path_state_PATH_TWO(path_obj, req_VNFs):  # <-- This one DOES use failur
     # Given a path must then determine and set the state of the path
     if path_obj.state == STATE_UNKNOWN:
         if calculate_path_resources(path_obj, req_VNFs):
-            path_obj.MAPPING_LOCATION = path_obj.determine_mapping_location_multi(req_VNFs)
+            path_obj.MAPPING_LOCATION = path_obj.determine_mapping_location_single(req_VNFs)
             if calculate_path_speed(path_obj, REQUEST_DELAY_THRESHOLD):
                 if calculate_path_failure(path_obj, FAILURE_THRESHOLD):
                     path_obj.state = BACKUP
@@ -162,10 +162,10 @@ def map_path(path_obj, req_bw):
         fused_list = PathObj.create_fusion_obj_list(path_obj.route)
         mapping_list = path_obj.MAPPING_LOCATION
 
-        for element in mapping_list:
+        for element in mapping_list:    # @TODO YOU CAN NOT! EDIT THE CLASS RESOURCES HERE NEED TO DO IT IN PROCESSING DATA SCRIPT MANUALLY
             node_used = element[0]
             func = element[1]
-            node_used.map_function_obj(func)
+            node_used.map_function_obj(func.value)
 
         for element in fused_list:
             if type(element) == LinkObj:

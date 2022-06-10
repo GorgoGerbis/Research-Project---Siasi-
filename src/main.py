@@ -38,10 +38,10 @@ import networkx as nx
 import matplotlib.pyplot as plt
 
 # Need these to process requests
-from src.SINGLE_MAPPING import RUN_PATH_ONE as RUN_PATH_ONE_MULTI_MAPPING
-from src.SINGLE_MAPPING import RUN_PATH_TWO as RUN_PATH_TWO_MULTI_MAPPING
-from src.MULTI_MAPPING import RUN_PATH_ONE as RUN_PATH_ONE_SINGLE_MAPPING
-from src.MULTI_MAPPING import RUN_PATH_TWO as RUN_PATH_TWO_SINGLE_MAPPING
+from src.SINGLE_MAPPING import RUN_PATH_ONE as RUN_PATH_ONE_SINGLE_MAPPING
+from src.SINGLE_MAPPING import RUN_PATH_TWO as RUN_PATH_TWO_SINGLE_MAPPING
+from src.MULTI_MAPPING import RUN_PATH_ONE as RUN_PATH_ONE_MULTI_MAPPING
+from src.MULTI_MAPPING import RUN_PATH_TWO as RUN_PATH_TWO_MULTI_MAPPING
 
 
 REQUEST_DELAY_THRESHOLD = GLOBAL_REQUEST_DELAY_THRESHOLD
@@ -113,8 +113,6 @@ def process_path_one_MULTI_MAPPING():
 def process_path_two_MULTI_MAPPING():
     for req in RequestObj.STATIC_TOTAL_REQUEST_LIST:   # STEP ONE
         print("BEGUN PROCESSING REQUEST: {} Source: {} Destination {} Functions: {}\n".format(req.requestID, req.source, req.destination, req.requestedFunctions))
-        s = req.source
-        d = req.destination
 
         count = 1  # Needs to be reset to 1 when a new request is being processed
         current_request_data = [req.requestedFunctions, req.request_delay_threshold, req.requestedBW]
@@ -149,8 +147,6 @@ def process_path_one_SINGLE_MAPPING():
 def process_path_two_SINGLE_MAPPING():
     for req in RequestObj.STATIC_TOTAL_REQUEST_LIST:   # STEP ONE
         print("BEGUN PROCESSING REQUEST: {} Source: {} Destination {} Functions: {}\n".format(req.requestID, req.source, req.destination, req.requestedFunctions))
-        s = req.source
-        d = req.destination
 
         count = 1  # Needs to be reset to 1 when a new request is being processed
         current_request_data = [req.requestedFunctions, req.request_delay_threshold, req.requestedBW]

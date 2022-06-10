@@ -56,6 +56,40 @@ class NodeObj:
         else:
             return False
 
+    def can_node_map_all_funcs_given(self, vnfs=None):  # <--- Allows me to overload this
+        """
+        Will return true if all funcs can be mapped at given node at once.
+        :param vnfs: optional argument, if not specifying the VNFs to check then simply check all VNF types.
+        :return: True if we can map each func given here at once...
+        """
+        mappable_at_once = []
+
+        cpu = self.nodeResources[0]
+        ram = self.nodeResources[1]
+
+        total_req_cpu = 0
+        total_req_ram = 0
+
+        if vnfs is None:
+            all_possible_vnfs = [e.value for e in VNFObj]
+        else:
+            all_possible_vnfs = vnfs.copy()
+
+        i = 0
+
+        while True:
+            if i >= len(all_possible_vnfs):
+                break
+            else:
+                if not (total_req_cpu <= cpu) or not (total_req_ram <= ram):
+                    return False
+                else:
+                    f = all_possible_vnfs[i]
+                    total_req_cpu += f.value[0]
+                    total_req_ram += f.value[1]
+            i += 1
+        return True
+
     def what_can_node_map_at_once(self, vnfs=None):     # <--- Allows me to overload this
         """
         Will return the VNFs that can all be mapped at once to this particular node.
@@ -160,14 +194,14 @@ class NodeObj:
         self.nodeResources[1] = int(self.nodeResources[1]) - ram
 
     def map_function_obj(self, f):
-        # func = FuncObj.retrieve_function_value(f)
-        if type(f) != VNFObj:
+        if type(f) == VNFObj:
             func = VNFObj.retrieve_function_value(f)
+            self.nodeResources[0] = int(self.nodeResources[0]) - func.value[0]
+            self.nodeResources[1] = int(self.nodeResources[1]) - func.value[1]
         else:
             func = f
-
-        self.nodeResources[0] = int(self.nodeResources[0]) - func.value[0]
-        self.nodeResources[1] = int(self.nodeResources[1]) - func.value[1]
+            self.nodeResources[0] = int(self.nodeResources[0]) - func[0]
+            self.nodeResources[1] = int(self.nodeResources[1]) - func[1]
 
     def check_enough_resources(self, f):
         func = VNFObj.retrieve_function_value(f)

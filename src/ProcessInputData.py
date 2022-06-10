@@ -10,8 +10,6 @@ from src.CONSTANTS import NodeInputData
 from src.CONSTANTS import LinkInputData
 from src.CONSTANTS import RequestInputData
 
-from src.CONSTANTS import node_resources
-from src.CONSTANTS import link_bandwidth
 from src.CONSTANTS import GLOBAL_REQUEST_DELAY_THRESHOLD
 
 
@@ -34,7 +32,7 @@ def processInputDataNode(filePath):
             failure = float(currentElements[4].strip('\n'))
 
             # NodeObj.StaticNodeResources.append([id, resources])   # @ToDo remember to change this as well so the nodes are properly reset
-            current_node = NodeObj(id, status, node_resources, processingDelay, cost, failure)  # current_node = NodeObj(id, status, resources, processingDelay, cost, failure)
+            current_node = NodeObj(id, status, resources, processingDelay, cost, failure) # current_node = NodeObj(id, status, node_resources, processingDelay, cost, failure)
             print(current_node)
 
 
@@ -56,7 +54,7 @@ def processInputDataLink(filePath):
             failure_probability = float(currentElements[6].strip('\n'))
 
             # NodeObj.StaticLinkResources.append([linkID, bandwidth])
-            current_link = LinkObj(linkID, status, source, destination, link_bandwidth, edgeDelay, edgeCost, failure_probability)    # current_link = LinkObj(linkID, status, source, destination, bandwidth, edgeDelay, edgeCost, failure_probability)
+            current_link = LinkObj(linkID, status, source, destination, bandwidth, edgeDelay, edgeCost, failure_probability)    # current_link = LinkObj(linkID, status, source, destination, bandwidth, edgeDelay, edgeCost, failure_probability)
 
             if current_link not in NodeObj.StaticLinkList:
                 NodeObj.StaticLinkList.append(current_link)

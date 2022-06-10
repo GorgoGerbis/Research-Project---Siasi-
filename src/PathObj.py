@@ -143,10 +143,10 @@ class PathObj:
             output.append([func, temp])
         return output
 
-    def determine_mapping_location_multi(self, req_vnfs):   # @ToDo need to fix this to MAP IN ORDER ALWAYS
+    def determine_mapping_location_multi(self, req_vnfs):  # @ToDo need to fix this to MAP IN ORDER ALWAYS
         """
-        Tries to map as many nodes to the first node in a path as possible.
-        :param req_vnfs:
+        Tries to map as many nodes to the closest node in a path as possible.
+        :param req_vnfs: A sorted array of VNF objects in order of what needs to be mapped first.
         :return: The mapping location
         """
         funcs_to_map = [VNFObj.retrieve_function_value(x) for x in req_vnfs]
@@ -157,6 +157,7 @@ class PathObj:
         while len(funcs_to_map) != 0:
             if i >= len(nodes):
                 i = 0
+
             temp = []
             current_node = nodes[i]
             mappable_here = current_node.what_can_node_map_at_once(funcs_to_map)
@@ -168,34 +169,58 @@ class PathObj:
             mapping_locations.append([current_node, temp])
             i += 1
 
-        return mapping_locations    # <-- [ [Node, [F1: [1, 1, 0.85], F2: [2, 2, 0.75], F4: [4, 4, 0.55]>]] ]
+        return mapping_locations  # <-- [ [Node, [F1: [1, 1, 0.85], F2: [2, 2, 0.75], F4: [4, 4, 0.55]>]] ]
 
     def determine_mapping_location_single(self, req_vnfs):  # @ToDo need to fix this to MAP IN ORDER ALWAYS
         """
-        Going to try to map the biggest VNFs first with the multi-mapping scheme.
-        :param req_vnfs:
+        Should try to map one VNF per node in path.
+        :param req_vnfs: A sorted array of VNF objects in order of what needs to be mapped first.
         :return:
         """
         funcs_to_map = [VNFObj.retrieve_function_value(x) for x in req_vnfs]
         nodes = [NodeObj.returnNode(x) for x in self.route]
         mapping_locations = []
-        i = 0
 
-        while len(funcs_to_map) != 0:
+        all_funcs_mappable = True
+        i = 0   # Iterator
+        breaker = 0  # Needs to determine if we looped through here twice already....
+
+        while all_funcs_mappable and len(funcs_to_map) != 0:
             if i >= len(nodes):
                 i = 0
-            temp = []
-            current_node = nodes[i]
-            mappable_here = current_node.what_can_node_map_at_once(funcs_to_map[::-1])
-            for f in mappable_here:
-                if f in funcs_to_map:
-                    funcs_to_map.remove(f)
-                    temp.append(f)
-                    mapping_locations.append([current_node, f])
-                    break
 
-                # mapping_locations.append([current_node, f])
+            cn = nodes[i]   # current node
+            cf = funcs_to_map[0]  # Current function to be mapped
+            pf = None  # Previous function that was mapped
+
+            if pf is None:
+                if cn.can_map(cf.value):
+                    mapping_locations.append([cn, cf])
+                    pf = cf
+                    funcs_to_map.remove(cf)
+
+            elif mapping_locations[-1][0] == cn and mapping_locations[-1][1] == pf:
+                super_temp = []
+
+                for e in range(len(mapping_locations)-1):   # FIND EACH VNF THIS NODE IS MAPPING
+                    if mapping_locations[e][0] == cn:
+                        super_temp.append(mapping_locations[e][1])
+                super_temp.append(cf)
+
+                if cn.can_node_map_all_funcs_given(super_temp):  # Need to see if we can map multiple functions on THIS NODE
+                    mapping_locations.append([cn, cf])
+                    pf = cf
+                    funcs_to_map.remove(cf)
+            else:
+                if cn.can_map(cf.value):
+                    mapping_locations.append([cn, cf])
+                    pf = cf
+                    funcs_to_map.remove(cf)
+                elif breaker >= len(nodes) * 2:
+                    all_funcs_mappable = False
+
             i += 1
+            breaker += 1
 
         return mapping_locations  # <-- [ [Node, [F1: [1, 1, 0.85], F2: [2, 2, 0.75], F4: [4, 4, 0.55]>]] ]
 

@@ -15,40 +15,45 @@ baseFolder = r"C:\Users\jacks\OneDrive\Desktop\Siasi Research\Research-Project--
 resourcesFolder = os.path.join(baseFolder, "resources")
 outputFolder = os.path.join(baseFolder, "output")
 
-# INPUT FILE PATHS
-NodeInputData = os.path.join(resourcesFolder, "NodeInputData.csv")
-LinkInputData = os.path.join(resourcesFolder, "LinkInputData.csv")
-RequestInputData = os.path.join(resourcesFolder, "RequestInputData_25.txt")
-
-# OUTPUT FILE PATHS
-GLOBAL_SINGLE_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "SINGLE_PATH_ONE_OUTPUT_DATA_25.csv")
-GLOBAL_SINGLE_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "SINGLE_PATH_TWO_OUTPUT_DATA_25.csv")
-
-GLOBAL_MULTI_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "MULTI_PATH_ONE_OUTPUT_DATA_25.csv")
-GLOBAL_MULTI_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "MULTI_PATH_TWO_OUTPUT_DATA_25.csv")
-############ Global file paths ###############
-
-
-###### 1 == SINGLE MAPPING, 2 == MULTI-MAPPING
-SINGLE_MAPPING_PATH_ONE = 1  # Mapping all/as many as possible on the first node in the route
-SINGLE_MAPPING_PATH_TWO = 2
-MULTI_MAPPING_PATH_ONE = 3  # Mapping one function at a time on multiple different nodes
-MULTI_MAPPING_PATH_TWO = 4  # Mapping one function at a time on multiple different nodes
-
-GLOBAL_PROTOCOL = 3
 
 ############## NEW TERMINAL STUFF #################
 # @ToDo need to check that these randomly generated values are different each time they are called
 GLOBAL_REQUEST_DELAY_THRESHOLD = 120
 GlOBAL_FAILURE_THRESHOLD = 55.5
 
-node_resources = [1000, 1000]  # [50, 64] <--> [CPU, MEMORY(RAM)]
-link_bandwidth = 1000
+# @TODO YOU CAN NOT! EDIT THE CLASS RESOURCES HERE NEED TO DO IT IN PROCESSING DATA SCRIPT MANUALLY
+node_resources = [50, 64]   # CAN NOT EDIT RESOURCES HERE NEED TO DO IT IN PROCESSING DATA  # [50, 64] <--> [CPU, MEMORY(RAM)]
+link_bandwidth = 1000   # CAN NOT EDIT RESOURCES HERE NEED TO DO IT IN PROCESSING DATA
 
 # For CreateInputData script
 CREATE_NUM_NODES = 7
 CREATE_NUM_LINKS = 8
-CREATE_NUM_REQUESTS = 25
+CREATE_NUM_REQUESTS = 25    # REMEMBER TO CHANGE THIS SO OUTPUT AND INPUT FILES MATCH!
+
+# INPUT FILE PATHS
+NodeInputData = os.path.join(resourcesFolder, "NodeInputData.csv")
+LinkInputData = os.path.join(resourcesFolder, "LinkInputData.csv")
+RequestInputData = os.path.join(resourcesFolder, "RequestInputData_{}.txt".format(CREATE_NUM_REQUESTS))
+
+# OUTPUT FILE PATHS
+GLOBAL_SINGLE_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "SINGLE_PATH_ONE_OUTPUT_DATA_{}.csv".format(CREATE_NUM_REQUESTS))
+GLOBAL_SINGLE_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "SINGLE_PATH_TWO_OUTPUT_DATA_{}.csv".format(CREATE_NUM_REQUESTS))
+
+GLOBAL_MULTI_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "MULTI_PATH_ONE_OUTPUT_DATA_{}.csv".format(CREATE_NUM_REQUESTS))
+GLOBAL_MULTI_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "MULTI_PATH_TWO_OUTPUT_DATA_{}.csv".format(CREATE_NUM_REQUESTS))
+############ Global file paths ###############
+
+###### 1 == SINGLE MAPPING, 2 == MULTI-MAPPING
+# Mapping one function at a time on multiple different nodes
+SINGLE_MAPPING_PATH_ONE = 1
+SINGLE_MAPPING_PATH_TWO = 2
+
+# Mapping all/as many as possible on the first node in the route
+MULTI_MAPPING_PATH_ONE = 3
+MULTI_MAPPING_PATH_TWO = 4
+
+
+GLOBAL_PROTOCOL = 2     # MOST IMPORTANT VARIABLE DETERMINES ACTUAL MAPPING SCHEME THAT WILL BE RUN
 
 
 def get_reqBW():  # @ToDo Maybe we should be adjusting this to match their num_funcs
