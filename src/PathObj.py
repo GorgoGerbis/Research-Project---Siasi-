@@ -173,7 +173,7 @@ class PathObj:
 
     def determine_mapping_location_single(self, req_vnfs):  # @ToDo need to fix this to MAP IN ORDER ALWAYS
         """
-        Should try to map one VNF per node in path.
+        Should try to map one VNF per node in path. THIS WORKS AS INTENDED AS OF 06/10/22!
         :param req_vnfs: A sorted array of VNF objects in order of what needs to be mapped first.
         :return:
         """
