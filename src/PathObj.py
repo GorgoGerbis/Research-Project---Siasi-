@@ -102,48 +102,31 @@ class PathObj:
 
         return True
 
-    def check_path_node_resources(self, req_vnfs):
-        """
-        Determines if the path has enough resources to map each requested VNF.
-        :param req_vnfs:
-        :return:
-        """
-        possible_mapping_locations = self.determine_possible_mapping_locations(req_vnfs)
-        funcs_to_map = [VNFObj.retrieve_function_value(x) for x in req_vnfs]
+    # def check_path_node_resources(self, req_vnfs):
+    #     """
+    #     Determines if the path has enough resources to map each requested VNF.
+    #     :param req_vnfs:
+    #     :return:
+    #     """
+    #     possible_mapping_locations = self.determine_possible_mapping_locations(req_vnfs)
+    #     funcs_to_map = [VNFObj.retrieve_function_value(x) for x in req_vnfs]
+    #
+    #     for duo in possible_mapping_locations:
+    #         vnf = duo[0]
+    #         mappable_nodes = duo[1]
+    #
+    #         if len(funcs_to_map) == 0:
+    #             break
+    #
+    #         if vnf in funcs_to_map and len(mappable_nodes) != 0:
+    #             funcs_to_map.remove(vnf)
+    #
+    #     if len(funcs_to_map) == 0:
+    #         return True
+    #     else:
+    #         return False
 
-        for duo in possible_mapping_locations:
-            vnf = duo[0]
-            mappable_nodes = duo[1]
-
-            if len(funcs_to_map) == 0:
-                break
-
-            if vnf in funcs_to_map and len(mappable_nodes) != 0:
-                funcs_to_map.remove(vnf)
-
-        if len(funcs_to_map) == 0:
-            return True
-        else:
-            return False
-
-    def determine_possible_mapping_locations(self, req_vnfs): # @ToDo Need to revisit this and ensure it works as intended
-        """
-        Finds each node that is capable of processing each VNF.
-        :param req_vnfs: The requested VNF functions.
-        :return:
-        """
-        output = []
-        for f in req_vnfs:
-            temp = []
-            func = VNFObj.retrieve_function_value(f)
-            for n in self.route:
-                node = NodeObj.returnNode(n)
-                if node.can_map(func.value):
-                    temp.append(node.nodeID)
-            output.append([func, temp])
-        return output
-
-    def determine_mapping_location_multi(self, req_vnfs):  # @ToDo need to fix this to MAP IN ORDER ALWAYS
+    def determine_path_node_resources_MULTI(self, req_vnfs):
         """
         Tries to map as many nodes to the closest node in a path as possible.
         :param req_vnfs: A sorted array of VNF objects in order of what needs to be mapped first.
@@ -154,8 +137,10 @@ class PathObj:
         mapping_locations = []
         i = 0
 
+        can_map_all = True  # FINAL CHECK TO DETERMINE IF WE CAN MAP EVERYTHING
+
         while len(funcs_to_map) != 0 and i < len(nodes):
-            cn = nodes[i]   # Current node
+            cn = nodes[i]  # Current node
             cn_possible_funcs = cn.what_can_node_map_at_once(funcs_to_map)
 
             if len(cn_possible_funcs) != 0:
@@ -165,9 +150,12 @@ class PathObj:
 
             i += 1
 
-        return mapping_locations  # <-- [ [Node, [F1: [1, 1, 0.85], F2: [2, 2, 0.75], F4: [4, 4, 0.55]>]] ]
+        if len(funcs_to_map) != 0:  # FINAL CHECK TO DETERMINE IF WE CAN MAP EVERYTHING
+            can_map_all = False
 
-    def determine_mapping_location_single(self, req_vnfs):  # @ToDo need to fix this to MAP IN ORDER ALWAYS
+        return can_map_all, mapping_locations  # <-- [ [Node, [F1: [1, 1, 0.85], F2: [2, 2, 0.75], F4: [4, 4, 0.55]>]] ]
+
+    def determine_path_node_resources_SINGLE(self, req_vnfs):
         """
         Should try to map one VNF per node in path. THIS WORKS AS INTENDED AS OF 06/10/22!
         :param req_vnfs: A sorted array of VNF objects in order of what needs to be mapped first.
@@ -177,15 +165,17 @@ class PathObj:
         nodes = [NodeObj.returnNode(x) for x in self.route]
         mapping_locations = []
 
+        can_map_all = True  # FINAL CHECK TO DETERMINE IF WE CAN MAP EVERYTHING
+
         all_funcs_mappable = True
-        i = 0   # Iterator
+        i = 0  # Iterator
         breaker = 0  # Needs to determine if we looped through here twice already....
 
         while all_funcs_mappable and len(funcs_to_map) != 0:
             if i >= len(nodes):
                 i = 0
 
-            cn = nodes[i]   # current node
+            cn = nodes[i]  # current node
             cf = funcs_to_map[0]  # Current function to be mapped
             pf = None  # Previous function that was mapped
 
@@ -198,12 +188,13 @@ class PathObj:
             elif mapping_locations[-1][0] == cn and mapping_locations[-1][1] == pf:
                 super_temp = []
 
-                for e in range(len(mapping_locations)-1):   # FIND EACH VNF THIS NODE IS MAPPING
+                for e in range(len(mapping_locations) - 1):  # FIND EACH VNF THIS NODE IS MAPPING
                     if mapping_locations[e][0] == cn:
                         super_temp.append(mapping_locations[e][1])
                 super_temp.append(cf)
 
-                if cn.can_node_map_all_funcs_given(super_temp):  # Need to see if we can map multiple functions on THIS NODE
+                if cn.can_node_map_all_funcs_given(
+                        super_temp):  # Need to see if we can map multiple functions on THIS NODE
                     mapping_locations.append([cn, cf])
                     pf = cf
                     funcs_to_map.remove(cf)
@@ -218,7 +209,87 @@ class PathObj:
             i += 1
             breaker += 1
 
-        return mapping_locations  # <-- [ [Node, [F1: [1, 1, 0.85], F2: [2, 2, 0.75], F4: [4, 4, 0.55]>]] ]
+        if len(funcs_to_map) != 0:  # FINAL CHECK TO DETERMINE IF WE CAN MAP EVERYTHING
+            can_map_all = False
+
+        return can_map_all, mapping_locations  # <-- [ [Node, [F1: [1, 1, 0.85], F2: [2, 2, 0.75], F4: [4, 4, 0.55]>]] ]
+
+    # def determine_mapping_location_multi(self, req_vnfs):
+    #     """
+    #     Tries to map as many nodes to the closest node in a path as possible.
+    #     :param req_vnfs: A sorted array of VNF objects in order of what needs to be mapped first.
+    #     :return: The mapping location
+    #     """
+    #     funcs_to_map = [VNFObj.retrieve_function_value(x) for x in req_vnfs]
+    #     nodes = [NodeObj.returnNode(x) for x in self.route]
+    #     mapping_locations = []
+    #     i = 0
+    #
+    #     while len(funcs_to_map) != 0 and i < len(nodes):
+    #         cn = nodes[i]   # Current node
+    #         cn_possible_funcs = cn.what_can_node_map_at_once(funcs_to_map)
+    #
+    #         if len(cn_possible_funcs) != 0:
+    #             for f in cn_possible_funcs:
+    #                 mapping_locations.append([cn, f])
+    #                 funcs_to_map.remove(f)
+    #
+    #         i += 1
+    #
+    #     return mapping_locations  # <-- [ [Node, [F1: [1, 1, 0.85], F2: [2, 2, 0.75], F4: [4, 4, 0.55]>]] ]
+    #
+    # def determine_mapping_location_single(self, req_vnfs):
+    #     """
+    #     Should try to map one VNF per node in path. THIS WORKS AS INTENDED AS OF 06/10/22!
+    #     :param req_vnfs: A sorted array of VNF objects in order of what needs to be mapped first.
+    #     :return:
+    #     """
+    #     funcs_to_map = [VNFObj.retrieve_function_value(x) for x in req_vnfs]
+    #     nodes = [NodeObj.returnNode(x) for x in self.route]
+    #     mapping_locations = []
+    #
+    #     all_funcs_mappable = True
+    #     i = 0   # Iterator
+    #     breaker = 0  # Needs to determine if we looped through here twice already....
+    #
+    #     while all_funcs_mappable and len(funcs_to_map) != 0:
+    #         if i >= len(nodes):
+    #             i = 0
+    #
+    #         cn = nodes[i]   # current node
+    #         cf = funcs_to_map[0]  # Current function to be mapped
+    #         pf = None  # Previous function that was mapped
+    #
+    #         if pf is None:
+    #             if cn.can_map(cf.value):
+    #                 mapping_locations.append([cn, cf])
+    #                 pf = cf
+    #                 funcs_to_map.remove(cf)
+    #
+    #         elif mapping_locations[-1][0] == cn and mapping_locations[-1][1] == pf:
+    #             super_temp = []
+    #
+    #             for e in range(len(mapping_locations)-1):   # FIND EACH VNF THIS NODE IS MAPPING
+    #                 if mapping_locations[e][0] == cn:
+    #                     super_temp.append(mapping_locations[e][1])
+    #             super_temp.append(cf)
+    #
+    #             if cn.can_node_map_all_funcs_given(super_temp):  # Need to see if we can map multiple functions on THIS NODE
+    #                 mapping_locations.append([cn, cf])
+    #                 pf = cf
+    #                 funcs_to_map.remove(cf)
+    #         else:
+    #             if cn.can_map(cf.value):
+    #                 mapping_locations.append([cn, cf])
+    #                 pf = cf
+    #                 funcs_to_map.remove(cf)
+    #             elif breaker >= len(nodes) * 2:
+    #                 all_funcs_mappable = False
+    #
+    #         i += 1
+    #         breaker += 1
+    #
+    #     return mapping_locations  # <-- [ [Node, [F1: [1, 1, 0.85], F2: [2, 2, 0.75], F4: [4, 4, 0.55]>]] ]
 
     def set_failure_probability(self):
         """

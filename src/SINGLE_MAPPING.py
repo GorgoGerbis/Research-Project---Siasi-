@@ -24,7 +24,6 @@ def set_path_state_PATH_ONE(path_obj, req_VNFs):  # <-- This one DOES NOT use fa
     # Given a path must then determine and set the state of the path
     if path_obj.state == STATE_UNKNOWN:
         if calculate_path_resources(path_obj, req_VNFs):
-            path_obj.MAPPING_LOCATION = path_obj.determine_mapping_location_single(req_VNFs)
             if calculate_path_speed(path_obj, REQUEST_DELAY_THRESHOLD):
                 path_obj.state = BACKUP
                 PathObj.BACKUP_PATHS.append(path_obj)
@@ -41,7 +40,6 @@ def set_path_state_PATH_TWO(path_obj, req_VNFs):  # <-- This one DOES use failur
     # Given a path must then determine and set the state of the path
     if path_obj.state == STATE_UNKNOWN:
         if calculate_path_resources(path_obj, req_VNFs):
-            path_obj.MAPPING_LOCATION = path_obj.determine_mapping_location_single(req_VNFs)
             if calculate_path_speed(path_obj, REQUEST_DELAY_THRESHOLD):
                 if calculate_path_failure(path_obj, FAILURE_THRESHOLD):
                     path_obj.state = BACKUP
@@ -75,10 +73,13 @@ def calculate_path_resources(path_obj, req_vnfs):  # <-- MULTI-MAPPING
         print("PATH:{} NOT ENOUGH LINK BANDWIDTH\n".format(path_obj.pathID))
         return False
 
-    if not path_obj.check_path_node_resources(req_vnfs):  # <-- Can we map each VNF once?
+    can_map_all_vnfs, mapping_locations = path_obj.determine_path_node_resources_SINGLE(req_vnfs)
+
+    if not can_map_all_vnfs:  # <-- Can we map each VNF once?
         print("PATH:{} NOT ENOUGH RESOURCES\n".format(path_obj.pathID))
         return False
 
+    path_obj.MAPPING_LOCATION = mapping_locations
     return True
 
 
@@ -165,7 +166,7 @@ def map_path(path_obj, req_bw):
         for element in mapping_list:    # @TODO YOU CAN NOT! EDIT THE CLASS RESOURCES HERE NEED TO DO IT IN PROCESSING DATA SCRIPT MANUALLY
             node_used = element[0]
             func = element[1]
-            node_used.map_function_obj(func.value)
+            node_used.map_function_obj(func)
 
         for element in fused_list:
             if type(element) == LinkObj:
