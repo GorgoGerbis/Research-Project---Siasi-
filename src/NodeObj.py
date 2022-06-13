@@ -193,13 +193,12 @@ class NodeObj:
         self.nodeResources[0] = int(self.nodeResources[0]) - cpu
         self.nodeResources[1] = int(self.nodeResources[1]) - ram
 
-    def map_function_obj(self, f):
-        if type(f) == VNFObj:
-            func = VNFObj.retrieve_function_value(f)
+    def map_function_obj(self, func):
+        if type(func) == VNFObj:
             self.nodeResources[0] = int(self.nodeResources[0]) - func.value[0]
             self.nodeResources[1] = int(self.nodeResources[1]) - func.value[1]
         else:
-            func = f
+            func = VNFObj.retrieve_function_value(func)
             self.nodeResources[0] = int(self.nodeResources[0]) - func[0]
             self.nodeResources[1] = int(self.nodeResources[1]) - func[1]
 

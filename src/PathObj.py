@@ -126,7 +126,7 @@ class PathObj:
         else:
             return False
 
-    def determine_possible_mapping_locations(self, req_vnfs):
+    def determine_possible_mapping_locations(self, req_vnfs): # @ToDo Need to revisit this and ensure it works as intended
         """
         Finds each node that is capable of processing each VNF.
         :param req_vnfs: The requested VNF functions.
@@ -154,19 +154,15 @@ class PathObj:
         mapping_locations = []
         i = 0
 
-        while len(funcs_to_map) != 0:
-            if i >= len(nodes):
-                i = 0
+        while len(funcs_to_map) != 0 and i < len(nodes):
+            cn = nodes[i]   # Current node
+            cn_possible_funcs = cn.what_can_node_map_at_once(funcs_to_map)
 
-            temp = []
-            current_node = nodes[i]
-            mappable_here = current_node.what_can_node_map_at_once(funcs_to_map)
-            for f in mappable_here:
-                if f in funcs_to_map:
+            if len(cn_possible_funcs) != 0:
+                for f in cn_possible_funcs:
+                    mapping_locations.append([cn, f])
                     funcs_to_map.remove(f)
-                    temp.append(f)
 
-            mapping_locations.append([current_node, temp])
             i += 1
 
         return mapping_locations  # <-- [ [Node, [F1: [1, 1, 0.85], F2: [2, 2, 0.75], F4: [4, 4, 0.55]>]] ]

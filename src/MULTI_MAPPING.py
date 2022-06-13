@@ -115,9 +115,8 @@ def calculate_path_speed(path_obj, delay_threshold):
     # @ToDo remember that when a function is mapped to a node the delay for that node is: processingDelay + (processingDelay x num_funcs_mapped)
     for elements in mapping_list:
         used_node = elements[0]
-        funcs = elements[1]
-        for f in funcs:
-            path_obj.DELAY += used_node.processingDelay
+        func = elements[1]  # Unused variable holing func information....
+        path_obj.DELAY += used_node.processingDelay
 
     for step in fused_list:
         if type(step) == LinkObj:
@@ -192,9 +191,8 @@ def map_path(path_obj, req_bw):
 
         for element in mapping_list: # @TODO YOU CAN NOT! EDIT THE CLASS RESOURCES HERE NEED TO DO IT IN PROCESSING DATA SCRIPT MANUALLY
             node_used = element[0]
-            funcs = element[1]
-            for f in funcs:
-                node_used.map_function_obj(f)
+            func = element[1]
+            node_used.map_function_obj(func)
 
         for element in fused_list:
             if type(element) == LinkObj:
