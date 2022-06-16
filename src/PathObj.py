@@ -169,11 +169,16 @@ class PathObj:
 
         all_funcs_mappable = True
         i = 0  # Iterator
-        breaker = 0  # Needs to determine if we looped through here twice already....
+        breaker = 0  # Determines if we looped through multiple times trying to map the same node...
 
         while all_funcs_mappable and len(funcs_to_map) != 0:
             if i >= len(nodes):
-                i = 0
+                if breaker > len(nodes)*2:  # Checks if we looped through multiple times to try and map a single VNF...
+                    all_funcs_mappable = False
+                    can_map_all = False
+                    break
+                else:
+                    i = 0
 
             cn = nodes[i]  # current node
             cf = funcs_to_map[0]  # Current function to be mapped
@@ -184,6 +189,7 @@ class PathObj:
                     mapping_locations.append([cn, cf])
                     pf = cf
                     funcs_to_map.remove(cf)
+                    breaker = 0
 
             elif mapping_locations[-1][0] == cn and mapping_locations[-1][1] == pf:
                 super_temp = []
@@ -198,11 +204,13 @@ class PathObj:
                     mapping_locations.append([cn, cf])
                     pf = cf
                     funcs_to_map.remove(cf)
+                    breaker = 0
             else:
                 if cn.can_map(cf.value):
                     mapping_locations.append([cn, cf])
                     pf = cf
                     funcs_to_map.remove(cf)
+                    breaker = 0
                 elif breaker >= len(nodes) * 2:
                     all_funcs_mappable = False
 

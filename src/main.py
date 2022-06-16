@@ -114,10 +114,6 @@ def find_isolated_nodes():
     print("The following nodes are not accessible: {}\n".format(output))
 
 
-def create_adjacency_matrix(adj_matrix):
-    print(adj_matrix)
-
-
 def process_path_one_MULTI_MAPPING():
     for req in RequestObj.STATIC_TOTAL_REQUEST_LIST:  # STEP ONE
         print("BEGUN PROCESSING REQUEST: {} Source: {} Destination {} Functions: {}\n".format(req.requestID, req.source,
@@ -206,12 +202,8 @@ if __name__ == '__main__':
     # set_edges_EDGE_COST()
     set_edges_EDGE_DELAY()
 
-    ADJ_MATRIX = nx.adjacency_matrix(GRAPH)
-    print(ADJ_MATRIX)
-
-    create_adjacency_matrix(ADJ_MATRIX)
-    # nx.draw(GRAPH, with_labels=True, font_weight='bold')
-    # plt.show()
+    nx.draw(GRAPH, with_labels=True, font_weight='bold')
+    plt.show()
 
     find_isolated_nodes()
 
