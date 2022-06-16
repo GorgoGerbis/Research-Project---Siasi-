@@ -194,10 +194,9 @@ def map_path_SINGLE(path_obj, req_bw):
     print("PATH {} MAPPED".format(path_obj.pathID))
 
     ### def MAPPING_LOG(info):  ###
-    request_info = "Request: {} | VNFs: {} | DELAY THRESHOLD: {} | BW: {} | AVG FAIL: {}\n".format(path_obj.pathID, path_obj.REQ_INFO[0], path_obj.REQ_INFO[1], path_obj.REQ_INFO[2], path_obj.FAILURE_PROBABILITY)
+    request_info = "Request: {} | VNFs: {} | DELAY THRESHOLD: {} | BW: {} | AVG FAIL: {}\n".format(path_obj.pathID, path_obj.REQ_INFO[0], path_obj.REQ_INFO[1], path_obj.REQ_INFO[2], path_obj.return_failure_probability())
     resource_line = "{}\n".format(network_resources_remaining)
     MAPPING_LOG(request_info, resource_line, 'a')
-
 
 
 def RUN_PATH_ONE(req):

@@ -1,9 +1,6 @@
+from CONSTANTS import GLOBAL_SINGLE_OUTPUT_FILE_PATH_ONE, GLOBAL_SINGLE_OUTPUT_FILE_PATH_TWO
+from CONSTANTS import GLOBAL_MULTI_OUTPUT_FILE_PATH_ONE, GLOBAL_MULTI_OUTPUT_FILE_PATH_TWO
 import matplotlib.pyplot as plt
-import os
-
-baseFolder = r"C:\Users\jacks\OneDrive\Desktop\Siasi Research\Research-Project---Siasi-"
-resourcesFolder = os.path.join(baseFolder, "resources")
-outputFolder = os.path.join(baseFolder, "output")
 
 
 def auto_label(axis, rectangle_group):
@@ -58,7 +55,7 @@ def graph():
 
 def NEW_graph():
     # X-AXIS'
-    phases = ['Mid 90s', 'Early 2k', 'Mid 2k', 'Mid 2010s']
+    phases = ['0', '50', '100', '150', '250']
     playstation = [102, 155, 87, 110]
     xbox = [0, 24, 86, 50]
     nintendo = [33, 22, 102, 62]
@@ -95,49 +92,59 @@ def NEW_graph():
     plt.show()
 
 
-def gather_data(single, multi):
-    output_single = []
-    output_multi = []
+def gather_data(filepath):
+    """
+        REQUEST STATUS,REQUEST ID,PATH ID,FAILURE PROBABILITY,DELAY,COST,FUNCTIONS,PATH
+        APPROVED,1,R1P1,42.868852459016395%,10.209999999999999,7.9,['F5', 'F2', 'F1', 'F3', 'F4'],[36, 6, 44, 9]
+    :param filepath:
+    :return:
+    """
+    num_passed = 0
+    num_failed = 0
 
-    with open(single) as sp:
-        sp.readline()
-        sp.readline()
-        sp.readline()
-        sp.readline()
+    passed = []
+    fails = []
+    delays = []
+    costs = []
 
-        count = 0
-        num_passed = 0
+    with open(filepath) as fp:
+        for l in range(4):
+            next(fp)
 
-        for line in sp:
-            currentElements = line.split(',')
-            temp = currentElements[0]
-            count += 1
-            if temp == "APPROVED":
-                num_passed += 1
-            if count == 10:
-                output_single.append(num_passed)
+        count = 1
+        current_fails = 0
+        current_delays = 0
+        current_costs = 0
+        for line in fp:
+            current_elements = line.split('|')
+            status = current_elements[0]
+
+            if count == 50:
+                passed.append(num_passed)
+                fails.append(current_fails / 50)
+                delays.append(current_delays / 50)
+                costs.append(current_costs / 50)
+
                 count = 0
+                current_fails = 0
+                current_delays = 0
+                current_costs = 0
 
-    with open(multi) as mp:
-        mp.readline()
-        mp.readline()
-        mp.readline()
-        mp.readline()
+            if status == 'APPROVED':
+                failure_probability = float(current_elements[3].strip(',%'))
+                end_to_end_delay = float(current_elements[4].strip(','))
+                request_cost = float(current_elements[5].strip(','))
 
-        cnt = 0
-        n_passed = 0
+                current_fails += failure_probability
+                current_delays += end_to_end_delay
+                current_costs += request_cost
+                num_passed += 1
+                count += 1
+            else:
+                count += 1
+                num_failed += 1
 
-        for ln in mp:
-            elements = ln.split(',')
-            toke = elements[0]
-            cnt += 1
-            if toke == "APPROVED":
-                n_passed += 1
-            if cnt == 10:
-                output_multi.append(n_passed)
-                cnt = 0
-
-    return output_single, output_multi
+    return passed, fails, delays, costs
 
 
 def create_line_graph_passed(single, multi):
@@ -150,7 +157,13 @@ def create_line_graph_passed(single, multi):
 def run_output_graphs():
     # graph()
     NEW_graph()
+    gather_data(GLOBAL_SINGLE_OUTPUT_FILE_PATH_ONE)
 
 
 if __name__ == '__main__':
-    run_output_graphs()
+    SO_PASSED, SO_FAILS, SO_DELAYS, SO_COSTS = gather_data(GLOBAL_SINGLE_OUTPUT_FILE_PATH_ONE)
+    ST_PASSED, ST_FAILS, ST_DELAYS, ST_COSTS = gather_data(GLOBAL_SINGLE_OUTPUT_FILE_PATH_TWO)
+    MO_PASSED, MO_FAILS, MO_DELAYS, MO_COSTS = gather_data(GLOBAL_MULTI_OUTPUT_FILE_PATH_ONE)
+    M2_PASSED, M2_FAILS, M2_DELAYS, M2_COSTS = gather_data(GLOBAL_MULTI_OUTPUT_FILE_PATH_TWO)
+
+    # run_output_graphs()

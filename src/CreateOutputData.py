@@ -184,12 +184,12 @@ def output_file_PATH_ONE(FILE_NAME, num_reqs, num_nodes, num_links):
         for req in temp_reqs:
             current_path = req.PATH_ONE
             if req.requestStatus[0] == REQUEST_APPROVED:
-                fp.write("APPROVED,{},{},{}%,{},{},{},{}\n".format(req.requestID, current_path.pathID,
+                fp.write("APPROVED|,{}|,{}|,{}%|,{}|,{}|,{}|,{}|\n".format(req.requestID, current_path.pathID,
                                                                    current_path.FAILURE_PROBABILITY, current_path.DELAY,
                                                                    current_path.COST, req.requestedFunctions,
                                                                    current_path.route))
             else:
-                fp.write("DENIED,{},NONE,NONE,0,0,{},src={}, dest={}\n".format(req.requestID, req.requestedFunctions,
+                fp.write("DENIED|,{}|,NONE|,NONE|,0|,0|,{}|,src={}|, dest={}|\n".format(req.requestID, req.requestedFunctions,
                                                                                req.source, req.destination))
 
 
@@ -215,6 +215,6 @@ def output_file_PATH_TWO(FILE_NAME, num_reqs, num_nodes, num_links):
         for req in temp_reqs:
             current_path = req.PATH_TWO
             if req.requestStatus[1] == REQUEST_APPROVED:
-                fp.write("APPROVED,{},{},{}%,{},{},{},{}\n".format(req.requestID, current_path.pathID, current_path.FAILURE_PROBABILITY, current_path.DELAY, current_path.COST, req.requestedFunctions, current_path.route))
+                fp.write("APPROVED|,{}|,{}|,{}%|,{}|,{}|,{}|,{}|\n".format(req.requestID, current_path.pathID, current_path.FAILURE_PROBABILITY, current_path.DELAY, current_path.COST, req.requestedFunctions, current_path.route))
             else:
-                fp.write("DENIED,{},NONE,NONE,0,0,{},src={}, dest={}\n".format(req.requestID, req.requestedFunctions, req.source, req.destination))
+                fp.write("DENIED|,{}|,NONE|,NONE|,0|,0|,{}|,src={}|, dest={}|\n".format(req.requestID, req.requestedFunctions, req.source, req.destination))
