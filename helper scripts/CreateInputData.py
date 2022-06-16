@@ -14,6 +14,11 @@ from src.CONSTANTS import CREATE_NUM_REQUESTS as NUM_REQS
 
 
 def createNodeInputData(number_of_nodes):
+    """
+    Create and write to the NodeInputData File
+    :param number_of_nodes: Int number of nodes to create...
+    :return:
+    """
     status = ["A", "I", "R", "O"]  # Status of the node
 
     with open(NodeInputData, 'w') as fp:
@@ -31,15 +36,17 @@ def createNodeInputData(number_of_nodes):
             fp.write(nodeLine)
 
 
-def createLinkInputData(duos):
+def createLinkInputData(num_nodes, num_links):
+    existing_links = create_link_duos(num_nodes, 4)
+
     with open(LinkInputData, 'w') as fp:
         heading = "Link ID;Source;Destination;Bandwidth;EdgeDelay;EdgeCost;failure probability\n"
         fp.write(heading)
 
-        for i, duo in enumerate(duos):
+        for i, val in enumerate(existing_links):
             linkID = i + 1
-            src = duos[i][0]
-            dest = duos[i][1]
+            src = val[0]
+            dest = val[1]
             bw = CONSTANTS.link_bandwidth
             ed = CONSTANTS.get_edge_delay()
             ec = CONSTANTS.get_edge_cost()
@@ -50,15 +57,16 @@ def createLinkInputData(duos):
 
 def createRequests(number_of_requests, number_of_nodes):
     with open(RequestInputData, 'w') as fp:
-        heading = "requestID;source;destination;Requested VNFs;Requested Bandwidth\n"
+        heading = "requestID;source;destination;Requested VNFs;Requested Bandwidth;Requested VNF failure-threshold\n"
         fp.write(heading)
 
         for cnt in range(number_of_requests):
             reqID = cnt + 1  # Ensures we have the correct number for the request
             src, dst = HELPER_check_redundancy(number_of_nodes)
-            requested_num_func = CONSTANTS.get_VNFs() # random.randint(1, 6)  # Random amount of functions
+            requested_num_func = CONSTANTS.get_VNFs()   # random.randint(1, 6)  # Random amount of functions
             outputFunctions = []  # The random list of functions
-            requestedBW = CONSTANTS.get_reqBW()
+            requestedBW = random.randint(5, 25)     # CONSTANTS.get_reqBW()
+            request_failure_threshold = 0
 
             for i in range(requested_num_func):
                 while True:
@@ -67,39 +75,33 @@ def createRequests(number_of_requests, number_of_nodes):
                     temp = current_func.value
                     if name not in outputFunctions:
                         outputFunctions.append(name)
-                        requestedBW += temp[2]
+                        request_failure_threshold += temp[2]
                         i += 1
                         break
 
-            requestLine = "{};{};{};{};{}\n".format(reqID, src, dst, outputFunctions, requestedBW)
+            requestLine = "{};{};{};{};{};{}\n".format(reqID, src, dst, outputFunctions, requestedBW, request_failure_threshold)
             fp.write(requestLine)
 
 
-def HELPER_import_csv_data(filepath):
-    output = []
-    with open(filepath) as fp:
-        fp.readline()  # <-- This is so that it skips the first line
-        for cnt, line in enumerate(fp):
-            if (line == "\n") or (line == ""):
-                continue
-            else:
-                line = line.strip('\n')
-                currentElements = line.split(',')
-                currentElements.pop(0)  # <--- remove first item in currentElements
-                currentElements = list(map(int, currentElements))  # <--- Convert str -> int
+def create_link_duos(num_nodes, max_links_per_node):
+    existing_links = set()
+    available_nodes = [x for x in range(1, num_nodes+1)]
+    already_added = []
+    count = 0
 
-                for i, row in enumerate(currentElements):
-                    duo = []
-                    if row == 1:
-                        duo.append(cnt + 1)
-                        duo.append(i + 1)
-                        print("NODE: D{}, ADJACENT NODES:{}".format(cnt + 1, duo))
+    while count < 100:     # len(existing_links) < num_links OR len(available_nodes) > 0
+        source, destination = random.choices(available_nodes, k=2)
+        link_coords = (source, destination)
 
-                        x = duo[0]
-                        y = duo[1]
-                        if [x, y] not in output and [y, x] not in output:
-                            output.append(duo)
-    return output
+        if (link_coords not in existing_links) and (source != destination) and (already_added.count(source) < max_links_per_node and already_added.count(destination) <= max_links_per_node):
+            existing_links.add(link_coords)
+            already_added.append(source)
+            already_added.append(destination)
+            count += 1
+
+    print(existing_links)
+    print(len(existing_links))
+    return existing_links
 
 
 def HELPER_check_redundancy(num_nodes):
@@ -114,11 +116,11 @@ def HELPER_check_redundancy(num_nodes):
 
 
 if __name__ == '__main__':
-    csv_fp = os.path.join(r"C:\Users\jacks\OneDrive\Desktop\Siasi Research\Research-Project---Siasi-\resources\Small Topology", "Small_TOP_Matrix.csv")
-    adj_duos = HELPER_import_csv_data(csv_fp)
+    # csv_fp = os.path.join(r"C:\Users\jacks\OneDrive\Desktop\Siasi Research\Research-Project---Siasi-\resources\Small Topology", "Small_TOP_Matrix.csv")
+    # adj_duos = HELPER_import_csv_data(csv_fp)
     print("CREATING NEW INPUT DATA!\n")
     print("TOTAL NODES: {} TOTAL LINKS: {} TOTAL REQUESTS: {}\n".format(NUM_NODES, NUM_LINKS, NUM_REQS))
     createNodeInputData(NUM_NODES)
-    createLinkInputData(adj_duos)
+    createLinkInputData(NUM_NODES, NUM_LINKS)
     createRequests(NUM_REQS, NUM_NODES)
     print("FINISHED CREATING INPUT DATA\n")

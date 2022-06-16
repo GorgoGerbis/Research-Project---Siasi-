@@ -169,8 +169,8 @@ if __name__ == '__main__':
     set_edges()
     GRAPH.add_edges_from(edges)
 
-    # nx.draw(GRAPH, with_labels=True, font_weight='bold')
-    # plt.show()
+    nx.draw(GRAPH, with_labels=True, font_weight='bold')
+    plt.show()
 
     find_isolated_nodes()
 

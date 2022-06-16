@@ -76,6 +76,7 @@ def processInputDataRequests(filePath):
                 srcNode = int(currentElements[1])
                 destNode = int(currentElements[2])
                 requestedBW = int(currentElements[3])  # .strip('\n')
+                requested_failure_threshold = float(currentElements[4])
 
                 request_delay_threshold = GLOBAL_REQUEST_DELAY_THRESHOLD
                 request_status = [0, 0]
@@ -85,7 +86,7 @@ def processInputDataRequests(filePath):
                     t = i.strip(" ' ' ")
                     requestedFunctions.append(t)
 
-                current_request = RequestObj(requestNum, srcNode, destNode, requestedFunctions, requestedBW, request_status, GLOBAL_REQUEST_DELAY_THRESHOLD, None, None)   # current_request = RequestObj(requestNum, srcNode, destNode, requestedFunctions, requestedBW, request_status, request_delay_threshold, None, None)
+                current_request = RequestObj(requestNum, srcNode, destNode, requestedFunctions, requestedBW, request_status, GLOBAL_REQUEST_DELAY_THRESHOLD, requested_failure_threshold, None, None)   # current_request = RequestObj(requestNum, srcNode, destNode, requestedFunctions, requestedBW, request_status, request_delay_threshold, None, None)
 
                 RequestObj.STATIC_TOTAL_REQUEST_LIST.append(current_request)
                 print("Request: {} has been created.".format(requestNum))
