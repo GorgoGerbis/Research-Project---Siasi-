@@ -36,11 +36,11 @@ LinkInputData = os.path.join(resourcesFolder, "LinkInputData.csv")
 RequestInputData = os.path.join(resourcesFolder, "RequestInputData_{}.txt".format(CREATE_NUM_REQUESTS))
 
 # OUTPUT FILE PATHS
-GLOBAL_SINGLE_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "SINGLE_PATH_ONE_OUTPUT_DATA_{}.csv".format(CREATE_NUM_REQUESTS))
-GLOBAL_SINGLE_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "SINGLE_PATH_TWO_OUTPUT_DATA_{}.csv".format(CREATE_NUM_REQUESTS))
+GLOBAL_SINGLE_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "SINGLE_PATH_ONE_OUTPUT_DATA_{}_RANDOM.csv".format(CREATE_NUM_REQUESTS))
+GLOBAL_SINGLE_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "SINGLE_PATH_TWO_OUTPUT_DATA_{}_RANDOM.csv".format(CREATE_NUM_REQUESTS))
 
-GLOBAL_MULTI_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "MULTI_PATH_ONE_OUTPUT_DATA_{}.csv".format(CREATE_NUM_REQUESTS))
-GLOBAL_MULTI_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "MULTI_PATH_TWO_OUTPUT_DATA_{}.csv".format(CREATE_NUM_REQUESTS))
+GLOBAL_MULTI_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "MULTI_PATH_ONE_OUTPUT_DATA_{}_RANDOM.csv".format(CREATE_NUM_REQUESTS))
+GLOBAL_MULTI_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "MULTI_PATH_TWO_OUTPUT_DATA_{}_RANDOM.csv".format(CREATE_NUM_REQUESTS))
 ############ Global file paths ###############
 
 ###### 1 == SINGLE MAPPING, 2 == MULTI-MAPPING
@@ -54,7 +54,7 @@ MULTI_MAPPING_PATH_TWO = 4
 
 
 GLOBAL_PROTOCOL = 1     # MOST IMPORTANT VARIABLE DETERMINES ACTUAL MAPPING SCHEME THAT WILL BE RUN
-MAPPING_LOG_DATA = os.path.join(outputFolder, "SCHEME_{}_NETWORK_LOGS_{}.csv".format(GLOBAL_PROTOCOL, CREATE_NUM_REQUESTS))
+MAPPING_LOG_DATA = os.path.join(outputFolder, "SCHEME_{}R_NETWORK_LOGS_{}.csv".format(GLOBAL_PROTOCOL, CREATE_NUM_REQUESTS))
 
 
 def MAPPING_LOG(request_info, resource_line, fpt):
