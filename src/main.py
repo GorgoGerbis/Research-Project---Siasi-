@@ -43,6 +43,9 @@ from src.SINGLE_MAPPING import RUN_PATH_TWO as RUN_PATH_TWO_SINGLE_MAPPING
 from src.MULTI_MAPPING import RUN_PATH_ONE as RUN_PATH_ONE_MULTI_MAPPING
 from src.MULTI_MAPPING import RUN_PATH_TWO as RUN_PATH_TWO_MULTI_MAPPING
 
+# @New Stuff
+from CONSTANTS import MAPPING_LOG
+
 REQUEST_DELAY_THRESHOLD = GLOBAL_REQUEST_DELAY_THRESHOLD
 
 # Variables to set up graph for network
@@ -206,6 +209,7 @@ if __name__ == '__main__':
     plt.show()
 
     find_isolated_nodes()
+    MAPPING_LOG("MAPPING LOG", "", 'w')
 
     if CONSTANTS.GLOBAL_PROTOCOL == 1:
         print("Begin Processing requests using: Single-Mapping Protocol\n")

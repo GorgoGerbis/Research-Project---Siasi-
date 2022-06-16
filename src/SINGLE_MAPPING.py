@@ -8,6 +8,9 @@ from CONSTANTS import GLOBAL_REQUEST_DELAY_THRESHOLD as REQUEST_DELAY_THRESHOLD
 from CONSTANTS import GlOBAL_FAILURE_THRESHOLD as FAILURE_THRESHOLD
 from CONSTANTS import CREATE_NUM_NODES, CREATE_NUM_LINKS, CREATE_NUM_REQUESTS
 
+### @ToDo new stuff !! ###
+from CONSTANTS import MAPPING_LOG
+
 OPTIMAL_PATH_SET = False
 
 # Path Object States
@@ -157,21 +160,25 @@ def calculate_optimal_PATH_TWO():
         PathObj.OPTIMAL_PATH_SET = True
 
 
-def map_path(path_obj, req_bw):
+def map_path_SINGLE(path_obj, req_bw):
+    network_resources_remaining = []
+
     if path_obj.state == OPTIMAL:  # Checks to make sure we are mapping the optimal path
         print("MAPPING PATH {}\n".format(path_obj.pathID))
         fused_list = PathObj.create_fusion_obj_list(path_obj.route)
         mapping_list = path_obj.MAPPING_LOCATION
 
-        for element in mapping_list:    # @TODO YOU CAN NOT! EDIT THE CLASS RESOURCES HERE NEED TO DO IT IN PROCESSING DATA SCRIPT MANUALLY
+        for element in mapping_list:    # @TODO YOU CAN !NOT! EDIT THE CLASS RESOURCES HERE, NEED TO DO IT IN PROCESSING DATA SCRIPT MANUALLY!
             node_used = element[0]
             func = element[1]
             node_used.map_function_obj(func)
+            network_resources_remaining.append(("NODE: " + str(node_used.nodeID), str(node_used.nodeResources)))
 
         for element in fused_list:
             if type(element) == LinkObj:
                 link = element
                 link.map_request(req_bw)
+                network_resources_remaining.append(("LINK: " + str(link.linkID), str(link.linkBW)))
 
     node_avg = 0
     link_avg = 0
@@ -185,6 +192,12 @@ def map_path(path_obj, req_bw):
     NodeObj.StaticNodeResources_PATHONE.append(node_avg / CREATE_NUM_NODES)
     NodeObj.StaticLinkResources_PATHONE.append(link_avg / CREATE_NUM_LINKS)
     print("PATH {} MAPPED".format(path_obj.pathID))
+
+    ### def MAPPING_LOG(info):  ###
+    request_info = "Request: {} | VNFs: {} | DELAY THRESHOLD: {} | BW: {} | AVG FAIL: {}\n".format(path_obj.pathID, path_obj.REQ_INFO[0], path_obj.REQ_INFO[1], path_obj.REQ_INFO[2], path_obj.FAILURE_PROBABILITY)
+    resource_line = "{}\n".format(network_resources_remaining)
+    MAPPING_LOG(request_info, resource_line, 'a')
+
 
 
 def RUN_PATH_ONE(req):
@@ -207,7 +220,7 @@ def RUN_PATH_ONE(req):
         calculate_optimal_PATH_ONE()
         optimal_path = PathObj.returnOptimalPath(PathObj.BACKUP_PATHS)
         PathObj.StaticOptimalPathsList.append(optimal_path)
-        map_path(optimal_path, req_bw)
+        map_path_SINGLE(optimal_path, req_bw)
         req.PATH_ONE = optimal_path
 
     # Data cleanup process
@@ -236,7 +249,7 @@ def RUN_PATH_TWO(req):
         calculate_optimal_PATH_TWO()
         optimal_path = PathObj.returnOptimalPath(PathObj.BACKUP_PATHS)
         PathObj.StaticOptimalPathsList.append(optimal_path)
-        map_path(optimal_path, req_bw)
+        map_path_SINGLE(optimal_path, req_bw)
         req.PATH_TWO = optimal_path
 
     # Data cleanup process

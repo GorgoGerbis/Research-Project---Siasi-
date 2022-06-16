@@ -23,7 +23,7 @@ GlOBAL_FAILURE_THRESHOLD = 55.5
 
 # @TODO YOU CAN NOT! EDIT THE CLASS RESOURCES HERE NEED TO DO IT IN PROCESSING DATA SCRIPT MANUALLY
 node_resources = [50, 64]   # CAN NOT EDIT RESOURCES HERE NEED TO DO IT IN PROCESSING DATA  # [50, 64] <--> [CPU, MEMORY(RAM)]
-link_bandwidth = 1000   # CAN NOT EDIT RESOURCES HERE NEED TO DO IT IN PROCESSING DATA
+link_bandwidth = 100   # CAN NOT EDIT RESOURCES HERE NEED TO DO IT IN PROCESSING DATA
 
 # For CreateInputData script
 CREATE_NUM_NODES = 50
@@ -54,6 +54,15 @@ MULTI_MAPPING_PATH_TWO = 4
 
 
 GLOBAL_PROTOCOL = 1     # MOST IMPORTANT VARIABLE DETERMINES ACTUAL MAPPING SCHEME THAT WILL BE RUN
+MAPPING_LOG_DATA = os.path.join(outputFolder, "SCHEME_{}_NETWORK_LOGS_{}.csv".format(GLOBAL_PROTOCOL, CREATE_NUM_REQUESTS))
+
+
+def MAPPING_LOG(request_info, resource_line, fpt):
+    with open(MAPPING_LOG_DATA, fpt) as fp:
+        fp.write('\n')
+        fp.write(request_info)
+        fp.write(resource_line)
+        fp.write('\n')
 
 
 def get_reqBW():  # @ToDo Maybe we should be adjusting this to match their num_funcs

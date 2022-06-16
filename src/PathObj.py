@@ -102,30 +102,6 @@ class PathObj:
 
         return True
 
-    # def check_path_node_resources(self, req_vnfs):
-    #     """
-    #     Determines if the path has enough resources to map each requested VNF.
-    #     :param req_vnfs:
-    #     :return:
-    #     """
-    #     possible_mapping_locations = self.determine_possible_mapping_locations(req_vnfs)
-    #     funcs_to_map = [VNFObj.retrieve_function_value(x) for x in req_vnfs]
-    #
-    #     for duo in possible_mapping_locations:
-    #         vnf = duo[0]
-    #         mappable_nodes = duo[1]
-    #
-    #         if len(funcs_to_map) == 0:
-    #             break
-    #
-    #         if vnf in funcs_to_map and len(mappable_nodes) != 0:
-    #             funcs_to_map.remove(vnf)
-    #
-    #     if len(funcs_to_map) == 0:
-    #         return True
-    #     else:
-    #         return False
-
     def determine_path_node_resources_MULTI(self, req_vnfs):
         """
         Tries to map as many nodes to the closest node in a path as possible.
@@ -155,7 +131,7 @@ class PathObj:
 
         return can_map_all, mapping_locations  # <-- [ [Node, [F1: [1, 1, 0.85], F2: [2, 2, 0.75], F4: [4, 4, 0.55]>]] ]
 
-    def determine_path_node_resources_SINGLE(self, req_vnfs):
+    def determine_path_node_resources_SINGLE(self, req_vnfs):   # @ToDo lets clean this method up later...
         """
         Should try to map one VNF per node in path. THIS WORKS AS INTENDED AS OF 06/10/22!
         :param req_vnfs: A sorted array of VNF objects in order of what needs to be mapped first.
@@ -211,8 +187,6 @@ class PathObj:
                     pf = cf
                     funcs_to_map.remove(cf)
                     breaker = 0
-                elif breaker >= len(nodes) * 2:
-                    all_funcs_mappable = False
 
             i += 1
             breaker += 1
