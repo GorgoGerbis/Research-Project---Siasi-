@@ -67,9 +67,6 @@ def auto_label(axis, rectangle_group):
 
 
 def create_bar_and_line_graph(single_one, single_two, multi_one, multi_two, title, xlabel, ylabel, xaxis, yaxis):
-    datasets = xaxis    # datasets = ['0', '50', '100', '150', '200', '250']
-    datarange = yaxis
-
     width = 0.2  # Width of each of the bars in bar graph
     x_single_one = [x - width for x in range(len(single_one))]  # Look at all entries of playstation and subtract our width so the bars are aligned correctly. Creates the OFFSET for each bar...
     x_multi_one = [x for x in range(len(multi_one))]  # xbox is in the middle so no need to subtract width.. <--- and ^^ both list comprehension!
@@ -86,7 +83,7 @@ def create_bar_and_line_graph(single_one, single_two, multi_one, multi_two, titl
     rect3 = ax.bar(x_single_two, single_two, width, label="Single Mapping Failure Aware", color='crimson')  # Create bar chart
     rect4 = ax.bar(x_multi_two, multi_two, width, label="Multi Mapping Failure Aware", color='skyblue')
 
-    ax.plot(datasets, datarange, label=ylabel, color='black', marker='o')  # Creates the line plot, MARKER ADDS POINTS TO LINE!
+    ax.plot(xaxis, yaxis, label=ylabel, color='black', marker='o')  # Creates the line plot, MARKER ADDS POINTS TO LINE!
 
     ax.set_title(title, size=18, fontweight='bold')
     ax.set_xlabel(xlabel, size=15, fontweight='bold')
