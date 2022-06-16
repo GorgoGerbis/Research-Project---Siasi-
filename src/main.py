@@ -43,34 +43,55 @@ from src.SINGLE_MAPPING import RUN_PATH_TWO as RUN_PATH_TWO_SINGLE_MAPPING
 from src.MULTI_MAPPING import RUN_PATH_ONE as RUN_PATH_ONE_MULTI_MAPPING
 from src.MULTI_MAPPING import RUN_PATH_TWO as RUN_PATH_TWO_MULTI_MAPPING
 
-
 REQUEST_DELAY_THRESHOLD = GLOBAL_REQUEST_DELAY_THRESHOLD
 
 # Variables to set up graph for network
 GRAPH = nx.Graph()
-edges = []
-nodes = []
 
 
-def set_edges():
+def set_edges_EDGE_COST():
     visited_links = []
 
     for link in NodeObj.StaticLinkList:
-        u = link.linkSrc
-        v = link.linkDest
-        temp = [u, v]
+        src = link.linkSrc
+        dst = link.linkDest
+        wht = link.linkEC
         if link not in visited_links:
-            edges.append(temp)
+            GRAPH.add_edge(src, dst, weight=wht)
             visited_links.append(link)
 
 
-def set_nodes():
+def set_edges_EDGE_DELAY():
+    visited_links = []
+
+    for link in NodeObj.StaticLinkList:
+        src = link.linkSrc
+        dst = link.linkDest
+        wht = link.linkED
+        if link not in visited_links:
+            GRAPH.add_edge(src, dst, weight=wht)
+            visited_links.append(link)
+
+
+def set_edges_EDGE_FAIL():  # @ToDo Lets work on this one later....
+    visited_links = []
+
+    for link in NodeObj.StaticLinkList:
+        src = link.linkSrc
+        dst = link.linkDest
+        wht = link.linkEC
+        if link not in visited_links:
+            GRAPH.add_edge(src, dst, weight=wht)
+            visited_links.append(link)
+
+
+def set_nodes():  # @ToDo might delete this
     visited_nodes = []
 
     for node in NodeObj.StaticNodeList:
         current_node_id = int(node.nodeID)
         if node not in visited_nodes:
-            nodes.append(node)
+            GRAPH.add_node(node)
             visited_nodes.append(current_node_id)
 
 
@@ -93,32 +114,42 @@ def find_isolated_nodes():
     print("The following nodes are not accessible: {}\n".format(output))
 
 
+def create_adjacency_matrix(adj_matrix):
+    print(adj_matrix)
+
+
 def process_path_one_MULTI_MAPPING():
-    for req in RequestObj.STATIC_TOTAL_REQUEST_LIST:   # STEP ONE
-        print("BEGUN PROCESSING REQUEST: {} Source: {} Destination {} Functions: {}\n".format(req.requestID, req.source, req.destination, req.requestedFunctions))
+    for req in RequestObj.STATIC_TOTAL_REQUEST_LIST:  # STEP ONE
+        print("BEGUN PROCESSING REQUEST: {} Source: {} Destination {} Functions: {}\n".format(req.requestID, req.source,
+                                                                                              req.destination,
+                                                                                              req.requestedFunctions))
 
         count = 1  # Needs to be reset to 1 when a new request is being processed
         current_request_data = [req.requestedFunctions, req.request_delay_threshold, req.requestedBW]
-        current_request_all_possible_paths = nx.all_simple_paths(GRAPH, req.source, req.destination)
+        # current_request_all_possible_paths = nx.all_simple_paths(GRAPH, req.source, req.destination)
+        current_request_all_possible_paths = nx.all_shortest_paths(GRAPH, req.source, req.destination)
 
-        for path in current_request_all_possible_paths:     # STEP TWO
+        for path in current_request_all_possible_paths:  # STEP TWO
             pathID = "R{}P{}".format(req.requestID, count)
             # ToDo should make a static list of all paths being processed for a single request
             PathObj(pathID, path, 0, current_request_data, [], 0, 0, 0, 1)
             count += 1
 
-        RUN_PATH_ONE_MULTI_MAPPING(req)   # <--- Step 3, 4 and 5 starts here
+        RUN_PATH_ONE_MULTI_MAPPING(req)  # <--- Step 3, 4 and 5 starts here
 
 
 def process_path_two_MULTI_MAPPING():
-    for req in RequestObj.STATIC_TOTAL_REQUEST_LIST:   # STEP ONE
-        print("BEGUN PROCESSING REQUEST: {} Source: {} Destination {} Functions: {}\n".format(req.requestID, req.source, req.destination, req.requestedFunctions))
+    for req in RequestObj.STATIC_TOTAL_REQUEST_LIST:  # STEP ONE
+        print("BEGUN PROCESSING REQUEST: {} Source: {} Destination {} Functions: {}\n".format(req.requestID, req.source,
+                                                                                              req.destination,
+                                                                                              req.requestedFunctions))
 
         count = 1  # Needs to be reset to 1 when a new request is being processed
         current_request_data = [req.requestedFunctions, req.request_delay_threshold, req.requestedBW]
-        current_request_all_possible_paths = nx.all_simple_paths(GRAPH, req.source, req.destination)
+        # current_request_all_possible_paths = nx.all_simple_paths(GRAPH, req.source, req.destination)
+        current_request_all_possible_paths = nx.all_shortest_paths(GRAPH, req.source, req.destination)
 
-        for path in current_request_all_possible_paths:     # STEP TWO
+        for path in current_request_all_possible_paths:  # STEP TWO
             pathID = "R{}P{}".format(req.requestID, count)
             # ToDo should make a static list of all paths being processed for a single request
             PathObj(pathID, path, 0, current_request_data, [], 0, 0, 0, 2)
@@ -128,31 +159,37 @@ def process_path_two_MULTI_MAPPING():
 
 
 def process_path_one_SINGLE_MAPPING():
-    for req in RequestObj.STATIC_TOTAL_REQUEST_LIST:   # STEP ONE
-        print("BEGUN PROCESSING REQUEST: {} Source: {} Destination {} Functions: {}\n".format(req.requestID, req.source, req.destination, req.requestedFunctions))
+    for req in RequestObj.STATIC_TOTAL_REQUEST_LIST:  # STEP ONE
+        print("BEGUN PROCESSING REQUEST: {} Source: {} Destination {} Functions: {}\n".format(req.requestID, req.source,
+                                                                                              req.destination,
+                                                                                              req.requestedFunctions))
 
         count = 1  # Needs to be reset to 1 when a new request is being processed
         current_request_data = [req.requestedFunctions, req.request_delay_threshold, req.requestedBW]
-        current_request_all_possible_paths = nx.all_simple_paths(GRAPH, req.source, req.destination)
+        # current_request_all_possible_paths = nx.all_simple_paths(GRAPH, req.source, req.destination)
+        current_request_all_possible_paths = nx.all_shortest_paths(GRAPH, req.source, req.destination)
 
-        for path in current_request_all_possible_paths:     # STEP TWO
+        for path in current_request_all_possible_paths:  # STEP TWO
             pathID = "R{}P{}".format(req.requestID, count)
             # ToDo should make a static list of all paths being processed for a single request
             PathObj(pathID, path, 0, current_request_data, [], 0, 0, 0, 1)
             count += 1
 
-        RUN_PATH_ONE_SINGLE_MAPPING(req)   # <--- Step 3, 4 and 5 starts here
+        RUN_PATH_ONE_SINGLE_MAPPING(req)  # <--- Step 3, 4 and 5 starts here
 
 
 def process_path_two_SINGLE_MAPPING():
-    for req in RequestObj.STATIC_TOTAL_REQUEST_LIST:   # STEP ONE
-        print("BEGUN PROCESSING REQUEST: {} Source: {} Destination {} Functions: {}\n".format(req.requestID, req.source, req.destination, req.requestedFunctions))
+    for req in RequestObj.STATIC_TOTAL_REQUEST_LIST:  # STEP ONE
+        print("BEGUN PROCESSING REQUEST: {} Source: {} Destination {} Functions: {}\n".format(req.requestID, req.source,
+                                                                                              req.destination,
+                                                                                              req.requestedFunctions))
 
         count = 1  # Needs to be reset to 1 when a new request is being processed
         current_request_data = [req.requestedFunctions, req.request_delay_threshold, req.requestedBW]
-        current_request_all_possible_paths = nx.all_simple_paths(GRAPH, req.source, req.destination)
+        # current_request_all_possible_paths = nx.all_simple_paths(GRAPH, req.source, req.destination)
+        current_request_all_possible_paths = nx.all_shortest_paths(GRAPH, req.source, req.destination)
 
-        for path in current_request_all_possible_paths:     # STEP TWO
+        for path in current_request_all_possible_paths:  # STEP TWO
             pathID = "R{}P{}".format(req.requestID, count)
             # ToDo should make a static list of all paths being processed for a single request
             PathObj(pathID, path, 0, current_request_data, [], 0, 0, 0, 2)
@@ -166,11 +203,15 @@ if __name__ == '__main__':
     ProcessInputData.processAllInputData()
     print("INPUT DATA PROCESSED\n")
 
-    set_edges()
-    GRAPH.add_edges_from(edges)
+    # set_edges_EDGE_COST()
+    set_edges_EDGE_DELAY()
 
-    nx.draw(GRAPH, with_labels=True, font_weight='bold')
-    plt.show()
+    ADJ_MATRIX = nx.adjacency_matrix(GRAPH)
+    print(ADJ_MATRIX)
+
+    create_adjacency_matrix(ADJ_MATRIX)
+    # nx.draw(GRAPH, with_labels=True, font_weight='bold')
+    # plt.show()
 
     find_isolated_nodes()
 
@@ -179,7 +220,8 @@ if __name__ == '__main__':
         process_path_one_SINGLE_MAPPING()
 
         print("STARTING CREATION OF OUTPUT FILES\n")
-        CreateOutputData.output_file_PATH_ONE(GLOBAL_SINGLE_OUTPUT_FILE_PATH_ONE, CREATE_NUM_REQUESTS, CREATE_NUM_NODES, CREATE_NUM_LINKS)
+        CreateOutputData.output_file_PATH_ONE(GLOBAL_SINGLE_OUTPUT_FILE_PATH_ONE, CREATE_NUM_REQUESTS, CREATE_NUM_NODES,
+                                              CREATE_NUM_LINKS)
         print("CREATED PATH ONE OUTPUT FILES\n")
 
     if CONSTANTS.GLOBAL_PROTOCOL == 2:
@@ -213,7 +255,8 @@ if __name__ == '__main__':
         process_path_one_MULTI_MAPPING()
         print("ALL DONE FINDING FIRST PATHS\n")
         print("STARTING CREATION OF OUTPUT FILES\n")
-        CreateOutputData.output_file_PATH_ONE(GLOBAL_MULTI_OUTPUT_FILE_PATH_ONE, CREATE_NUM_REQUESTS, CREATE_NUM_NODES, CREATE_NUM_LINKS)
+        CreateOutputData.output_file_PATH_ONE(GLOBAL_MULTI_OUTPUT_FILE_PATH_ONE, CREATE_NUM_REQUESTS, CREATE_NUM_NODES,
+                                              CREATE_NUM_LINKS)
         print("CREATED PATH ONE OUTPUT FILES\n")
 
         # for link in NodeObj.StaticLinkList:
@@ -232,7 +275,8 @@ if __name__ == '__main__':
         process_path_two_MULTI_MAPPING()
         print("ALL DONE FINDING SECOND PATHS\n")
         print("STARTING CREATION OF FAILURE PROBABILITY OUTPUT FILES\n")
-        CreateOutputData.output_file_PATH_TWO(GLOBAL_MULTI_OUTPUT_FILE_PATH_TWO, CREATE_NUM_REQUESTS, CREATE_NUM_NODES, CREATE_NUM_LINKS)
+        CreateOutputData.output_file_PATH_TWO(GLOBAL_MULTI_OUTPUT_FILE_PATH_TWO, CREATE_NUM_REQUESTS, CREATE_NUM_NODES,
+                                              CREATE_NUM_LINKS)
 
     # print("CREATING LINE GRAPHS WITH AVAILABLE DATA")
     # run_output_graphs()

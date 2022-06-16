@@ -33,14 +33,14 @@ def processInputDataNode(filePath):
 
             # NodeObj.StaticNodeResources.append([id, resources])   # @ToDo remember to change this as well so the nodes are properly reset
             current_node = NodeObj(id, status, resources, processingDelay, cost, failure) # current_node = NodeObj(id, status, node_resources, processingDelay, cost, failure)
-            print(current_node)
+            # print(current_node)
 
 
 def processInputDataLink(filePath):
     with open(filePath) as fp:
         fp.readline()  # <-- This is so that it skips the first line
         for cnt, line in enumerate(fp):
-            print("Line {}: {}".format(cnt, line))
+            # print("Line {}: {}".format(cnt, line))
 
             currentElements = line.split(';')
 
@@ -89,28 +89,28 @@ def processInputDataRequests(filePath):
                 current_request = RequestObj(requestNum, srcNode, destNode, requestedFunctions, requestedBW, request_status, GLOBAL_REQUEST_DELAY_THRESHOLD, requested_failure_threshold, None, None)   # current_request = RequestObj(requestNum, srcNode, destNode, requestedFunctions, requestedBW, request_status, request_delay_threshold, None, None)
 
                 RequestObj.STATIC_TOTAL_REQUEST_LIST.append(current_request)
-                print("Request: {} has been created.".format(requestNum))
+                # print("Request: {} has been created.".format(requestNum))
 
-        print("All requests have been created.")
+        # print("All requests have been created.")
 
 
 def processAllInputData():
     if os.path.isfile(NodeInputData):
-        print("INPUT_DATA_BOT: NODE FILE PATH WORKS!")
+        # print("INPUT_DATA_BOT: NODE FILE PATH WORKS!")
         processInputDataNode(NodeInputData)
         print("INPUT_DATA_BOT: NODE DATA FILE PROCESSED NODES CREATED!")
     else:
         print("INPUT_DATA_BOT: COULD NOT OPEN NODE FILE")
 
     if os.path.isfile(LinkInputData):
-        print("INPUT_DATA_BOT: LINK FILE PATH WORKS!")
+        # print("INPUT_DATA_BOT: LINK FILE PATH WORKS!")
         processInputDataLink(LinkInputData)
         print("INPUT_DATA_BOT: LINK DATA FILE PROCESSED LINKS CREATED!")
     else:
         print("INPUT_DATA_BOT: COULD NOT OPEN LINK FILE")
 
     if os.path.isfile(RequestInputData):
-        print("INPUT_DATA_BOT: PROCESSING INPUT DATA REQUESTS!")
+        # print("INPUT_DATA_BOT: PROCESSING INPUT DATA REQUESTS!")
         processInputDataRequests(RequestInputData)
         print("INPUT_DATA_BOT: FINISHED PROCESSING ALL DATA REQUESTS!")
     else:
