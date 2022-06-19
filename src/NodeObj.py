@@ -15,7 +15,6 @@ REQUEST_DELAY_THRESHOLD = GLOBAL_REQUEST_DELAY_THRESHOLD
 
 
 class NodeObj:
-
     AUTO_FAIL = []
     AUTO_FAIL_PATH_TWO = []
 
@@ -31,9 +30,9 @@ class NodeObj:
     StaticLinkResources_PATHTWO = []
 
     # NODE STATUS
-    UNAVAILABLE = "O"
-    AVAILABLE = "A"
-    RELAY = "R"
+    # status = ["N", "T"]
+    NODE = "N"
+    TERMINAL = "T"
 
     def __init__(self, nodeID, status, nodeResources, processingDelay, nodeCost, failure_probability):
         self.nodeID = nodeID
@@ -45,7 +44,7 @@ class NodeObj:
 
         NodeObj.StaticNodeList.append(self)  # <-- APPENDS CURRENT NODE TO STATIC LIST OF ALL NODES
 
-#################################################################################################
+    #################################################################################################
 
     def can_map(self, vnfObj):  # <---- @ToDo made to replace check_mappable!
         cpu = vnfObj[0]
@@ -90,7 +89,7 @@ class NodeObj:
             i += 1
         return True
 
-    def what_can_node_map_at_once(self, vnfs=None):     # <--- Allows me to overload this
+    def what_can_node_map_at_once(self, vnfs=None):  # <--- Allows me to overload this
         """
         Will return the VNFs that can all be mapped at once to this particular node.
         :param vnfs: optional argument, if not specifying the VNFs to check then simply check all VNF types.
@@ -117,7 +116,7 @@ class NodeObj:
 
         return mappable_at_once
 
-#################################################################################################
+    #################################################################################################
 
     def reset_node(self):
         for pair in NodeObj.StaticNodeResources:
@@ -154,7 +153,7 @@ class NodeObj:
 
         return output
 
-    def compareCPU(self, cpu): # Return True if we have enough resources
+    def compareCPU(self, cpu):  # Return True if we have enough resources
         if self.nodeResources[0] >= cpu:
             return True
         else:
@@ -165,29 +164,6 @@ class NodeObj:
             return True
         else:
             return False
-
-    def how_many_functions_mappable(self, func_list):
-        mappable_funcs = []
-        num_mappable = 0
-
-        t_cpu = 0
-        t_ram = 0
-
-        for f in func_list:
-            temp_func = VNFObj.retrieve_function_value(f)  # Retrieves the current requested function
-            # Current func requirements
-            c_cpu = temp_func.value[0] + t_cpu
-            c_ram = temp_func.value[1] + t_ram
-
-            if self.HELPER_check_enough_resources(c_cpu, c_ram):
-                t_cpu += temp_func.value[0]
-                t_ram += temp_func.value[1]
-                mappable_funcs.append(temp_func)
-                num_mappable += 1
-            else:
-                return mappable_funcs
-
-        return mappable_funcs
 
     def map_function(self, cpu, ram):
         self.nodeResources[0] = int(self.nodeResources[0]) - cpu
@@ -204,7 +180,7 @@ class NodeObj:
 
     def check_enough_resources(self, f):
         func = VNFObj.retrieve_function_value(f)
-        c, r= func.value[0], func.value[1]
+        c, r = func.value[0], func.value[1]
         if self.compareCPU(c) and self.compareRAM(r):
             return True
         else:

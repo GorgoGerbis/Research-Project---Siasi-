@@ -109,7 +109,7 @@ class PathObj:
         :return: The mapping location
         """
         funcs_to_map = [VNFObj.retrieve_function_value(x) for x in req_vnfs]
-        nodes = [NodeObj.returnNode(x) for x in self.route]
+        nodes = [NodeObj.returnNode(x) for x in self.route]     # Need to return only FOG Nodes NOT Terminals...
         mapping_locations = []
         i = 0
 
@@ -138,7 +138,7 @@ class PathObj:
         :return:
         """
         funcs_to_map = [VNFObj.retrieve_function_value(x) for x in req_vnfs]
-        nodes = [NodeObj.returnNode(x) for x in self.route]
+        nodes = [NodeObj.returnNode(x) for x in self.route]     # Need to return only FOG Nodes NOT Terminals...
         mapping_locations = []
 
         can_map_all = True  # FINAL CHECK TO DETERMINE IF WE CAN MAP EVERYTHING

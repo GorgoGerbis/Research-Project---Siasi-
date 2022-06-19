@@ -20,7 +20,6 @@ from src import ProcessInputData
 from src.NodeObj import NodeObj
 from src.RequestObj import RequestObj
 from src.PathObj import PathObj
-from src.OutputGraphs import run_output_graphs
 import CreateOutputData
 
 from src.CONSTANTS import GLOBAL_REQUEST_DELAY_THRESHOLD
@@ -125,7 +124,6 @@ def process_path_one_MULTI_MAPPING():
 
         count = 1  # Needs to be reset to 1 when a new request is being processed
         current_request_data = [req.requestedFunctions, req.request_delay_threshold, req.requestedBW]
-        # current_request_all_possible_paths = nx.all_simple_paths(GRAPH, req.source, req.destination)
         current_request_all_possible_paths = nx.all_shortest_paths(GRAPH, req.source, req.destination)
 
         for path in current_request_all_possible_paths:  # STEP TWO
@@ -145,7 +143,6 @@ def process_path_two_MULTI_MAPPING():
 
         count = 1  # Needs to be reset to 1 when a new request is being processed
         current_request_data = [req.requestedFunctions, req.request_delay_threshold, req.requestedBW]
-        # current_request_all_possible_paths = nx.all_simple_paths(GRAPH, req.source, req.destination)
         current_request_all_possible_paths = nx.all_shortest_paths(GRAPH, req.source, req.destination)
 
         for path in current_request_all_possible_paths:  # STEP TWO
@@ -165,7 +162,6 @@ def process_path_one_SINGLE_MAPPING():
 
         count = 1  # Needs to be reset to 1 when a new request is being processed
         current_request_data = [req.requestedFunctions, req.request_delay_threshold, req.requestedBW]
-        # current_request_all_possible_paths = nx.all_simple_paths(GRAPH, req.source, req.destination)
         current_request_all_possible_paths = nx.all_shortest_paths(GRAPH, req.source, req.destination)
 
         for path in current_request_all_possible_paths:  # STEP TWO
@@ -185,7 +181,6 @@ def process_path_two_SINGLE_MAPPING():
 
         count = 1  # Needs to be reset to 1 when a new request is being processed
         current_request_data = [req.requestedFunctions, req.request_delay_threshold, req.requestedBW]
-        # current_request_all_possible_paths = nx.all_simple_paths(GRAPH, req.source, req.destination)
         current_request_all_possible_paths = nx.all_shortest_paths(GRAPH, req.source, req.destination)
 
         for path in current_request_all_possible_paths:  # STEP TWO
@@ -229,23 +224,6 @@ if __name__ == '__main__':
                                               CREATE_NUM_LINKS)
         print("CREATED PATH ONE OUTPUT FILES\n")
 
-        # for link in NodeObj.StaticLinkList:
-        #     del link
-        # NodeObj.StaticLinkList.clear()
-        #
-        # for node in NodeObj.StaticNodeList:
-        #     del node
-        # NodeObj.StaticNodeList.clear()
-        #
-        # ProcessInputData.processInputDataNode(ProcessInputData.NodeInputData)
-        # ProcessInputData.processInputDataLink(ProcessInputData.LinkInputData)
-        #
-        # ############# BEGIN PROCESSING FOR PATH TWO ##############
-        # process_path_two_SINGLE_MAPPING()
-        #
-        # print("STARTING CREATION OF FAILURE PROBABILITY OUTPUT FILES\n")
-        # CreateOutputData.output_file_PATH_TWO(GLOBAL_SINGLE_OUTPUT_FILE_PATH_TWO, CREATE_NUM_REQUESTS, CREATE_NUM_NODES, CREATE_NUM_LINKS)
-
     if CONSTANTS.GLOBAL_PROTOCOL == 3:
         print("Begin Processing requests using: 'Head vs. Wall' Protocol\n")
         process_path_one_MULTI_MAPPING()
@@ -254,17 +232,6 @@ if __name__ == '__main__':
         CreateOutputData.output_file_PATH_ONE(GLOBAL_MULTI_OUTPUT_FILE_PATH_ONE, CREATE_NUM_REQUESTS, CREATE_NUM_NODES,
                                               CREATE_NUM_LINKS)
         print("CREATED PATH ONE OUTPUT FILES\n")
-
-        # for link in NodeObj.StaticLinkList:
-        #     del link
-        # NodeObj.StaticLinkList.clear()
-        #
-        # for node in NodeObj.StaticNodeList:
-        #     del node
-        # NodeObj.StaticNodeList.clear()
-        #
-        # ProcessInputData.processInputDataNode(ProcessInputData.NodeInputData)
-        # ProcessInputData.processInputDataLink(ProcessInputData.LinkInputData)
 
         ############# BEGIN PROCESSING FOR PATH TWO ##############
     if CONSTANTS.GLOBAL_PROTOCOL == 4:

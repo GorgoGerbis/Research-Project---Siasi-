@@ -1,16 +1,24 @@
 from matplotlib.ticker import FormatStrFormatter
 
-from CONSTANTS import GLOBAL_SINGLE_OUTPUT_FILE_PATH_ONE, GLOBAL_SINGLE_OUTPUT_FILE_PATH_TWO
-from CONSTANTS import GLOBAL_MULTI_OUTPUT_FILE_PATH_ONE, GLOBAL_MULTI_OUTPUT_FILE_PATH_TWO
+from src.CONSTANTS import GLOBAL_SINGLE_OUTPUT_FILE_PATH_ONE, GLOBAL_SINGLE_OUTPUT_FILE_PATH_TWO
+from src.CONSTANTS import GLOBAL_MULTI_OUTPUT_FILE_PATH_ONE, GLOBAL_MULTI_OUTPUT_FILE_PATH_TWO
+from src.CONSTANTS import AGGREGATE_DATASETS_AVERAGES as ADA
 import matplotlib.pyplot as plt
 
 
+# def gather_all_data_averages(filepath, ):
+#     with open(filepath, 'a') as fp:
+
 def gather_data(filepath):
     """
-    REQUEST STATUS,REQUEST ID,PATH ID,FAILURE PROBABILITY,DELAY,COST,FUNCTIONS,PATH
-    APPROVED,1,R1P1,42.868852459016395%,10.209999999999999,7.9,['F5', 'F2', 'F1', 'F3', 'F4'],[36, 6, 44, 9]
-    :param filepath:
-    :return:
+    Reads in data from a dataset and averages out the data we are measuring as lists.
+
+    Example data:
+        REQUEST STATUS,REQUEST ID,PATH ID,FAILURE PROBABILITY,DELAY,COST,FUNCTIONS,PATH
+        APPROVED,1,R1P1,42.868852459016395%,10.209999999999999,7.9,['F5', 'F2', 'F1', 'F3', 'F4'],[36, 6, 44, 9]
+
+    :param filepath: Filepath to a particular output file for a given dataset.
+    :return: passed, fails, delays, costs : Lists of averages for every 50 requests.
     """
     num_passed = 0
     num_failed = 0
@@ -52,6 +60,7 @@ def gather_data(filepath):
                 count += 1
                 num_failed += 1
 
+    print("{}_Passed_Requests = {}\n{}_Average_Failure = {}\n{}_Average_Delays = {}\n{}_Average_Costs = {}".format(1, passed, 1, fails, 1, delays, 1, costs))
     return passed, fails, delays, costs
 
 
@@ -83,7 +92,7 @@ def create_bar_and_line_graph(single_one, single_two, multi_one, multi_two, titl
     rect3 = ax.bar(x_single_two, single_two, width, label="Single Mapping Failure Aware", color='crimson')  # Create bar chart
     rect4 = ax.bar(x_multi_two, multi_two, width, label="Multi Mapping Failure Aware", color='skyblue')
 
-    ax.plot(xaxis, yaxis, label=ylabel, color='black', marker='o')  # Creates the line plot, MARKER ADDS POINTS TO LINE!
+    # ax.plot(xaxis, yaxis, label=ylabel, color='black', marker='o')  # Creates the line plot, MARKER ADDS POINTS TO LINE!
 
     ax.set_title(title, size=18, fontweight='bold')
     ax.set_xlabel(xlabel, size=15, fontweight='bold')
@@ -154,3 +163,5 @@ if __name__ == '__main__':
     create_bar_and_line_graph(SO_FAILS, ST_FAILS, MO_FAILS, M2_FAILS, "RANDOM: FAILURE AVERAGES", "Number of Requests", "Average Request Failure Probability", x_axis_datasets, y_axis_failure)
     create_bar_and_line_graph(SO_DELAYS, ST_DELAYS, MO_DELAYS, M2_DELAYS, "DELAYS", "Number of Requests", "Average Request Delay Times", x_axis_datasets, y_axis_delay)
     create_bar_and_line_graph(SO_COSTS, ST_COSTS, MO_COSTS, M2_COSTS, "COSTS", "Number of Requests", "Average Request Costs", x_axis_datasets, y_axis_cost)
+
+    # gather_all_data_averages(ADA, )
