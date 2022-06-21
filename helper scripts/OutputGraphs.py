@@ -53,23 +53,23 @@ def gather_all_data_averages(num_datasets, network_topology):
 
 
     for ds in range(num_datasets):
-        so_passed, so_fails, so_delays, so_costs = gather_data(os.path.join(outputFolder, f"D{ds+1}N{network_topology}_SINGLE_PATH_ONE_OUTPUT_DATA_{CREATE_NUM_REQUESTS}_RANDOM.csv"))
+        so_passed, so_fails, so_delays, so_costs = gather_data(os.path.join(outputFolder, f"D{ds + 1}N{network_topology}_SINGLE_PATH_ONE_OUTPUT_DATA_{CREATE_NUM_REQUESTS}_RANDOM.csv"))
         st_passed, st_fails, st_delays, st_costs = gather_data(os.path.join(outputFolder, f"D{ds + 1}N{network_topology}_SINGLE_PATH_TWO_OUTPUT_DATA_{CREATE_NUM_REQUESTS}_RANDOM.csv"))
         mo_passed, mo_fails, mo_delays, mo_costs = gather_data(os.path.join(outputFolder, f"D{ds + 1}N{network_topology}_MULTI_PATH_ONE_OUTPUT_DATA_{CREATE_NUM_REQUESTS}_RANDOM.csv"))
         mt_passed, mt_fails, mt_delays, mt_costs = gather_data(os.path.join(outputFolder, f"D{ds + 1}N{network_topology}_MULTI_PATH_TWO_OUTPUT_DATA_{CREATE_NUM_REQUESTS}_RANDOM.csv"))
 
         global_success_so.append(so_passed)
-        global_success_st.append(so_passed)
+        global_success_st.append(st_passed)
         global_success_mo.append(mo_passed)
         global_success_mt.append(mt_passed)
 
         global_fails_so.append(so_fails)
-        global_fails_st.append(so_fails)
+        global_fails_st.append(st_fails)
         global_fails_mo.append(mo_fails)
         global_fails_mt.append(mt_fails)
 
         global_delays_so.append(so_delays)
-        global_delays_st.append(so_delays)
+        global_delays_st.append(st_delays)
         global_delays_mo.append(mo_delays)
         global_delays_mt.append(mt_delays)
 
@@ -79,10 +79,10 @@ def gather_all_data_averages(num_datasets, network_topology):
         global_costs_mt.append(mt_costs)
 
     for x in range(5):
-        universal_success_so.append(sum(i[x] for i in global_success_so) / 5)
-        universal_success_st.append(sum(i[x] for i in global_success_so) / 5)
-        universal_success_mo.append(sum(i[x] for i in global_success_so) / 5)
-        universal_success_mt.append(sum(i[x] for i in global_success_so) / 5)
+        universal_success_so.append(round(sum(i[x] for i in global_success_so) / 5))
+        universal_success_st.append(round(sum(i[x] for i in global_success_st) / 5))
+        universal_success_mo.append(round(sum(i[x] for i in global_success_mo) / 5))
+        universal_success_mt.append(round(sum(i[x] for i in global_success_mt) / 5))
 
         universal_fails_so.append(sum(i[x] for i in global_fails_so) / 5)
         universal_fails_st.append(sum(i[x] for i in global_fails_st) / 5)
