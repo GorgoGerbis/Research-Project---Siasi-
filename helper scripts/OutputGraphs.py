@@ -1,3 +1,4 @@
+import numpy as np
 from matplotlib.ticker import FormatStrFormatter
 
 from src.CONSTANTS import GLOBAL_SINGLE_OUTPUT_FILE_PATH_ONE, GLOBAL_SINGLE_OUTPUT_FILE_PATH_TWO
@@ -94,6 +95,12 @@ def create_bar_and_line_graph(single_one, single_two, multi_one, multi_two, titl
     fig, ax = plt.subplots()  # Show both plots fig = graph, ax = axis that actually holds the data
     # NOTE: You can create multiple graphs on top of the same axis'
 
+    # SETS THE X-AXIS FOR THE BAR GRAPHS NEW AS OF 06/21/22
+    ax.set_xticks(np.arange(0, xaxis[-1]))  # [50, 100, 150, 200, 250]
+    default_x_ticks = range(len(xaxis))
+    plt.xticks(default_x_ticks, xaxis, fontsize=15)
+    plt.yticks(fontsize=15)
+
     # When matplotlib creates a bar it creates a value we can store in a variable in this case rect1-rect#....
     # These variables rect1-rect3 are groups of bars. Each of these rect variables stores 4 bars.
     rect1 = ax.bar(x_single_one, single_one, width, label="Single Mapping Conventional(NOT Failure Sensitive)", color='darkslategray')  # Create bar chart
@@ -103,9 +110,9 @@ def create_bar_and_line_graph(single_one, single_two, multi_one, multi_two, titl
 
     # ax.plot(xaxis, yaxis, label=ylabel, color='black', marker='o')  # Creates the line plot, MARKER ADDS POINTS TO LINE!
 
-    ax.set_title(title, size=18, fontweight='bold')
-    ax.set_xlabel(xlabel, size=15, fontweight='bold')
-    ax.set_ylabel(ylabel, size=15, fontweight='bold')
+    ax.set_title(title, size=25, fontweight='bold')
+    ax.set_xlabel(xlabel, size=20, fontweight='bold')
+    ax.set_ylabel(ylabel, size=20, fontweight='bold')
     ax.legend()  # Creates legend for labeling the different elements of the graph/plot
 
     auto_label(ax, rect1, notation)
@@ -157,7 +164,6 @@ def create_bar_and_line_graph(single_one, single_two, multi_one, multi_two, titl
 
 
 if __name__ == '__main__':
-    # x_axis_datasets = ['0 Reqs', '50 Reqs', '100 Reqs', '150 Reqs', '200 Reqs', '250 Reqs']
     x_axis_datasets = [50, 100, 150, 200, 250]
     y_axis_requests = [50, 100, 150, 200, 250]
     y_axis_failure = [15, 25, 35, 45, 55]
@@ -175,16 +181,9 @@ if __name__ == '__main__':
     MO_PASSED, MO_FAILS, MO_DELAYS, MO_COSTS = gather_data(GLOBAL_MULTI_OUTPUT_FILE_PATH_ONE)
     M2_PASSED, M2_FAILS, M2_DELAYS, M2_COSTS = gather_data(GLOBAL_MULTI_OUTPUT_FILE_PATH_TWO)
 
-    # TEMP_ONE = [[50, 48], [100, 92], [150, 123], [200, 143], [250, 162]]   # [48, 92, 123, 143, 162]
-    # TEMP_TWO = [[50, 48], [100, 92], [150, 120], [200, 144], [250, 161]]   # [48, 92, 120, 144, 161]
-    # TEMP_THREE = [[50, 24], [100, 82], [150, 110], [200, 124], [250, 141]]
-    # TEMP_FOUR = [[50, 38], [100, 95], [150, 126], [200, 148], [250, 169]]
-
-    # create_bar_and_line_graph(TEMP_ONE, TEMP_TWO, MO_PASSED, M2_PASSED, "NETWORK SATURATION: REQUESTS PASSED", "Number of Requests", "Successful Requests Passed", x_axis_datasets, y_axis_requests, '')
-
-    create_bar_and_line_graph(SO_PASSED, ST_PASSED, MO_PASSED, M2_PASSED, "NETWORK SATURATION: REQUESTS PASSED", "Number of Requests", "Successful Requests Passed", x_axis_datasets, y_axis_requests, '')
-    create_bar_and_line_graph(SO_FAILS, ST_FAILS, MO_FAILS, M2_FAILS, "NETWORK FAILURE RANDOM: REQUEST FAILURE AVERAGES", "Number of Requests", "Average Request Failure Probability", x_axis_datasets, y_axis_failure, '%')
-    create_bar_and_line_graph(SO_DELAYS, ST_DELAYS, MO_DELAYS, M2_DELAYS, "NETWORK DELAYS RANDOM", "Number of Requests", "Average Request Delay Times", x_axis_datasets, y_axis_delay, 'ms')
-    create_bar_and_line_graph(SO_COSTS, ST_COSTS, MO_COSTS, M2_COSTS, "NETWORK COSTS RANDOM", "Number of Requests", "Average Request Costs", x_axis_datasets, y_axis_cost, 'mb')
+    create_bar_and_line_graph(SO_PASSED, ST_PASSED, MO_PASSED, M2_PASSED, "NETWORK SATURATION: REQUESTS PASSED", "Number of Requests Processed", "Number of Successful Requests Passed", x_axis_datasets, y_axis_requests, '')
+    create_bar_and_line_graph(SO_FAILS, ST_FAILS, MO_FAILS, M2_FAILS, "NETWORK FAILURE RANDOM: REQUEST FAILURE AVERAGES", "Number of Requests Processed", "Average Failure Probability of Requests", x_axis_datasets, y_axis_failure, '%')
+    create_bar_and_line_graph(SO_DELAYS, ST_DELAYS, MO_DELAYS, M2_DELAYS, "NETWORK DELAYS RANDOM", "Number of Requests Processed", "Average Delay Times of Requests ms", x_axis_datasets, y_axis_delay, 'ms')
+    create_bar_and_line_graph(SO_COSTS, ST_COSTS, MO_COSTS, M2_COSTS, "NETWORK COSTS RANDOM", "Number of Requests Processed", "Average Costs of Requests mb", x_axis_datasets, y_axis_cost, 'mb')
 
     # gather_all_data_averages(ADA, )
