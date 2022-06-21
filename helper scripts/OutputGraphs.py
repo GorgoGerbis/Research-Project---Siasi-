@@ -183,9 +183,8 @@ if __name__ == '__main__':
     # create_bar_and_line_graph(TEMP_ONE, TEMP_TWO, MO_PASSED, M2_PASSED, "NETWORK SATURATION: REQUESTS PASSED", "Number of Requests", "Successful Requests Passed", x_axis_datasets, y_axis_requests, '')
 
     create_bar_and_line_graph(SO_PASSED, ST_PASSED, MO_PASSED, M2_PASSED, "NETWORK SATURATION: REQUESTS PASSED", "Number of Requests", "Successful Requests Passed", x_axis_datasets, y_axis_requests, '')
-
-    # create_bar_and_line_graph(SO_FAILS, ST_FAILS, MO_FAILS, M2_FAILS, "NETWORK FAILURE RANDOM: REQUEST FAILURE AVERAGES", "Number of Requests", "Average Request Failure Probability", x_axis_datasets, y_axis_failure, '%')
-    # create_bar_and_line_graph(SO_DELAYS, ST_DELAYS, MO_DELAYS, M2_DELAYS, "NETWORK DELAYS RANDOM", "Number of Requests", "Average Request Delay Times", x_axis_datasets, y_axis_delay, 'ms')
-    # create_bar_and_line_graph(SO_COSTS, ST_COSTS, MO_COSTS, M2_COSTS, "NETWORK COSTS RANDOM", "Number of Requests", "Average Request Costs", x_axis_datasets, y_axis_cost, 'mb')
+    create_bar_and_line_graph(SO_FAILS, ST_FAILS, MO_FAILS, M2_FAILS, "NETWORK FAILURE RANDOM: REQUEST FAILURE AVERAGES", "Number of Requests", "Average Request Failure Probability", x_axis_datasets, y_axis_failure, '%')
+    create_bar_and_line_graph(SO_DELAYS, ST_DELAYS, MO_DELAYS, M2_DELAYS, "NETWORK DELAYS RANDOM", "Number of Requests", "Average Request Delay Times", x_axis_datasets, y_axis_delay, 'ms')
+    create_bar_and_line_graph(SO_COSTS, ST_COSTS, MO_COSTS, M2_COSTS, "NETWORK COSTS RANDOM", "Number of Requests", "Average Request Costs", x_axis_datasets, y_axis_cost, 'mb')
 
     # gather_all_data_averages(ADA, )
