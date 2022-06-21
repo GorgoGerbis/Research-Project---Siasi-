@@ -6,9 +6,6 @@ from src.CONSTANTS import AGGREGATE_DATASETS_AVERAGES as ADA
 import matplotlib.pyplot as plt
 
 
-# def gather_all_data_averages(filepath, ):
-#     with open(filepath, 'a') as fp:
-
 def gather_data(filepath):
     """
     Reads in data from a dataset and averages out the data we are measuring as lists.
@@ -68,9 +65,7 @@ def auto_label(axis, rectangle_group):
     for rect in rectangle_group:     # Want to get the height of each bar.
         height = rect.get_height()
         # " xy=(...), ha='center' " <-- ensures that the numbers will be perfectly centered for each bar.
-        axis.annotate(str(height),
-                      xy=(rect.get_x() + rect.get_width() / 2, height),
-                      ha='center',
+        axis.annotate(str(height), xy=(rect.get_x() + rect.get_width() / 2, height), ha='center',
                       xytext=(0, 3), textcoords='offset points',    # xytext=(0, 3) puts all text at set position.
                       color='black')     # textcoords='offset points' ^^<-- Takes this xytext and offsets the text by that set amount instead.
 
@@ -148,20 +143,21 @@ def create_bar_and_line_graph(single_one, single_two, multi_one, multi_two, titl
 
 
 if __name__ == '__main__':
-    x_axis_datasets = ['50', '100', '150', '200', '250']
-    y_axis_requests = [50, 100, 150, 200, 250]
-    y_axis_failure = [15, 25, 35, 45, 55]   # ['15%', '25%', '35%', '45%', '55%']
-    y_axis_delay = [2.0, 4.0, 6.0, 8.0, 10.0]   # ['2.0 ms', '4.0 ms', '6.0 ms', '8.0 ms', '10.ms']
-    y_axis_cost = [2.0, 4.0, 6.0, 8.0, 10.0]    # ['2.0 mb', '4.0 mb', '6.0 mb', '8.0 mb', '10.mb']
+    # x_axis_datasets = ['0 Reqs', '50 Reqs', '100 Reqs', '150 Reqs', '200 Reqs', '250 Reqs']
+    x_axis_datasets = [0, 50, 100, 150, 200, 250]
+    y_axis_requests = [0, 50, 100, 150, 200, 250]
+    y_axis_failure = [0, 15, 25, 35, 45, 55]   # ['15%', '25%', '35%', '45%', '55%']
+    y_axis_delay = [0, 2.0, 4.0, 6.0, 8.0, 10.0]   # ['2.0 ms', '4.0 ms', '6.0 ms', '8.0 ms', '10.ms']
+    y_axis_cost = [0, 2.0, 4.0, 6.0, 8.0, 10.0]    # ['2.0 mb', '4.0 mb', '6.0 mb', '8.0 mb', '10.mb']
 
     SO_PASSED, SO_FAILS, SO_DELAYS, SO_COSTS = gather_data(GLOBAL_SINGLE_OUTPUT_FILE_PATH_ONE)
     ST_PASSED, ST_FAILS, ST_DELAYS, ST_COSTS = gather_data(GLOBAL_SINGLE_OUTPUT_FILE_PATH_TWO)
     MO_PASSED, MO_FAILS, MO_DELAYS, MO_COSTS = gather_data(GLOBAL_MULTI_OUTPUT_FILE_PATH_ONE)
     M2_PASSED, M2_FAILS, M2_DELAYS, M2_COSTS = gather_data(GLOBAL_MULTI_OUTPUT_FILE_PATH_TWO)
 
-    create_bar_and_line_graph(SO_PASSED, ST_PASSED, MO_PASSED, M2_PASSED, "REQUESTS PASSED", "Number of Requests", "Successful Requests Passed", x_axis_datasets, y_axis_requests)
-    create_bar_and_line_graph(SO_FAILS, ST_FAILS, MO_FAILS, M2_FAILS, "RANDOM: FAILURE AVERAGES", "Number of Requests", "Average Request Failure Probability", x_axis_datasets, y_axis_failure)
-    create_bar_and_line_graph(SO_DELAYS, ST_DELAYS, MO_DELAYS, M2_DELAYS, "DELAYS", "Number of Requests", "Average Request Delay Times", x_axis_datasets, y_axis_delay)
-    create_bar_and_line_graph(SO_COSTS, ST_COSTS, MO_COSTS, M2_COSTS, "COSTS", "Number of Requests", "Average Request Costs", x_axis_datasets, y_axis_cost)
+    create_bar_and_line_graph(SO_PASSED, ST_PASSED, MO_PASSED, M2_PASSED, "NETWORK SATURATION: REQUESTS PASSED", "Number of Requests", "Successful Requests Passed", x_axis_datasets, y_axis_requests)
+    create_bar_and_line_graph(SO_FAILS, ST_FAILS, MO_FAILS, M2_FAILS, "NETWORK FAILURE RANDOM: REQUEST FAILURE AVERAGES", "Number of Requests", "Average Request Failure Probability", x_axis_datasets, y_axis_failure)
+    create_bar_and_line_graph(SO_DELAYS, ST_DELAYS, MO_DELAYS, M2_DELAYS, "NETWORK DELAYS RANDOM", "Number of Requests", "Average Request Delay Times", x_axis_datasets, y_axis_delay)
+    create_bar_and_line_graph(SO_COSTS, ST_COSTS, MO_COSTS, M2_COSTS, "NETWORK COSTS RANDOM", "Number of Requests", "Average Request Costs", x_axis_datasets, y_axis_cost)
 
     # gather_all_data_averages(ADA, )
