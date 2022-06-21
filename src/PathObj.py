@@ -217,6 +217,7 @@ class PathObj:
                 node_count += 1
                 overall_average += current_fail
 
+        node_count -= 2     # ToDo REMEMBER TO ADJUST FINAL FAILURE AVERAGES TO NOT COUNT TERMINALS
         node_failure_probability = overall_average / node_count
         node_failure_probability *= 100
 

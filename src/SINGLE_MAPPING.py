@@ -1,3 +1,4 @@
+from src import CONSTANTS
 from src.NodeObj import NodeObj
 from src.PathObj import PathObj
 from src.VNFObj import VNFObj
@@ -6,7 +7,7 @@ from src.RequestObj import RequestObj
 
 from CONSTANTS import GLOBAL_REQUEST_DELAY_THRESHOLD as REQUEST_DELAY_THRESHOLD
 from CONSTANTS import GlOBAL_FAILURE_THRESHOLD as FAILURE_THRESHOLD
-from CONSTANTS import CREATE_NUM_NODES, CREATE_NUM_LINKS, CREATE_NUM_REQUESTS
+from CONSTANTS import CREATE_NUM_NODES, CREATE_NUM_TERMINALS, CREATE_NUM_LINKS, CREATE_NUM_REQUESTS
 
 ### @ToDo new stuff !! ###
 from CONSTANTS import MAPPING_LOG
@@ -189,9 +190,14 @@ def map_path_SINGLE(path_obj, req_bw):
     for link in NodeObj.StaticLinkList:
         link_avg += link.linkBW
 
-    NodeObj.StaticNodeResources_PATHONE.append(node_avg / CREATE_NUM_NODES)
-    NodeObj.StaticLinkResources_PATHONE.append(link_avg / CREATE_NUM_LINKS)
-    print("PATH {} MAPPED".format(path_obj.pathID))
+    if CONSTANTS.GLOBAL_PROTOCOL == 1:
+        NodeObj.StaticNodeResources_PATHONE.append(node_avg / CREATE_NUM_NODES)
+        NodeObj.StaticLinkResources_PATHONE.append(link_avg / (CREATE_NUM_LINKS + CREATE_NUM_TERMINALS))
+        print("PATH {} MAPPED".format(path_obj.pathID))
+    elif CONSTANTS.GLOBAL_PROTOCOL == 2:
+        NodeObj.StaticNodeResources_PATHTWO.append(node_avg / CREATE_NUM_NODES)
+        NodeObj.StaticLinkResources_PATHTWO.append(link_avg / (CREATE_NUM_LINKS + CREATE_NUM_TERMINALS))
+        print("PATH {} MAPPED".format(path_obj.pathID))
 
     ### def MAPPING_LOG(info):  ###
     request_info = "Request: {} | VNFs: {} | DELAY: {} | BW: {} | AVG FAIL: {} | COST: {}\n".format(path_obj.pathID,
