@@ -20,6 +20,11 @@ def gather_data(filepath):
     num_passed = 0
     num_failed = 0
 
+    # passed = [0]
+    # fails = [0]
+    # delays = [0]
+    # costs = [0]
+
     passed = []
     fails = []
     delays = []
@@ -61,21 +66,30 @@ def gather_data(filepath):
     return passed, fails, delays, costs
 
 
-def auto_label(axis, rectangle_group):
-    for rect in rectangle_group:     # Want to get the height of each bar.
-        height = rect.get_height()
-        # " xy=(...), ha='center' " <-- ensures that the numbers will be perfectly centered for each bar.
-        axis.annotate(str(height), xy=(rect.get_x() + rect.get_width() / 2, height), ha='center',
-                      xytext=(0, 3), textcoords='offset points',    # xytext=(0, 3) puts all text at set position.
-                      color='black')     # textcoords='offset points' ^^<-- Takes this xytext and offsets the text by that set amount instead.
+def auto_label(axis, rectangle_group, notation):
+    if notation != '':
+        for rect in rectangle_group:     # Want to get the height of each bar.
+            height = rect.get_height()
+            limited_height = "{:.2f}".format(height)
+            # " xy=(...), ha='center' " <-- ensures that the numbers will be perfectly centered for each bar.
+            axis.annotate('{}{}'.format(limited_height, notation), xy=(rect.get_x() + rect.get_width() / 2, height), ha='center',   # (str(height), xy=(rect.get_x() + rect.get_width() / 2, height), ha='center',
+                          xytext=(0, 3), textcoords='offset points',    # xytext=(0, 3) puts all text at set position.
+                          color='black', fontsize=9)     # textcoords='offset points' ^^<-- Takes this xytext and offsets the text by that set amount instead.
+    else:
+        for rect in rectangle_group:     # Want to get the height of each bar.
+            height = rect.get_height()
+            # " xy=(...), ha='center' " <-- ensures that the numbers will be perfectly centered for each bar.
+            axis.annotate('{}{}'.format(height, notation), xy=(rect.get_x() + rect.get_width() / 2, height), ha='center',   # (str(height), xy=(rect.get_x() + rect.get_width() / 2, height), ha='center',
+                          xytext=(0, 3), textcoords='offset points',    # xytext=(0, 3) puts all text at set position.
+                          color='black')     # textcoords='offset points' ^^<-- Takes this xytext and offsets the text by that set amount instead.
 
 
-def create_bar_and_line_graph(single_one, single_two, multi_one, multi_two, title, xlabel, ylabel, xaxis, yaxis):
+def create_bar_and_line_graph(single_one, single_two, multi_one, multi_two, title, xlabel, ylabel, xaxis, yaxis, notation):
     width = 0.2  # Width of each of the bars in bar graph
     x_single_one = [x - width for x in range(len(single_one))]  # Look at all entries of playstation and subtract our width so the bars are aligned correctly. Creates the OFFSET for each bar...
     x_multi_one = [x for x in range(len(multi_one))]  # xbox is in the middle so no need to subtract width.. <--- and ^^ both list comprehension!
     x_single_two = [x + width for x in range(len(single_two))]
-    x_multi_two = [x + width*2 for x in range(len(multi_two))]
+    x_multi_two = [x + (width*2) for x in range(len(multi_two))]
 
     fig, ax = plt.subplots()  # Show both plots fig = graph, ax = axis that actually holds the data
     # NOTE: You can create multiple graphs on top of the same axis'
@@ -94,10 +108,10 @@ def create_bar_and_line_graph(single_one, single_two, multi_one, multi_two, titl
     ax.set_ylabel(ylabel, size=15, fontweight='bold')
     ax.legend()  # Creates legend for labeling the different elements of the graph/plot
 
-    auto_label(ax, rect1)
-    auto_label(ax, rect2)
-    auto_label(ax, rect3)
-    auto_label(ax, rect4)
+    auto_label(ax, rect1, notation)
+    auto_label(ax, rect2, notation)
+    auto_label(ax, rect3, notation)
+    auto_label(ax, rect4, notation)
 
     plt.show()
 
@@ -144,20 +158,34 @@ def create_bar_and_line_graph(single_one, single_two, multi_one, multi_two, titl
 
 if __name__ == '__main__':
     # x_axis_datasets = ['0 Reqs', '50 Reqs', '100 Reqs', '150 Reqs', '200 Reqs', '250 Reqs']
-    x_axis_datasets = [0, 50, 100, 150, 200, 250]
-    y_axis_requests = [0, 50, 100, 150, 200, 250]
-    y_axis_failure = [0, 15, 25, 35, 45, 55]   # ['15%', '25%', '35%', '45%', '55%']
-    y_axis_delay = [0, 2.0, 4.0, 6.0, 8.0, 10.0]   # ['2.0 ms', '4.0 ms', '6.0 ms', '8.0 ms', '10.ms']
-    y_axis_cost = [0, 2.0, 4.0, 6.0, 8.0, 10.0]    # ['2.0 mb', '4.0 mb', '6.0 mb', '8.0 mb', '10.mb']
+    x_axis_datasets = [50, 100, 150, 200, 250]
+    y_axis_requests = [50, 100, 150, 200, 250]
+    y_axis_failure = [15, 25, 35, 45, 55]
+    y_axis_delay = [2.0, 4.0, 6.0, 8.0, 10.0]
+    y_axis_cost = [2.0, 4.0, 6.0, 8.0, 10.0]
+
+    # x_axis_datasets = [0, 50, 100, 150, 200, 250]
+    # y_axis_requests = [0, 50, 100, 150, 200, 250]
+    # y_axis_failure = [0, 15, 25, 35, 45, 55]
+    # y_axis_delay = [0, 2.0, 4.0, 6.0, 8.0, 10.0]
+    # y_axis_cost = [0, 2.0, 4.0, 6.0, 8.0, 10.0]
 
     SO_PASSED, SO_FAILS, SO_DELAYS, SO_COSTS = gather_data(GLOBAL_SINGLE_OUTPUT_FILE_PATH_ONE)
     ST_PASSED, ST_FAILS, ST_DELAYS, ST_COSTS = gather_data(GLOBAL_SINGLE_OUTPUT_FILE_PATH_TWO)
     MO_PASSED, MO_FAILS, MO_DELAYS, MO_COSTS = gather_data(GLOBAL_MULTI_OUTPUT_FILE_PATH_ONE)
     M2_PASSED, M2_FAILS, M2_DELAYS, M2_COSTS = gather_data(GLOBAL_MULTI_OUTPUT_FILE_PATH_TWO)
 
-    create_bar_and_line_graph(SO_PASSED, ST_PASSED, MO_PASSED, M2_PASSED, "NETWORK SATURATION: REQUESTS PASSED", "Number of Requests", "Successful Requests Passed", x_axis_datasets, y_axis_requests)
-    create_bar_and_line_graph(SO_FAILS, ST_FAILS, MO_FAILS, M2_FAILS, "NETWORK FAILURE RANDOM: REQUEST FAILURE AVERAGES", "Number of Requests", "Average Request Failure Probability", x_axis_datasets, y_axis_failure)
-    create_bar_and_line_graph(SO_DELAYS, ST_DELAYS, MO_DELAYS, M2_DELAYS, "NETWORK DELAYS RANDOM", "Number of Requests", "Average Request Delay Times", x_axis_datasets, y_axis_delay)
-    create_bar_and_line_graph(SO_COSTS, ST_COSTS, MO_COSTS, M2_COSTS, "NETWORK COSTS RANDOM", "Number of Requests", "Average Request Costs", x_axis_datasets, y_axis_cost)
+    # TEMP_ONE = [[50, 48], [100, 92], [150, 123], [200, 143], [250, 162]]   # [48, 92, 123, 143, 162]
+    # TEMP_TWO = [[50, 48], [100, 92], [150, 120], [200, 144], [250, 161]]   # [48, 92, 120, 144, 161]
+    # TEMP_THREE = [[50, 24], [100, 82], [150, 110], [200, 124], [250, 141]]
+    # TEMP_FOUR = [[50, 38], [100, 95], [150, 126], [200, 148], [250, 169]]
+
+    # create_bar_and_line_graph(TEMP_ONE, TEMP_TWO, MO_PASSED, M2_PASSED, "NETWORK SATURATION: REQUESTS PASSED", "Number of Requests", "Successful Requests Passed", x_axis_datasets, y_axis_requests, '')
+
+    create_bar_and_line_graph(SO_PASSED, ST_PASSED, MO_PASSED, M2_PASSED, "NETWORK SATURATION: REQUESTS PASSED", "Number of Requests", "Successful Requests Passed", x_axis_datasets, y_axis_requests, '')
+
+    # create_bar_and_line_graph(SO_FAILS, ST_FAILS, MO_FAILS, M2_FAILS, "NETWORK FAILURE RANDOM: REQUEST FAILURE AVERAGES", "Number of Requests", "Average Request Failure Probability", x_axis_datasets, y_axis_failure, '%')
+    # create_bar_and_line_graph(SO_DELAYS, ST_DELAYS, MO_DELAYS, M2_DELAYS, "NETWORK DELAYS RANDOM", "Number of Requests", "Average Request Delay Times", x_axis_datasets, y_axis_delay, 'ms')
+    # create_bar_and_line_graph(SO_COSTS, ST_COSTS, MO_COSTS, M2_COSTS, "NETWORK COSTS RANDOM", "Number of Requests", "Average Request Costs", x_axis_datasets, y_axis_cost, 'mb')
 
     # gather_all_data_averages(ADA, )
