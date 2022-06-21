@@ -143,8 +143,8 @@ def create_link_duos_TERMINALS(num_terminals, num_nodes, max_links_per_terminal_
             already_added.append(destination)
             count += 1
 
-    print(existing_terminal_links)
-    print("NUM TERMINAL LINKS: {}".format(len(existing_terminal_links)))
+    # print(existing_terminal_links)
+    # print("NUM TERMINAL LINKS: {}".format(len(existing_terminal_links)))
 
     # val = 189
     # mini_count = 0
@@ -231,12 +231,14 @@ if __name__ == '__main__':
     print("CREATING NEW INPUT DATA!\n")
     print("TOTAL NODES: {} TOTAL TERMINALS: {} TOTAL LINKS: {} TOTAL REQUESTS: {}\n".format(NUM_NODES, NUM_TERMINALS, NUM_LINKS, NUM_REQS))
 
-    create_terminal_and_node_input_data(NUM_NODES, NUM_TERMINALS)
-
-    terminal_links, node_links = create_link_input_data(NUM_TERMINALS, NUM_NODES, NUM_LINKS)
-    get_isolated_and_excess(terminal_links, 1, 50)
-    get_isolated_and_excess(node_links, 151, 200)
+    # create_terminal_and_node_input_data(NUM_NODES, NUM_TERMINALS)
+    #
+    # terminal_links, node_links = create_link_input_data(NUM_TERMINALS, NUM_NODES, NUM_LINKS)
+    # get_isolated_and_excess(terminal_links, 1, 50)
+    # get_isolated_and_excess(node_links, 151, 200)
 
     create_terminal_requests(NUM_REQS, NUM_TERMINALS)
 
     print("FINISHED CREATING INPUT DATA\n")
+
+    

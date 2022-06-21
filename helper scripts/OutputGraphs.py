@@ -1,10 +1,119 @@
 import numpy as np
+import os
 from matplotlib.ticker import FormatStrFormatter
 
 from src.CONSTANTS import GLOBAL_SINGLE_OUTPUT_FILE_PATH_ONE, GLOBAL_SINGLE_OUTPUT_FILE_PATH_TWO
 from src.CONSTANTS import GLOBAL_MULTI_OUTPUT_FILE_PATH_ONE, GLOBAL_MULTI_OUTPUT_FILE_PATH_TWO
+from src.CONSTANTS import outputFolder
+from src.CONSTANTS import DATASET, NETWORK_TOPOLOGY, CREATE_NUM_REQUESTS
 from src.CONSTANTS import AGGREGATE_DATASETS_AVERAGES as ADA
 import matplotlib.pyplot as plt
+
+
+def gather_all_data_averages(num_datasets, network_topology):
+    universal_success_so = []
+    universal_success_st = []
+    universal_success_mo = []
+    universal_success_mt = []
+
+    universal_fails_so = []
+    universal_fails_st = []
+    universal_fails_mo = []
+    universal_fails_mt = []
+
+    universal_delays_so = []
+    universal_delays_st = []
+    universal_delays_mo = []
+    universal_delays_mt = []
+
+    universal_costs_so = []
+    universal_costs_st = []
+    universal_costs_mo = []
+    universal_costs_mt = []
+
+    global_success_so = []
+    global_success_st = []
+    global_success_mo = []
+    global_success_mt = []
+
+    global_fails_so = []
+    global_fails_st = []
+    global_fails_mo = []
+    global_fails_mt = []
+
+    global_delays_so = []
+    global_delays_st = []
+    global_delays_mo = []
+    global_delays_mt = []
+
+    global_costs_so = []
+    global_costs_st = []
+    global_costs_mo = []
+    global_costs_mt = []
+
+
+    for ds in range(num_datasets):
+        so_passed, so_fails, so_delays, so_costs = gather_data(os.path.join(outputFolder, f"D{ds+1}N{network_topology}_SINGLE_PATH_ONE_OUTPUT_DATA_{CREATE_NUM_REQUESTS}_RANDOM.csv"))
+        st_passed, st_fails, st_delays, st_costs = gather_data(os.path.join(outputFolder, f"D{ds + 1}N{network_topology}_SINGLE_PATH_TWO_OUTPUT_DATA_{CREATE_NUM_REQUESTS}_RANDOM.csv"))
+        mo_passed, mo_fails, mo_delays, mo_costs = gather_data(os.path.join(outputFolder, f"D{ds + 1}N{network_topology}_MULTI_PATH_ONE_OUTPUT_DATA_{CREATE_NUM_REQUESTS}_RANDOM.csv"))
+        mt_passed, mt_fails, mt_delays, mt_costs = gather_data(os.path.join(outputFolder, f"D{ds + 1}N{network_topology}_MULTI_PATH_TWO_OUTPUT_DATA_{CREATE_NUM_REQUESTS}_RANDOM.csv"))
+
+        global_success_so.append(so_passed)
+        global_success_st.append(so_passed)
+        global_success_mo.append(mo_passed)
+        global_success_mt.append(mt_passed)
+
+        global_fails_so.append(so_fails)
+        global_fails_st.append(so_fails)
+        global_fails_mo.append(mo_fails)
+        global_fails_mt.append(mt_fails)
+
+        global_delays_so.append(so_delays)
+        global_delays_st.append(so_delays)
+        global_delays_mo.append(mo_delays)
+        global_delays_mt.append(mt_delays)
+
+        global_costs_so.append(so_costs)
+        global_costs_st.append(st_costs)
+        global_costs_mo.append(mo_costs)
+        global_costs_mt.append(mt_costs)
+
+    for x in range(5):
+        universal_success_so.append(sum(i[x] for i in global_success_so) / 5)
+        universal_success_st.append(sum(i[x] for i in global_success_so) / 5)
+        universal_success_mo.append(sum(i[x] for i in global_success_so) / 5)
+        universal_success_mt.append(sum(i[x] for i in global_success_so) / 5)
+
+        universal_fails_so.append(sum(i[x] for i in global_fails_so) / 5)
+        universal_fails_st.append(sum(i[x] for i in global_fails_st) / 5)
+        universal_fails_mo.append(sum(i[x] for i in global_fails_mo) / 5)
+        universal_fails_mt.append(sum(i[x] for i in global_fails_mt) / 5)
+
+        universal_delays_so.append(sum(i[x] for i in global_delays_so) / 5)
+        universal_delays_st.append(sum(i[x] for i in global_delays_st) / 5)
+        universal_delays_mo.append(sum(i[x] for i in global_delays_mo) / 5)
+        universal_delays_mt.append(sum(i[x] for i in global_delays_mt) / 5)
+
+        universal_costs_so.append(sum(i[x] for i in global_costs_so) / 5)
+        universal_costs_st.append(sum(i[x] for i in global_costs_st) / 5)
+        universal_costs_mo.append(sum(i[x] for i in global_costs_mo) / 5)
+        universal_costs_mt.append(sum(i[x] for i in global_costs_mt) / 5)
+
+    x_axis_datasets = [50, 100, 150, 200, 250]
+    y_axis_requests = [50, 100, 150, 200, 250]
+    y_axis_failure = [15, 25, 35, 45, 55]
+    y_axis_delay = [2.0, 4.0, 6.0, 8.0, 10.0]
+    y_axis_cost = [2.0, 4.0, 6.0, 8.0, 10.0]
+
+    success_name = f'D1-{num_datasets}N{NETWORK_TOPOLOGY}_universal_success.png'
+    fails_name = f'D1-{num_datasets}N{NETWORK_TOPOLOGY}_universal_fails.png'
+    delays_name = f'D1-{num_datasets}N{NETWORK_TOPOLOGY}_universal_delays.png'
+    costs_name = f'D1-{num_datasets}N{NETWORK_TOPOLOGY}_universal_costs.png'
+
+    create_bar_and_line_graph(universal_success_so, universal_success_st, universal_success_mo, universal_success_mt, "NETWORK SATURATION: REQUESTS PASSED", "Number of Requests Processed", "Number of Successful Requests Passed", x_axis_datasets, y_axis_requests, '', success_name)
+    create_bar_and_line_graph(universal_fails_so, universal_fails_st, universal_fails_mo, universal_fails_mt, "NETWORK FAILURE RANDOM: REQUEST FAILURE AVERAGES", "Number of Requests Processed", "Average Failure Probability of Requests", x_axis_datasets, y_axis_failure, '%', fails_name)
+    create_bar_and_line_graph(universal_delays_so, universal_delays_st, universal_delays_mo, universal_delays_mt, "NETWORK DELAYS RANDOM", "Number of Requests Processed", "Average Delay Times of Requests ms", x_axis_datasets, y_axis_delay, 'ms', delays_name)
+    create_bar_and_line_graph(universal_costs_so, universal_costs_st, universal_costs_mo, universal_costs_mt, "NETWORK COSTS RANDOM", "Number of Requests Processed", "Average Costs of Requests mb", x_axis_datasets, y_axis_cost, 'mb', costs_name)
 
 
 def gather_data(filepath):
@@ -85,7 +194,7 @@ def auto_label(axis, rectangle_group, notation):
                           color='black')     # textcoords='offset points' ^^<-- Takes this xytext and offsets the text by that set amount instead.
 
 
-def create_bar_and_line_graph(single_one, single_two, multi_one, multi_two, title, xlabel, ylabel, xaxis, yaxis, notation):
+def create_bar_and_line_graph(single_one, single_two, multi_one, multi_two, title, xlabel, ylabel, xaxis, yaxis, notation, name):
     width = 0.2  # Width of each of the bars in bar graph
     x_single_one = [x - width for x in range(len(single_one))]  # Look at all entries of playstation and subtract our width so the bars are aligned correctly. Creates the OFFSET for each bar...
     x_multi_one = [x for x in range(len(multi_one))]  # xbox is in the middle so no need to subtract width.. <--- and ^^ both list comprehension!
@@ -120,7 +229,15 @@ def create_bar_and_line_graph(single_one, single_two, multi_one, multi_two, titl
     auto_label(ax, rect3, notation)
     auto_label(ax, rect4, notation)
 
-    plt.show()
+    # plt.show()
+    figure = plt.gcf()
+    figure.set_size_inches(20, 11)
+    manager = plt.get_current_fig_manager()
+    manager.full_screen_toggle()
+    figure.show()
+    graphs_folder = os.path.join(outputFolder, "Graphs")
+    plt.savefig(os.path.join(graphs_folder, name), bbox_inches='tight', dpi=100)
+    manager.full_screen_toggle()
 
 ################### TUTORIAL GRAPH PLZ DONT DELETE MAJOR PAIN IN THE ASS TO LOOKUP ###########################
 # def tutorial_graph():
@@ -164,26 +281,26 @@ def create_bar_and_line_graph(single_one, single_two, multi_one, multi_two, titl
 
 
 if __name__ == '__main__':
+
+    gather_all_data_averages(5, 1)
+
     x_axis_datasets = [50, 100, 150, 200, 250]
     y_axis_requests = [50, 100, 150, 200, 250]
     y_axis_failure = [15, 25, 35, 45, 55]
     y_axis_delay = [2.0, 4.0, 6.0, 8.0, 10.0]
     y_axis_cost = [2.0, 4.0, 6.0, 8.0, 10.0]
 
-    # x_axis_datasets = [0, 50, 100, 150, 200, 250]
-    # y_axis_requests = [0, 50, 100, 150, 200, 250]
-    # y_axis_failure = [0, 15, 25, 35, 45, 55]
-    # y_axis_delay = [0, 2.0, 4.0, 6.0, 8.0, 10.0]
-    # y_axis_cost = [0, 2.0, 4.0, 6.0, 8.0, 10.0]
-
     SO_PASSED, SO_FAILS, SO_DELAYS, SO_COSTS = gather_data(GLOBAL_SINGLE_OUTPUT_FILE_PATH_ONE)
     ST_PASSED, ST_FAILS, ST_DELAYS, ST_COSTS = gather_data(GLOBAL_SINGLE_OUTPUT_FILE_PATH_TWO)
     MO_PASSED, MO_FAILS, MO_DELAYS, MO_COSTS = gather_data(GLOBAL_MULTI_OUTPUT_FILE_PATH_ONE)
     M2_PASSED, M2_FAILS, M2_DELAYS, M2_COSTS = gather_data(GLOBAL_MULTI_OUTPUT_FILE_PATH_TWO)
 
-    create_bar_and_line_graph(SO_PASSED, ST_PASSED, MO_PASSED, M2_PASSED, "NETWORK SATURATION: REQUESTS PASSED", "Number of Requests Processed", "Number of Successful Requests Passed", x_axis_datasets, y_axis_requests, '')
-    create_bar_and_line_graph(SO_FAILS, ST_FAILS, MO_FAILS, M2_FAILS, "NETWORK FAILURE RANDOM: REQUEST FAILURE AVERAGES", "Number of Requests Processed", "Average Failure Probability of Requests", x_axis_datasets, y_axis_failure, '%')
-    create_bar_and_line_graph(SO_DELAYS, ST_DELAYS, MO_DELAYS, M2_DELAYS, "NETWORK DELAYS RANDOM", "Number of Requests Processed", "Average Delay Times of Requests ms", x_axis_datasets, y_axis_delay, 'ms')
-    create_bar_and_line_graph(SO_COSTS, ST_COSTS, MO_COSTS, M2_COSTS, "NETWORK COSTS RANDOM", "Number of Requests Processed", "Average Costs of Requests mb", x_axis_datasets, y_axis_cost, 'mb')
+    success_name = f'D{DATASET}N{NETWORK_TOPOLOGY}_success.png'
+    fails_name = f'D{DATASET}N{NETWORK_TOPOLOGY}_fails.png'
+    delays_name = f'D{DATASET}N{NETWORK_TOPOLOGY}_delays.png'
+    costs_name = f'D{DATASET}N{NETWORK_TOPOLOGY}_costs.png'
 
-    # gather_all_data_averages(ADA, )
+    create_bar_and_line_graph(SO_PASSED, ST_PASSED, MO_PASSED, M2_PASSED, "NETWORK SATURATION: REQUESTS PASSED", "Number of Requests Processed", "Number of Successful Requests Passed", x_axis_datasets, y_axis_requests, '', success_name)
+    create_bar_and_line_graph(SO_FAILS, ST_FAILS, MO_FAILS, M2_FAILS, "NETWORK FAILURE RANDOM: REQUEST FAILURE AVERAGES", "Number of Requests Processed", "Average Failure Probability of Requests", x_axis_datasets, y_axis_failure, '%', fails_name)
+    create_bar_and_line_graph(SO_DELAYS, ST_DELAYS, MO_DELAYS, M2_DELAYS, "NETWORK DELAYS RANDOM", "Number of Requests Processed", "Average Delay Times of Requests ms", x_axis_datasets, y_axis_delay, 'ms', delays_name)
+    create_bar_and_line_graph(SO_COSTS, ST_COSTS, MO_COSTS, M2_COSTS, "NETWORK COSTS RANDOM", "Number of Requests Processed", "Average Costs of Requests mb", x_axis_datasets, y_axis_cost, 'mb', costs_name)

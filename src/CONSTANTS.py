@@ -31,17 +31,21 @@ CREATE_NUM_LINKS = 100
 CREATE_NUM_REQUESTS = 250    # REMEMBER TO CHANGE THIS SO OUTPUT AND INPUT FILES MATCH!
 CREATE_NUM_TERMINALS = 150  # NUM_TERMINALS = NUM_NODES x 3
 
+# VERSION CONTROL
+DATASET = 1
+NETWORK_TOPOLOGY = 1
+
 # INPUT FILE PATHS
-NodeInputData = os.path.join(resourcesFolder, "NodeInputData.csv")
-LinkInputData = os.path.join(resourcesFolder, "LinkInputData.csv")
-RequestInputData = os.path.join(resourcesFolder, "RequestInputData_{}.txt".format(CREATE_NUM_REQUESTS))
+NodeInputData = os.path.join(resourcesFolder, f"N{NETWORK_TOPOLOGY}_NodeInputData.csv")
+LinkInputData = os.path.join(resourcesFolder, f"N{NETWORK_TOPOLOGY}_LinkInputData.csv")
+RequestInputData = os.path.join(resourcesFolder, "D{}_RequestInputData_{}.txt".format(DATASET, CREATE_NUM_REQUESTS))
 
 # OUTPUT FILE PATHS
-GLOBAL_SINGLE_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "SINGLE_PATH_ONE_OUTPUT_DATA_{}_RANDOM.csv".format(CREATE_NUM_REQUESTS))
-GLOBAL_SINGLE_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "SINGLE_PATH_TWO_OUTPUT_DATA_{}_RANDOM.csv".format(CREATE_NUM_REQUESTS))
+GLOBAL_SINGLE_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "D{}N{}_SINGLE_PATH_ONE_OUTPUT_DATA_{}_RANDOM.csv".format(DATASET, NETWORK_TOPOLOGY, CREATE_NUM_REQUESTS))
+GLOBAL_SINGLE_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "D{}N{}_SINGLE_PATH_TWO_OUTPUT_DATA_{}_RANDOM.csv".format(DATASET, NETWORK_TOPOLOGY, CREATE_NUM_REQUESTS))
 
-GLOBAL_MULTI_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "MULTI_PATH_ONE_OUTPUT_DATA_{}_RANDOM.csv".format(CREATE_NUM_REQUESTS))
-GLOBAL_MULTI_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "MULTI_PATH_TWO_OUTPUT_DATA_{}_RANDOM.csv".format(CREATE_NUM_REQUESTS))
+GLOBAL_MULTI_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "D{}N{}_MULTI_PATH_ONE_OUTPUT_DATA_{}_RANDOM.csv".format(DATASET, NETWORK_TOPOLOGY, CREATE_NUM_REQUESTS))
+GLOBAL_MULTI_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "D{}N{}_MULTI_PATH_TWO_OUTPUT_DATA_{}_RANDOM.csv".format(DATASET, NETWORK_TOPOLOGY, CREATE_NUM_REQUESTS))
 ############ Global file paths ###############
 
 ###### 1 == SINGLE MAPPING, 2 == MULTI-MAPPING
@@ -55,8 +59,8 @@ MULTI_MAPPING_PATH_TWO = 4
 
 
 GLOBAL_PROTOCOL = 1     # MOST IMPORTANT VARIABLE DETERMINES ACTUAL MAPPING SCHEME THAT WILL BE RUN
-MAPPING_LOG_DATA = os.path.join(outputFolder, "SCHEME_{}R_NETWORK_LOGS_{}.csv".format(GLOBAL_PROTOCOL, CREATE_NUM_REQUESTS))
-AGGREGATE_DATASETS_AVERAGES = os.path.join(outputFolder, "AGGREGATE_DATASETS_AVERAGES_06_16_22.csv")
+MAPPING_LOG_DATA = os.path.join(outputFolder, "D{}N{}_SCHEME_{}R_NETWORK_LOGS_{}.csv".format(DATASET, NETWORK_TOPOLOGY, GLOBAL_PROTOCOL, CREATE_NUM_REQUESTS))
+AGGREGATE_DATASETS_AVERAGES = os.path.join(outputFolder, f"D{DATASET}N{NETWORK_TOPOLOGY}_AGGREGATE_DATASETS_AVERAGES_06_21_22.csv")
 
 
 def MAPPING_LOG(request_info, resource_line, fpt):
