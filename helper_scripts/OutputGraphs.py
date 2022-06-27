@@ -152,6 +152,27 @@ def gather_all_data_averages(network_topology):
     delays_name = f'N{NETWORK_TOPOLOGY}D{start}-{stop}_universal_delays.png'
     costs_name = f'N{NETWORK_TOPOLOGY}D{start}-{stop}_universal_costs.png'
 
+    print("\n")
+    print(f"N{NETWORK_TOPOLOGY}D{start}-{stop}_universal_success_so = {universal_success_so}")
+    print(f"N{NETWORK_TOPOLOGY}D{start}-{stop}_universal_success_st = {universal_success_st}")
+    print(f"N{NETWORK_TOPOLOGY}D{start}-{stop}_universal_success_mo = {universal_success_mo}")
+    print(f"N{NETWORK_TOPOLOGY}D{start}-{stop}_universal_success_mt = {universal_success_mt}\n")
+
+    print(f"N{NETWORK_TOPOLOGY}D{start}-{stop}_universal_fails_so = {universal_fails_so}")
+    print(f"N{NETWORK_TOPOLOGY}D{start}-{stop}_universal_fails_st = {universal_fails_st}")
+    print(f"N{NETWORK_TOPOLOGY}D{start}-{stop}_universal_fails_mo = {universal_fails_mo}")
+    print(f"N{NETWORK_TOPOLOGY}D{start}-{stop}_universal_fails_mt = {universal_fails_mt}\n")
+
+    print(f"N{NETWORK_TOPOLOGY}D{start}-{stop}_universal_delays_so = {universal_delays_so}")
+    print(f"N{NETWORK_TOPOLOGY}D{start}-{stop}_universal_delays_st = {universal_delays_st}")
+    print(f"N{NETWORK_TOPOLOGY}D{start}-{stop}_universal_delays_mo = {universal_delays_mo}")
+    print(f"N{NETWORK_TOPOLOGY}D{start}-{stop}_universal_delays_mt = {universal_delays_mt}\n")
+
+    print(f"N{NETWORK_TOPOLOGY}D{start}-{stop}_universal_costs_so = {universal_costs_so}")
+    print(f"N{NETWORK_TOPOLOGY}D{start}-{stop}_universal_costs_st = {universal_costs_st}")
+    print(f"N{NETWORK_TOPOLOGY}D{start}-{stop}_universal_costs_mo = {universal_costs_mo}")
+    print(f"N{NETWORK_TOPOLOGY}D{start}-{stop}_universal_costs_mt = {universal_costs_mt}\n")
+
     create_bar_and_line_graph(universal_success_so, universal_success_st, universal_success_mo, universal_success_mt, "NETWORK SATURATION: REQUESTS PASSED", "Number of Requests Processed", "Number of Successful Requests Passed", x_axis_datasets, y_axis_requests, '%', success_name)
     create_bar_and_line_graph(universal_fails_so, universal_fails_st, universal_fails_mo, universal_fails_mt, "NETWORK FAILURE RANDOM: REQUEST FAILURE AVERAGES", "Number of Requests Processed", "Average Failure Probability of Requests", x_axis_datasets, y_axis_failure, '%', fails_name)
     create_bar_and_line_graph(universal_delays_so, universal_delays_st, universal_delays_mo, universal_delays_mt, "NETWORK DELAYS RANDOM", "Number of Requests Processed", "Average Delay Times of Requests ms", x_axis_datasets, y_axis_delay, 'ms', delays_name)
@@ -296,8 +317,8 @@ def create_bar_and_line_graph(single_one, single_two, multi_one, multi_two, titl
     manager = plt.get_current_fig_manager()
     manager.full_screen_toggle()
     figure.show()
-    plt.savefig(os.path.join(specific_graphs_folder, name), bbox_inches='tight', dpi=100)
     manager.full_screen_toggle()
+    plt.savefig(os.path.join(specific_graphs_folder, name), bbox_inches='tight', dpi=100)
 
 ################### TUTORIAL GRAPH PLZ DONT DELETE MAJOR PAIN IN THE ASS TO LOOKUP ###########################
 # def tutorial_graph():
@@ -342,17 +363,18 @@ def create_bar_and_line_graph(single_one, single_two, multi_one, multi_two, titl
 
 if __name__ == '__main__':
 
-    start, stop = 0, 0
-
-    if NETWORK_TOPOLOGY == 1:
-        start, stop = 1, 5
-    if NETWORK_TOPOLOGY == 2:
-        start, stop = 6, 10
-    if NETWORK_TOPOLOGY == 3:
-        start, stop = 11, 15
-
-    for i in range(start, stop + 1):
-        auto_generate_graphs(i, NETWORK_TOPOLOGY)
+    # STUFF FOR INDIVIDUAL DATASET GRAPHS
+    # start, stop = 0, 0
+    #
+    # if NETWORK_TOPOLOGY == 1:
+    #     start, stop = 1, 5
+    # if NETWORK_TOPOLOGY == 2:
+    #     start, stop = 6, 10
+    # if NETWORK_TOPOLOGY == 3:
+    #     start, stop = 11, 15
+    #
+    # for i in range(start, stop + 1):
+    #     auto_generate_graphs(i, NETWORK_TOPOLOGY)
 
     gather_all_data_averages(NETWORK_TOPOLOGY)
 

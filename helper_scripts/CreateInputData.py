@@ -12,6 +12,7 @@ from src.CONSTANTS import CREATE_NUM_NODES as NUM_NODES
 from src.CONSTANTS import CREATE_NUM_LINKS as NUM_LINKS
 from src.CONSTANTS import CREATE_NUM_REQUESTS as NUM_REQS
 from src.CONSTANTS import CREATE_NUM_TERMINALS as NUM_TERMINALS
+from src.CONSTANTS import MAX_LINKS_PER_NODE, MAX_LINKS_PER_TERMINAL
 
 
 def create_terminal_and_node_input_data(number_of_nodes, number_of_terminals):
@@ -49,9 +50,9 @@ def create_terminal_and_node_input_data(number_of_nodes, number_of_terminals):
                 fp.write(nodeLine)
 
 
-def create_link_input_data(num_terminals, num_nodes, num_links):
-    existing_terminal_links = create_link_duos_TERMINALS(num_terminals, num_nodes, 3)
-    existing_node_links = create_link_duos_NODES(num_terminals, num_nodes, num_links, 4)
+def create_link_input_data(num_terminals, num_nodes, num_links, max_links_per_terminal, max_links_per_node):
+    existing_terminal_links = create_link_duos_TERMINALS(num_terminals, num_nodes, max_links_per_terminal)
+    existing_node_links = create_link_duos_NODES(num_terminals, num_nodes, num_links, max_links_per_node)
 
     get_isolated_and_excess(existing_terminal_links, 1, num_terminals)
     get_isolated_and_excess(existing_node_links, num_terminals+1, num_terminals+num_nodes)
@@ -228,10 +229,10 @@ if __name__ == '__main__':
     print("TOTAL NODES: {} TOTAL TERMINALS: {} TOTAL LINKS: {} TOTAL REQUESTS: {}\n".format(NUM_NODES, NUM_TERMINALS, NUM_LINKS, NUM_REQS))
 
     # create_terminal_and_node_input_data(NUM_NODES, NUM_TERMINALS)
-
-    # terminal_links, node_links = create_link_input_data(NUM_TERMINALS, NUM_NODES, NUM_LINKS)
-    # get_isolated_and_excess(terminal_links, 1, NUM_TERMINALS)  # num_nodes, start, end
-    # get_isolated_and_excess(node_links, NUM_TERMINALS+1, NUM_TERMINALS+NUM_NODES)   # num_nodes, start, end
+    #
+    # terminal_links, node_links = create_link_input_data(NUM_TERMINALS, NUM_NODES, NUM_LINKS, MAX_LINKS_PER_TERMINAL, MAX_LINKS_PER_NODE)
+    # # get_isolated_and_excess(terminal_links, 1, NUM_TERMINALS)  # num_nodes, start, end
+    # # get_isolated_and_excess(node_links, NUM_TERMINALS+1, NUM_TERMINALS+NUM_NODES)   # num_nodes, start, end
 
     create_terminal_requests(NUM_REQS, NUM_TERMINALS)
 
