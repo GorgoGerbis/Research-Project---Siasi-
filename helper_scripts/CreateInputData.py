@@ -224,82 +224,82 @@ def HELPER_check_redundancy(num_nodes):
             return src, dst
 
 
-def create_all_new_datasets(topology, start):
-    CONSTANTS.DATASET = start
-    CONSTANTS.NETWORK_TOPOLOGY = topology
-
-    if topology == 1:
-        number_of_nodes = 15
-        number_of_links = 30
-        number_of_terminals = 45
-
-        number_of_requests = 250
-        max_links_per_terminal = 3
-        max_links_per_node = 4
-
-    if topology == 2:
-        number_of_nodes = 50
-        number_of_links = 100
-        number_of_terminals = 150
-
-        number_of_requests = 250
-        max_links_per_terminal = 3
-        max_links_per_node = 4
-
-    if topology == 3:
-        number_of_nodes = 100
-        number_of_links = 200
-        number_of_terminals = 300
-
-        number_of_requests = 250
-        max_links_per_terminal = 3
-        max_links_per_node = 4
-
-    if topology == 4:
-        number_of_nodes = 200
-        number_of_links = 400
-        number_of_terminals = 800
-
-        number_of_requests = 250
-        max_links_per_terminal = 4
-        max_links_per_node = 4
-
-
-    print("CREATING NEW INPUT DATA!\n")
-    print("TOTAL NODES: {} TOTAL TERMINALS: {} TOTAL LINKS: {} TOTAL REQUESTS: {}\n".format(number_of_nodes, number_of_terminals, number_of_links, number_of_requests))
-    create_terminal_and_node_input_data(number_of_nodes, number_of_terminals)
-    terminal_links, node_links = create_link_input_data(number_of_terminals, number_of_nodes, number_of_links, max_links_per_terminal, max_links_per_node)
-    create_terminal_requests(number_of_requests, number_of_terminals)
-
-    CONSTANTS.DATASET = start + 1
-    create_terminal_requests(number_of_requests, number_of_terminals)
-
-    CONSTANTS.DATASET = start + 2
-    create_terminal_requests(number_of_requests, number_of_terminals)
-
-    CONSTANTS.DATASET = start + 3
-    create_terminal_requests(number_of_requests, number_of_terminals)
-
-    CONSTANTS.DATASET = start + 4
-    create_terminal_requests(number_of_requests, number_of_terminals)
-    print("FINISHED CREATING INPUT DATA\n")
+# def create_all_new_datasets(topology, start):
+#     CONSTANTS.DATASET = start
+#     CONSTANTS.NETWORK_TOPOLOGY = topology
+#
+#     if topology == 1:
+#         number_of_nodes = 15
+#         number_of_links = 30
+#         number_of_terminals = 45
+#
+#         number_of_requests = 250
+#         max_links_per_terminal = 3
+#         max_links_per_node = 4
+#
+#     if topology == 2:
+#         number_of_nodes = 50
+#         number_of_links = 100
+#         number_of_terminals = 150
+#
+#         number_of_requests = 250
+#         max_links_per_terminal = 3
+#         max_links_per_node = 4
+#
+#     if topology == 3:
+#         number_of_nodes = 100
+#         number_of_links = 200
+#         number_of_terminals = 300
+#
+#         number_of_requests = 250
+#         max_links_per_terminal = 3
+#         max_links_per_node = 4
+#
+#     if topology == 4:
+#         number_of_nodes = 200
+#         number_of_links = 400
+#         number_of_terminals = 800
+#
+#         number_of_requests = 250
+#         max_links_per_terminal = 4
+#         max_links_per_node = 4
+#
+#
+#     print("CREATING NEW INPUT DATA!\n")
+#     print("TOTAL NODES: {} TOTAL TERMINALS: {} TOTAL LINKS: {} TOTAL REQUESTS: {}\n".format(number_of_nodes, number_of_terminals, number_of_links, number_of_requests))
+#     create_terminal_and_node_input_data(number_of_nodes, number_of_terminals)
+#     terminal_links, node_links = create_link_input_data(number_of_terminals, number_of_nodes, number_of_links, max_links_per_terminal, max_links_per_node)
+#     create_terminal_requests(number_of_requests, number_of_terminals)
+#
+#     CONSTANTS.DATASET = start + 1
+#     create_terminal_requests(number_of_requests, number_of_terminals)
+#
+#     CONSTANTS.DATASET = start + 2
+#     create_terminal_requests(number_of_requests, number_of_terminals)
+#
+#     CONSTANTS.DATASET = start + 3
+#     create_terminal_requests(number_of_requests, number_of_terminals)
+#
+#     CONSTANTS.DATASET = start + 4
+#     create_terminal_requests(number_of_requests, number_of_terminals)
+#     print("FINISHED CREATING INPUT DATA\n")
 
 if __name__ == '__main__':
-    # print("CREATING NEW INPUT DATA!\n")
-    # print("TOTAL NODES: {} TOTAL TERMINALS: {} TOTAL LINKS: {} TOTAL REQUESTS: {}\n".format(NUM_NODES, NUM_TERMINALS, NUM_LINKS, NUM_REQS))
-    #
-    # create_terminal_and_node_input_data(NUM_NODES, NUM_TERMINALS)
-    #
-    # terminal_links, node_links = create_link_input_data(NUM_TERMINALS, NUM_NODES, NUM_LINKS, MAX_LINKS_PER_TERMINAL, MAX_LINKS_PER_NODE)
-    # # get_isolated_and_excess(terminal_links, 1, NUM_TERMINALS)  # num_nodes, start, end
-    # # get_isolated_and_excess(node_links, NUM_TERMINALS+1, NUM_TERMINALS+NUM_NODES)   # num_nodes, start, end
-    #
-    # create_terminal_requests(NUM_REQS, NUM_TERMINALS)
-    #
-    # print("FINISHED CREATING INPUT DATA\n")
+    print("CREATING NEW INPUT DATA!\n")
+    print("TOTAL NODES: {} TOTAL TERMINALS: {} TOTAL LINKS: {} TOTAL REQUESTS: {}\n".format(NUM_NODES, NUM_TERMINALS, NUM_LINKS, NUM_REQS))
 
-    create_all_new_datasets(1, 1)
-    create_all_new_datasets(2, 6)
-    create_all_new_datasets(3, 11)
-    create_all_new_datasets(4, 16)
+    create_terminal_and_node_input_data(NUM_NODES, NUM_TERMINALS)
+
+    terminal_links, node_links = create_link_input_data(NUM_TERMINALS, NUM_NODES, NUM_LINKS, MAX_LINKS_PER_TERMINAL, MAX_LINKS_PER_NODE)
+    # get_isolated_and_excess(terminal_links, 1, NUM_TERMINALS)  # num_nodes, start, end
+    # get_isolated_and_excess(node_links, NUM_TERMINALS+1, NUM_TERMINALS+NUM_NODES)   # num_nodes, start, end
+
+    create_terminal_requests(NUM_REQS, NUM_TERMINALS)
+
+    print("FINISHED CREATING INPUT DATA\n")
+
+    # create_all_new_datasets(1, 1)
+    # create_all_new_datasets(2, 6)
+    # create_all_new_datasets(3, 11)
+    # create_all_new_datasets(4, 16)
     
