@@ -67,6 +67,10 @@ def gather_all_data_averages(network_topology):
         start = 16
         stop = 20
         top_name = "EX-LARGE"
+    if NETWORK_TOPOLOGY == 5:
+        start = 21
+        stop = 25
+        top_name = "MASSIVE"
 
     for ds in range(start, stop+1):
         so_passed, so_fails, so_delays, so_costs = gather_data(os.path.join(outputFolder, f"D{ds}N{network_topology}_SINGLE_PATH_ONE_OUTPUT_DATA_{CREATE_NUM_REQUESTS}_RANDOM.csv"))
@@ -119,7 +123,7 @@ def gather_all_data_averages(network_topology):
     y_axis_requests = [50, 100, 150, 200, 250]
     y_axis_failure = [15, 25, 35, 45, 55]
     y_axis_delay = [2.0, 4.0, 6.0, 8.0, 10.0]
-    y_axis_cost = [2.0, 4.0, 6.0, 8.0, 10.0]
+    y_axis_cost = [16.0, 17.0, 18.0, 19.0, 20.0]
 
     success_name = f'N{NETWORK_TOPOLOGY}D{start}-{stop}_universal_success.png'
     fails_name = f'N{NETWORK_TOPOLOGY}D{start}-{stop}_universal_fails.png'
@@ -239,13 +243,13 @@ def gather_data(filepath):
             if count % 50 == 0:
                 passed.append(num_passed)
 
-                fails.append(current_fails / count)
-                delays.append(current_delays / count)
-                costs.append(current_costs / count)
+                # fails.append(current_fails / count)
+                # delays.append(current_delays / count)
+                # costs.append(current_costs / count)
 
-                # fails.append(current_fails / num_passed)
-                # delays.append(current_delays / num_passed)
-                # costs.append(current_costs / num_passed)
+                fails.append(current_fails / num_passed)
+                delays.append(current_delays / num_passed)
+                costs.append(current_costs / num_passed)
 
             if status == 'APPROVED':
                 failure_probability = float(current_elements[3].strip(',%'))
@@ -339,6 +343,9 @@ def create_bar_and_line_graph(single_one, single_two, multi_one, multi_two, titl
     if NETWORK_TOPOLOGY == 4:
         graphs_folder = os.path.join(outputFolder, "Graphs")
         specific_graphs_folder = os.path.join(graphs_folder, "ex-large-topology")
+    if NETWORK_TOPOLOGY == 5:
+        graphs_folder = os.path.join(outputFolder, "Graphs")
+        specific_graphs_folder = os.path.join(graphs_folder, "ex-amass-topology")
 
     # plt.show()
     figure = plt.gcf()

@@ -288,11 +288,11 @@ if __name__ == '__main__':
     print("CREATING NEW INPUT DATA!\n")
     print("TOTAL NODES: {} TOTAL TERMINALS: {} TOTAL LINKS: {} TOTAL REQUESTS: {}\n".format(NUM_NODES, NUM_TERMINALS, NUM_LINKS, NUM_REQS))
 
-    create_terminal_and_node_input_data(NUM_NODES, NUM_TERMINALS)
-
-    terminal_links, node_links = create_link_input_data(NUM_TERMINALS, NUM_NODES, NUM_LINKS, MAX_LINKS_PER_TERMINAL, MAX_LINKS_PER_NODE)
-    # get_isolated_and_excess(terminal_links, 1, NUM_TERMINALS)  # num_nodes, start, end
-    # get_isolated_and_excess(node_links, NUM_TERMINALS+1, NUM_TERMINALS+NUM_NODES)   # num_nodes, start, end
+    # create_terminal_and_node_input_data(NUM_NODES, NUM_TERMINALS)
+    #
+    # terminal_links, node_links = create_link_input_data(NUM_TERMINALS, NUM_NODES, NUM_LINKS, MAX_LINKS_PER_TERMINAL, MAX_LINKS_PER_NODE)
+    # # get_isolated_and_excess(terminal_links, 1, NUM_TERMINALS)  # num_nodes, start, end
+    # # get_isolated_and_excess(node_links, NUM_TERMINALS+1, NUM_TERMINALS+NUM_NODES)   # num_nodes, start, end
 
     create_terminal_requests(NUM_REQS, NUM_TERMINALS)
 
