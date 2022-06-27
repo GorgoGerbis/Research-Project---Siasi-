@@ -202,8 +202,8 @@ if __name__ == '__main__':
     # set_edges_EDGE_COST()
     set_edges_EDGE_DELAY()
 
-    nx.draw(GRAPH, with_labels=True, font_weight='bold')
-    plt.show()
+    # nx.draw(GRAPH, with_labels=True, font_weight='bold')
+    # plt.show()
 
     find_isolated_nodes()
     MAPPING_LOG("MAPPING LOG", "", 'w')

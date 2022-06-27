@@ -63,6 +63,10 @@ def gather_all_data_averages(network_topology):
         start = 11
         stop = 15
         top_name = "LARGE"
+    if NETWORK_TOPOLOGY == 4:
+        start = 16
+        stop = 20
+        top_name = "EX-LARGE"
 
     for ds in range(start, stop+1):
         so_passed, so_fails, so_delays, so_costs = gather_data(os.path.join(outputFolder, f"D{ds}N{network_topology}_SINGLE_PATH_ONE_OUTPUT_DATA_{CREATE_NUM_REQUESTS}_RANDOM.csv"))
@@ -311,7 +315,7 @@ def create_bar_and_line_graph(single_one, single_two, multi_one, multi_two, titl
     ax.set_title(title, size=25, fontweight='bold')
     ax.set_xlabel(xlabel, size=20, fontweight='bold')
     ax.set_ylabel(ylabel, size=20, fontweight='bold')
-    ax.legend()  # Creates legend for labeling the different elements of the graph/plot
+    ax.legend(loc="lower right")  # Creates legend for labeling the different elements of the graph/plot
 
     auto_label(ax, rect1, notation)
     auto_label(ax, rect2, notation)
@@ -327,6 +331,9 @@ def create_bar_and_line_graph(single_one, single_two, multi_one, multi_two, titl
     if NETWORK_TOPOLOGY == 3:
         graphs_folder = os.path.join(outputFolder, "Graphs")
         specific_graphs_folder = os.path.join(graphs_folder, "large-topology")
+    if NETWORK_TOPOLOGY == 4:
+        graphs_folder = os.path.join(outputFolder, "Graphs")
+        specific_graphs_folder = os.path.join(graphs_folder, "ex-large-topology")
 
     # plt.show()
     figure = plt.gcf()
