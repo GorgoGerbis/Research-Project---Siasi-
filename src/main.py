@@ -44,6 +44,8 @@ from src.MULTI_MAPPING import RUN_PATH_TWO as RUN_PATH_TWO_MULTI_MAPPING
 
 # @New Stuff
 from CONSTANTS import MAPPING_LOG
+from helper_scripts.OutputGraphs import auto_generate_graphs
+
 
 REQUEST_DELAY_THRESHOLD = GLOBAL_REQUEST_DELAY_THRESHOLD
 
@@ -241,5 +243,4 @@ if __name__ == '__main__':
         CreateOutputData.output_file_PATH_TWO(GLOBAL_MULTI_OUTPUT_FILE_PATH_TWO, CREATE_NUM_REQUESTS, CREATE_NUM_NODES,
                                               CREATE_NUM_LINKS)
 
-    # print("CREATING LINE GRAPHS WITH AVAILABLE DATA")
-    # run_output_graphs()
+    print("CREATING GRAPHS WITH AVAILABLE DATA")
