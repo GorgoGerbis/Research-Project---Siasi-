@@ -110,7 +110,7 @@ def gather_all_data_averages(num_datasets, network_topology):
     delays_name = f'D1-{num_datasets}N{NETWORK_TOPOLOGY}_universal_delays.png'
     costs_name = f'D1-{num_datasets}N{NETWORK_TOPOLOGY}_universal_costs.png'
 
-    create_bar_and_line_graph(universal_success_so, universal_success_st, universal_success_mo, universal_success_mt, "NETWORK SATURATION: REQUESTS PASSED", "Number of Requests Processed", "Number of Successful Requests Passed", x_axis_datasets, y_axis_requests, '', success_name)
+    create_bar_and_line_graph(universal_success_so, universal_success_st, universal_success_mo, universal_success_mt, "NETWORK SATURATION: REQUESTS PASSED", "Number of Requests Processed", "Number of Successful Requests Passed", x_axis_datasets, y_axis_requests, '%', success_name)
     create_bar_and_line_graph(universal_fails_so, universal_fails_st, universal_fails_mo, universal_fails_mt, "NETWORK FAILURE RANDOM: REQUEST FAILURE AVERAGES", "Number of Requests Processed", "Average Failure Probability of Requests", x_axis_datasets, y_axis_failure, '%', fails_name)
     create_bar_and_line_graph(universal_delays_so, universal_delays_st, universal_delays_mo, universal_delays_mt, "NETWORK DELAYS RANDOM", "Number of Requests Processed", "Average Delay Times of Requests ms", x_axis_datasets, y_axis_delay, 'ms', delays_name)
     create_bar_and_line_graph(universal_costs_so, universal_costs_st, universal_costs_mo, universal_costs_mt, "NETWORK COSTS RANDOM", "Number of Requests Processed", "Average Costs of Requests mb", x_axis_datasets, y_axis_cost, 'mb', costs_name)
@@ -171,6 +171,15 @@ def gather_data(filepath):
             else:
                 count += 1
                 num_failed += 1
+
+    data_set_sizes = [50, 100, 150, 200, 250]
+
+    for i in range(len(data_set_sizes)):
+        num_passed = passed[i]
+        size = data_set_sizes[i]
+        temp = num_passed / size
+        passed[i] = temp*100
+        # print(f"{temp}%")
 
     print("{}_Passed_Requests = {}\n{}_Average_Failure = {}\n{}_Average_Delays = {}\n{}_Average_Costs = {}".format(1, passed, 1, fails, 1, delays, 1, costs))
     return passed, fails, delays, costs
@@ -300,7 +309,7 @@ if __name__ == '__main__':
     delays_name = f'D{DATASET}N{NETWORK_TOPOLOGY}_delays.png'
     costs_name = f'D{DATASET}N{NETWORK_TOPOLOGY}_costs.png'
 
-    create_bar_and_line_graph(SO_PASSED, ST_PASSED, MO_PASSED, M2_PASSED, "NETWORK SATURATION: REQUESTS PASSED", "Number of Requests Processed", "Number of Successful Requests Passed", x_axis_datasets, y_axis_requests, '', success_name)
+    create_bar_and_line_graph(SO_PASSED, ST_PASSED, MO_PASSED, M2_PASSED, "NETWORK SATURATION: REQUESTS PASSED", "Number of Requests Processed", "Number of Successful Requests Passed", x_axis_datasets, y_axis_requests, '%', success_name)
     create_bar_and_line_graph(SO_FAILS, ST_FAILS, MO_FAILS, M2_FAILS, "NETWORK FAILURE RANDOM: REQUEST FAILURE AVERAGES", "Number of Requests Processed", "Average Failure Probability of Requests", x_axis_datasets, y_axis_failure, '%', fails_name)
     create_bar_and_line_graph(SO_DELAYS, ST_DELAYS, MO_DELAYS, M2_DELAYS, "NETWORK DELAYS RANDOM", "Number of Requests Processed", "Average Delay Times of Requests ms", x_axis_datasets, y_axis_delay, 'ms', delays_name)
     create_bar_and_line_graph(SO_COSTS, ST_COSTS, MO_COSTS, M2_COSTS, "NETWORK COSTS RANDOM", "Number of Requests Processed", "Average Costs of Requests mb", x_axis_datasets, y_axis_cost, 'mb', costs_name)
