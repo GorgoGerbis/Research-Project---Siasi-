@@ -238,9 +238,14 @@ def gather_data(filepath):
 
             if count % 50 == 0:
                 passed.append(num_passed)
+
                 fails.append(current_fails / count)
                 delays.append(current_delays / count)
                 costs.append(current_costs / count)
+
+                # fails.append(current_fails / num_passed)
+                # delays.append(current_delays / num_passed)
+                # costs.append(current_costs / num_passed)
 
             if status == 'APPROVED':
                 failure_probability = float(current_elements[3].strip(',%'))

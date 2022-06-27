@@ -204,8 +204,8 @@ def map_path_SINGLE(path_obj, req_bw):
                                                                                                    path_obj.REQ_INFO[0],
                                                                                                    path_obj.DELAY,
                                                                                                    path_obj.REQ_INFO[2],
-                                                                                                   path_obj.COST,
-                                                                                                   path_obj.return_failure_probability())
+                                                                                                   path_obj.return_failure_probability(),
+                                                                                                   path_obj.COST)
     resource_line = "{}\n".format(network_resources_remaining)
     MAPPING_LOG(request_info, resource_line, 'a')
 

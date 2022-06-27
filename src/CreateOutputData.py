@@ -10,12 +10,16 @@ REQUEST_APPROVED = 3
 
 
 def fail_unavailable_paths():
+    fails_output = []
     for req in RequestObj.STATIC_TOTAL_REQUEST_LIST:
         if req.requestStatus[0] == REQUEST_APPROVED:
             current = req.PATH_ONE.FAILURE_PROBABILITY
             if current >= GlOBAL_FAILURE_THRESHOLD:
+                fails_output.append(f"REQ:{req.requestID}, F% = {current}")
                 req.requestStatus[0] = REQUEST_DENIED
                 req.PATH_ONE = None
+    print(fails_output)
+    print()
 
 
 def get_average_data_PATH_ONE(num_reqs, num_nodes, num_links):

@@ -218,7 +218,7 @@ if __name__ == '__main__':
         print("CREATED PATH ONE OUTPUT FILES\n")
 
     if CONSTANTS.GLOBAL_PROTOCOL == 2:
-        print("Begin Processing requests using: Single-Mapping Protocol\n")
+        print("Begin Processing requests using: Failure Sensitive Single-Mapping Protocol\n")
         process_path_two_SINGLE_MAPPING()
 
         print("STARTING CREATION OF OUTPUT FILES\n")
@@ -227,7 +227,7 @@ if __name__ == '__main__':
         print("CREATED PATH ONE OUTPUT FILES\n")
 
     if CONSTANTS.GLOBAL_PROTOCOL == 3:
-        print("Begin Processing requests using: 'Head vs. Wall' Protocol\n")
+        print("Begin Processing requests using: Multi-Mapping Protocol\n")
         process_path_one_MULTI_MAPPING()
         print("ALL DONE FINDING FIRST PATHS\n")
         print("STARTING CREATION OF OUTPUT FILES\n")
@@ -237,6 +237,7 @@ if __name__ == '__main__':
 
         ############# BEGIN PROCESSING FOR PATH TWO ##############
     if CONSTANTS.GLOBAL_PROTOCOL == 4:
+        print("Begin Processing requests using: Failure Sensitive Multi-Mapping Protocol\n")
         process_path_two_MULTI_MAPPING()
         print("ALL DONE FINDING SECOND PATHS\n")
         print("STARTING CREATION OF FAILURE PROBABILITY OUTPUT FILES\n")

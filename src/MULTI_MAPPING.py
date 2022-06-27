@@ -118,7 +118,6 @@ def calculate_path_speed(path_obj, delay_threshold):
     # @ToDo remember that when a function is mapped to a node the delay for that node is: processingDelay + (processingDelay x num_funcs_mapped)
     for elements in mapping_list:
         used_node = elements[0]
-        func = elements[1]  # Unused variable holing func information....
         path_obj.DELAY += used_node.processingDelay
 
     for step in fused_list:
@@ -229,8 +228,8 @@ def map_path_MULTI(path_obj, req_bw):
                                                                                                    path_obj.REQ_INFO[0],
                                                                                                    path_obj.DELAY,
                                                                                                    path_obj.REQ_INFO[2],
-                                                                                                   path_obj.COST,
-                                                                                                   path_obj.return_failure_probability())
+                                                                                                   path_obj.return_failure_probability(),
+                                                                                                   path_obj.COST)
     resource_line = "{}\n".format(network_resources_remaining)
     MAPPING_LOG(request_info, resource_line, 'a')
 
@@ -269,7 +268,7 @@ def RUN_PATH_TWO(req):
     req_VNFs = req.requestedFunctions
 
     for path in PathObj.current_request_paths_list:
-        set_path_state_PATH_ONE(path, req_VNFs)
+        set_path_state_PATH_TWO(path, req_VNFs)
         if path.state <= 3:
             del path
 
