@@ -4,7 +4,7 @@ import random
 from src import CONSTANTS
 from src.VNFObj import VNFObj
 
-from src.CONSTANTS import NodeInputData
+from src.CONSTANTS import NodeInputData, DATASET, CREATE_NUM_REQUESTS, NETWORK_TOPOLOGY, topologyResourcesFolder
 from src.CONSTANTS import LinkInputData
 from src.CONSTANTS import RequestInputData
 
@@ -90,8 +90,8 @@ def create_link_input_data(num_terminals, num_nodes, num_links, max_links_per_te
     return existing_terminal_links, existing_node_links
 
 
-def create_terminal_requests(number_of_requests, number_of_terminals):
-    with open(RequestInputData, 'w') as fp:
+def create_terminal_requests(number_of_requests, number_of_terminals, request_file_data):
+    with open(request_file_data, 'w') as fp:
         heading = "requestID;source;destination;Requested VNFs;Requested Bandwidth;Requested VNF failure-threshold\n"
         fp.write(heading)
 
@@ -100,19 +100,18 @@ def create_terminal_requests(number_of_requests, number_of_terminals):
             src, dst = HELPER_check_redundancy(number_of_terminals)     # SOURCE AND DESTINATION SHOULD ONLY BE OTHER TERMINALS
             requested_num_func = CONSTANTS.get_VNFs()   # random.randint(1, 6)  # Random amount of functions
             outputFunctions = []  # The random list of functions
-            requestedBW = random.randint(5, 25)     # CONSTANTS.get_reqBW()
-            request_failure_threshold = 0
 
             for i in range(requested_num_func):
                 while True:
                     current_func = VNFObj.RANDOM
                     name = current_func.name
-                    temp = current_func.value
                     if name not in outputFunctions:
                         outputFunctions.append(name)
-                        request_failure_threshold += temp[2]
                         i += 1
                         break
+
+            requestedBW = get_requested_bandwidth(outputFunctions)    # random.randint(5, 25)
+            request_failure_threshold = get_request_failure_threshold(outputFunctions)     # 0
 
             requestLine = "{};{};{};{};{};{}\n".format(reqID, src, dst, outputFunctions, requestedBW, request_failure_threshold)
             fp.write(requestLine)
@@ -207,10 +206,61 @@ def get_isolated_and_excess(set_data, start, end):
         print("CHECKING LINK INPUT DATA")
         print(f"NUMBER OF ISOLATED {item} = {len(isolated)}, ISOLATED {item}: {isolated}")
         print(f"{item} WITH LOWER LINKS: {output_low_links}\n")
-        for x in output_excess_links:
-            print(f"{item} WITH EXCESS LINKS: [{x[0]}, {x[1]}]")
+        if len(isolated) > 0:
+            for x in output_excess_links:
+                print(f"{item} WITH EXCESS LINKS: [{x[0]}, {x[1]}]")
 
     # return isolated, output_low_links, output_excess_links
+
+
+def get_requested_bandwidth(funcs):
+    total_bandwidth = 0
+
+    for f in funcs:
+        func_num = int(f[1])
+
+        if func_num == 1:
+            total_bandwidth += 1
+
+        if func_num == 2:
+            total_bandwidth += 2
+
+        if func_num == 3:
+            total_bandwidth += 3
+
+        if func_num == 4:
+            total_bandwidth += 4
+
+        if func_num == 5:
+            total_bandwidth += 5
+
+        if func_num == 6:
+            total_bandwidth += 6
+
+    return total_bandwidth
+
+
+def get_request_failure_threshold(funcs):   # @ToDo should experiment with this.
+    """
+    GOING TO BE PLAYING WITH THIS ONE SHOULD EXPERIMENT WITH WHAT WORKS BEST
+    MEANINGLESS CURRENTLY UNTIL I MAKE EVERY REQUEST DEPENDENT ON ITS OWN FAILURE THRESHOLD.
+
+    EITHER, add up total failure thresholds and average them out.
+    OR, TAKE THE HIGHEST THRESHOLD.
+
+    :param funcs:
+    :return:
+    """
+    total_failure = 100.0
+
+    for f in funcs:
+        func = VNFObj.retrieve_function_value(f)
+        func_fail = func.value[2]
+
+        if func_fail < total_failure:
+            total_failure = func_fail
+
+    return total_failure
 
 
 def HELPER_check_redundancy(num_nodes):
@@ -224,82 +274,31 @@ def HELPER_check_redundancy(num_nodes):
             return src, dst
 
 
-# def create_all_new_datasets(topology, start):
-#     CONSTANTS.DATASET = start
-#     CONSTANTS.NETWORK_TOPOLOGY = topology
-#
-#     if topology == 1:
-#         number_of_nodes = 15
-#         number_of_links = 30
-#         number_of_terminals = 45
-#
-#         number_of_requests = 250
-#         max_links_per_terminal = 3
-#         max_links_per_node = 4
-#
-#     if topology == 2:
-#         number_of_nodes = 50
-#         number_of_links = 100
-#         number_of_terminals = 150
-#
-#         number_of_requests = 250
-#         max_links_per_terminal = 3
-#         max_links_per_node = 4
-#
-#     if topology == 3:
-#         number_of_nodes = 100
-#         number_of_links = 200
-#         number_of_terminals = 300
-#
-#         number_of_requests = 250
-#         max_links_per_terminal = 3
-#         max_links_per_node = 4
-#
-#     if topology == 4:
-#         number_of_nodes = 200
-#         number_of_links = 400
-#         number_of_terminals = 800
-#
-#         number_of_requests = 250
-#         max_links_per_terminal = 4
-#         max_links_per_node = 4
-#
-#
-#     print("CREATING NEW INPUT DATA!\n")
-#     print("TOTAL NODES: {} TOTAL TERMINALS: {} TOTAL LINKS: {} TOTAL REQUESTS: {}\n".format(number_of_nodes, number_of_terminals, number_of_links, number_of_requests))
-#     create_terminal_and_node_input_data(number_of_nodes, number_of_terminals)
-#     terminal_links, node_links = create_link_input_data(number_of_terminals, number_of_nodes, number_of_links, max_links_per_terminal, max_links_per_node)
-#     create_terminal_requests(number_of_requests, number_of_terminals)
-#
-#     CONSTANTS.DATASET = start + 1
-#     create_terminal_requests(number_of_requests, number_of_terminals)
-#
-#     CONSTANTS.DATASET = start + 2
-#     create_terminal_requests(number_of_requests, number_of_terminals)
-#
-#     CONSTANTS.DATASET = start + 3
-#     create_terminal_requests(number_of_requests, number_of_terminals)
-#
-#     CONSTANTS.DATASET = start + 4
-#     create_terminal_requests(number_of_requests, number_of_terminals)
-#     print("FINISHED CREATING INPUT DATA\n")
-
 if __name__ == '__main__':
     print("CREATING NEW INPUT DATA!\n")
     print("TOTAL NODES: {} TOTAL TERMINALS: {} TOTAL LINKS: {} TOTAL REQUESTS: {}\n".format(NUM_NODES, NUM_TERMINALS, NUM_LINKS, NUM_REQS))
 
-    # create_terminal_and_node_input_data(NUM_NODES, NUM_TERMINALS)
-    #
-    # terminal_links, node_links = create_link_input_data(NUM_TERMINALS, NUM_NODES, NUM_LINKS, MAX_LINKS_PER_TERMINAL, MAX_LINKS_PER_NODE)
-    # # get_isolated_and_excess(terminal_links, 1, NUM_TERMINALS)  # num_nodes, start, end
-    # # get_isolated_and_excess(node_links, NUM_TERMINALS+1, NUM_TERMINALS+NUM_NODES)   # num_nodes, start, end
+    create_terminal_and_node_input_data(NUM_NODES, NUM_TERMINALS)
+    terminal_links, node_links = create_link_input_data(NUM_TERMINALS, NUM_NODES, NUM_LINKS, MAX_LINKS_PER_TERMINAL, MAX_LINKS_PER_NODE)
+    print(f"CREATED NETWORK TOPOLOGY: {NETWORK_TOPOLOGY}\n")
 
-    create_terminal_requests(NUM_REQS, NUM_TERMINALS)
+    create_terminal_requests(NUM_REQS, NUM_TERMINALS, RequestInputData)
+    print(f"CREATED REQUEST FILE {DATASET}")
+
+    RequestInputData = os.path.join(topologyResourcesFolder, "D{}_RequestInputData_{}.txt".format(DATASET + 1, CREATE_NUM_REQUESTS))
+    create_terminal_requests(NUM_REQS, NUM_TERMINALS, RequestInputData)
+    print(f"CREATED REQUEST FILE {DATASET + 1}")
+
+    RequestInputData = os.path.join(topologyResourcesFolder, "D{}_RequestInputData_{}.txt".format(DATASET + 2, CREATE_NUM_REQUESTS))
+    create_terminal_requests(NUM_REQS, NUM_TERMINALS, RequestInputData)
+    print(f"CREATED REQUEST FILE {DATASET + 2}")
+
+    RequestInputData = os.path.join(topologyResourcesFolder, "D{}_RequestInputData_{}.txt".format(DATASET + 3, CREATE_NUM_REQUESTS))
+    create_terminal_requests(NUM_REQS, NUM_TERMINALS, RequestInputData)
+    print(f"CREATED REQUEST FILE {DATASET + 3}")
+
+    RequestInputData = os.path.join(topologyResourcesFolder, "D{}_RequestInputData_{}.txt".format(DATASET + 4, CREATE_NUM_REQUESTS))
+    create_terminal_requests(NUM_REQS, NUM_TERMINALS, RequestInputData)
+    print(f"CREATED REQUEST FILE {DATASET + 4}")
 
     print("FINISHED CREATING INPUT DATA\n")
-
-    # create_all_new_datasets(1, 1)
-    # create_all_new_datasets(2, 6)
-    # create_all_new_datasets(3, 11)
-    # create_all_new_datasets(4, 16)
-    

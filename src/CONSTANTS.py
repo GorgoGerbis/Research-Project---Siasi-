@@ -8,60 +8,6 @@ File holding all global and constant variables that would need to be adjusted/ch
 import os
 import random
 
-############ Global file paths ###############
-# baseFolder = r"C:\Users\jacks\OneDrive\Desktop\Siasi Research\Research-Project---Siasi-" # <-- Fp for ws1
-baseFolder = r"C:\Users\jacks\OneDrive\Desktop\Siasi Research\Research-Project---Siasi-"  # <-- Fp for ws0
-
-resourcesFolder = os.path.join(baseFolder, "resources")
-outputFolder = os.path.join(baseFolder, "output")
-
-
-############## NEW TERMINAL STUFF #################
-# @ToDo need to check that these randomly generated values are different each time they are called
-GLOBAL_REQUEST_DELAY_THRESHOLD = 120
-GlOBAL_FAILURE_THRESHOLD = 55.5
-
-# @TODO YOU CAN NOT! EDIT THE CLASS RESOURCES HERE NEED TO DO IT IN PROCESSING DATA SCRIPT MANUALLY
-node_resources = [50, 64]   # CAN NOT EDIT RESOURCES HERE NEED TO DO IT IN PROCESSING DATA  # [50, 64] <--> [CPU, MEMORY(RAM)]
-link_bandwidth = 100   # CAN NOT EDIT RESOURCES HERE NEED TO DO IT IN PROCESSING DATA
-
-# For CreateInputData script
-CREATE_NUM_NODES = 1000   # 15, 50, 100, # BONUS XL: 200  # BONUS MASS: 1000
-CREATE_NUM_LINKS = 2000  # 30, 100, 200, # BONUS XL: 400 # BONUS MASS: 2000
-CREATE_NUM_TERMINALS = 4000  # 45, 150, 300, # BONUS XL: 800 # BONUS MASS: 4000 # NUM_TERMINALS = NUM_NODES x 3
-MAX_LINKS_PER_TERMINAL = 4  # 3, 3, 3 # BONUS XL: 4 # BONUS MASS: 4
-MAX_LINKS_PER_NODE = 4  # 4, 4, 4 # BONUS XL: 4 # BONUS MASS: 4
-
-CREATE_NUM_REQUESTS = 500   # 250 # BONUS MASS: 500    # NUMBER OF NETWORK REQUESTS IS STATIC FOR ALL DATASETS AND TOPOLOGIES
-
-# VERSION CONTROL NETWORK ARCHITECTURE: 1-4
-NETWORK_TOPOLOGY = 5
-# REQUEST DATA SETS: 1-20
-DATASET = 25
-
-# NETWORK_TOPOLOGY = 2
-# DATASET = 6
-
-# NETWORK_TOPOLOGY = 3
-# DATASET = 11
-
-# NETWORK_TOPOLOGY = 4
-# DATASET = 16
-
-
-# INPUT FILE PATHS
-NodeInputData = os.path.join(resourcesFolder, f"N{NETWORK_TOPOLOGY}_NodeInputData.csv")
-LinkInputData = os.path.join(resourcesFolder, f"N{NETWORK_TOPOLOGY}_LinkInputData.csv")
-RequestInputData = os.path.join(resourcesFolder, "D{}_RequestInputData_{}.txt".format(DATASET, CREATE_NUM_REQUESTS))
-
-# OUTPUT FILE PATHS
-GLOBAL_SINGLE_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "D{}N{}_SINGLE_PATH_ONE_OUTPUT_DATA_{}_RANDOM.csv".format(DATASET, NETWORK_TOPOLOGY, CREATE_NUM_REQUESTS))
-GLOBAL_SINGLE_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "D{}N{}_SINGLE_PATH_TWO_OUTPUT_DATA_{}_RANDOM.csv".format(DATASET, NETWORK_TOPOLOGY, CREATE_NUM_REQUESTS))
-
-GLOBAL_MULTI_OUTPUT_FILE_PATH_ONE = os.path.join(outputFolder, "D{}N{}_MULTI_PATH_ONE_OUTPUT_DATA_{}_RANDOM.csv".format(DATASET, NETWORK_TOPOLOGY, CREATE_NUM_REQUESTS))
-GLOBAL_MULTI_OUTPUT_FILE_PATH_TWO = os.path.join(outputFolder, "D{}N{}_MULTI_PATH_TWO_OUTPUT_DATA_{}_RANDOM.csv".format(DATASET, NETWORK_TOPOLOGY, CREATE_NUM_REQUESTS))
-############ Global file paths ###############
-
 ###### 1 == SINGLE MAPPING, 2 == MULTI-MAPPING
 # Mapping one function at a time on multiple different nodes
 SINGLE_MAPPING_PATH_ONE = 1
@@ -73,9 +19,85 @@ MULTI_MAPPING_PATH_TWO = 4
 
 
 GLOBAL_PROTOCOL = 1     # MOST IMPORTANT VARIABLE DETERMINES ACTUAL MAPPING SCHEME THAT WILL BE RUN
+
+NETWORK_TOPOLOGY = 5    # VERSION CONTROL NETWORK ARCHITECTURE: 1-5
+DATASET = 1     # REQUEST DATA SETS: 1-25
+
+# CREATE_NUM_NODES = 0  # small:15, medium:50, large:100, # BONUS XL: 200  # BONUS MASS: 1000
+# CREATE_NUM_LINKS = 0  # small:30, medium:100, large:200, # BONUS XL: 400 # BONUS MASS: 2000
+# CREATE_NUM_TERMINALS = 0  # small:45, medium:150, large:300, # BONUS XL: 800 # BONUS MASS: 4000 # NUM_TERMINALS = NUM_NODES x 3
+# MAX_LINKS_PER_TERMINAL = 0  # small:3, medium:3, large:3 # BONUS XL: 4 # BONUS MASS: 4
+# MAX_LINKS_PER_NODE = 0  # small:4, medium:4, large:4 # BONUS XL: 4 # BONUS MASS: 4
+
+if NETWORK_TOPOLOGY == 1:   # SMALL
+    CREATE_NUM_NODES = 15
+    CREATE_NUM_LINKS = 30
+    CREATE_NUM_TERMINALS = 45
+    MAX_LINKS_PER_TERMINAL = 3
+    MAX_LINKS_PER_NODE = 4
+
+if NETWORK_TOPOLOGY == 2:
+    CREATE_NUM_NODES = 100
+    CREATE_NUM_LINKS = 200
+    CREATE_NUM_TERMINALS = 300
+    MAX_LINKS_PER_TERMINAL = 3
+    MAX_LINKS_PER_NODE = 4
+
+if NETWORK_TOPOLOGY == 3:
+    CREATE_NUM_NODES = 100
+    CREATE_NUM_LINKS = 200
+    CREATE_NUM_TERMINALS = 300
+    MAX_LINKS_PER_TERMINAL = 3
+    MAX_LINKS_PER_NODE = 4
+
+if NETWORK_TOPOLOGY == 4:
+    CREATE_NUM_NODES = 200
+    CREATE_NUM_LINKS = 400
+    CREATE_NUM_TERMINALS = 800
+    MAX_LINKS_PER_TERMINAL = 4
+    MAX_LINKS_PER_NODE = 4
+
+if NETWORK_TOPOLOGY == 5:
+    CREATE_NUM_NODES = 1000
+    CREATE_NUM_LINKS = 2000
+    CREATE_NUM_TERMINALS = 4000
+    MAX_LINKS_PER_TERMINAL = 4
+    MAX_LINKS_PER_NODE = 4
+
+############## NEW TERMINAL STUFF #################
+GLOBAL_REQUEST_DELAY_THRESHOLD = 120
+GlOBAL_FAILURE_THRESHOLD = 55.5
+
+# @TODO YOU CAN NOT! EDIT THE CLASS RESOURCES HERE NEED TO DO IT IN PROCESSING DATA SCRIPT MANUALLY
+node_resources = [50, 64]   # CAN NOT EDIT RESOURCES HERE NEED TO DO IT IN PROCESSING DATA  # [50, 64] <--> [CPU, MEMORY(RAM)]
+link_bandwidth = 100   # CAN NOT EDIT RESOURCES HERE NEED TO DO IT IN PROCESSING DATA
+CREATE_NUM_REQUESTS = 250   # 250 # BONUS MASS: 500    # NUMBER OF NETWORK REQUESTS IS STATIC FOR ALL DATASETS AND TOPOLOGIES
+
+############ Global file paths ###############
+# baseFolder = r"C:\Users\jacks\OneDrive\Desktop\Siasi Research\Research-Project---Siasi-" # <-- Fp for ws1
+baseFolder = r"C:\Users\jacks\OneDrive\Desktop\Siasi Research\Research-Project---Siasi-"  # <-- Fp for ws0
+
+resourcesFolder = os.path.join(baseFolder, "resources")
+topologyResourcesFolder = os.path.join(resourcesFolder, f"Topology_{NETWORK_TOPOLOGY}")
+outputFolder = os.path.join(baseFolder, "output")
+topologyOutputFolder = os.path.join(outputFolder, f"Topology_{NETWORK_TOPOLOGY}_output")
+
 LOG_FOLDER = os.path.join(outputFolder, "Simulation Logs")
 MAPPING_LOG_DATA = os.path.join(LOG_FOLDER, "D{}N{}_SCHEME_{}R_NETWORK_LOGS_{}.csv".format(DATASET, NETWORK_TOPOLOGY, GLOBAL_PROTOCOL, CREATE_NUM_REQUESTS))
 AGGREGATE_DATASETS_AVERAGES = os.path.join(outputFolder, f"D{DATASET}N{NETWORK_TOPOLOGY}_AGGREGATE_DATASETS_AVERAGES_06_27_22.csv")
+
+# INPUT FILE PATHS
+NodeInputData = os.path.join(topologyResourcesFolder, f"N{NETWORK_TOPOLOGY}_NodeInputData.csv")
+LinkInputData = os.path.join(topologyResourcesFolder, f"N{NETWORK_TOPOLOGY}_LinkInputData.csv")
+RequestInputData = os.path.join(topologyResourcesFolder, "D{}_RequestInputData_{}.txt".format(DATASET, CREATE_NUM_REQUESTS))
+
+# OUTPUT FILE PATHS
+GLOBAL_SINGLE_OUTPUT_FILE_PATH_ONE = os.path.join(topologyOutputFolder, "D{}N{}_SINGLE_PATH_ONE_OUTPUT_DATA_{}_RANDOM.csv".format(DATASET, NETWORK_TOPOLOGY, CREATE_NUM_REQUESTS))
+GLOBAL_SINGLE_OUTPUT_FILE_PATH_TWO = os.path.join(topologyOutputFolder, "D{}N{}_SINGLE_PATH_TWO_OUTPUT_DATA_{}_RANDOM.csv".format(DATASET, NETWORK_TOPOLOGY, CREATE_NUM_REQUESTS))
+
+GLOBAL_MULTI_OUTPUT_FILE_PATH_ONE = os.path.join(topologyOutputFolder, "D{}N{}_MULTI_PATH_ONE_OUTPUT_DATA_{}_RANDOM.csv".format(DATASET, NETWORK_TOPOLOGY, CREATE_NUM_REQUESTS))
+GLOBAL_MULTI_OUTPUT_FILE_PATH_TWO = os.path.join(topologyOutputFolder, "D{}N{}_MULTI_PATH_TWO_OUTPUT_DATA_{}_RANDOM.csv".format(DATASET, NETWORK_TOPOLOGY, CREATE_NUM_REQUESTS))
+############ Global file paths ###############
 
 
 def MAPPING_LOG(request_info, resource_line, fpt):
@@ -97,7 +119,7 @@ def get_VNFs():
 
 
 def get_node_fail():  # @ToDo Need to come up with ideal failure solution
-    node_fail = random.randint(1, 75) / 100
+    node_fail = random.randint(5, 80) / 100
     return node_fail
 
 

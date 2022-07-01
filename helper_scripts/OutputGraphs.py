@@ -4,7 +4,7 @@ from matplotlib.ticker import FormatStrFormatter
 
 from src.CONSTANTS import GLOBAL_SINGLE_OUTPUT_FILE_PATH_ONE, GLOBAL_SINGLE_OUTPUT_FILE_PATH_TWO
 from src.CONSTANTS import GLOBAL_MULTI_OUTPUT_FILE_PATH_ONE, GLOBAL_MULTI_OUTPUT_FILE_PATH_TWO
-from src.CONSTANTS import outputFolder
+from src.CONSTANTS import topologyOutputFolder as outputFolder
 from src.CONSTANTS import DATASET, NETWORK_TOPOLOGY, CREATE_NUM_REQUESTS
 from src.CONSTANTS import AGGREGATE_DATASETS_AVERAGES as ADA
 import matplotlib.pyplot as plt
