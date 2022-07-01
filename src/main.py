@@ -87,7 +87,7 @@ def set_edges_EDGE_FAIL():  # @ToDo Lets work on this one later....
     for link in NodeObj.StaticLinkList:
         src = link.linkSrc
         dst = link.linkDest
-        wht = link.linkEC
+        wht = link.failure_probability
         if link not in visited_links:
             GRAPH.add_edge(src, dst, weight=wht)
             visited_links.append(link)
@@ -131,6 +131,7 @@ def process_path_one_MULTI_MAPPING():
         count = 1  # Needs to be reset to 1 when a new request is being processed
         current_request_data = [req.requestedFunctions, req.request_delay_threshold, req.requestedBW]
         current_request_all_possible_paths = nx.all_shortest_paths(GRAPH, req.source, req.destination)
+        # current_request_all_possible_paths = nx.all_shortest_paths(GRAPH, req.source, req.destination, weight='weight')
 
         for path in current_request_all_possible_paths:  # STEP TWO
             pathID = "R{}P{}".format(req.requestID, count)
@@ -150,6 +151,7 @@ def process_path_two_MULTI_MAPPING():
         count = 1  # Needs to be reset to 1 when a new request is being processed
         current_request_data = [req.requestedFunctions, req.request_delay_threshold, req.requestedBW]
         current_request_all_possible_paths = nx.all_shortest_paths(GRAPH, req.source, req.destination)
+        # current_request_all_possible_paths = nx.all_shortest_paths(GRAPH, req.source, req.destination, weight='weight')
 
         for path in current_request_all_possible_paths:  # STEP TWO
             pathID = "R{}P{}".format(req.requestID, count)
@@ -169,6 +171,7 @@ def process_path_one_SINGLE_MAPPING():
         count = 1  # Needs to be reset to 1 when a new request is being processed
         current_request_data = [req.requestedFunctions, req.request_delay_threshold, req.requestedBW]
         current_request_all_possible_paths = nx.all_shortest_paths(GRAPH, req.source, req.destination)
+        # current_request_all_possible_paths = nx.all_shortest_paths(GRAPH, req.source, req.destination, weight='weight')
 
         for path in current_request_all_possible_paths:  # STEP TWO
             pathID = "R{}P{}".format(req.requestID, count)
@@ -188,6 +191,7 @@ def process_path_two_SINGLE_MAPPING():
         count = 1  # Needs to be reset to 1 when a new request is being processed
         current_request_data = [req.requestedFunctions, req.request_delay_threshold, req.requestedBW]
         current_request_all_possible_paths = nx.all_shortest_paths(GRAPH, req.source, req.destination)
+        # current_request_all_possible_paths = nx.all_shortest_paths(GRAPH, req.source, req.destination, weight='weight')
 
         for path in current_request_all_possible_paths:  # STEP TWO
             pathID = "R{}P{}".format(req.requestID, count)
@@ -291,6 +295,7 @@ if __name__ == '__main__':
 
     # set_edges_EDGE_COST()
     set_edges_EDGE_DELAY()
+    # set_edges_EDGE_FAIL()
 
     # nx.draw(GRAPH, with_labels=True, font_weight='bold')
     # plt.show()
