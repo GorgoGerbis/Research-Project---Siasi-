@@ -210,26 +210,44 @@ class PathObj:
 
         overall_average = 0
         node_count = 0
+        link_count = 0
+        overall_count = 0
 
         for step in fused_path:
             if type(step) == NodeObj:
                 current_fail = step.calculate_failure(step.nodeID)
-                node_count += 1
                 overall_average += current_fail
+                node_count += 1
+                overall_count += 1
+
+            if type(step) == LinkObj:
+                # current_fail = step.calculate_failure(step.linkID)
+                current_fail = step.failure_probability
+                overall_average += current_fail
+                link_count += 1
+                overall_count += 1
 
         node_count -= 2     # ToDo REMEMBER TO ADJUST FINAL FAILURE AVERAGES TO NOT COUNT TERMINALS
-        node_failure_probability = overall_average / node_count
-        node_failure_probability *= 100
+        # node_failure_probability = overall_average / node_count
+        # node_failure_probability *= 100
 
-        if node_failure_probability < 0:
-            node_failure_probability *= -1
+        # if node_failure_probability < 0:
+        #     node_failure_probability *= -1
 
-        self.FAILURE_PROBABILITY = node_failure_probability
-        return node_failure_probability
+        # self.FAILURE_PROBABILITY = node_failure_probability
+        # return node_failure_probability
+
+        failure_probability = overall_average / overall_count
+
+        if failure_probability < 0:
+            failure_probability *= -1
+
+        self.FAILURE_PROBABILITY = failure_probability
+        return failure_probability
 
     def return_failure_probability(self):
-        node_failure_probability = self.set_failure_probability()
-        return node_failure_probability
+        failure_probability = self.set_failure_probability()
+        return failure_probability
 
     @staticmethod
     def create_fusion_obj_list(path):

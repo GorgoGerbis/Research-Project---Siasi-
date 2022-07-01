@@ -17,7 +17,7 @@ SINGLE_MAPPING_PATH_TWO = 2
 MULTI_MAPPING_PATH_ONE = 3
 MULTI_MAPPING_PATH_TWO = 4
 
-GLOBAL_PROTOCOL = 1     # MOST IMPORTANT VARIABLE DETERMINES ACTUAL MAPPING SCHEME THAT WILL BE RUN
+GLOBAL_PROTOCOL = 4     # MOST IMPORTANT VARIABLE DETERMINES ACTUAL MAPPING SCHEME THAT WILL BE RUN
 
 NETWORK_TOPOLOGY = 3    # VERSION CONTROL NETWORK ARCHITECTURE: 1-5
 DATASET = 1     # REQUEST DATA SETS: 1-5
@@ -115,17 +115,17 @@ def get_VNFs():
 
 def get_node_fail():  # @ToDo Need to come up with ideal failure solution
     node_fail = random.randint(10, 80) / 100
-    return node_fail
+    return node_fail*100
+
+
+def get_link_fail():  # @ToDo Need to come up with ideal failure solution
+    link_fail = random.randint(10, 80) / 100  # Dividing to make them decimals
+    return link_fail*100
 
 
 def get_processing_delay():
     processing_delay = random.randint(1, 10) / 10  # <-- 1 ms
     return processing_delay
-
-
-def get_link_fail():  # @ToDo Need to come up with ideal failure solution
-    link_fail = random.randint(1, 100) / 100  # Dividing to make them decimals
-    return link_fail
 
 
 def get_edge_delay():

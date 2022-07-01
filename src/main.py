@@ -46,6 +46,8 @@ from src.MULTI_MAPPING import RUN_PATH_TWO as RUN_PATH_TWO_MULTI_MAPPING
 
 # @New Stuff
 from CONSTANTS import MAPPING_LOG
+from CONSTANTS import DATASET
+import LinkObj
 from helper_scripts.OutputGraphs import auto_generate_graphs
 
 
@@ -244,22 +246,34 @@ def run_all_datasets():
     if CONSTANTS.GLOBAL_PROTOCOL == 1:
         for i in range(5):
             run_SINGLE_MAPPING_CONVENTIONAL(count)
+            # reset_all_resources()
             count += 1
 
     if CONSTANTS.GLOBAL_PROTOCOL == 2:
         for i in range(5):
             run_SINGLE_MAPPING_FAILURE_SENSITIVE(count)
+            reset_all_resources()
             count += 1
 
     if CONSTANTS.GLOBAL_PROTOCOL == 3:
         for i in range(5):
             run_MULTI_MAPPING_CONVENTIONAL(count)
+            reset_all_resources()
             count += 1
 
     if CONSTANTS.GLOBAL_PROTOCOL == 4:
         for i in range(5):
             run_MULTI_MAPPING_FAILURE_SENSITIVE(count)
+            reset_all_resources()
             count += 1
+
+
+def reset_all_resources():
+    for node in NodeObj.StaticNodeList:
+        node.nodeResources = CONSTANTS.node_resources
+
+    for link in NodeObj.StaticLinkList:
+        link.linkBW = CONSTANTS.link_bandwidth
 
 
 if __name__ == '__main__':
@@ -276,4 +290,17 @@ if __name__ == '__main__':
     find_isolated_nodes()
     MAPPING_LOG("MAPPING LOG", "", 'w')
 
-    run_all_datasets()
+    # run_all_datasets()
+
+    if CONSTANTS.GLOBAL_PROTOCOL == 1:
+        run_SINGLE_MAPPING_CONVENTIONAL(DATASET)
+
+    if CONSTANTS.GLOBAL_PROTOCOL == 2:
+        run_SINGLE_MAPPING_FAILURE_SENSITIVE(DATASET)
+
+    if CONSTANTS.GLOBAL_PROTOCOL == 3:
+        run_MULTI_MAPPING_CONVENTIONAL(DATASET)
+
+    if CONSTANTS.GLOBAL_PROTOCOL == 4:
+        run_MULTI_MAPPING_FAILURE_SENSITIVE(DATASET)
+

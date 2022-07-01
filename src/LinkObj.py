@@ -38,17 +38,17 @@ class LinkObj(NodeObj):  # <-- This means its a subclass of NodeObj right?
             return True
 
 
-    @staticmethod
-    def calculate_failure(src, dest):
-        """
-        calculate whether or not a node has failed.
-        :param lid = linkID
-        :return: True if success, False if failed
-        """
-        l = LinkObj.returnLink(src, dest)
-        number_of_failures = REQUEST_DELAY_THRESHOLD * l.failure_probability
-        fail_rate = (number_of_failures + 1) / (REQUEST_DELAY_THRESHOLD + 2)
-        return fail_rate
+    # @staticmethod
+    # def calculate_failure(src, dest):
+    #     """
+    #     calculate whether or not a node has failed.
+    #     :param lid = linkID
+    #     :return: True if success, False if failed
+    #     """
+    #     l = LinkObj.returnLink(src, dest)
+    #     number_of_failures = REQUEST_DELAY_THRESHOLD * l.failure_probability
+    #     fail_rate = (number_of_failures + 1) / (REQUEST_DELAY_THRESHOLD + 2)
+    #     return fail_rate
 
     @staticmethod
     def returnLink(src, dest):
