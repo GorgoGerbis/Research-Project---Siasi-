@@ -189,7 +189,7 @@ def map_path_MULTI(path_obj, req_bw):
     network_resources_remaining = []
 
     if path_obj.state == OPTIMAL:  # Checks to make sure we are mapping the optimal path
-        print("MAPPING PATH {}\n".format(path_obj.pathID))
+        # print("MAPPING PATH {}\n".format(path_obj.pathID))
         fused_list = PathObj.create_fusion_obj_list(path_obj.route)
         mapping_list = path_obj.MAPPING_LOCATION
 
@@ -217,11 +217,11 @@ def map_path_MULTI(path_obj, req_bw):
     if CONSTANTS.GLOBAL_PROTOCOL == 3:
         NodeObj.StaticNodeResources_PATHONE.append(node_avg / CREATE_NUM_NODES)
         NodeObj.StaticLinkResources_PATHONE.append(link_avg / (CREATE_NUM_LINKS + CREATE_NUM_TERMINALS))
-        print("PATH {} MAPPED".format(path_obj.pathID))
+        # print("PATH {} MAPPED".format(path_obj.pathID))
     elif CONSTANTS.GLOBAL_PROTOCOL == 4:
         NodeObj.StaticNodeResources_PATHTWO.append(node_avg / CREATE_NUM_NODES)
         NodeObj.StaticLinkResources_PATHTWO.append(link_avg / (CREATE_NUM_LINKS + CREATE_NUM_TERMINALS))
-        print("PATH {} MAPPED".format(path_obj.pathID))
+        # print("PATH {} MAPPED".format(path_obj.pathID))
 
     ### def MAPPING_LOG(info):  ###
     request_info = "Request: {} | VNFs: {} | DELAY: {} | BW: {} | AVG FAIL: {} | COST: {}\n".format(path_obj.pathID,

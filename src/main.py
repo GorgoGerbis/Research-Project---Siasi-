@@ -246,7 +246,7 @@ def run_all_datasets():
     if CONSTANTS.GLOBAL_PROTOCOL == 1:
         for i in range(5):
             run_SINGLE_MAPPING_CONVENTIONAL(count)
-            # reset_all_resources()
+            reset_all_resources()
             count += 1
 
     if CONSTANTS.GLOBAL_PROTOCOL == 2:
@@ -269,11 +269,19 @@ def run_all_datasets():
 
 
 def reset_all_resources():
+    starting_node_resources = CONSTANTS.node_resources
+    starting_link_bw = CONSTANTS.link_bandwidth
+
     for node in NodeObj.StaticNodeList:
-        node.nodeResources = CONSTANTS.node_resources
+        if node.status == "N":
+            print(f"NODE:{node.nodeID} RESOURCES:{node.nodeResources}")
+            node.nodeResources = [50, 64]
+            print(f"NODE:{node.nodeID} RESOURCES:{node.nodeResources}\n")
 
     for link in NodeObj.StaticLinkList:
-        link.linkBW = CONSTANTS.link_bandwidth
+        print(f"LINK:{link.linkID} BW:{link.linkBW}")
+        link.linkBW = 100
+        print(f"LINK:{link.linkID} BW:{link.linkBW}\n")
 
 
 if __name__ == '__main__':
@@ -290,17 +298,17 @@ if __name__ == '__main__':
     find_isolated_nodes()
     MAPPING_LOG("MAPPING LOG", "", 'w')
 
-    # run_all_datasets()
+    run_all_datasets()
 
-    if CONSTANTS.GLOBAL_PROTOCOL == 1:
-        run_SINGLE_MAPPING_CONVENTIONAL(DATASET)
-
-    if CONSTANTS.GLOBAL_PROTOCOL == 2:
-        run_SINGLE_MAPPING_FAILURE_SENSITIVE(DATASET)
-
-    if CONSTANTS.GLOBAL_PROTOCOL == 3:
-        run_MULTI_MAPPING_CONVENTIONAL(DATASET)
-
-    if CONSTANTS.GLOBAL_PROTOCOL == 4:
-        run_MULTI_MAPPING_FAILURE_SENSITIVE(DATASET)
+    # if CONSTANTS.GLOBAL_PROTOCOL == 1:
+    #     run_SINGLE_MAPPING_CONVENTIONAL(DATASET)
+    #
+    # if CONSTANTS.GLOBAL_PROTOCOL == 2:
+    #     run_SINGLE_MAPPING_FAILURE_SENSITIVE(DATASET)
+    #
+    # if CONSTANTS.GLOBAL_PROTOCOL == 3:
+    #     run_MULTI_MAPPING_CONVENTIONAL(DATASET)
+    #
+    # if CONSTANTS.GLOBAL_PROTOCOL == 4:
+    #     run_MULTI_MAPPING_FAILURE_SENSITIVE(DATASET)
 
