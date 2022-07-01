@@ -111,7 +111,7 @@ def create_terminal_requests(number_of_requests, number_of_terminals, request_fi
                         break
 
             requestedBW = get_requested_bandwidth(outputFunctions)    # random.randint(5, 25)
-            request_failure_threshold = get_request_failure_threshold(outputFunctions)     # 0
+            request_failure_threshold = get_request_failure_threshold(outputFunctions)*100     # 0
 
             requestLine = "{};{};{};{};{};{}\n".format(reqID, src, dst, outputFunctions, requestedBW, request_failure_threshold)
             fp.write(requestLine)
@@ -278,27 +278,36 @@ if __name__ == '__main__':
     print("CREATING NEW INPUT DATA!\n")
     print("TOTAL NODES: {} TOTAL TERMINALS: {} TOTAL LINKS: {} TOTAL REQUESTS: {}\n".format(NUM_NODES, NUM_TERMINALS, NUM_LINKS, NUM_REQS))
 
+    dataset_num = 0
+    dataset_num += DATASET
+
     create_terminal_and_node_input_data(NUM_NODES, NUM_TERMINALS)
     terminal_links, node_links = create_link_input_data(NUM_TERMINALS, NUM_NODES, NUM_LINKS, MAX_LINKS_PER_TERMINAL, MAX_LINKS_PER_NODE)
     print(f"CREATED NETWORK TOPOLOGY: {NETWORK_TOPOLOGY}\n")
 
     create_terminal_requests(NUM_REQS, NUM_TERMINALS, RequestInputData)
-    print(f"CREATED REQUEST FILE {DATASET}")
+    print(f"CREATED REQUEST FILE {dataset_num}")
 
-    RequestInputData = os.path.join(topologyResourcesFolder, "D{}_RequestInputData_{}.txt".format(DATASET + 1, CREATE_NUM_REQUESTS))
+    RequestInputData = os.path.join(topologyResourcesFolder, "N{}D{}_RequestInputData_{}.txt".format(NETWORK_TOPOLOGY, DATASET+1, CREATE_NUM_REQUESTS))
     create_terminal_requests(NUM_REQS, NUM_TERMINALS, RequestInputData)
-    print(f"CREATED REQUEST FILE {DATASET + 1}")
+    print(f"CREATED REQUEST FILE {dataset_num + 1}")
 
-    RequestInputData = os.path.join(topologyResourcesFolder, "D{}_RequestInputData_{}.txt".format(DATASET + 2, CREATE_NUM_REQUESTS))
+    RequestInputData = os.path.join(topologyResourcesFolder,
+                                    "N{}D{}_RequestInputData_{}.txt".format(NETWORK_TOPOLOGY, DATASET+2,
+                                                                            CREATE_NUM_REQUESTS))
     create_terminal_requests(NUM_REQS, NUM_TERMINALS, RequestInputData)
-    print(f"CREATED REQUEST FILE {DATASET + 2}")
+    print(f"CREATED REQUEST FILE {dataset_num + 2}")
 
-    RequestInputData = os.path.join(topologyResourcesFolder, "D{}_RequestInputData_{}.txt".format(DATASET + 3, CREATE_NUM_REQUESTS))
+    RequestInputData = os.path.join(topologyResourcesFolder,
+                                    "N{}D{}_RequestInputData_{}.txt".format(NETWORK_TOPOLOGY, DATASET+3,
+                                                                            CREATE_NUM_REQUESTS))
     create_terminal_requests(NUM_REQS, NUM_TERMINALS, RequestInputData)
-    print(f"CREATED REQUEST FILE {DATASET + 3}")
+    print(f"CREATED REQUEST FILE {dataset_num + 3}")
 
-    RequestInputData = os.path.join(topologyResourcesFolder, "D{}_RequestInputData_{}.txt".format(DATASET + 4, CREATE_NUM_REQUESTS))
+    RequestInputData = os.path.join(topologyResourcesFolder,
+                                    "N{}D{}_RequestInputData_{}.txt".format(NETWORK_TOPOLOGY, DATASET+4,
+                                                                            CREATE_NUM_REQUESTS))
     create_terminal_requests(NUM_REQS, NUM_TERMINALS, RequestInputData)
-    print(f"CREATED REQUEST FILE {DATASET + 4}")
+    print(f"CREATED REQUEST FILE {dataset_num + 4}")
 
     print("FINISHED CREATING INPUT DATA\n")

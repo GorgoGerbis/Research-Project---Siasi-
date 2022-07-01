@@ -17,11 +17,11 @@ SINGLE_MAPPING_PATH_TWO = 2
 MULTI_MAPPING_PATH_ONE = 3
 MULTI_MAPPING_PATH_TWO = 4
 
-
 GLOBAL_PROTOCOL = 1     # MOST IMPORTANT VARIABLE DETERMINES ACTUAL MAPPING SCHEME THAT WILL BE RUN
 
-NETWORK_TOPOLOGY = 5    # VERSION CONTROL NETWORK ARCHITECTURE: 1-5
-DATASET = 1     # REQUEST DATA SETS: 1-25
+NETWORK_TOPOLOGY = 3    # VERSION CONTROL NETWORK ARCHITECTURE: 1-5
+DATASET = 1     # REQUEST DATA SETS: 1-5
+
 
 # CREATE_NUM_NODES = 0  # small:15, medium:50, large:100, # BONUS XL: 200  # BONUS MASS: 1000
 # CREATE_NUM_LINKS = 0  # small:30, medium:100, large:200, # BONUS XL: 400 # BONUS MASS: 2000
@@ -60,7 +60,7 @@ if NETWORK_TOPOLOGY == 4:
 if NETWORK_TOPOLOGY == 5:
     CREATE_NUM_NODES = 1000
     CREATE_NUM_LINKS = 2000
-    CREATE_NUM_TERMINALS = 4000
+    CREATE_NUM_TERMINALS = 3000
     MAX_LINKS_PER_TERMINAL = 4
     MAX_LINKS_PER_NODE = 4
 
@@ -83,20 +83,20 @@ outputFolder = os.path.join(baseFolder, "output")
 topologyOutputFolder = os.path.join(outputFolder, f"Topology_{NETWORK_TOPOLOGY}_output")
 
 LOG_FOLDER = os.path.join(outputFolder, "Simulation Logs")
-MAPPING_LOG_DATA = os.path.join(LOG_FOLDER, "D{}N{}_SCHEME_{}R_NETWORK_LOGS_{}.csv".format(DATASET, NETWORK_TOPOLOGY, GLOBAL_PROTOCOL, CREATE_NUM_REQUESTS))
+MAPPING_LOG_DATA = os.path.join(LOG_FOLDER, "N{}D{}_SCHEME_{}R_NETWORK_LOGS_{}.csv".format(NETWORK_TOPOLOGY, DATASET, GLOBAL_PROTOCOL, CREATE_NUM_REQUESTS))
 AGGREGATE_DATASETS_AVERAGES = os.path.join(outputFolder, f"D{DATASET}N{NETWORK_TOPOLOGY}_AGGREGATE_DATASETS_AVERAGES_06_27_22.csv")
 
 # INPUT FILE PATHS
 NodeInputData = os.path.join(topologyResourcesFolder, f"N{NETWORK_TOPOLOGY}_NodeInputData.csv")
 LinkInputData = os.path.join(topologyResourcesFolder, f"N{NETWORK_TOPOLOGY}_LinkInputData.csv")
-RequestInputData = os.path.join(topologyResourcesFolder, "D{}_RequestInputData_{}.txt".format(DATASET, CREATE_NUM_REQUESTS))
+RequestInputData = os.path.join(topologyResourcesFolder, f"N{NETWORK_TOPOLOGY}D{DATASET}_RequestInputData_{CREATE_NUM_REQUESTS}.txt")
 
 # OUTPUT FILE PATHS
-GLOBAL_SINGLE_OUTPUT_FILE_PATH_ONE = os.path.join(topologyOutputFolder, "D{}N{}_SINGLE_PATH_ONE_OUTPUT_DATA_{}_RANDOM.csv".format(DATASET, NETWORK_TOPOLOGY, CREATE_NUM_REQUESTS))
-GLOBAL_SINGLE_OUTPUT_FILE_PATH_TWO = os.path.join(topologyOutputFolder, "D{}N{}_SINGLE_PATH_TWO_OUTPUT_DATA_{}_RANDOM.csv".format(DATASET, NETWORK_TOPOLOGY, CREATE_NUM_REQUESTS))
+GLOBAL_SINGLE_OUTPUT_FILE_PATH_ONE = os.path.join(topologyOutputFolder, f"N{NETWORK_TOPOLOGY}D{DATASET}_SINGLE_PATH_ONE_OUTPUT_DATA_{CREATE_NUM_REQUESTS}_RANDOM.csv")
+GLOBAL_SINGLE_OUTPUT_FILE_PATH_TWO = os.path.join(topologyOutputFolder, f"N{NETWORK_TOPOLOGY}D{DATASET}_SINGLE_PATH_TWO_OUTPUT_DATA_{CREATE_NUM_REQUESTS}_RANDOM.csv")
 
-GLOBAL_MULTI_OUTPUT_FILE_PATH_ONE = os.path.join(topologyOutputFolder, "D{}N{}_MULTI_PATH_ONE_OUTPUT_DATA_{}_RANDOM.csv".format(DATASET, NETWORK_TOPOLOGY, CREATE_NUM_REQUESTS))
-GLOBAL_MULTI_OUTPUT_FILE_PATH_TWO = os.path.join(topologyOutputFolder, "D{}N{}_MULTI_PATH_TWO_OUTPUT_DATA_{}_RANDOM.csv".format(DATASET, NETWORK_TOPOLOGY, CREATE_NUM_REQUESTS))
+GLOBAL_MULTI_OUTPUT_FILE_PATH_ONE = os.path.join(topologyOutputFolder, f"N{NETWORK_TOPOLOGY}D{DATASET}_MULTI_PATH_ONE_OUTPUT_DATA_{CREATE_NUM_REQUESTS}_RANDOM.csv")
+GLOBAL_MULTI_OUTPUT_FILE_PATH_TWO = os.path.join(topologyOutputFolder, f"N{NETWORK_TOPOLOGY}D{DATASET}_MULTI_PATH_TWO_OUTPUT_DATA_{CREATE_NUM_REQUESTS}_RANDOM.csv")
 ############ Global file paths ###############
 
 
@@ -108,18 +108,13 @@ def MAPPING_LOG(request_info, resource_line, fpt):
         fp.write('\n')
 
 
-def get_reqBW():  # @ToDo Maybe we should be adjusting this to match their num_funcs
-    requestedBW = random.randint(5, 25)
-    return requestedBW
-
-
 def get_VNFs():
     num_VNFs = random.randint(1, 5)  # Random amount of functions
     return num_VNFs
 
 
 def get_node_fail():  # @ToDo Need to come up with ideal failure solution
-    node_fail = random.randint(5, 80) / 100
+    node_fail = random.randint(10, 80) / 100
     return node_fail
 
 

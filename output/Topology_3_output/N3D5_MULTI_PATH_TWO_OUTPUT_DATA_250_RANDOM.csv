@@ -1,0 +1,254 @@
+DATASET=TINY,TYPE=WITH_FAULT_TOLERANCE,NODES=42,LINKS=63,REQUESTS=100
+REQUEST PASSED, REQUESTS FAILED, AVERAGE REQUEST DELAY, AVERAGE REQUEST COST, AVERAGE FAILURE PROBABILITY, AVERAGE LENGTH OF PATHS, MEAN NODE [CPU, RAM], MEAN LINK BANDWIDTH
+39,211,14.876410256410255,12.77692307692308,50.26775956284153%,6.3076923076923075,[20.92, 34.92],167.58
+REQUEST STATUS,REQUEST ID,PATH ID,FAILURE PROBABILITY,DELAY,COST,FUNCTIONS,PATH
+APPROVED|,1|,R1P1|,49.91803278688525%|,16.11|,11.899999999999999|,['F1']|,[211, 371, 390, 330, 344, 131]|
+DENIED|,2|,NONE|,NONE|,0|,0|,['F3', 'F2', 'F4', 'F1']|,src=9|, dest=132|
+DENIED|,3|,NONE|,NONE|,0|,0|,['F3', 'F1', 'F4', 'F5', 'F2']|,src=167|, dest=100|
+APPROVED|,4|,R4P1|,56.81967213114755%|,16.960000000000004|,14.4|,['F2', 'F3']|,[1, 301, 322, 350, 323, 346, 136]|
+DENIED|,5|,NONE|,NONE|,0|,0|,['F4', 'F1', 'F2', 'F5']|,src=210|, dest=147|
+DENIED|,6|,NONE|,NONE|,0|,0|,['F5', 'F3']|,src=230|, dest=146|
+DENIED|,7|,NONE|,NONE|,0|,0|,['F2', 'F4', 'F3']|,src=213|, dest=168|
+APPROVED|,8|,R8P1|,59.72677595628415%|,10.8|,10.5|,['F1']|,[241, 381, 316, 355, 164]|
+DENIED|,9|,NONE|,NONE|,0|,0|,['F4', 'F3', 'F5', 'F1']|,src=2|, dest=232|
+DENIED|,10|,NONE|,NONE|,0|,0|,['F5', 'F1', 'F2', 'F4']|,src=88|, dest=216|
+APPROVED|,11|,R11P2|,48.55737704918033%|,15.000000000000002|,13.6|,['F2']|,[3, 301, 313, 347, 376, 373, 219]|
+DENIED|,12|,NONE|,NONE|,0|,0|,['F5', 'F1']|,src=59|, dest=16|
+DENIED|,13|,NONE|,NONE|,0|,0|,['F2', 'F4']|,src=230|, dest=24|
+DENIED|,14|,NONE|,NONE|,0|,0|,['F3', 'F4', 'F5', 'F1', 'F2']|,src=220|, dest=239|
+DENIED|,15|,NONE|,NONE|,0|,0|,['F5', 'F4', 'F2']|,src=243|, dest=140|
+APPROVED|,16|,R16P1|,56.06557377049182%|,13.6|,12.6|,['F2']|,[86, 329, 322, 301, 356, 167]|
+APPROVED|,17|,R17P1|,45.24590163934426%|,13.64|,12.1|,['F2', 'F1']|,[200, 367, 384, 358, 352, 156]|
+DENIED|,18|,NONE|,NONE|,0|,0|,['F3', 'F2', 'F5', 'F1', 'F4']|,src=30|, dest=75|
+DENIED|,19|,NONE|,NONE|,0|,0|,['F1', 'F5']|,src=134|, dest=16|
+DENIED|,20|,NONE|,NONE|,0|,0|,['F4', 'F1', 'F5', 'F3']|,src=294|, dest=235|
+DENIED|,21|,NONE|,NONE|,0|,0|,['F5', 'F2']|,src=166|, dest=58|
+DENIED|,22|,NONE|,NONE|,0|,0|,['F4', 'F5', 'F2', 'F1', 'F3']|,src=2|, dest=16|
+DENIED|,23|,NONE|,NONE|,0|,0|,['F1', 'F5', 'F2', 'F3', 'F4']|,src=296|, dest=159|
+DENIED|,24|,NONE|,NONE|,0|,0|,['F2', 'F3', 'F4', 'F1']|,src=178|, dest=163|
+DENIED|,25|,NONE|,NONE|,0|,0|,['F4', 'F5', 'F2']|,src=199|, dest=143|
+DENIED|,26|,NONE|,NONE|,0|,0|,['F5']|,src=138|, dest=250|
+DENIED|,27|,NONE|,NONE|,0|,0|,['F5', 'F2', 'F3', 'F4']|,src=239|, dest=47|
+DENIED|,28|,NONE|,NONE|,0|,0|,['F3', 'F1', 'F5', 'F4']|,src=297|, dest=70|
+DENIED|,29|,NONE|,NONE|,0|,0|,['F3', 'F5']|,src=268|, dest=115|
+APPROVED|,30|,R30P1|,50.40983606557378%|,16.12|,11.799999999999999|,['F3']|,[70, 324, 364, 370, 310, 28]|
+DENIED|,31|,NONE|,NONE|,0|,0|,['F4', 'F1', 'F3', 'F5', 'F2']|,src=88|, dest=181|
+APPROVED|,32|,R32P1|,52.29508196721311%|,14.979999999999999|,14.5|,['F4']|,[242, 381, 386, 313, 347, 327, 79]|
+DENIED|,33|,NONE|,NONE|,0|,0|,['F1']|,src=38|, dest=180|
+DENIED|,34|,NONE|,NONE|,0|,0|,['F1', 'F3', 'F4']|,src=229|, dest=232|
+APPROVED|,35|,R35P1|,48.68852459016393%|,11.290000000000001|,12.5|,['F1', 'F2']|,[37, 313, 379, 378, 354, 160]|
+DENIED|,36|,NONE|,NONE|,0|,0|,['F4', 'F2', 'F3']|,src=61|, dest=245|
+APPROVED|,37|,R37P1|,47.950819672131146%|,13.270000000000001|,12.0|,['F4']|,[56, 319, 355, 316, 341, 122]|
+DENIED|,38|,NONE|,NONE|,0|,0|,['F5', 'F2', 'F1']|,src=102|, dest=239|
+DENIED|,39|,NONE|,NONE|,0|,0|,['F5', 'F2', 'F4', 'F3']|,src=2|, dest=119|
+DENIED|,40|,NONE|,NONE|,0|,0|,['F4', 'F1', 'F5']|,src=53|, dest=128|
+APPROVED|,41|,R41P1|,44.26229508196721%|,14.13|,12.4|,['F5', 'F3']|,[169, 357, 400, 315, 395, 284]|
+DENIED|,42|,NONE|,NONE|,0|,0|,['F3', 'F5']|,src=105|, dest=91|
+APPROVED|,43|,R43P1|,55.442622950819676%|,16.67|,14.3|,['F1']|,[119, 340, 397, 333, 375, 348, 143]|
+DENIED|,44|,NONE|,NONE|,0|,0|,['F4', 'F3']|,src=81|, dest=75|
+APPROVED|,45|,R45P4|,50.10928961748634%|,21.43|,16.900000000000002|,['F2', 'F3']|,[31, 311, 362, 374, 393, 348, 344, 130]|
+APPROVED|,46|,R46P1|,35.79234972677596%|,11.4|,9.700000000000001|,['F2']|,[211, 371, 309, 317, 50]|
+DENIED|,47|,NONE|,NONE|,0|,0|,['F2', 'F3', 'F5', 'F4']|,src=75|, dest=285|
+APPROVED|,48|,R48P2|,49.67213114754099%|,23.32|,19.5|,['F3', 'F1', 'F4']|,[79, 327, 347, 348, 375, 390, 371, 309, 25]|
+DENIED|,49|,NONE|,NONE|,0|,0|,['F5']|,src=64|, dest=44|
+DENIED|,50|,NONE|,NONE|,0|,0|,['F4', 'F5', 'F3', 'F1', 'F2']|,src=265|, dest=160|
+DENIED|,51|,NONE|,NONE|,0|,0|,['F4', 'F3', 'F5', 'F2']|,src=256|, dest=266|
+DENIED|,52|,NONE|,NONE|,0|,0|,['F5']|,src=238|, dest=4|
+DENIED|,53|,NONE|,NONE|,0|,0|,['F1', 'F2', 'F5']|,src=146|, dest=297|
+DENIED|,54|,NONE|,NONE|,0|,0|,['F1', 'F2', 'F3', 'F5']|,src=166|, dest=189|
+DENIED|,55|,NONE|,NONE|,0|,0|,['F1', 'F3', 'F5', 'F4']|,src=20|, dest=79|
+DENIED|,56|,NONE|,NONE|,0|,0|,['F5', 'F2']|,src=114|, dest=138|
+DENIED|,57|,NONE|,NONE|,0|,0|,['F3', 'F5', 'F4', 'F2']|,src=176|, dest=271|
+APPROVED|,58|,R58P1|,48.25136612021858%|,10.88|,9.6|,['F1']|,[141, 347, 376, 365, 193]|
+DENIED|,59|,NONE|,NONE|,0|,0|,['F5']|,src=224|, dest=153|
+DENIED|,60|,NONE|,NONE|,0|,0|,['F5', 'F1']|,src=38|, dest=10|
+DENIED|,61|,NONE|,NONE|,0|,0|,['F2', 'F4', 'F5']|,src=141|, dest=91|
+DENIED|,62|,NONE|,NONE|,0|,0|,['F2', 'F3', 'F5', 'F4']|,src=88|, dest=140|
+DENIED|,63|,NONE|,NONE|,0|,0|,['F5', 'F2']|,src=71|, dest=135|
+DENIED|,64|,NONE|,NONE|,0|,0|,['F1', 'F4', 'F3']|,src=256|, dest=90|
+DENIED|,65|,NONE|,NONE|,0|,0|,['F2', 'F4']|,src=14|, dest=41|
+DENIED|,66|,NONE|,NONE|,0|,0|,['F1', 'F2', 'F4', 'F3', 'F5']|,src=219|, dest=271|
+DENIED|,67|,NONE|,NONE|,0|,0|,['F5', 'F3', 'F4', 'F1']|,src=263|, dest=85|
+DENIED|,68|,NONE|,NONE|,0|,0|,['F2', 'F4', 'F5', 'F1', 'F3']|,src=21|, dest=266|
+DENIED|,69|,NONE|,NONE|,0|,0|,['F1', 'F4']|,src=244|, dest=54|
+DENIED|,70|,NONE|,NONE|,0|,0|,['F2', 'F4', 'F5']|,src=164|, dest=160|
+DENIED|,71|,NONE|,NONE|,0|,0|,['F4', 'F2', 'F5', 'F3', 'F1']|,src=103|, dest=76|
+DENIED|,72|,NONE|,NONE|,0|,0|,['F1', 'F5', 'F3', 'F2', 'F4']|,src=141|, dest=150|
+APPROVED|,73|,R73P1|,49.562841530054655%|,11.709999999999999|,9.8|,['F3']|,[141, 347, 348, 344, 132]|
+DENIED|,74|,NONE|,NONE|,0|,0|,['F5']|,src=26|, dest=143|
+DENIED|,75|,NONE|,NONE|,0|,0|,['F5', 'F4', 'F1', 'F3']|,src=116|, dest=114|
+DENIED|,76|,NONE|,NONE|,0|,0|,['F4', 'F5']|,src=217|, dest=36|
+DENIED|,77|,NONE|,NONE|,0|,0|,['F5']|,src=259|, dest=174|
+DENIED|,78|,NONE|,NONE|,0|,0|,['F5', 'F2', 'F4']|,src=295|, dest=145|
+DENIED|,79|,NONE|,NONE|,0|,0|,['F5', 'F4', 'F3']|,src=70|, dest=202|
+DENIED|,80|,NONE|,NONE|,0|,0|,['F1', 'F2']|,src=186|, dest=106|
+DENIED|,81|,NONE|,NONE|,0|,0|,['F5', 'F2', 'F3', 'F1', 'F4']|,src=205|, dest=214|
+DENIED|,82|,NONE|,NONE|,0|,0|,['F4']|,src=95|, dest=270|
+DENIED|,83|,NONE|,NONE|,0|,0|,['F3']|,src=165|, dest=153|
+DENIED|,84|,NONE|,NONE|,0|,0|,['F3', 'F1']|,src=171|, dest=181|
+APPROVED|,85|,R85P2|,57.213114754098356%|,17.19|,14.0|,['F2']|,[12, 304, 340, 353, 358, 391, 272]|
+APPROVED|,86|,R86P1|,30.655737704918035%|,8.28|,7.1|,['F3', 'F4']|,[191, 364, 374, 221]|
+DENIED|,87|,NONE|,NONE|,0|,0|,['F4', 'F5']|,src=267|, dest=177|
+DENIED|,88|,NONE|,NONE|,0|,0|,['F3', 'F2', 'F4']|,src=28|, dest=46|
+APPROVED|,89|,R89P1|,46.78688524590163%|,15.699999999999998|,13.9|,['F1']|,[55, 319, 355, 344, 348, 347, 141]|
+DENIED|,90|,NONE|,NONE|,0|,0|,['F2', 'F5', 'F1', 'F4']|,src=169|, dest=104|
+DENIED|,91|,NONE|,NONE|,0|,0|,['F2', 'F5', 'F1', 'F3', 'F4']|,src=299|, dest=263|
+DENIED|,92|,NONE|,NONE|,0|,0|,['F5', 'F2', 'F3', 'F4', 'F1']|,src=118|, dest=251|
+DENIED|,93|,NONE|,NONE|,0|,0|,['F4', 'F5', 'F1', 'F2', 'F3']|,src=227|, dest=224|
+DENIED|,94|,NONE|,NONE|,0|,0|,['F5']|,src=64|, dest=148|
+APPROVED|,95|,R95P3|,46.994535519125684%|,17.130000000000003|,16.8|,['F2']|,[4, 302, 381, 316, 342, 335, 349, 145]|
+DENIED|,96|,NONE|,NONE|,0|,0|,['F4', 'F5', 'F3', 'F1', 'F2']|,src=177|, dest=245|
+DENIED|,97|,NONE|,NONE|,0|,0|,['F2', 'F5']|,src=280|, dest=109|
+DENIED|,98|,NONE|,NONE|,0|,0|,['F3', 'F5']|,src=204|, dest=7|
+DENIED|,99|,NONE|,NONE|,0|,0|,['F5', 'F1', 'F2']|,src=70|, dest=141|
+DENIED|,100|,NONE|,NONE|,0|,0|,['F5', 'F4', 'F2']|,src=242|, dest=57|
+DENIED|,101|,NONE|,NONE|,0|,0|,['F4', 'F2', 'F5']|,src=150|, dest=188|
+DENIED|,102|,NONE|,NONE|,0|,0|,['F4', 'F3', 'F1']|,src=253|, dest=262|
+DENIED|,103|,NONE|,NONE|,0|,0|,['F1', 'F2', 'F4']|,src=50|, dest=167|
+DENIED|,104|,NONE|,NONE|,0|,0|,['F1', 'F3', 'F4', 'F5']|,src=163|, dest=293|
+DENIED|,105|,NONE|,NONE|,0|,0|,['F5', 'F2', 'F3']|,src=47|, dest=202|
+APPROVED|,106|,R106P1|,53.11475409836065%|,17.47|,11.6|,['F1', 'F4']|,[11, 304, 340, 353, 358, 174]|
+DENIED|,107|,NONE|,NONE|,0|,0|,['F4', 'F2']|,src=275|, dest=28|
+DENIED|,108|,NONE|,NONE|,0|,0|,['F3', 'F1', 'F2']|,src=146|, dest=247|
+DENIED|,109|,NONE|,NONE|,0|,0|,['F1', 'F3', 'F2', 'F4', 'F5']|,src=80|, dest=86|
+DENIED|,110|,NONE|,NONE|,0|,0|,['F5']|,src=61|, dest=282|
+DENIED|,111|,NONE|,NONE|,0|,0|,['F4', 'F1', 'F3', 'F2']|,src=143|, dest=274|
+DENIED|,112|,NONE|,NONE|,0|,0|,['F1', 'F5']|,src=108|, dest=75|
+DENIED|,113|,NONE|,NONE|,0|,0|,['F2']|,src=291|, dest=208|
+DENIED|,114|,NONE|,NONE|,0|,0|,['F4', 'F3', 'F1']|,src=73|, dest=254|
+DENIED|,115|,NONE|,NONE|,0|,0|,['F4', 'F3', 'F2', 'F5', 'F1']|,src=189|, dest=136|
+DENIED|,116|,NONE|,NONE|,0|,0|,['F5', 'F4']|,src=275|, dest=90|
+DENIED|,117|,NONE|,NONE|,0|,0|,['F2', 'F4', 'F5', 'F3']|,src=181|, dest=5|
+DENIED|,118|,NONE|,NONE|,0|,0|,['F4', 'F1']|,src=54|, dest=42|
+DENIED|,119|,NONE|,NONE|,0|,0|,['F4', 'F5', 'F1', 'F3']|,src=237|, dest=81|
+APPROVED|,120|,R120P1|,60.7103825136612%|,11.380000000000003|,9.8|,['F2', 'F1']|,[277, 393, 374, 362, 186]|
+DENIED|,121|,NONE|,NONE|,0|,0|,['F5']|,src=191|, dest=110|
+DENIED|,122|,NONE|,NONE|,0|,0|,['F5', 'F3', 'F1', 'F4', 'F2']|,src=197|, dest=213|
+APPROVED|,123|,R123P4|,36.666666666666664%|,18.130000000000003|,15.999999999999998|,['F3']|,[61, 321, 396, 351, 306, 317, 309, 27]|
+DENIED|,124|,NONE|,NONE|,0|,0|,['F1', 'F2', 'F4']|,src=182|, dest=29|
+DENIED|,125|,NONE|,NONE|,0|,0|,['F4', 'F3', 'F1', 'F5']|,src=207|, dest=103|
+APPROVED|,126|,R126P2|,55.24590163934426%|,18.040000000000003|,13.499999999999998|,['F3', 'F1']|,[91, 331, 343, 363, 370, 377, 229]|
+DENIED|,127|,NONE|,NONE|,0|,0|,['F1', 'F2', 'F5', 'F4', 'F3']|,src=133|, dest=244|
+DENIED|,128|,NONE|,NONE|,0|,0|,['F2', 'F3', 'F4']|,src=136|, dest=204|
+DENIED|,129|,NONE|,NONE|,0|,0|,['F1']|,src=155|, dest=263|
+APPROVED|,130|,R130P1|,46.885245901639344%|,11.000000000000002|,7.7|,['F1']|,[133, 345, 359, 175]|
+DENIED|,131|,NONE|,NONE|,0|,0|,['F4', 'F1', 'F5']|,src=85|, dest=161|
+DENIED|,132|,NONE|,NONE|,0|,0|,['F2', 'F3', 'F5', 'F4', 'F1']|,src=8|, dest=85|
+DENIED|,133|,NONE|,NONE|,0|,0|,['F5', 'F1']|,src=277|, dest=175|
+DENIED|,134|,NONE|,NONE|,0|,0|,['F1', 'F2']|,src=28|, dest=27|
+DENIED|,135|,NONE|,NONE|,0|,0|,['F3', 'F1', 'F2', 'F4', 'F5']|,src=72|, dest=31|
+DENIED|,136|,NONE|,NONE|,0|,0|,['F4', 'F1']|,src=240|, dest=181|
+DENIED|,137|,NONE|,NONE|,0|,0|,['F3', 'F2', 'F1', 'F5', 'F4']|,src=279|, dest=56|
+DENIED|,138|,NONE|,NONE|,0|,0|,['F1', 'F3', 'F5', 'F4', 'F2']|,src=210|, dest=192|
+DENIED|,139|,NONE|,NONE|,0|,0|,['F1', 'F5', 'F2', 'F3', 'F4']|,src=64|, dest=205|
+DENIED|,140|,NONE|,NONE|,0|,0|,['F3', 'F4', 'F2', 'F5', 'F1']|,src=16|, dest=92|
+DENIED|,141|,NONE|,NONE|,0|,0|,['F3', 'F1', 'F4', 'F5', 'F2']|,src=238|, dest=22|
+DENIED|,142|,NONE|,NONE|,0|,0|,['F5', 'F4', 'F2', 'F1', 'F3']|,src=243|, dest=39|
+APPROVED|,143|,R143P1|,39.39890710382514%|,10.34|,9.599999999999998|,['F2']|,[251, 384, 317, 309, 27]|
+APPROVED|,144|,R144P1|,50.60109289617486%|,16.279999999999998|,16.700000000000003|,['F2']|,[252, 384, 358, 352, 324, 328, 376, 226]|
+DENIED|,145|,NONE|,NONE|,0|,0|,['F4', 'F5', 'F1', 'F3']|,src=221|, dest=60|
+DENIED|,146|,NONE|,NONE|,0|,0|,['F5', 'F1', 'F2', 'F3', 'F4']|,src=263|, dest=179|
+DENIED|,147|,NONE|,NONE|,0|,0|,['F5', 'F2']|,src=230|, dest=139|
+DENIED|,148|,NONE|,NONE|,0|,0|,['F2', 'F4', 'F3', 'F1', 'F5']|,src=263|, dest=57|
+APPROVED|,149|,R149P1|,63.98907103825137%|,12.43|,10.5|,['F3', 'F1']|,[45, 315, 362, 311, 31]|
+DENIED|,150|,NONE|,NONE|,0|,0|,['F4', 'F5']|,src=112|, dest=75|
+DENIED|,151|,NONE|,NONE|,0|,0|,['F3', 'F2']|,src=144|, dest=23|
+DENIED|,152|,NONE|,NONE|,0|,0|,['F4', 'F1', 'F3', 'F2']|,src=39|, dest=172|
+DENIED|,153|,NONE|,NONE|,0|,0|,['F2', 'F1', 'F3', 'F4']|,src=45|, dest=221|
+DENIED|,154|,NONE|,NONE|,0|,0|,['F2', 'F5', 'F4']|,src=13|, dest=271|
+DENIED|,155|,NONE|,NONE|,0|,0|,['F1', 'F4']|,src=27|, dest=264|
+APPROVED|,156|,R156P1|,60.1639344262295%|,17.04|,14.600000000000001|,['F2', 'F3', 'F1']|,[136, 346, 395, 315, 400, 369, 206]|
+DENIED|,157|,NONE|,NONE|,0|,0|,['F4', 'F5', 'F2']|,src=251|, dest=271|
+DENIED|,158|,NONE|,NONE|,0|,0|,['F3', 'F2', 'F4', 'F5', 'F1']|,src=122|, dest=8|
+DENIED|,159|,NONE|,NONE|,0|,0|,['F4', 'F2']|,src=110|, dest=51|
+DENIED|,160|,NONE|,NONE|,0|,0|,['F3', 'F4', 'F2', 'F5', 'F1']|,src=287|, dest=150|
+DENIED|,161|,NONE|,NONE|,0|,0|,['F3', 'F5', 'F4', 'F2']|,src=181|, dest=134|
+DENIED|,162|,NONE|,NONE|,0|,0|,['F3', 'F5']|,src=102|, dest=41|
+DENIED|,163|,NONE|,NONE|,0|,0|,['F3', 'F5']|,src=153|, dest=72|
+DENIED|,164|,NONE|,NONE|,0|,0|,['F1', 'F5', 'F4', 'F2']|,src=111|, dest=258|
+DENIED|,165|,NONE|,NONE|,0|,0|,['F4']|,src=18|, dest=36|
+DENIED|,166|,NONE|,NONE|,0|,0|,['F4', 'F5', 'F3', 'F2']|,src=153|, dest=175|
+DENIED|,167|,NONE|,NONE|,0|,0|,['F4', 'F5', 'F3', 'F1', 'F2']|,src=164|, dest=241|
+DENIED|,168|,NONE|,NONE|,0|,0|,['F5']|,src=131|, dest=102|
+DENIED|,169|,NONE|,NONE|,0|,0|,['F3', 'F1', 'F2', 'F4', 'F5']|,src=57|, dest=54|
+DENIED|,170|,NONE|,NONE|,0|,0|,['F3', 'F4']|,src=68|, dest=255|
+DENIED|,171|,NONE|,NONE|,0|,0|,['F3', 'F2']|,src=203|, dest=8|
+DENIED|,172|,NONE|,NONE|,0|,0|,['F4', 'F3', 'F5', 'F1', 'F2']|,src=14|, dest=113|
+DENIED|,173|,NONE|,NONE|,0|,0|,['F2', 'F5', 'F3', 'F4', 'F1']|,src=209|, dest=65|
+DENIED|,174|,NONE|,NONE|,0|,0|,['F2', 'F5', 'F1']|,src=286|, dest=17|
+DENIED|,175|,NONE|,NONE|,0|,0|,['F4', 'F5']|,src=108|, dest=182|
+APPROVED|,176|,R176P1|,51.857923497267755%|,13.690000000000001|,10.2|,['F3']|,[250, 384, 306, 351, 151]|
+DENIED|,177|,NONE|,NONE|,0|,0|,['F5', 'F4', 'F2', 'F3']|,src=65|, dest=103|
+DENIED|,178|,NONE|,NONE|,0|,0|,['F3', 'F5']|,src=292|, dest=155|
+DENIED|,179|,NONE|,NONE|,0|,0|,['F2', 'F5', 'F1', 'F4', 'F3']|,src=201|, dest=39|
+DENIED|,180|,NONE|,NONE|,0|,0|,['F2', 'F1', 'F5', 'F4', 'F3']|,src=193|, dest=59|
+DENIED|,181|,NONE|,NONE|,0|,0|,['F3', 'F2', 'F1', 'F5']|,src=153|, dest=137|
+DENIED|,182|,NONE|,NONE|,0|,0|,['F2', 'F1']|,src=285|, dest=5|
+DENIED|,183|,NONE|,NONE|,0|,0|,['F3', 'F4', 'F2', 'F1', 'F5']|,src=289|, dest=19|
+APPROVED|,184|,R184P1|,43.77049180327869%|,14.99|,12.5|,['F1', 'F3', 'F2']|,[281, 394, 367, 384, 306, 18]|
+APPROVED|,185|,R185P1|,50.1639344262295%|,14.94|,11.500000000000002|,['F1']|,[209, 370, 377, 367, 394, 280]|
+DENIED|,186|,NONE|,NONE|,0|,0|,['F5', 'F1', 'F2']|,src=67|, dest=47|
+DENIED|,187|,NONE|,NONE|,0|,0|,['F3', 'F4', 'F1']|,src=107|, dest=143|
+DENIED|,188|,NONE|,NONE|,0|,0|,['F3', 'F5', 'F4', 'F1', 'F2']|,src=13|, dest=240|
+DENIED|,189|,NONE|,NONE|,0|,0|,['F4', 'F2', 'F1', 'F5', 'F3']|,src=56|, dest=105|
+DENIED|,190|,NONE|,NONE|,0|,0|,['F3', 'F5', 'F1']|,src=102|, dest=289|
+DENIED|,191|,NONE|,NONE|,0|,0|,['F5', 'F1', 'F2']|,src=279|, dest=152|
+DENIED|,192|,NONE|,NONE|,0|,0|,['F2', 'F5']|,src=170|, dest=290|
+DENIED|,193|,NONE|,NONE|,0|,0|,['F5', 'F4', 'F3']|,src=113|, dest=273|
+DENIED|,194|,NONE|,NONE|,0|,0|,['F5', 'F4']|,src=299|, dest=19|
+DENIED|,195|,NONE|,NONE|,0|,0|,['F2', 'F5', 'F3']|,src=34|, dest=52|
+APPROVED|,196|,R196P1|,53.169398907103826%|,12.720000000000002|,9.8|,['F1']|,[174, 358, 391, 364, 191]|
+DENIED|,197|,NONE|,NONE|,0|,0|,['F5', 'F3']|,src=131|, dest=265|
+DENIED|,198|,NONE|,NONE|,0|,0|,['F3', 'F5', 'F4']|,src=129|, dest=12|
+DENIED|,199|,NONE|,NONE|,0|,0|,['F4', 'F2', 'F1', 'F3', 'F5']|,src=65|, dest=263|
+DENIED|,200|,NONE|,NONE|,0|,0|,['F4']|,src=9|, dest=235|
+DENIED|,201|,NONE|,NONE|,0|,0|,['F1', 'F2', 'F5', 'F3', 'F4']|,src=281|, dest=9|
+DENIED|,202|,NONE|,NONE|,0|,0|,['F2']|,src=93|, dest=111|
+DENIED|,203|,NONE|,NONE|,0|,0|,['F4', 'F3', 'F1']|,src=133|, dest=172|
+APPROVED|,204|,R204P2|,42.065573770491795%|,14.55|,14.8|,['F2']|,[162, 354, 378, 328, 324, 352, 156]|
+DENIED|,205|,NONE|,NONE|,0|,0|,['F2', 'F3', 'F1']|,src=295|, dest=76|
+DENIED|,206|,NONE|,NONE|,0|,0|,['F1']|,src=200|, dest=168|
+DENIED|,207|,NONE|,NONE|,0|,0|,['F4', 'F3', 'F1']|,src=117|, dest=295|
+DENIED|,208|,NONE|,NONE|,0|,0|,['F3', 'F4', 'F5']|,src=71|, dest=34|
+DENIED|,209|,NONE|,NONE|,0|,0|,['F4', 'F5']|,src=297|, dest=28|
+DENIED|,210|,NONE|,NONE|,0|,0|,['F5', 'F1', 'F2']|,src=123|, dest=7|
+DENIED|,211|,NONE|,NONE|,0|,0|,['F5', 'F1', 'F3', 'F4', 'F2']|,src=134|, dest=105|
+DENIED|,212|,NONE|,NONE|,0|,0|,['F1', 'F4']|,src=7|, dest=294|
+DENIED|,213|,NONE|,NONE|,0|,0|,['F1', 'F4', 'F5', 'F3']|,src=116|, dest=169|
+DENIED|,214|,NONE|,NONE|,0|,0|,['F1', 'F4', 'F2', 'F3']|,src=229|, dest=226|
+DENIED|,215|,NONE|,NONE|,0|,0|,['F3', 'F1', 'F5', 'F2']|,src=29|, dest=103|
+DENIED|,216|,NONE|,NONE|,0|,0|,['F5', 'F3', 'F1']|,src=244|, dest=166|
+DENIED|,217|,NONE|,NONE|,0|,0|,['F5', 'F4', 'F3', 'F2', 'F1']|,src=210|, dest=177|
+DENIED|,218|,NONE|,NONE|,0|,0|,['F5', 'F4', 'F1', 'F3']|,src=294|, dest=41|
+DENIED|,219|,NONE|,NONE|,0|,0|,['F1', 'F4']|,src=49|, dest=96|
+DENIED|,220|,NONE|,NONE|,0|,0|,['F2', 'F3', 'F5', 'F4']|,src=37|, dest=132|
+APPROVED|,221|,R221P1|,53.475409836065566%|,16.939999999999998|,13.900000000000002|,['F1']|,[294, 398, 330, 344, 348, 393, 277]|
+DENIED|,222|,NONE|,NONE|,0|,0|,['F1']|,src=173|, dest=94|
+DENIED|,223|,NONE|,NONE|,0|,0|,['F1', 'F4', 'F2', 'F3']|,src=286|, dest=271|
+DENIED|,224|,NONE|,NONE|,0|,0|,['F5', 'F3', 'F1']|,src=144|, dest=169|
+DENIED|,225|,NONE|,NONE|,0|,0|,['F2', 'F5', 'F4', 'F1', 'F3']|,src=149|, dest=20|
+DENIED|,226|,NONE|,NONE|,0|,0|,['F3', 'F2', 'F4']|,src=83|, dest=52|
+DENIED|,227|,NONE|,NONE|,0|,0|,['F3', 'F1', 'F2', 'F4', 'F5']|,src=204|, dest=274|
+APPROVED|,228|,R228P3|,55.355191256830594%|,19.27|,16.3|,['F3']|,[80, 327, 347, 313, 386, 340, 304, 11]|
+DENIED|,229|,NONE|,NONE|,0|,0|,['F4', 'F2', 'F1']|,src=178|, dest=55|
+DENIED|,230|,NONE|,NONE|,0|,0|,['F4', 'F3', 'F5', 'F2']|,src=155|, dest=235|
+DENIED|,231|,NONE|,NONE|,0|,0|,['F5', 'F1', 'F3', 'F4']|,src=107|, dest=248|
+DENIED|,232|,NONE|,NONE|,0|,0|,['F5', 'F3', 'F1', 'F2', 'F4']|,src=74|, dest=135|
+DENIED|,233|,NONE|,NONE|,0|,0|,['F3', 'F1', 'F4']|,src=277|, dest=68|
+DENIED|,234|,NONE|,NONE|,0|,0|,['F5']|,src=178|, dest=216|
+DENIED|,235|,NONE|,NONE|,0|,0|,['F1', 'F3']|,src=168|, dest=8|
+APPROVED|,236|,R236P2|,55.35519125683061%|,15.440000000000001|,17.1|,['F2']|,[251, 384, 367, 315, 400, 369, 332, 94]|
+DENIED|,237|,NONE|,NONE|,0|,0|,['F5', 'F1', 'F2']|,src=223|, dest=177|
+DENIED|,238|,NONE|,NONE|,0|,0|,['F5', 'F2']|,src=150|, dest=116|
+DENIED|,239|,NONE|,NONE|,0|,0|,['F5']|,src=276|, dest=55|
+DENIED|,240|,NONE|,NONE|,0|,0|,['F5', 'F2', 'F1', 'F3']|,src=80|, dest=62|
+DENIED|,241|,NONE|,NONE|,0|,0|,['F1', 'F2', 'F3', 'F5']|,src=2|, dest=110|
+DENIED|,242|,NONE|,NONE|,0|,0|,['F1', 'F5', 'F2', 'F4', 'F3']|,src=121|, dest=259|
+APPROVED|,243|,R243P1|,58.032786885245905%|,15.92|,12.300000000000002|,['F1', 'F3', 'F2']|,[21, 307, 343, 341, 316, 46]|
+DENIED|,244|,NONE|,NONE|,0|,0|,['F2', 'F3', 'F5', 'F4']|,src=201|, dest=196|
+DENIED|,245|,NONE|,NONE|,0|,0|,['F5', 'F3', 'F1']|,src=116|, dest=29|
+DENIED|,246|,NONE|,NONE|,0|,0|,['F4', 'F2']|,src=169|, dest=173|
+DENIED|,247|,NONE|,NONE|,0|,0|,['F2', 'F5', 'F4', 'F3', 'F1']|,src=119|, dest=235|
+DENIED|,248|,NONE|,NONE|,0|,0|,['F1', 'F4', 'F5', 'F3', 'F2']|,src=76|, dest=25|
+DENIED|,249|,NONE|,NONE|,0|,0|,['F4', 'F3', 'F5']|,src=289|, dest=95|
+DENIED|,250|,NONE|,NONE|,0|,0|,['F3', 'F2', 'F5', 'F4', 'F1']|,src=22|, dest=13|

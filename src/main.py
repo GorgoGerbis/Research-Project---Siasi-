@@ -15,6 +15,8 @@ Head vs Wall is the nickname I gave to this protocol. Works as follows.
 
 The networkx method 'all_simple_paths' uses a modified depth first search.
 """
+import os
+
 import CONSTANTS
 from src import ProcessInputData
 from src.NodeObj import NodeObj
@@ -194,6 +196,72 @@ def process_path_two_SINGLE_MAPPING():
         RUN_PATH_TWO_SINGLE_MAPPING(req)
 
 
+def run_SINGLE_MAPPING_CONVENTIONAL(count):
+    print("Begin Processing requests using: Single-Mapping Protocol\n")
+    process_path_one_SINGLE_MAPPING()
+    print("STARTING CREATION OF OUTPUT FILES\n")
+
+    filepath = os.path.join(CONSTANTS.topologyOutputFolder, f"N{CONSTANTS.NETWORK_TOPOLOGY}D{CONSTANTS.DATASET + count}_SINGLE_PATH_ONE_OUTPUT_DATA_{CREATE_NUM_REQUESTS}_RANDOM.csv")
+    CreateOutputData.output_file_PATH_ONE(filepath, CREATE_NUM_REQUESTS, CREATE_NUM_NODES, CREATE_NUM_LINKS)
+    print("CREATED PATH ONE OUTPUT FILES\n")
+
+
+def run_SINGLE_MAPPING_FAILURE_SENSITIVE(count):
+    print("Begin Processing requests using: Failure Sensitive Single-Mapping Protocol\n")
+    process_path_two_SINGLE_MAPPING()
+    print("STARTING CREATION OF OUTPUT FILES\n")
+
+    filepath = os.path.join(CONSTANTS.topologyOutputFolder, f"N{CONSTANTS.NETWORK_TOPOLOGY}D{CONSTANTS.DATASET + count}_SINGLE_PATH_TWO_OUTPUT_DATA_{CREATE_NUM_REQUESTS}_RANDOM.csv")
+    CreateOutputData.output_file_PATH_TWO(filepath, CREATE_NUM_REQUESTS, CREATE_NUM_NODES, CREATE_NUM_LINKS)
+    print("CREATED PATH TWO OUTPUT FILES\n")
+
+
+def run_MULTI_MAPPING_CONVENTIONAL(count):
+    print("Begin Processing requests using: Multi-Mapping Protocol\n")
+    process_path_one_MULTI_MAPPING()
+    print("ALL DONE FINDING FIRST PATHS\n")
+    print("STARTING CREATION OF OUTPUT FILES\n")
+
+    filepath = os.path.join(CONSTANTS.topologyOutputFolder, f"N{CONSTANTS.NETWORK_TOPOLOGY}D{CONSTANTS.DATASET + count}_MULTI_PATH_ONE_OUTPUT_DATA_{CREATE_NUM_REQUESTS}_RANDOM.csv")
+    CreateOutputData.output_file_PATH_ONE(filepath, CREATE_NUM_REQUESTS, CREATE_NUM_NODES,CREATE_NUM_LINKS)
+    print("CREATED PATH ONE OUTPUT FILES\n")
+
+
+def run_MULTI_MAPPING_FAILURE_SENSITIVE(count):
+    print("Begin Processing requests using: Failure Sensitive Multi-Mapping Protocol\n")
+    process_path_two_MULTI_MAPPING()
+    print("ALL DONE FINDING SECOND PATHS\n")
+    print("STARTING CREATION OF FAILURE PROBABILITY OUTPUT FILES\n")
+
+    filepath = os.path.join(CONSTANTS.topologyOutputFolder, f"N{CONSTANTS.NETWORK_TOPOLOGY}D{CONSTANTS.DATASET + count}_MULTI_PATH_TWO_OUTPUT_DATA_{CREATE_NUM_REQUESTS}_RANDOM.csv")
+    CreateOutputData.output_file_PATH_TWO(filepath, CREATE_NUM_REQUESTS, CREATE_NUM_NODES, CREATE_NUM_LINKS)
+    print("CREATED PATH TWO OUTPUT FILES\n")
+
+
+def run_all_datasets():
+    count = 0
+
+    if CONSTANTS.GLOBAL_PROTOCOL == 1:
+        for i in range(5):
+            run_SINGLE_MAPPING_CONVENTIONAL(count)
+            count += 1
+
+    if CONSTANTS.GLOBAL_PROTOCOL == 2:
+        for i in range(5):
+            run_SINGLE_MAPPING_FAILURE_SENSITIVE(count)
+            count += 1
+
+    if CONSTANTS.GLOBAL_PROTOCOL == 3:
+        for i in range(5):
+            run_MULTI_MAPPING_CONVENTIONAL(count)
+            count += 1
+
+    if CONSTANTS.GLOBAL_PROTOCOL == 4:
+        for i in range(5):
+            run_MULTI_MAPPING_FAILURE_SENSITIVE(count)
+            count += 1
+
+
 if __name__ == '__main__':
     print("BEGIN PROCESSING INPUT DATA\n")
     ProcessInputData.processAllInputData()
@@ -208,40 +276,4 @@ if __name__ == '__main__':
     find_isolated_nodes()
     MAPPING_LOG("MAPPING LOG", "", 'w')
 
-    if CONSTANTS.GLOBAL_PROTOCOL == 1:
-        print("Begin Processing requests using: Single-Mapping Protocol\n")
-        process_path_one_SINGLE_MAPPING()
-
-        print("STARTING CREATION OF OUTPUT FILES\n")
-        CreateOutputData.output_file_PATH_ONE(GLOBAL_SINGLE_OUTPUT_FILE_PATH_ONE, CREATE_NUM_REQUESTS, CREATE_NUM_NODES,
-                                              CREATE_NUM_LINKS)
-        print("CREATED PATH ONE OUTPUT FILES\n")
-
-    if CONSTANTS.GLOBAL_PROTOCOL == 2:
-        print("Begin Processing requests using: Failure Sensitive Single-Mapping Protocol\n")
-        process_path_two_SINGLE_MAPPING()
-
-        print("STARTING CREATION OF OUTPUT FILES\n")
-        CreateOutputData.output_file_PATH_TWO(GLOBAL_SINGLE_OUTPUT_FILE_PATH_TWO, CREATE_NUM_REQUESTS, CREATE_NUM_NODES,
-                                              CREATE_NUM_LINKS)
-        print("CREATED PATH ONE OUTPUT FILES\n")
-
-    if CONSTANTS.GLOBAL_PROTOCOL == 3:
-        print("Begin Processing requests using: Multi-Mapping Protocol\n")
-        process_path_one_MULTI_MAPPING()
-        print("ALL DONE FINDING FIRST PATHS\n")
-        print("STARTING CREATION OF OUTPUT FILES\n")
-        CreateOutputData.output_file_PATH_ONE(GLOBAL_MULTI_OUTPUT_FILE_PATH_ONE, CREATE_NUM_REQUESTS, CREATE_NUM_NODES,
-                                              CREATE_NUM_LINKS)
-        print("CREATED PATH ONE OUTPUT FILES\n")
-
-        ############# BEGIN PROCESSING FOR PATH TWO ##############
-    if CONSTANTS.GLOBAL_PROTOCOL == 4:
-        print("Begin Processing requests using: Failure Sensitive Multi-Mapping Protocol\n")
-        process_path_two_MULTI_MAPPING()
-        print("ALL DONE FINDING SECOND PATHS\n")
-        print("STARTING CREATION OF FAILURE PROBABILITY OUTPUT FILES\n")
-        CreateOutputData.output_file_PATH_TWO(GLOBAL_MULTI_OUTPUT_FILE_PATH_TWO, CREATE_NUM_REQUESTS, CREATE_NUM_NODES,
-                                              CREATE_NUM_LINKS)
-
-    print("CREATING GRAPHS WITH AVAILABLE DATA")
+    run_all_datasets()

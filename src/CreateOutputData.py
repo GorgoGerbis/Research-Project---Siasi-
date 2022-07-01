@@ -13,9 +13,10 @@ def fail_unavailable_paths():
     fails_output = []
     for req in RequestObj.STATIC_TOTAL_REQUEST_LIST:
         if req.requestStatus[0] == REQUEST_APPROVED:
-            current = req.PATH_ONE.FAILURE_PROBABILITY
-            if current >= GlOBAL_FAILURE_THRESHOLD:
-                fails_output.append(f"REQ:{req.requestID}, F% = {current}")
+            current_fail = req.PATH_ONE.FAILURE_PROBABILITY
+            current_fail_threshold = req.request_failure_threshold
+            if current_fail >= current_fail_threshold:
+                fails_output.append(f"REQ:{req.requestID}, F% = {current_fail} > THRESHOLD = {current_fail_threshold}")
                 req.requestStatus[0] = REQUEST_DENIED
                 req.PATH_ONE = None
     print(fails_output)
@@ -195,6 +196,7 @@ def output_file_PATH_ONE(FILE_NAME, num_reqs, num_nodes, num_links):
             else:
                 fp.write("DENIED|,{}|,NONE|,NONE|,0|,0|,{}|,src={}|, dest={}|\n".format(req.requestID, req.requestedFunctions,
                                                                                req.source, req.destination))
+    fp.close()
 
 
 def output_file_PATH_TWO(FILE_NAME, num_reqs, num_nodes, num_links):
@@ -222,3 +224,5 @@ def output_file_PATH_TWO(FILE_NAME, num_reqs, num_nodes, num_links):
                 fp.write("APPROVED|,{}|,{}|,{}%|,{}|,{}|,{}|,{}|\n".format(req.requestID, current_path.pathID, current_path.FAILURE_PROBABILITY, current_path.DELAY, current_path.COST, req.requestedFunctions, current_path.route))
             else:
                 fp.write("DENIED|,{}|,NONE|,NONE|,0|,0|,{}|,src={}|, dest={}|\n".format(req.requestID, req.requestedFunctions, req.source, req.destination))
+
+    fp.close()

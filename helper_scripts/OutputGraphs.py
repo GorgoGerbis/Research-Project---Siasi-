@@ -2,9 +2,9 @@ import numpy as np
 import os
 from matplotlib.ticker import FormatStrFormatter
 
-from src.CONSTANTS import GLOBAL_SINGLE_OUTPUT_FILE_PATH_ONE, GLOBAL_SINGLE_OUTPUT_FILE_PATH_TWO
+from src.CONSTANTS import GLOBAL_SINGLE_OUTPUT_FILE_PATH_ONE, GLOBAL_SINGLE_OUTPUT_FILE_PATH_TWO, topologyOutputFolder
 from src.CONSTANTS import GLOBAL_MULTI_OUTPUT_FILE_PATH_ONE, GLOBAL_MULTI_OUTPUT_FILE_PATH_TWO
-from src.CONSTANTS import topologyOutputFolder as outputFolder
+from src.CONSTANTS import outputFolder
 from src.CONSTANTS import DATASET, NETWORK_TOPOLOGY, CREATE_NUM_REQUESTS
 from src.CONSTANTS import AGGREGATE_DATASETS_AVERAGES as ADA
 import matplotlib.pyplot as plt
@@ -52,31 +52,24 @@ def gather_all_data_averages(network_topology):
     global_costs_mt = []
 
     if NETWORK_TOPOLOGY == 1:
-        start = 1
-        stop = 5
         top_name = "SMALL"
     if NETWORK_TOPOLOGY == 2:
-        start = 6
-        stop = 10
         top_name = "MEDIUM"
     if NETWORK_TOPOLOGY == 3:
-        start = 11
-        stop = 15
         top_name = "LARGE"
     if NETWORK_TOPOLOGY == 4:
-        start = 16
-        stop = 20
         top_name = "EX-LARGE"
     if NETWORK_TOPOLOGY == 5:
-        start = 21
-        stop = 25
         top_name = "MASSIVE"
 
+    start = 1
+    stop = 5
+
     for ds in range(start, stop+1):
-        so_passed, so_fails, so_delays, so_costs = gather_data(os.path.join(outputFolder, f"D{ds}N{network_topology}_SINGLE_PATH_ONE_OUTPUT_DATA_{CREATE_NUM_REQUESTS}_RANDOM.csv"))
-        st_passed, st_fails, st_delays, st_costs = gather_data(os.path.join(outputFolder, f"D{ds}N{network_topology}_SINGLE_PATH_TWO_OUTPUT_DATA_{CREATE_NUM_REQUESTS}_RANDOM.csv"))
-        mo_passed, mo_fails, mo_delays, mo_costs = gather_data(os.path.join(outputFolder, f"D{ds}N{network_topology}_MULTI_PATH_ONE_OUTPUT_DATA_{CREATE_NUM_REQUESTS}_RANDOM.csv"))
-        mt_passed, mt_fails, mt_delays, mt_costs = gather_data(os.path.join(outputFolder, f"D{ds}N{network_topology}_MULTI_PATH_TWO_OUTPUT_DATA_{CREATE_NUM_REQUESTS}_RANDOM.csv"))
+        so_passed, so_fails, so_delays, so_costs = gather_data(os.path.join(topologyOutputFolder, f"N{network_topology}D{ds}_SINGLE_PATH_ONE_OUTPUT_DATA_{CREATE_NUM_REQUESTS}_RANDOM.csv"))
+        st_passed, st_fails, st_delays, st_costs = gather_data(os.path.join(topologyOutputFolder, f"N{network_topology}D{ds}_SINGLE_PATH_TWO_OUTPUT_DATA_{CREATE_NUM_REQUESTS}_RANDOM.csv"))
+        mo_passed, mo_fails, mo_delays, mo_costs = gather_data(os.path.join(topologyOutputFolder, f"N{network_topology}D{ds}_MULTI_PATH_ONE_OUTPUT_DATA_{CREATE_NUM_REQUESTS}_RANDOM.csv"))
+        mt_passed, mt_fails, mt_delays, mt_costs = gather_data(os.path.join(topologyOutputFolder, f"N{network_topology}D{ds}_MULTI_PATH_TWO_OUTPUT_DATA_{CREATE_NUM_REQUESTS}_RANDOM.csv"))
 
         global_success_so.append(so_passed)
         global_success_st.append(st_passed)

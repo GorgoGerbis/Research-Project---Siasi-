@@ -64,12 +64,12 @@ def set_path_state_PATH_ONE(path_obj, req_VNFs):  # <-- This one DOES NOT use fa
             print("PATH {} DOES NOT HAVE ENOUGH RESOURCES!".format(path_obj.pathID))
 
 
-def set_path_state_PATH_TWO(path_obj, req_VNFs):  # <-- This one DOES use failure probability
+def set_path_state_PATH_TWO(path_obj, req_VNFs, req_fail_thresh):  # <-- This one DOES use failure probability
     # Given a path must then determine and set the state of the path
     if path_obj.state == STATE_UNKNOWN:
         if calculate_path_resources(path_obj, req_VNFs):
             if calculate_path_speed(path_obj, REQUEST_DELAY_THRESHOLD):
-                if calculate_path_failure(path_obj, FAILURE_THRESHOLD):
+                if calculate_path_failure(path_obj, req_fail_thresh):
                     path_obj.state = BACKUP
                     PathObj.BACKUP_PATHS.append(path_obj)
                 else:
@@ -136,7 +136,7 @@ def calculate_path_speed(path_obj, delay_threshold):
 
 def calculate_path_failure(path_obj, failure_threshold):
     failure_rate = path_obj.return_failure_probability()
-    if failure_rate <= failure_threshold:
+    if failure_rate < failure_threshold:
         return True
     else:
         path_obj.state = FLUNK
@@ -266,9 +266,10 @@ def RUN_PATH_ONE(req):
 def RUN_PATH_TWO(req):
     req_bw = req.requestedBW
     req_VNFs = req.requestedFunctions
+    req_fail_threshold = req.request_failure_threshold
 
     for path in PathObj.current_request_paths_list:
-        set_path_state_PATH_TWO(path, req_VNFs)
+        set_path_state_PATH_TWO(path, req_VNFs, req_fail_threshold)
         if path.state <= 3:
             del path
 
