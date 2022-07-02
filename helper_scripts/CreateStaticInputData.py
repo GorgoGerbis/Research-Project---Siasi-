@@ -9,7 +9,7 @@ from src import CONSTANTS
 from src.VNFObj import VNFObj
 
 from src.CONSTANTS import NodeInputData, DATASET, CREATE_NUM_REQUESTS, NETWORK_TOPOLOGY, topologyResourcesFolder, \
-    FAILURE_DISTRIBUTION
+    FAILURE_DISTRIBUTION, NUM_NODES_PER_LAYER
 from src.CONSTANTS import LinkInputData
 from src.CONSTANTS import RequestInputData
 
@@ -38,7 +38,7 @@ def create_terminal_and_node_input_data(all_nodes_list, number_of_nodes, number_
                 resources = CONSTANTS.node_resources
                 processing_delay = CONSTANTS.get_processing_delay(region_num)
                 nodeCost = CONSTANTS.get_node_cost()  # random.randint(5, 10) / 10
-                pf = CONSTANTS.get_node_fail(region_num)  # random.randint(1, 75) / 100  # Dividing to make them decimals
+                pf = CONSTANTS.get_node_fail(0) # pf = CONSTANTS.get_node_fail(region_num)
                 nodeLine = "{};{};{};{};{};{}\n".format(nodeID, stat, resources, processing_delay, nodeCost, pf)
                 fp.write(nodeLine)
 
@@ -80,7 +80,7 @@ def create_link_input_data(r1, r2, r3, r4, num_nodes, num_terminals, max_links_p
             bw = CONSTANTS.link_bandwidth
             ed = CONSTANTS.get_edge_delay(1)
             ec = CONSTANTS.get_edge_cost()
-            link_failure = CONSTANTS.get_link_fail(1)
+            link_failure = CONSTANTS.get_link_fail(0) # CONSTANTS.get_link_fail(1)
             linkLine = "{};{};{};{};{};{};{}\n".format(linkID, src, dest, bw, ed, ec, link_failure)
             count += 1
             fp.write(linkLine)
@@ -92,7 +92,7 @@ def create_link_input_data(r1, r2, r3, r4, num_nodes, num_terminals, max_links_p
             bw = CONSTANTS.link_bandwidth
             ed = CONSTANTS.get_edge_delay(2)
             ec = CONSTANTS.get_edge_cost()
-            link_failure = CONSTANTS.get_link_fail(2)
+            link_failure = CONSTANTS.get_link_fail(0) # CONSTANTS.get_link_fail(2)
             linkLine = "{};{};{};{};{};{};{}\n".format(linkID, src, dest, bw, ed, ec, link_failure)
             count += 1
             fp.write(linkLine)
@@ -104,7 +104,7 @@ def create_link_input_data(r1, r2, r3, r4, num_nodes, num_terminals, max_links_p
             bw = CONSTANTS.link_bandwidth
             ed = CONSTANTS.get_edge_delay(3)
             ec = CONSTANTS.get_edge_cost()
-            link_failure = CONSTANTS.get_link_fail(3)
+            link_failure = CONSTANTS.get_link_fail(0) # CONSTANTS.get_link_fail(3)
             linkLine = "{};{};{};{};{};{};{}\n".format(linkID, src, dest, bw, ed, ec, link_failure)
             count += 1
             fp.write(linkLine)
@@ -116,7 +116,7 @@ def create_link_input_data(r1, r2, r3, r4, num_nodes, num_terminals, max_links_p
             bw = CONSTANTS.link_bandwidth
             ed = CONSTANTS.get_edge_delay(4)
             ec = CONSTANTS.get_edge_cost()
-            link_failure = CONSTANTS.get_link_fail(4)
+            link_failure = CONSTANTS.get_link_fail(0) # CONSTANTS.get_link_fail(4)
             linkLine = "{};{};{};{};{};{};{}\n".format(linkID, src, dest, bw, ed, ec, link_failure)
             count += 1
             fp.write(linkLine)
@@ -380,7 +380,7 @@ if __name__ == '__main__':
     nt = NUM_TERMINALS  # 450
     nl = NUM_LINKS  # 560
 
-    num_nodes_per_layer = [10, 20, 40, 80]  # Number of nodes per layer....
+    num_nodes_per_layer = NUM_NODES_PER_LAYER  # Number of nodes per layer....
     all_nodes_per_region, l1, l2, l3, l4 = create_topology_layered_regions(num_nodes_per_layer)
     create_terminal_and_node_input_data(all_nodes_per_region, nn, nt)
     create_link_input_data(l1, l2, l3, l4, nn, nt, 4)

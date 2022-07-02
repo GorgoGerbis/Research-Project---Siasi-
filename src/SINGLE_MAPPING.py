@@ -216,8 +216,8 @@ def RUN_PATH_ONE(req):
 
     for path in PathObj.current_request_paths_list:
         set_path_state_PATH_ONE(path, req_VNFs)
-        if path.state <= 3:
-            del path
+        # if path.state <= 3:
+        #     del path
 
     if len(PathObj.BACKUP_PATHS) == 0:
         req.requestStatus[0] = 2   # Fail current request if no paths
@@ -246,8 +246,8 @@ def RUN_PATH_TWO(req):
 
     for path in PathObj.current_request_paths_list:
         set_path_state_PATH_TWO(path, req_VNFs, req_fail_threshold)
-        if path.state <= 3:
-            del path
+        # if path.state <= 3:
+        #     del path
 
     if len(PathObj.BACKUP_PATHS) == 0:
         req.requestStatus[1] = 2  # Fail current request if no paths

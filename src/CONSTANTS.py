@@ -20,10 +20,10 @@ MULTI_MAPPING_PATH_TWO = 4
 GLOBAL_PROTOCOL = 1     # MOST IMPORTANT VARIABLE DETERMINES ACTUAL MAPPING SCHEME THAT WILL BE RUN
 
 NETWORK_TOPOLOGY = 3    # VERSION CONTROL NETWORK ARCHITECTURE: 1-5
-DATASET = 1     # REQUEST DATA SETS: 1-5
+DATASET = 3     # REQUEST DATA SETS: 1-5
 
-# FAILURE_DISTRIBUTION = "RANDOM"
-FAILURE_DISTRIBUTION = "STATIC"
+FAILURE_DISTRIBUTION = "RANDOM"
+# FAILURE_DISTRIBUTION = "STATIC"
 
 # CREATE_NUM_NODES = 0  # small:15, medium:50, large:100, # BONUS XL: 200  # BONUS MASS: 1000
 # CREATE_NUM_LINKS = 0  # small:30, medium:100, large:200, # BONUS XL: 400 # BONUS MASS: 2000
@@ -45,12 +45,16 @@ if NETWORK_TOPOLOGY == 2:
     MAX_LINKS_PER_TERMINAL = 3
     MAX_LINKS_PER_NODE = 4
 
+    NUM_NODES_PER_LAYER = [10, 20, 40, 40]
+
 if NETWORK_TOPOLOGY == 3:
     CREATE_NUM_NODES = 150
     CREATE_NUM_LINKS = 560
     CREATE_NUM_TERMINALS = 450
     MAX_LINKS_PER_TERMINAL = 3
     MAX_LINKS_PER_NODE = 4
+
+    NUM_NODES_PER_LAYER = [10, 20, 40, 80]
 
 if NETWORK_TOPOLOGY == 4:
     CREATE_NUM_NODES = 200
@@ -122,7 +126,7 @@ def get_node_fail(region):  # @ToDo Need to come up with ideal failure solution
         node_fail = random.randint(20, 50) / 100
 
     elif region == 3:
-        node_fail = random.randint(15, 40) / 100
+        node_fail = random.randint(15, 35) / 100
 
     elif region == 4:
         node_fail = random.randint(10, 30) / 100
@@ -141,7 +145,7 @@ def get_link_fail(region):  # @ToDo Need to come up with ideal failure solution
         link_fail = random.randint(20, 50) / 100
 
     elif region == 3:
-        link_fail = random.randint(15, 40) / 100
+        link_fail = random.randint(15, 35) / 100
 
     elif region == 4:
         link_fail = random.randint(10, 30) / 100

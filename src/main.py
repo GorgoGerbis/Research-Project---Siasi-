@@ -33,6 +33,7 @@ from src.CONSTANTS import GLOBAL_MULTI_OUTPUT_FILE_PATH_TWO
 from src.CONSTANTS import CREATE_NUM_NODES
 from src.CONSTANTS import CREATE_NUM_LINKS
 from src.CONSTANTS import CREATE_NUM_REQUESTS
+from src.CONSTANTS import NETWORK_TOPOLOGY, FAILURE_DISTRIBUTION, topologyResourcesFolder
 
 # Need these for path finding and graphing
 import networkx as nx
@@ -203,45 +204,45 @@ def process_path_two_MULTI_MAPPING():
 
 
 def run_SINGLE_MAPPING_CONVENTIONAL(count):
+    ds = DATASET + count
     print("Begin Processing requests using: Single-Mapping Protocol\n")
     process_path_one_SINGLE_MAPPING()
     print("STARTING CREATION OF OUTPUT FILES\n")
 
-    filepath = os.path.join(CONSTANTS.topologyOutputFolder, f"N{CONSTANTS.NETWORK_TOPOLOGY}D{DATASET + count}_SINGLE_PATH_ONE_OUTPUT_DATA_{CREATE_NUM_REQUESTS}_{CONSTANTS.FAILURE_DISTRIBUTION}.csv")
-    CreateOutputData.output_file_PATH_ONE(filepath, CREATE_NUM_REQUESTS, CREATE_NUM_NODES, CREATE_NUM_LINKS)
-    print("CREATED PATH ONE OUTPUT FILES\n")
+    filepath = os.path.join(CONSTANTS.topologyOutputFolder, f"N{NETWORK_TOPOLOGY}D{ds}_SINGLE_PATH_ONE_OUTPUT_DATA_{CREATE_NUM_REQUESTS}_{FAILURE_DISTRIBUTION}.csv")
+    CreateOutputData.output_file_PATH_ONE_S(filepath, CREATE_NUM_REQUESTS, CREATE_NUM_NODES, CREATE_NUM_LINKS)
 
 
 def run_SINGLE_MAPPING_FAILURE_SENSITIVE(count):
+    ds = DATASET + count
     print("Begin Processing requests using: Failure Sensitive Single-Mapping Protocol\n")
     process_path_two_SINGLE_MAPPING()
     print("STARTING CREATION OF OUTPUT FILES\n")
 
-    filepath = os.path.join(CONSTANTS.topologyOutputFolder, f"N{CONSTANTS.NETWORK_TOPOLOGY}D{DATASET + count}_SINGLE_PATH_TWO_OUTPUT_DATA_{CREATE_NUM_REQUESTS}_{CONSTANTS.FAILURE_DISTRIBUTION}.csv")
-    CreateOutputData.output_file_PATH_TWO(filepath, CREATE_NUM_REQUESTS, CREATE_NUM_NODES, CREATE_NUM_LINKS)
-    print("CREATED PATH TWO OUTPUT FILES\n")
+    filepath = os.path.join(CONSTANTS.topologyOutputFolder, f"N{NETWORK_TOPOLOGY}D{ds}_SINGLE_PATH_TWO_OUTPUT_DATA_{CREATE_NUM_REQUESTS}_{FAILURE_DISTRIBUTION}.csv")
+    CreateOutputData.output_file_PATH_TWO_S(filepath, CREATE_NUM_REQUESTS, CREATE_NUM_NODES, CREATE_NUM_LINKS)
 
 
 def run_MULTI_MAPPING_CONVENTIONAL(count):
+    ds = DATASET + count
     print("Begin Processing requests using: Multi-Mapping Protocol\n")
     process_path_one_MULTI_MAPPING()
     print("ALL DONE FINDING FIRST PATHS\n")
     print("STARTING CREATION OF OUTPUT FILES\n")
 
-    filepath = os.path.join(CONSTANTS.topologyOutputFolder, f"N{CONSTANTS.NETWORK_TOPOLOGY}D{DATASET + count}_MULTI_PATH_ONE_OUTPUT_DATA_{CREATE_NUM_REQUESTS}_{CONSTANTS.FAILURE_DISTRIBUTION}.csv")
-    CreateOutputData.output_file_PATH_ONE(filepath, CREATE_NUM_REQUESTS, CREATE_NUM_NODES,CREATE_NUM_LINKS)
-    print("CREATED PATH ONE OUTPUT FILES\n")
+    filepath = os.path.join(CONSTANTS.topologyOutputFolder, f"N{CONSTANTS.NETWORK_TOPOLOGY}D{ds}_MULTI_PATH_ONE_OUTPUT_DATA_{CREATE_NUM_REQUESTS}_{CONSTANTS.FAILURE_DISTRIBUTION}.csv")
+    CreateOutputData.output_file_PATH_ONE_M(filepath, CREATE_NUM_REQUESTS, CREATE_NUM_NODES, CREATE_NUM_LINKS)
 
 
 def run_MULTI_MAPPING_FAILURE_SENSITIVE(count):
+    ds = DATASET + count
     print("Begin Processing requests using: Failure Sensitive Multi-Mapping Protocol\n")
     process_path_two_MULTI_MAPPING()
     print("ALL DONE FINDING SECOND PATHS\n")
     print("STARTING CREATION OF FAILURE PROBABILITY OUTPUT FILES\n")
 
-    filepath = os.path.join(CONSTANTS.topologyOutputFolder, f"N{CONSTANTS.NETWORK_TOPOLOGY}D{DATASET + count}_MULTI_PATH_TWO_OUTPUT_DATA_{CREATE_NUM_REQUESTS}_{CONSTANTS.FAILURE_DISTRIBUTION}.csv")
-    CreateOutputData.output_file_PATH_TWO(filepath, CREATE_NUM_REQUESTS, CREATE_NUM_NODES, CREATE_NUM_LINKS)
-    print("CREATED PATH TWO OUTPUT FILES\n")
+    filepath = os.path.join(CONSTANTS.topologyOutputFolder, f"N{CONSTANTS.NETWORK_TOPOLOGY}D{ds}_MULTI_PATH_TWO_OUTPUT_DATA_{CREATE_NUM_REQUESTS}_{CONSTANTS.FAILURE_DISTRIBUTION}.csv")
+    CreateOutputData.output_file_PATH_TWO_M(filepath, CREATE_NUM_REQUESTS, CREATE_NUM_NODES, CREATE_NUM_LINKS)
 
 
 def run_all_datasets():
@@ -303,17 +304,17 @@ if __name__ == '__main__':
     find_isolated_nodes()
     MAPPING_LOG("MAPPING LOG", "", 'w')
 
-    run_all_datasets()
+    # run_all_datasets()
 
-    # if CONSTANTS.GLOBAL_PROTOCOL == 1:
-    #     run_SINGLE_MAPPING_CONVENTIONAL(DATASET)
-    #
-    # if CONSTANTS.GLOBAL_PROTOCOL == 2:
-    #     run_SINGLE_MAPPING_FAILURE_SENSITIVE(DATASET)
-    #
-    # if CONSTANTS.GLOBAL_PROTOCOL == 3:
-    #     run_MULTI_MAPPING_CONVENTIONAL(DATASET)
-    #
-    # if CONSTANTS.GLOBAL_PROTOCOL == 4:
-    #     run_MULTI_MAPPING_FAILURE_SENSITIVE(DATASET)
+    if CONSTANTS.GLOBAL_PROTOCOL == 1:
+        run_SINGLE_MAPPING_CONVENTIONAL(0)
+
+    if CONSTANTS.GLOBAL_PROTOCOL == 2:
+        run_SINGLE_MAPPING_FAILURE_SENSITIVE(0)
+
+    if CONSTANTS.GLOBAL_PROTOCOL == 3:
+        run_MULTI_MAPPING_CONVENTIONAL(0)
+
+    if CONSTANTS.GLOBAL_PROTOCOL == 4:
+        run_MULTI_MAPPING_FAILURE_SENSITIVE(0)
 
