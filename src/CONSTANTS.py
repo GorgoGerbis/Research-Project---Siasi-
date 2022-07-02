@@ -22,6 +22,8 @@ GLOBAL_PROTOCOL = 1     # MOST IMPORTANT VARIABLE DETERMINES ACTUAL MAPPING SCHE
 NETWORK_TOPOLOGY = 3    # VERSION CONTROL NETWORK ARCHITECTURE: 1-5
 DATASET = 1     # REQUEST DATA SETS: 1-5
 
+# FAILURE_DISTRIBUTION = "RANDOM"
+FAILURE_DISTRIBUTION = "STATIC"
 
 # CREATE_NUM_NODES = 0  # small:15, medium:50, large:100, # BONUS XL: 200  # BONUS MASS: 1000
 # CREATE_NUM_LINKS = 0  # small:30, medium:100, large:200, # BONUS XL: 400 # BONUS MASS: 2000
@@ -44,9 +46,9 @@ if NETWORK_TOPOLOGY == 2:
     MAX_LINKS_PER_NODE = 4
 
 if NETWORK_TOPOLOGY == 3:
-    CREATE_NUM_NODES = 100
-    CREATE_NUM_LINKS = 200
-    CREATE_NUM_TERMINALS = 300
+    CREATE_NUM_NODES = 150
+    CREATE_NUM_LINKS = 560
+    CREATE_NUM_TERMINALS = 450
     MAX_LINKS_PER_TERMINAL = 3
     MAX_LINKS_PER_NODE = 4
 
@@ -86,16 +88,16 @@ LOG_FOLDER = os.path.join(outputFolder, "Simulation Logs")
 MAPPING_LOG_DATA = os.path.join(LOG_FOLDER, "N{}D{}_SCHEME_{}R_NETWORK_LOGS_{}.csv".format(NETWORK_TOPOLOGY, DATASET, GLOBAL_PROTOCOL, CREATE_NUM_REQUESTS))
 
 # INPUT FILE PATHS
-NodeInputData = os.path.join(topologyResourcesFolder, f"N{NETWORK_TOPOLOGY}_NodeInputData.csv")
-LinkInputData = os.path.join(topologyResourcesFolder, f"N{NETWORK_TOPOLOGY}_LinkInputData.csv")
-RequestInputData = os.path.join(topologyResourcesFolder, f"N{NETWORK_TOPOLOGY}D{DATASET}_RequestInputData_{CREATE_NUM_REQUESTS}.txt")
+NodeInputData = os.path.join(topologyResourcesFolder, f"N{NETWORK_TOPOLOGY}_NodeInputData_{FAILURE_DISTRIBUTION}.csv")
+LinkInputData = os.path.join(topologyResourcesFolder, f"N{NETWORK_TOPOLOGY}_LinkInputData_{FAILURE_DISTRIBUTION}.csv")
+RequestInputData = os.path.join(topologyResourcesFolder, f"N{NETWORK_TOPOLOGY}D{DATASET}_RequestInputData_{CREATE_NUM_REQUESTS}_{FAILURE_DISTRIBUTION}.txt")
 
 # OUTPUT FILE PATHS
-GLOBAL_SINGLE_OUTPUT_FILE_PATH_ONE = os.path.join(topologyOutputFolder, f"N{NETWORK_TOPOLOGY}D{DATASET}_SINGLE_PATH_ONE_OUTPUT_DATA_{CREATE_NUM_REQUESTS}_RANDOM.csv")
-GLOBAL_SINGLE_OUTPUT_FILE_PATH_TWO = os.path.join(topologyOutputFolder, f"N{NETWORK_TOPOLOGY}D{DATASET}_SINGLE_PATH_TWO_OUTPUT_DATA_{CREATE_NUM_REQUESTS}_RANDOM.csv")
+GLOBAL_SINGLE_OUTPUT_FILE_PATH_ONE = os.path.join(topologyOutputFolder, f"N{NETWORK_TOPOLOGY}D{DATASET}_SINGLE_PATH_ONE_OUTPUT_DATA_{CREATE_NUM_REQUESTS}_{FAILURE_DISTRIBUTION}.csv")
+GLOBAL_SINGLE_OUTPUT_FILE_PATH_TWO = os.path.join(topologyOutputFolder, f"N{NETWORK_TOPOLOGY}D{DATASET}_SINGLE_PATH_TWO_OUTPUT_DATA_{CREATE_NUM_REQUESTS}_{FAILURE_DISTRIBUTION}.csv")
 
-GLOBAL_MULTI_OUTPUT_FILE_PATH_ONE = os.path.join(topologyOutputFolder, f"N{NETWORK_TOPOLOGY}D{DATASET}_MULTI_PATH_ONE_OUTPUT_DATA_{CREATE_NUM_REQUESTS}_RANDOM.csv")
-GLOBAL_MULTI_OUTPUT_FILE_PATH_TWO = os.path.join(topologyOutputFolder, f"N{NETWORK_TOPOLOGY}D{DATASET}_MULTI_PATH_TWO_OUTPUT_DATA_{CREATE_NUM_REQUESTS}_RANDOM.csv")
+GLOBAL_MULTI_OUTPUT_FILE_PATH_ONE = os.path.join(topologyOutputFolder, f"N{NETWORK_TOPOLOGY}D{DATASET}_MULTI_PATH_ONE_OUTPUT_DATA_{CREATE_NUM_REQUESTS}_{FAILURE_DISTRIBUTION}.csv")
+GLOBAL_MULTI_OUTPUT_FILE_PATH_TWO = os.path.join(topologyOutputFolder, f"N{NETWORK_TOPOLOGY}D{DATASET}_MULTI_PATH_TWO_OUTPUT_DATA_{CREATE_NUM_REQUESTS}_{FAILURE_DISTRIBUTION}.csv")
 ############ Global file paths ###############
 
 
@@ -112,23 +114,79 @@ def get_VNFs():
     return num_VNFs
 
 
-def get_node_fail():  # @ToDo Need to come up with ideal failure solution
-    node_fail = random.randint(10, 80) / 100
+def get_node_fail(region):  # @ToDo Need to come up with ideal failure solution
+    if region == 1:
+        node_fail = random.randint(30, 80) / 100
+
+    elif region == 2:
+        node_fail = random.randint(20, 50) / 100
+
+    elif region == 3:
+        node_fail = random.randint(15, 40) / 100
+
+    elif region == 4:
+        node_fail = random.randint(10, 30) / 100
+
+    else:
+        node_fail = random.randint(10, 80) / 100
+
     return node_fail*100
 
 
-def get_link_fail():  # @ToDo Need to come up with ideal failure solution
-    link_fail = random.randint(10, 80) / 100  # Dividing to make them decimals
+def get_link_fail(region):  # @ToDo Need to come up with ideal failure solution
+    if region == 1:
+        link_fail = random.randint(30, 80) / 100
+
+    elif region == 2:
+        link_fail = random.randint(20, 50) / 100
+
+    elif region == 3:
+        link_fail = random.randint(15, 40) / 100
+
+    elif region == 4:
+        link_fail = random.randint(10, 30) / 100
+
+    else:
+        link_fail = random.randint(10, 80) / 100
+
     return link_fail*100
 
 
-def get_processing_delay():
-    processing_delay = random.randint(1, 10) / 10  # <-- 1 ms
+def get_processing_delay(region):
+    if region == 1:
+        processing_delay = random.randint(1, 10) / 10  # <-- 1 ms
+
+    elif region == 2:
+        processing_delay = random.randint(1, 10) / 10  # <-- 1 ms
+
+    elif region == 3:
+        processing_delay = random.randint(1, 10) / 10  # <-- 1 ms
+
+    elif region == 4:
+        processing_delay = random.randint(1, 10) / 10  # <-- 1 ms
+
+    else:
+        processing_delay = random.randint(1, 10) / 10  # <-- 1 ms
+
     return processing_delay
 
 
-def get_edge_delay():
-    edge_delay = random.randint(75, 300) / 100  # Dividing to make them decimals
+def get_edge_delay(region):
+    if region == 1:
+        edge_delay = random.randint(75, 300) / 100  # Dividing to make them decimals
+
+    elif region == 2:
+        edge_delay = random.randint(75, 300) / 100  # Dividing to make them decimals
+
+    elif region == 3:
+        edge_delay = random.randint(75, 300) / 100  # Dividing to make them decimals
+
+    elif region == 4:
+        edge_delay = random.randint(75, 300) / 100  # Dividing to make them decimals
+
+    else:
+        edge_delay = random.randint(75, 300) / 100  # Dividing to make them decimals
+
     return edge_delay
 
 

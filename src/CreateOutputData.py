@@ -21,7 +21,7 @@ def fail_unavailable_paths():
                 req.requestStatus[0] = REQUEST_DENIED
                 temp = (req.requestID, current_fail)
                 failed_requests_data.add(temp)
-                # req.PATH_ONE = None
+                req.PATH_ONE = None
 
     print(fails_output)
     return failed_requests_data
@@ -193,14 +193,12 @@ def output_file_PATH_ONE(FILE_NAME, num_reqs, num_nodes, num_links):
         for req in temp_reqs:
             current_path = req.PATH_ONE
             if req.requestStatus[0] == REQUEST_APPROVED:
-                fp.write("APPROVED|,{}|,{}|,{}%|,{}|,{}|,{}|,{}|\n".format(req.requestID, current_path.pathID,
-                                                                   current_path.FAILURE_PROBABILITY, current_path.DELAY,
-                                                                   current_path.COST, req.requestedFunctions,
-                                                                   current_path.route))
+                fp.write("APPROVED|,{}|,{}|,{}%|,{}|,{}|,{}|,{}|\n".format(req.requestID, current_path.pathID, current_path.FAILURE_PROBABILITY, current_path.DELAY, current_path.COST, req.requestedFunctions, current_path.route))
             else:
-                for t in failed_requests_data:
-                    if t[0] == i:
-                        fp.write(f"DENIED|,{req.requestID}|,NONE|,{t[1]}%|,0|,0|,{req.requestedFunctions}|,src={req.source}|,dest={req.destination}|\n")
+                fp.write(f"DENIED|,{req.requestID}|,NONE|,NONE%|,0|,0|,{req.requestedFunctions}|,src={req.source}|,dest={req.destination}|\n")
+                # for t in failed_requests_data:
+                #     if t[0] == i:
+                #         fp.write(f"DENIED|,{req.requestID}|,NONE|,{t[1]}%|,0|,0|,{req.requestedFunctions}|,src={req.source}|,dest={req.destination}|\n")
 
 
 def output_file_PATH_TWO(FILE_NAME, num_reqs, num_nodes, num_links):
