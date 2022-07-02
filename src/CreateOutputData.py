@@ -11,6 +11,7 @@ REQUEST_APPROVED = 3
 
 def fail_unavailable_paths():
     fails_output = []
+    failed_requests_data = set()
     for req in RequestObj.STATIC_TOTAL_REQUEST_LIST:
         if req.requestStatus[0] == REQUEST_APPROVED:
             current_fail = req.PATH_ONE.FAILURE_PROBABILITY
@@ -18,9 +19,12 @@ def fail_unavailable_paths():
             if current_fail >= current_fail_threshold:
                 fails_output.append(f"REQ:{req.requestID}, F% = {current_fail} > THRESHOLD = {current_fail_threshold}")
                 req.requestStatus[0] = REQUEST_DENIED
-                req.PATH_ONE = None
+                temp = (req.requestID, current_fail)
+                failed_requests_data.add(temp)
+                # req.PATH_ONE = None
+
     print(fails_output)
-    print()
+    return failed_requests_data
 
 
 def get_average_data_PATH_ONE(num_reqs, num_nodes, num_links):
@@ -169,7 +173,7 @@ def get_average_data_PATH_TWO(num_reqs, num_nodes, num_links):
 def output_file_PATH_ONE(FILE_NAME, num_reqs, num_nodes, num_links):
     temp_reqs = []
 
-    fail_unavailable_paths() # This will fail all paths that have a failed node in its route
+    failed_requests_data = fail_unavailable_paths() # This will fail all paths that have a failed node in its route
     with open(FILE_NAME, 'w') as fp:
         main_header = "DATASET=TINY,TYPE=WITHOUT_FAULT_TOLERANCE,NODES=42,LINKS=63,REQUESTS=100\n"
         average_header = "REQUEST PASSED, REQUESTS FAILED, AVERAGE REQUEST DELAY, AVERAGE REQUEST COST, AVERAGE FAILURE PROBABILITY, AVERAGE LENGTH OF PATHS, MEAN NODE [CPU, RAM], MEAN LINK BANDWIDTH\n"
@@ -194,9 +198,9 @@ def output_file_PATH_ONE(FILE_NAME, num_reqs, num_nodes, num_links):
                                                                    current_path.COST, req.requestedFunctions,
                                                                    current_path.route))
             else:
-                fp.write("DENIED|,{}|,NONE|,NONE|,0|,0|,{}|,src={}|, dest={}|\n".format(req.requestID, req.requestedFunctions,
-                                                                               req.source, req.destination))
-    fp.close()
+                for t in failed_requests_data:
+                    if t[0] == i:
+                        fp.write(f"DENIED|,{req.requestID}|,NONE|,{t[1]}%|,0|,0|,{req.requestedFunctions}|,src={req.source}|,dest={req.destination}|\n")
 
 
 def output_file_PATH_TWO(FILE_NAME, num_reqs, num_nodes, num_links):
@@ -223,6 +227,4 @@ def output_file_PATH_TWO(FILE_NAME, num_reqs, num_nodes, num_links):
             if req.requestStatus[1] == REQUEST_APPROVED:
                 fp.write("APPROVED|,{}|,{}|,{}%|,{}|,{}|,{}|,{}|\n".format(req.requestID, current_path.pathID, current_path.FAILURE_PROBABILITY, current_path.DELAY, current_path.COST, req.requestedFunctions, current_path.route))
             else:
-                fp.write("DENIED|,{}|,NONE|,NONE|,0|,0|,{}|,src={}|, dest={}|\n".format(req.requestID, req.requestedFunctions, req.source, req.destination))
-
-    fp.close()
+                fp.write(f"DENIED|,{req.requestID}|,NONE|,NONE%|,0|,0|,{req.requestedFunctions}|,src={req.source}|,dest={req.destination}|\n")

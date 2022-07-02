@@ -210,11 +210,6 @@ def gather_data(filepath):
     num_passed = 0
     num_failed = 0
 
-    # passed = [0]
-    # fails = [0]
-    # delays = [0]
-    # costs = [0]
-
     passed = []
     fails = []
     delays = []

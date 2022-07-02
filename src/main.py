@@ -122,46 +122,6 @@ def find_isolated_nodes():
     print("The following nodes are not accessible: {}\n".format(output))
 
 
-def process_path_one_MULTI_MAPPING():
-    for req in RequestObj.STATIC_TOTAL_REQUEST_LIST:  # STEP ONE
-        print("BEGUN PROCESSING REQUEST: {} Source: {} Destination {} Functions: {}\n".format(req.requestID, req.source,
-                                                                                              req.destination,
-                                                                                              req.requestedFunctions))
-
-        count = 1  # Needs to be reset to 1 when a new request is being processed
-        current_request_data = [req.requestedFunctions, req.request_delay_threshold, req.requestedBW]
-        current_request_all_possible_paths = nx.all_shortest_paths(GRAPH, req.source, req.destination)
-        # current_request_all_possible_paths = nx.all_shortest_paths(GRAPH, req.source, req.destination, weight='weight')
-
-        for path in current_request_all_possible_paths:  # STEP TWO
-            pathID = "R{}P{}".format(req.requestID, count)
-            # ToDo should make a static list of all paths being processed for a single request
-            PathObj(pathID, path, 0, current_request_data, [], 0, 0, 0, 1)
-            count += 1
-
-        RUN_PATH_ONE_MULTI_MAPPING(req)  # <--- Step 3, 4 and 5 starts here
-
-
-def process_path_two_MULTI_MAPPING():
-    for req in RequestObj.STATIC_TOTAL_REQUEST_LIST:  # STEP ONE
-        print("BEGUN PROCESSING REQUEST: {} Source: {} Destination {} Functions: {}\n".format(req.requestID, req.source,
-                                                                                              req.destination,
-                                                                                              req.requestedFunctions))
-
-        count = 1  # Needs to be reset to 1 when a new request is being processed
-        current_request_data = [req.requestedFunctions, req.request_delay_threshold, req.requestedBW]
-        current_request_all_possible_paths = nx.all_shortest_paths(GRAPH, req.source, req.destination)
-        # current_request_all_possible_paths = nx.all_shortest_paths(GRAPH, req.source, req.destination, weight='weight')
-
-        for path in current_request_all_possible_paths:  # STEP TWO
-            pathID = "R{}P{}".format(req.requestID, count)
-            # ToDo should make a static list of all paths being processed for a single request
-            PathObj(pathID, path, 0, current_request_data, [], 0, 0, 0, 2)
-            count += 1
-
-        RUN_PATH_TWO_MULTI_MAPPING(req)
-
-
 def process_path_one_SINGLE_MAPPING():
     for req in RequestObj.STATIC_TOTAL_REQUEST_LIST:  # STEP ONE
         print("BEGUN PROCESSING REQUEST: {} Source: {} Destination {} Functions: {}\n".format(req.requestID, req.source,
@@ -200,6 +160,46 @@ def process_path_two_SINGLE_MAPPING():
             count += 1
 
         RUN_PATH_TWO_SINGLE_MAPPING(req)
+
+
+def process_path_one_MULTI_MAPPING():
+    for req in RequestObj.STATIC_TOTAL_REQUEST_LIST:  # STEP ONE
+        print("BEGUN PROCESSING REQUEST: {} Source: {} Destination {} Functions: {}\n".format(req.requestID, req.source,
+                                                                                              req.destination,
+                                                                                              req.requestedFunctions))
+
+        count = 1  # Needs to be reset to 1 when a new request is being processed
+        current_request_data = [req.requestedFunctions, req.request_delay_threshold, req.requestedBW]
+        current_request_all_possible_paths = nx.all_shortest_paths(GRAPH, req.source, req.destination)
+        # current_request_all_possible_paths = nx.all_shortest_paths(GRAPH, req.source, req.destination, weight='weight')
+
+        for path in current_request_all_possible_paths:  # STEP TWO
+            pathID = "R{}P{}".format(req.requestID, count)
+            # ToDo should make a static list of all paths being processed for a single request
+            PathObj(pathID, path, 0, current_request_data, [], 0, 0, 0, 1)
+            count += 1
+
+        RUN_PATH_ONE_MULTI_MAPPING(req)  # <--- Step 3, 4 and 5 starts here
+
+
+def process_path_two_MULTI_MAPPING():
+    for req in RequestObj.STATIC_TOTAL_REQUEST_LIST:  # STEP ONE
+        print("BEGUN PROCESSING REQUEST: {} Source: {} Destination {} Functions: {}\n".format(req.requestID, req.source,
+                                                                                              req.destination,
+                                                                                              req.requestedFunctions))
+
+        count = 1  # Needs to be reset to 1 when a new request is being processed
+        current_request_data = [req.requestedFunctions, req.request_delay_threshold, req.requestedBW]
+        current_request_all_possible_paths = nx.all_shortest_paths(GRAPH, req.source, req.destination)
+        # current_request_all_possible_paths = nx.all_shortest_paths(GRAPH, req.source, req.destination, weight='weight')
+
+        for path in current_request_all_possible_paths:  # STEP TWO
+            pathID = "R{}P{}".format(req.requestID, count)
+            # ToDo should make a static list of all paths being processed for a single request
+            PathObj(pathID, path, 0, current_request_data, [], 0, 0, 0, 2)
+            count += 1
+
+        RUN_PATH_TWO_MULTI_MAPPING(req)
 
 
 def run_SINGLE_MAPPING_CONVENTIONAL(count):
@@ -283,9 +283,9 @@ def reset_all_resources():
             print(f"NODE:{node.nodeID} RESOURCES:{node.nodeResources}\n")
 
     for link in NodeObj.StaticLinkList:
-        print(f"LINK:{link.linkID} BW:{link.linkBW}")
+        # print(f"LINK:{link.linkID} BW:{link.linkBW}")
         link.linkBW = 100
-        print(f"LINK:{link.linkID} BW:{link.linkBW}\n")
+        # print(f"LINK:{link.linkID} BW:{link.linkBW}\n")
 
 
 if __name__ == '__main__':

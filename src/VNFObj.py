@@ -26,11 +26,11 @@ class VNFObj(Enum):
     y = RAM usage
     z = Failure Threshold
     """
-    F1 = [1, 1, 0.85]
-    F2 = [2, 2, 0.75]
-    F3 = [3, 3, 0.65]
-    F4 = [4, 4, 0.55]
-    F5 = [5, 5, 0.45]
+    F1 = [1, 1, 0.65]
+    F2 = [2, 2, 0.55]
+    F3 = [3, 3, 0.45]
+    F4 = [4, 4, 0.35]
+    F5 = [5, 5, 0.25]
 
     @enumproperty
     def RANDOM(cls):

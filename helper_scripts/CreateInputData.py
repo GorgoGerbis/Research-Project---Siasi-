@@ -70,7 +70,7 @@ def create_link_input_data(num_terminals, num_nodes, num_links, max_links_per_te
             bw = CONSTANTS.link_bandwidth
             ed = CONSTANTS.get_edge_delay()
             ec = CONSTANTS.get_edge_cost()
-            link_failure = CONSTANTS.get_link_fail()
+            link_failure = 0    # CONSTANTS.get_link_fail()
             linkLine = "{};{};{};{};{};{};{}\n".format(linkID, src, dest, bw, ed, ec, link_failure)
             count += 1
             fp.write(linkLine)
