@@ -2,6 +2,7 @@ import numpy as np
 import os
 from matplotlib.ticker import FormatStrFormatter
 
+from src import CONSTANTS
 from src.CONSTANTS import GLOBAL_SINGLE_OUTPUT_FILE_PATH_ONE, GLOBAL_SINGLE_OUTPUT_FILE_PATH_TWO, topologyOutputFolder, \
     FAILURE_DISTRIBUTION
 from src.CONSTANTS import GLOBAL_MULTI_OUTPUT_FILE_PATH_ONE, GLOBAL_MULTI_OUTPUT_FILE_PATH_TWO
@@ -387,40 +388,30 @@ def create_bar_and_line_graph(single_one, single_two, multi_one, multi_two, titl
 
 
 if __name__ == '__main__':
-    gather_all_data_averages(NETWORK_TOPOLOGY)
+    # gather_all_data_averages(NETWORK_TOPOLOGY)  # Creates graph for all datasets for a particular topology...
 
-    # average_these("galactic_average_success_so", 5, [92, 95, 93, 88, 83], [93, 88, 79, 71, 63], [84, 68, 50, 39, 32])
+    #################### ONLY OUTPUT FOR ONE SPECIFIC DATASET AND TOPOLOGY ####################
 
-    # STUFF FOR INDIVIDUAL DATASET GRAPHS
-    # start, stop = 0, 0
-    #
-    # if NETWORK_TOPOLOGY == 1:
-    #     start, stop = 1, 5
-    # if NETWORK_TOPOLOGY == 2:
-    #     start, stop = 6, 10
-    # if NETWORK_TOPOLOGY == 3:
-    #     start, stop = 11, 15
-    #
-    # for i in range(start, stop + 1):
-    #     auto_generate_graphs(i, NETWORK_TOPOLOGY)
+    nt = CONSTANTS.NETWORK_TOPOLOGY
+    ds = CONSTANTS.DATASET
 
-    # x_axis_datasets = [50, 100, 150, 200, 250]
-    # y_axis_requests = [50, 100, 150, 200, 250]
-    # y_axis_failure = [15, 25, 35, 45, 55]
-    # y_axis_delay = [2.0, 4.0, 6.0, 8.0, 10.0]
-    # y_axis_cost = [2.0, 4.0, 6.0, 8.0, 10.0]
-    #
-    # SO_PASSED, SO_FAILS, SO_DELAYS, SO_COSTS = gather_data(GLOBAL_SINGLE_OUTPUT_FILE_PATH_ONE)
-    # ST_PASSED, ST_FAILS, ST_DELAYS, ST_COSTS = gather_data(GLOBAL_SINGLE_OUTPUT_FILE_PATH_TWO)
-    # MO_PASSED, MO_FAILS, MO_DELAYS, MO_COSTS = gather_data(GLOBAL_MULTI_OUTPUT_FILE_PATH_ONE)
-    # M2_PASSED, M2_FAILS, M2_DELAYS, M2_COSTS = gather_data(GLOBAL_MULTI_OUTPUT_FILE_PATH_TWO)
-    #
-    # success_name = f'D{DATASET}N{NETWORK_TOPOLOGY}_success.png'
-    # fails_name = f'D{DATASET}N{NETWORK_TOPOLOGY}_fails.png'
-    # delays_name = f'D{DATASET}N{NETWORK_TOPOLOGY}_delays.png'
-    # costs_name = f'D{DATASET}N{NETWORK_TOPOLOGY}_costs.png'
-    #
-    # create_bar_and_line_graph(SO_PASSED, ST_PASSED, MO_PASSED, M2_PASSED, "NETWORK SATURATION: REQUESTS PASSED", "Number of Requests Processed", "Number of Successful Requests Passed", x_axis_datasets, y_axis_requests, '%', success_name)
-    # create_bar_and_line_graph(SO_FAILS, ST_FAILS, MO_FAILS, M2_FAILS, "NETWORK FAILURE RANDOM: REQUEST FAILURE AVERAGES", "Number of Requests Processed", "Average Failure Probability of Requests", x_axis_datasets, y_axis_failure, '%', fails_name)
-    # create_bar_and_line_graph(SO_DELAYS, ST_DELAYS, MO_DELAYS, M2_DELAYS, "NETWORK DELAYS RANDOM", "Number of Requests Processed", "Average Delay Times of Requests ms", x_axis_datasets, y_axis_delay, 'ms', delays_name)
-    # create_bar_and_line_graph(SO_COSTS, ST_COSTS, MO_COSTS, M2_COSTS, "NETWORK COSTS RANDOM", "Number of Requests Processed", "Average Costs of Requests mb", x_axis_datasets, y_axis_cost, 'mb', costs_name)
+    x_axis_datasets = [50, 100, 150, 200, 250]
+    y_axis_requests = [50, 100, 150, 200, 250]
+    y_axis_failure = [15, 25, 35, 45, 55]
+    y_axis_delay = [2.0, 4.0, 6.0, 8.0, 10.0]
+    y_axis_cost = [2.0, 4.0, 6.0, 8.0, 10.0]
+
+    SO_PASSED, SO_FAILS, SO_DELAYS, SO_COSTS = gather_data(os.path.join(topologyOutputFolder, f"N{nt}D{ds}_SINGLE_PATH_ONE_OUTPUT_DATA_{CREATE_NUM_REQUESTS}_{FAILURE_DISTRIBUTION}.csv"))
+    ST_PASSED, ST_FAILS, ST_DELAYS, ST_COSTS = gather_data(os.path.join(topologyOutputFolder, f"N{nt}D{ds}_SINGLE_PATH_TWO_OUTPUT_DATA_{CREATE_NUM_REQUESTS}_{FAILURE_DISTRIBUTION}.csv"))
+    MO_PASSED, MO_FAILS, MO_DELAYS, MO_COSTS = gather_data(os.path.join(topologyOutputFolder, f"N{nt}D{ds}_MULTI_PATH_ONE_OUTPUT_DATA_{CREATE_NUM_REQUESTS}_{FAILURE_DISTRIBUTION}.csv"))
+    M2_PASSED, M2_FAILS, M2_DELAYS, M2_COSTS = gather_data(os.path.join(topologyOutputFolder, f"N{nt}D{ds}_MULTI_PATH_TWO_OUTPUT_DATA_{CREATE_NUM_REQUESTS}_{FAILURE_DISTRIBUTION}.csv"))
+
+    success_name = f'D{DATASET}N{NETWORK_TOPOLOGY}_success.png'
+    fails_name = f'D{DATASET}N{NETWORK_TOPOLOGY}_fails.png'
+    delays_name = f'D{DATASET}N{NETWORK_TOPOLOGY}_delays.png'
+    costs_name = f'D{DATASET}N{NETWORK_TOPOLOGY}_costs.png'
+
+    create_bar_and_line_graph(SO_PASSED, ST_PASSED, MO_PASSED, M2_PASSED, f"NETWORK TOPOLOGY-N{nt}D{ds} SATURATION: REQUESTS PASSED", "Number of Requests Processed", "Number of Successful Requests Passed", x_axis_datasets, y_axis_requests, '%', success_name)
+    create_bar_and_line_graph(SO_FAILS, ST_FAILS, MO_FAILS, M2_FAILS, f"NETWORK TOPOLOGY-N{nt}D{ds} FAILURE RANDOM: REQUEST FAILURE AVERAGES", "Number of Requests Processed", "Average Failure Probability of Requests", x_axis_datasets, y_axis_failure, '%', fails_name)
+    create_bar_and_line_graph(SO_DELAYS, ST_DELAYS, MO_DELAYS, M2_DELAYS, f"NETWORK TOPOLOGY-N{nt}D{ds} DELAYS RANDOM", "Number of Requests Processed", "Average Delay Times of Requests ms", x_axis_datasets, y_axis_delay, 'ms', delays_name)
+    create_bar_and_line_graph(SO_COSTS, ST_COSTS, MO_COSTS, M2_COSTS, f"NETWORK TOPOLOGY-N{nt}D{ds} COSTS RANDOM", "Number of Requests Processed", "Average Costs of Requests mb", x_axis_datasets, y_axis_cost, 'mb', costs_name)
