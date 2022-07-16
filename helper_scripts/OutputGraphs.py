@@ -53,15 +53,15 @@ def gather_all_data_averages(network_topology):
     global_costs_mt = []
 
     if NETWORK_TOPOLOGY == 1:
-        top_name = "SMALL"
+        top_name = "EX-SMALL"
     if NETWORK_TOPOLOGY == 2:
-        top_name = "MEDIUM"
+        top_name = "SMALL"
     if NETWORK_TOPOLOGY == 3:
-        top_name = "LARGE"
+        top_name = "MEDIUM"
     if NETWORK_TOPOLOGY == 4:
-        top_name = "EX-LARGE"
+        top_name = "LARGE"
     if NETWORK_TOPOLOGY == 5:
-        top_name = "MASSIVE"
+        top_name = "EX-LARGE"
 
     start = 1
     stop = 5
@@ -211,34 +211,27 @@ def gather_data(filepath):
     """
     num_passed = 0
     num_failed = 0
+    num_mapped = 0
 
     passed = []
     fails = []
     delays = []
     costs = []
 
+    limit_break = 0
+
     with open(filepath) as fp:
         for l in range(4):
             next(fp)
 
-        count = 1
+        count = 0
         current_fails = 0
         current_delays = 0
         current_costs = 0
         for line in fp:
             current_elements = line.split('|')
             status = current_elements[0]
-
-            if count % 50 == 0:
-                passed.append(num_passed)
-
-                # fails.append(current_fails / count)
-                # delays.append(current_delays / count)
-                # costs.append(current_costs / count)
-
-                fails.append(current_fails / num_passed)
-                delays.append(current_delays / num_passed)
-                costs.append(current_costs / num_passed)
+            count += 1
 
             if status == 'APPROVED':
                 failure_probability = float(current_elements[3].strip(',%'))
@@ -249,19 +242,53 @@ def gather_data(filepath):
                 current_delays += end_to_end_delay
                 current_costs += request_cost
                 num_passed += 1
-                count += 1
-            else:
-                count += 1
+                num_mapped += 1
+
+                if count % 50 == 0 and limit_break < 5:
+                    passed.append(num_passed)
+                    fails.append(current_fails / num_mapped)
+                    delays.append(current_delays / num_mapped)
+                    costs.append(current_costs / num_mapped)
+                    limit_break += 1
+
+            if status == 'FAILED':
+                failure_probability = float(current_elements[3].strip(',%'))
+                end_to_end_delay = float(current_elements[4].strip(','))
+                request_cost = float(current_elements[5].strip(','))
+
+                current_fails += failure_probability
+                current_delays += end_to_end_delay
+                current_costs += request_cost
                 num_failed += 1
+                num_mapped += 1
+
+                if count % 50 == 0 and limit_break < 5:
+                    passed.append(num_passed)
+                    fails.append(current_fails / num_mapped)
+                    delays.append(current_delays / num_mapped)
+                    costs.append(current_costs / num_mapped)
+                    limit_break += 1
+
+            else:
+                num_failed += 1
+
+                if count % 50 == 0 and limit_break < 5:
+                    passed.append(num_passed)
+                    fails.append(current_fails / num_mapped)
+                    delays.append(current_delays / num_mapped)
+                    costs.append(current_costs / num_mapped)
+                    limit_break += 1
 
     data_set_sizes = [50, 100, 150, 200, 250]
 
-    for i in range(len(data_set_sizes)):
+    for i in range(len(data_set_sizes) - 1):
         num_passed = passed[i]
         size = data_set_sizes[i]
         temp = num_passed / size
         passed[i] = temp*100
         # print(f"{temp}%")
+
+    # count = 1
 
     print("{}_Passed_Requests = {}\n{}_Average_Failure = {}\n{}_Average_Delays = {}\n{}_Average_Costs = {}".format(1, passed, 1, fails, 1, delays, 1, costs))
     return passed, fails, delays, costs
@@ -322,19 +349,19 @@ def create_bar_and_line_graph(single_one, single_two, multi_one, multi_two, titl
 
     if NETWORK_TOPOLOGY == 1:
         graphs_folder = os.path.join(outputFolder, "Graphs")
-        specific_graphs_folder = os.path.join(graphs_folder, "small-topology")
+        specific_graphs_folder = os.path.join(graphs_folder, "ex-small-topology")
     if NETWORK_TOPOLOGY == 2:
         graphs_folder = os.path.join(outputFolder, "Graphs")
-        specific_graphs_folder = os.path.join(graphs_folder, "medium-topology")
+        specific_graphs_folder = os.path.join(graphs_folder, "small-topology")
     if NETWORK_TOPOLOGY == 3:
         graphs_folder = os.path.join(outputFolder, "Graphs")
-        specific_graphs_folder = os.path.join(graphs_folder, "large-topology")
+        specific_graphs_folder = os.path.join(graphs_folder, "medium-topology")
     if NETWORK_TOPOLOGY == 4:
         graphs_folder = os.path.join(outputFolder, "Graphs")
-        specific_graphs_folder = os.path.join(graphs_folder, "ex-large-topology")
+        specific_graphs_folder = os.path.join(graphs_folder, "large-topology")
     if NETWORK_TOPOLOGY == 5:
         graphs_folder = os.path.join(outputFolder, "Graphs")
-        specific_graphs_folder = os.path.join(graphs_folder, "ex-amass-topology")
+        specific_graphs_folder = os.path.join(graphs_folder, "ex-large-topology")
 
     # plt.show()
     figure = plt.gcf()
