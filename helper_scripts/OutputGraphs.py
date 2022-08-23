@@ -22,6 +22,7 @@ def gather_all_data_averages(network_topology):
     universal_fails_mo = []
     universal_fails_mt = []
 
+
     universal_delays_so = []
     universal_delays_st = []
     universal_delays_mo = []
